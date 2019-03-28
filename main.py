@@ -4,13 +4,16 @@ in a clearer, more user-friendly format.  You can then execute queries on this d
 import os
 import GSI
 
-test_file_names = ['A9_ARTC_902_2.GSI', 'ERROR.GSI', 'HCCUL180219.GSI']
+from gsi_database import *
 
+
+# Test files
+test_file_names = ['A9_ARTC_902_2.GSI', 'ERROR.GSI', 'HCCUL180219.GSI']
 os.chdir('.\\GSI Files')
 
-# TODO:  add database functinoality
+db = GSIDatabase()
+gsi = GSI(test_file_names[0], db)
 
-gsi = GSI.GSI(test_file_names[2])
 
 
 
