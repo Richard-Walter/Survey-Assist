@@ -66,6 +66,7 @@ class GSI:
 
                 print(formatted_values)
 
+
                 #   Add formatted line to database
                 self.db.table_data_entry(formatted_values)
 
