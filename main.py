@@ -2,8 +2,14 @@
 in a clearer, more user-friendly format.  You can then execute database queries on this data"""
 
 import tkinter as tk
-import os
+from tkinter import filedialog
+from GSI import GSI
+from GSIDatabase import GSIDatabase
 
+
+# Create GSI and Database objects
+gsi = GSI()
+database = GSIDatabase(GSI.GSI_WORD_ID_DICT)
 
 # TODO Add logging and unit testing
 
@@ -12,29 +18,51 @@ class MenuBar(tk.Frame):
 
     def __init__(self, master):
 
-        tk.Frame.__init__(self, master)
-
+        # tk.Frame.__init__(self, master)
+        super().__init__(master)
         self.master = master
         self.frame = tk.Frame(master)
+        self.gsi = None
+
+        self.filename_path = ""
 
         # creating a menu instance
-        menu = tk.Menu(self.master)
-        self.master.config(menu=menu)
+        self.menu_bar = tk.Menu(self.master)
+        self.master.config(menu=self.menu_bar)
 
         # create the file Menu with a command
-        file = tk.Menu(menu,  tearoff=0)
-        file.add_command(label="Open...", command=self.client_exit)
-        file.add_command(label="Exit", command=self.client_exit)
+        file_sub_menu = tk.Menu(self.menu_bar,  tearoff=0)
+        file_sub_menu.add_command(label="Open...", command=self.browse_and_format_gsi_file)
+        file_sub_menu.add_command(label="Exit", command=self.client_exit)
 
         # added "file" to our Main menu
-        menu.add_cascade(label="File", menu=file)
+        self.menu_bar.add_cascade(label="File", menu=file_sub_menu)
 
         # create the Query object and command
-        query = tk.Menu(menu,  tearoff=0)
-        query.add_command(label="Query GSI...", command=self.client_exit)
+        self.query_sub_menu = tk.Menu(self.menu_bar,  tearoff=0)
+        self.query_sub_menu.add_command(label="Query GSI...", command=self.client_exit)
+        self.query_sub_menu.add_command(label="Clear Query", command=self.client_exit)
 
-        # added "file" to our menu
-        menu.add_cascade(label="Query", menu=query)
+        # self.disable_query_menu()
+
+        # added "Query" to our menu:  Disabled until GSI file is loaded
+        self.menu_bar.add_cascade(label="Query", menu=self.query_sub_menu, state="disabled")
+
+    def browse_and_format_gsi_file(self):
+
+        self.filename_path = tk.filedialog.askopenfilename()
+        print(self.filename_path)
+        gsi.format_gsi(self.filename_path)
+        database.create_db()
+        database.create_table()
+        database.populate_table(gsi.formatted_lines)
+        self.enable_query_menu()
+
+    def enable_query_menu(self):
+        self.menu_bar.entryconfig("Query", state="normal")
+
+    def disable_query_menu(self):
+        self.query_sub_menu.entryconfig("Query", state="disabled")
 
     @staticmethod
     def client_exit():
@@ -45,19 +73,19 @@ class StatusBar(tk.Frame):
 
     def __init__(self, master):
 
-        tk.Frame.__init__(self, master)
+        super().__init__(master)
 
         self.master = master
         self.frame = tk.Frame(master)
 
-        status_bar = tk.Label(master, text='Welcome to GSI Query', relief=tk.SUNKEN, anchor=tk.W)
+        # status_bar = tk.Label(master, text='Welcome to GSI Query', relief=tk.SUNKEN, anchor=tk.W)
 
 
 class MainWindow(tk.Frame):
 
     def __init__(self, master):
 
-        tk.Frame.__init__(self, master)
+        super().__init__(master)
 
         self.master = master
         self.frame = tk.Frame(master)
@@ -67,9 +95,8 @@ class GUIApplication(tk.Frame):
 
     def __init__(self, master, *args, **kwargs):
 
-        tk.Frame.__init__(self, master, *args, **kwargs)
+        super().__init__(master, *args, **kwargs)
 
-        self.master = master
         self.status_bar = StatusBar(master)
         self.menu_bar = MenuBar(master)
         self.main_window = MainWindow(master)
@@ -92,15 +119,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
-
-# db = GSIDatabase()
-
-# Test files
-test_file_names = ['A9_ARTC_902_2.GSI', 'ERROR.GSI', 'HCCUL180219.GSI']
-os.chdir('.\\GSI Files')
-# gsi = GSI(test_file_names[2], db)
-
-
-
-

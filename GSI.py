@@ -9,23 +9,25 @@ class GSI:
                         '82': 'Northing', '83': 'Elevation', '84': 'STN_Easting', '85': 'STN_Northing',
                         '86': 'STN_Elevation', '87': 'Target_Height', '88': 'Instrument_Height'}
 
-    def __init__(self, filename, db):
+    def __init__(self):
 
-        self.filename = filename
-        self.db = db
-        self.format_gsi_and_update_database()
+        self.filename = None
+        self.formatted_lines = []
 
-    def format_gsi_and_update_database(self):
+    def format_gsi(self, filename):
 
-        with open(self.filename, "r") as f:
+        with open(filename, "r") as f:
+
+            self.filename = filename
+
             # Iterating through the file:
             for line in f:
                 stripped_line = line.strip('*')  # First character in each line should begin with *
                 field_list = stripped_line.split()  # returns 23-24 digit field e.g. 22.324+0000000009042520
                 print(field_list)
 
-                # dictionary consisting of Word ID and formatted values
-                formatted_values = {}
+                # dictionary consisting of Word ID and formatted line
+                formatted_line = {}
 
                 # match the 2-digit identification with the key in the dictionary
                 for field in field_list:
@@ -53,23 +55,19 @@ class GSI:
                             field_value = self.format_angles(field_value)
 
                         elif field_value == "":
-                            # print("THis field has no value")
+                            # print("This field has no value")
                             field_value = 'N/A'
 
                         print(field_value)
-                        formatted_values[field_name] = field_value
+                        formatted_line[field_name] = field_value
 
                     except KeyError as e:
                         print("This file doesn't appear to be a valid GSI file")
                         print('Missing Key ID:  ' + str(e))
                         sys.exit()
 
-                print(formatted_values)
-
-
-                #   Add formatted line to database
-                self.db.table_data_entry(formatted_values)
-
+                print(formatted_line)
+                self.formatted_lines.append(formatted_line)
 
     @staticmethod
     def format_timestamp(timestamp):
