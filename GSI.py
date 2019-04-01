@@ -1,4 +1,4 @@
-import sys
+from GSIExceptions import *
 
 
 class GSI:
@@ -64,7 +64,7 @@ class GSI:
                     except KeyError as e:
                         print("This file doesn't appear to be a valid GSI file")
                         print('Missing Key ID:  ' + str(e))
-                        sys.exit()
+                        raise CorruptedGSIFileError
 
                 print(formatted_line)
                 self.formatted_lines.append(formatted_line)

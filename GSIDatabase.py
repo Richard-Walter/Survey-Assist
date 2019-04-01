@@ -2,6 +2,7 @@ import sqlite3
 import os
 
 DATABASE_NAME = 'GSI_database.db'
+DATABASE_PATH = 'GSI Files\\GSI_database.db'
 TABLE_NAME = 'GSI'
 
 
@@ -13,18 +14,21 @@ class GSIDatabase:
         self.conn = None
         self.c = None
 
+        print(os.getcwd())
+
     def create_db(self):
 
         try:
-            os.chdir('.\\GSI Files')
+
+            # os.chdir('.\\GSI Files')
 
             # Remove old database if exists
-            print(os.path.isfile(DATABASE_NAME))
-            if os.path.isfile(DATABASE_NAME):
-                os.remove(DATABASE_NAME)
+            print(os.path.isfile(DATABASE_PATH))
+            if os.path.isfile(DATABASE_PATH):
+                os.remove(DATABASE_PATH)
 
             # Create database
-            self.conn = sqlite3.connect(DATABASE_NAME)
+            self.conn = sqlite3.connect(DATABASE_PATH)
             self.c = self.conn.cursor()
 
         except PermissionError as pe:
@@ -32,9 +36,12 @@ class GSIDatabase:
 
         except Exception as e:
             print("Error creating database: " + str(e))
-            self.conn.close()
+            # self.conn.close()
 
     def create_table(self):
+
+        # Drop table if exists.  This can happen if another GSI file is opened within the applicaton
+        self.c.execute(f'DROP TABLE IF EXISTS {TABLE_NAME}')
 
         # This database contains just one table - GSI Table
         # Dynamically create the string to create database table

@@ -3,9 +3,11 @@ in a clearer, more user-friendly format.  You can then execute database queries 
 
 import tkinter as tk
 from tkinter import filedialog
+import tkinter.messagebox
 from GSI import GSI
 from GSIDatabase import GSIDatabase
-
+from GSIExceptions import *
+import sqlite3
 
 # Create GSI and Database objects
 gsi = GSI()
@@ -48,14 +50,29 @@ class MenuBar(tk.Frame):
         # added "Query" to our menu:  Disabled until GSI file is loaded
         self.menu_bar.add_cascade(label="Query", menu=self.query_sub_menu, state="disabled")
 
+    # TODO add try catch logic for various scenarios
     def browse_and_format_gsi_file(self):
 
         self.filename_path = tk.filedialog.askopenfilename()
         print(self.filename_path)
-        gsi.format_gsi(self.filename_path)
-        database.create_db()
-        database.create_table()
-        database.populate_table(gsi.formatted_lines)
+
+        try:
+            gsi.format_gsi(self.filename_path)
+            database.create_db()
+            database.create_table()
+            database.populate_table(gsi.formatted_lines)
+
+        except CorruptedGSIFileError:
+
+            # Open Dialog warning of incorrect or corrupted GSI file
+            tk.messagebox.showerror("Error", 'Error reading GSI File - It appears this file is a corrupted or '
+                                            'incorrect GSI file')
+
+        # except sqlite3.OperationalError:
+        #
+        #     # Most likely table GSI already exists
+
+
         self.enable_query_menu()
 
     def enable_query_menu(self):
