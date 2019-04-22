@@ -2,15 +2,15 @@ from GSIExceptions import *
 
 
 class GSI:
-
     GSI_WORD_ID_DICT = {'11': 'Point_Number', '19': 'Timestamp', '21': 'Horizontal_Angle', '22': 'Vertical_Angle',
                         '31': 'Slope_Distance', '32': 'Horizontal_Distance', '33': 'Height_Difference',
                         '51': 'Prism_Offset', '81': 'Easting',
                         '82': 'Northing', '83': 'Elevation', '84': 'STN_Easting', '85': 'STN_Northing',
                         '86': 'STN_Elevation', '87': 'Target_Height', '88': 'Instrument_Height'}
 
-    def __init__(self):
+    def __init__(self, logger):
 
+        self.logger = logger
         self.filename = None
         self.formatted_lines = []
 
@@ -24,7 +24,7 @@ class GSI:
             for line in f:
                 stripped_line = line.strip('*')  # First character in each line should begin with *
                 field_list = stripped_line.split()  # returns 23-24 digit field e.g. 22.324+0000000009042520
-                print(field_list)
+                self.logger.debug('Field List: ' + str(field_list))
 
                 # dictionary consisting of Word ID and formatted line
                 formatted_line = {}
@@ -36,7 +36,7 @@ class GSI:
 
                     try:
                         field_name = GSI.GSI_WORD_ID_DICT[two_digit_id]
-                        print(two_digit_id + '  ' + field_name)
+                        self.logger.debug(two_digit_id + '  ' + field_name)
 
                         # Strip off unnecessary digits
                         field_value = field[7:].lstrip('0')
@@ -58,35 +58,33 @@ class GSI:
                             # print("This field has no value")
                             field_value = 'N/A'
 
-                        print(field_value)
+                        # print(field_value)
                         formatted_line[field_name] = field_value
 
-                    except KeyError as e:
-                        print("This file doesn't appear to be a valid GSI file")
-                        print('Missing Key ID:  ' + str(e))
+                    except KeyError:
+                        self.logger.exception(
+                            f'File doesn\'t appear to be a valid GSI file.  Missing Key ID: {field_value}')
                         raise CorruptedGSIFileError
 
-                print(formatted_line)
+                self.logger.info('Formatted Line: ' + str(formatted_line))
                 self.formatted_lines.append(formatted_line)
 
-    @staticmethod
-    def format_timestamp(timestamp):
+    def format_timestamp(self, timestamp):
 
         try:
-            print(timestamp)
+            # print(timestamp)
             minute = timestamp[-2:]
             hour = timestamp[-4:-2]
 
-        except ValueError as ex:
-            print("Incorrect timestamp - cannot be formated properly " + str(ex))
+        except ValueError:
+            self.logger.exception(f'Incorrect timestamp {timestamp}- cannot be formatted properly')
 
         else:
             timestamp = f'{hour}:{minute}'
 
         return timestamp
 
-    @staticmethod
-    def format_angles(angle):
+    def format_angles(self, angle):
 
         if len(angle) == 0:
             angle = '00000000'
@@ -94,10 +92,10 @@ class GSI:
             seconds = angle[-3:-1]
             minutes = angle[-5:-3]
             degrees = angle[:-5]
-            print(degrees, minutes, seconds)
+            # print(degrees, minutes, seconds)
 
-        except ValueError as ex:
-            print("Incorrect angle - cannot be formated properly " + str(ex))
+        except ValueError:
+            self.logger.exception(f'Incorrect angle {angle}- cannot be formatted properly ')
 
         else:
             angle = f'{degrees.zfill(3)}° {minutes}\' {seconds}"'
