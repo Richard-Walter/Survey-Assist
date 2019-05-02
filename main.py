@@ -2,6 +2,7 @@
 in a clearer, more user-friendly format.  You can then execute database queries on this data"""
 
 import tkinter as tk
+from tkinter import ttk
 import logging.config
 from tkinter import filedialog
 import tkinter.messagebox
@@ -18,9 +19,6 @@ gsi = GSI(logger)
 database = GSIDatabase(GSI.GSI_WORD_ID_DICT, logger)
 
 
-# TODO Add unit testing
-
-
 class MenuBar(tk.Frame):
 
     def __init__(self, master):
@@ -29,7 +27,7 @@ class MenuBar(tk.Frame):
         super().__init__(master)
         self.master = master
         self.frame = tk.Frame(master)
-        self.gsi = None
+        # self.gsi = None
 
         self.filename_path = ""
 
@@ -109,8 +107,30 @@ class MainWindow(tk.Frame):
         super().__init__(master)
 
         self.master = master
-        self.frame = tk.Frame(master)
+        # self.frame = tk.Frame(master)
 
+
+class ListBox(tk.Frame):
+
+    def __init__(self, master):
+        super().__init__(master)
+
+        self.master = master
+
+        # Test
+        # label = tk.Label(master, text="High Scores", font=("Arial", 30)).grid(row=0, columnspan=3)
+
+
+        # Use Treeview to create list of survey shots
+
+        cols = ('Position', 'Name', 'Score')
+        self.listBox = ttk.Treeview(master, columns=cols, show='headings')
+
+        # set column headings
+        for col in cols:
+            self.listBox.heading(col, text=col)
+        # self.listBox.grid(row=1, column=0, columnspan=2)
+        self.listBox.pack(fill="both", expand=True)
 
 class GUIApplication(tk.Frame):
 
@@ -120,6 +140,8 @@ class GUIApplication(tk.Frame):
         self.status_bar = StatusBar(master)
         self.menu_bar = MenuBar(master)
         self.main_window = MainWindow(master)
+        self.list_box = ListBox(self.main_window)
+
 
         self.status_bar.status.pack(side="bottom", fill="x")
         self.menu_bar.pack(side="top", fill="x")
