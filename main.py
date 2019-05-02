@@ -117,20 +117,39 @@ class ListBox(tk.Frame):
 
         self.master = master
 
-        # Test
-        # label = tk.Label(master, text="High Scores", font=("Arial", 30)).grid(row=0, columnspan=3)
-
-
         # Use Treeview to create list of survey shots
-
         cols = ('Position', 'Name', 'Score')
-        self.listBox = ttk.Treeview(master, columns=cols, show='headings')
+        self.listBox = ttk.Treeview(master, columns=cols, selectmode='browse', show='headings')
+        self.listBox.pack(fill="both", expand=True)
+
+        # Add scrollbar
+        vsb = ttk.Scrollbar(self.listBox, orient='vertical', command=self.listBox.yview)
+        vsb.pack(side='right', fill='y')
+        hsb = ttk.Scrollbar(self.listBox, orient='horizontal', command=self.listBox.xview)
+        hsb.pack(side='bottom', fill='x')
+        self.listBox.configure(yscrollcommand=vsb.set)
+        self.listBox.configure(xscrollcommand=hsb.set)
 
         # set column headings
         for col in cols:
             self.listBox.heading(col, text=col)
         # self.listBox.grid(row=1, column=0, columnspan=2)
-        self.listBox.pack(fill="both", expand=True)
+
+        self.display_list()
+        self.display_list()
+        self.display_list()
+        self.display_list()
+        self.display_list()
+        self.display_list()
+
+    def display_list(self):
+
+        temp_list = [['Jim', '0.33'], ['Dave', '0.67'], ['James', '0.67'], ['Eden', '0.5']]
+        # temp_list.sort(key=lambda e: e[1], reverse=True)
+
+        for i, (name, score) in enumerate(temp_list, start=1):
+            self.listBox.insert("", "end", values=(i, name, score))
+
 
 class GUIApplication(tk.Frame):
 
@@ -141,7 +160,6 @@ class GUIApplication(tk.Frame):
         self.menu_bar = MenuBar(master)
         self.main_window = MainWindow(master)
         self.list_box = ListBox(self.main_window)
-
 
         self.status_bar.status.pack(side="bottom", fill="x")
         self.menu_bar.pack(side="top", fill="x")
