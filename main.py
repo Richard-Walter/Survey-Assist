@@ -53,7 +53,6 @@ class MenuBar(tk.Frame):
         # added "Query" to our menu:  Disabled until GSI file is loaded
         self.menu_bar.add_cascade(label="Query", menu=self.query_sub_menu, state="disabled")
 
-    # TODO add try catch logic for various scenarios
 
     def browse_and_format_gsi_file(self):
 
@@ -118,9 +117,10 @@ class ListBox(tk.Frame):
         self.master = master
 
         # Use Treeview to create list of survey shots
-        cols = ('Position', 'Name', 'Score')
-        self.listBox = ttk.Treeview(master, columns=cols, selectmode='browse', show='headings')
-        self.listBox.pack(fill="both", expand=True)
+        # cols = ('Position', 'Name', 'Score')
+        column_names = list(gsi.GSI_WORD_ID_DICT.values())
+        self.listBox = ttk.Treeview(master, columns=column_names, selectmode='browse', show='headings')
+
 
         # Add scrollbar
         vsb = ttk.Scrollbar(self.listBox, orient='vertical', command=self.listBox.yview)
@@ -131,16 +131,22 @@ class ListBox(tk.Frame):
         self.listBox.configure(xscrollcommand=hsb.set)
 
         # set column headings
-        for col in cols:
-            self.listBox.heading(col, text=col)
-        # self.listBox.grid(row=1, column=0, columnspan=2)
+        for column_name in column_names:
+            self.listBox.heading(column_name, text=column_name)
 
-        self.display_list()
-        self.display_list()
-        self.display_list()
-        self.display_list()
-        self.display_list()
-        self.display_list()
+        # On mouse-click event
+        self.listBox.bind('<Button-1>', self.selected_row)
+
+        # self.listBox.grid(row=1, column=0, columnspan=2)
+        self.listBox.pack(fill="both", expand=True)
+
+        # Test data
+        # self.display_list()
+        # self.display_list()
+        # self.display_list()
+        # self.display_list()
+        # self.display_list()
+        # self.display_list()
 
     def display_list(self):
 
@@ -149,6 +155,11 @@ class ListBox(tk.Frame):
 
         for i, (name, score) in enumerate(temp_list, start=1):
             self.listBox.insert("", "end", values=(i, name, score))
+
+    def selected_row(self, a):
+
+        cur_item = self.listBox.focus()
+        print(self.listBox.item(cur_item)['values'])
 
 
 class GUIApplication(tk.Frame):
