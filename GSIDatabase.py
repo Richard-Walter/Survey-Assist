@@ -24,7 +24,6 @@ class GSIDatabase:
             # os.chdir('.\\GSI Files')
 
             # Remove old database if exists
-            # print(os.path.isfile(DATABASE_PATH))
             if os.path.isfile(DATABASE_PATH):
                 os.remove(DATABASE_PATH)
 
@@ -65,6 +64,7 @@ class GSIDatabase:
     def populate_table(self, formatted_lines):
 
         for formatted_line in formatted_lines:
+
             """Build INSERT statement
             e.g. c.execute("INSERT INTO stuffToPlot (Point_Number, STN_Easting, STN_Northing) VALUES (?, ?, ?)",(Point_Number, STN_Easting, STN_Northing))"""
 

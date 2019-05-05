@@ -10,13 +10,14 @@ from GSI import GSI
 from GSIDatabase import GSIDatabase
 from GSIExceptions import *
 
-
 # logger = logging.getLogger(__name__)
 logger = logging.getLogger('GSIQuery')
 
 # Create GSI and Database objects
 gsi = GSI(logger)
 database = GSIDatabase(GSI.GSI_WORD_ID_DICT, logger)
+
+gui_app = None
 
 
 class MenuBar(tk.Frame):
@@ -53,16 +54,19 @@ class MenuBar(tk.Frame):
         # added "Query" to our menu:  Disabled until GSI file is loaded
         self.menu_bar.add_cascade(label="Query", menu=self.query_sub_menu, state="disabled")
 
-
     def browse_and_format_gsi_file(self):
 
         self.filename_path = tk.filedialog.askopenfilename()
         print(self.filename_path)
 
         try:
+
             gsi.format_gsi(self.filename_path)
+
+            # Populate listBox
+            gui_app.list_box.populate()
+
             database.create_db()
-            # database.create_table()
             database.populate_table(gsi.formatted_lines)
 
         except CorruptedGSIFileError:
@@ -106,8 +110,10 @@ class MainWindow(tk.Frame):
         super().__init__(master)
 
         self.master = master
-        # self.frame = tk.Frame(master)
+        # self.main_window = tk.Frame(master)
 
+        # w = tk.Label(master, text="Red", bg="red", fg="white")
+        # w.pack(fill="both", expand=True)
 
 class ListBox(tk.Frame):
 
@@ -117,49 +123,49 @@ class ListBox(tk.Frame):
         self.master = master
 
         # Use Treeview to create list of survey shots
-        # cols = ('Position', 'Name', 'Score')
-        column_names = list(gsi.GSI_WORD_ID_DICT.values())
-        self.listBox = ttk.Treeview(master, columns=column_names, selectmode='browse', show='headings')
-
+        self.list_box = ttk.Treeview(master, columns=gsi.column_names, selectmode='browse', show='headings')
 
         # Add scrollbar
-        vsb = ttk.Scrollbar(self.listBox, orient='vertical', command=self.listBox.yview)
+        vsb = ttk.Scrollbar(self.list_box, orient='vertical', command=self.list_box.yview)
         vsb.pack(side='right', fill='y')
-        hsb = ttk.Scrollbar(self.listBox, orient='horizontal', command=self.listBox.xview)
+        hsb = ttk.Scrollbar(self.list_box, orient='horizontal', command=self.list_box.xview)
         hsb.pack(side='bottom', fill='x')
-        self.listBox.configure(yscrollcommand=vsb.set)
-        self.listBox.configure(xscrollcommand=hsb.set)
+        self.list_box.configure(yscrollcommand=vsb.set)
+        self.list_box.configure(xscrollcommand=hsb.set)
 
         # set column headings
-        for column_name in column_names:
-            self.listBox.heading(column_name, text=column_name)
+        for column_name in gsi.column_names:
+            self.list_box.heading(column_name, text=column_name)
+            self.list_box.column(column_name, width=120, stretch=False)
 
-        # On mouse-click event
-        self.listBox.bind('<Button-1>', self.selected_row)
+            # On mouse-click event
+        self.list_box.bind('<Button-1>', self.selected_row)
 
-        # self.listBox.grid(row=1, column=0, columnspan=2)
-        self.listBox.pack(fill="both", expand=True)
+        # self.list_box.grid(row=1, column=0, columnspan=2)
+        self.list_box.pack(fill="both", expand=True)
 
-        # Test data
-        # self.display_list()
-        # self.display_list()
-        # self.display_list()
-        # self.display_list()
-        # self.display_list()
-        # self.display_list()
+    def populate(self):
 
-    def display_list(self):
+        # Build Display List which expands on the formatted lines from GSI class containing value for all fields
+        for formatted_line in gsi.formatted_lines:
 
-        temp_list = [['Jim', '0.33'], ['Dave', '0.67'], ['James', '0.67'], ['Eden', '0.5']]
-        # temp_list.sort(key=lambda e: e[1], reverse=True)
+            complete_line = []
 
-        for i, (name, score) in enumerate(temp_list, start=1):
-            self.listBox.insert("", "end", values=(i, name, score))
+            # iterate though column names and find value, assign value if doesnt exist and append to complete list
+            for column_name in gsi.column_names:
+
+                # empty string if column doesn't exist
+                gsi_value = formatted_line.get(column_name, "")
+                complete_line.append(gsi_value)
+
+            # add complete line
+            self.list_box.insert("", "end", values=complete_line)
+            print(complete_line)
 
     def selected_row(self, a):
 
-        cur_item = self.listBox.focus()
-        print(self.listBox.item(cur_item)['values'])
+        cur_item = self.list_box.focus()
+        print(self.list_box.item(cur_item)['values'])
 
 
 class GUIApplication(tk.Frame):
@@ -174,6 +180,7 @@ class GUIApplication(tk.Frame):
 
         self.status_bar.status.pack(side="bottom", fill="x")
         self.menu_bar.pack(side="top", fill="x")
+
         self.main_window.pack(fill="both", expand=True)
 
 
@@ -188,7 +195,8 @@ def configure_logger():
 
     # Display debug messages to the console
     stream_handler = logging.StreamHandler()
-    stream_handler.setLevel(logging.INFO)
+    # stream_handler.setLevel(logging.INFO)
+    stream_handler.setLevel(logging.ERROR)
     stream_handler.setFormatter(formatter)
 
     logger.addHandler(file_handler)
@@ -198,15 +206,17 @@ def configure_logger():
 
 def main():
 
+    global gui_app
+
     # Setup logger
     configure_logger()
 
     # Create main window
     root = tk.Tk()
-    root.geometry("1400x1000")
+    root.geometry("1936x1000")
     root.title("GSI Query")
     root.wm_iconbitmap(r'icons\analyser.ico')
-    GUIApplication(root).pack(side="top", fill="both", expand=True)
+    gui_app = GUIApplication(root)
     root.mainloop()
     logger.info('Application Ended')
 

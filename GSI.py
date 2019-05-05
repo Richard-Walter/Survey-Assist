@@ -13,6 +13,7 @@ class GSI:
         self.logger = logger
         self.filename = None
         self.formatted_lines = []
+        self.column_names = list(GSI.GSI_WORD_ID_DICT.values())
 
     def format_gsi(self, filename):
 
