@@ -4,7 +4,7 @@ from GSIExceptions import *
 class GSI:
     GSI_WORD_ID_DICT = {'11': 'Point_Number', '19': 'Timestamp', '21': 'Horizontal_Angle', '22': 'Vertical_Angle',
                         '31': 'Slope_Distance', '32': 'Horizontal_Distance', '33': 'Height_Difference',
-                        '51': 'Prism_Offset', '81': 'Easting',
+                        '51': 'Prism_Constant', '81': 'Easting',
                         '82': 'Northing', '83': 'Elevation', '84': 'STN_Easting', '85': 'STN_Northing',
                         '86': 'STN_Elevation', '87': 'Target_Height', '88': 'Instrument_Height'}
 
@@ -51,9 +51,12 @@ class GSI:
                             field_value = self.format_timestamp(field_value)
 
                         # Format horizontal or vertical angles
-                        # elif two_digit_id == '21' or two_digit_id == '22':
                         elif two_digit_id in ('21', '22'):
                             field_value = self.format_angles(field_value)
+
+                        # Format horizontal or vertical angles
+                        elif two_digit_id in ('31', '32', '33', '87', '88'):
+                            field_value = self.format_3dp(field_value)
 
                         elif field_value == "":
                             # print("This field has no value")
@@ -106,4 +109,20 @@ class GSI:
     @staticmethod
     def format_prism_constant(constant):
 
-        return constant[3:]
+        constant = constant[3:].lstrip("0")
+
+        if constant == "":
+            return "0"
+        return constant
+
+    @staticmethod
+    def format_3dp(number):
+
+        try:
+
+            return f'{int(number)*0.001:.3f}'
+
+        # return empty string if no number
+        except ValueError:
+            return number
+
