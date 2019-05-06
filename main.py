@@ -49,10 +49,13 @@ class MenuBar(tk.Frame):
         self.query_sub_menu.add_command(label="Query GSI...", command=self.client_exit)
         self.query_sub_menu.add_command(label="Clear Query", command=self.client_exit)
 
-        # self.disable_query_menu()
+        # create the Help object and command
+        self.help_sub_menu = tk.Menu(self.menu_bar, tearoff=0)
+        self.help_sub_menu.add_command(label="About", command=self.display_about_dialog_box)
 
-        # added "Query" to our menu:  Disabled until GSI file is loaded
+        # added "Query" and "Help" to our menu:  Query disabled until GSI file is loaded
         self.menu_bar.add_cascade(label="Query", menu=self.query_sub_menu, state="disabled")
+        self.menu_bar.add_cascade(label="Help", menu=self.help_sub_menu)
 
     def browse_and_format_gsi_file(self):
 
@@ -63,11 +66,11 @@ class MenuBar(tk.Frame):
 
             gsi.format_gsi(self.filename_path)
 
-            # Populate listBox
-            gui_app.list_box.populate()
-
             database.create_db()
             database.populate_table(gsi.formatted_lines)
+
+            # Populate listBox
+            gui_app.list_box.populate()
 
         except CorruptedGSIFileError:
 
@@ -82,6 +85,13 @@ class MenuBar(tk.Frame):
                                                       'contact author')
 
         self.enable_query_menu()
+
+    @staticmethod
+    def display_about_dialog_box():
+
+        about_me_text = """Written by Richard Walter 2019\n\n Contact Chris Kelly for help\n\n                  haha"""
+
+        tkinter.messagebox.showinfo("About GSI Query", about_me_text)
 
     def enable_query_menu(self):
         self.menu_bar.entryconfig("Query", state="normal")
@@ -110,10 +120,7 @@ class MainWindow(tk.Frame):
         super().__init__(master)
 
         self.master = master
-        # self.main_window = tk.Frame(master)
 
-        # w = tk.Label(master, text="Red", bg="red", fg="white")
-        # w.pack(fill="both", expand=True)
 
 class ListBox(tk.Frame):
 

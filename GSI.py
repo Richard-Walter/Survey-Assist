@@ -2,7 +2,7 @@ from GSIExceptions import *
 
 
 class GSI:
-    GSI_WORD_ID_DICT = {'11': 'Point_Number', '19': 'Timestamp', '21': 'Horizontal_Angle', '22': 'Vertical_Angle',
+    GSI_WORD_ID_DICT = {'11': 'Point_ID', '19': 'Timestamp', '21': 'Horizontal_Angle', '22': 'Vertical_Angle',
                         '31': 'Slope_Distance', '32': 'Horizontal_Distance', '33': 'Height_Difference',
                         '51': 'Prism_Constant', '81': 'Easting',
                         '82': 'Northing', '83': 'Elevation', '84': 'STN_Easting', '85': 'STN_Northing',
@@ -24,6 +24,7 @@ class GSI:
             # Iterating through the file:
             for line in f:
                 stripped_line = line.strip('*')  # First character in each line should begin with *
+                ''' FIX this - issue is with the line below stripping blanks for the first field'''
                 field_list = stripped_line.split()  # returns 23-24 digit field e.g. 22.324+0000000009042520
                 self.logger.debug('Field List: ' + str(field_list))
 
