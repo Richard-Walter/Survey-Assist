@@ -23,13 +23,22 @@ class GSI:
 
             # Iterating through the file:
             for line in f:
-                stripped_line = line.strip('*')  # First character in each line should begin with *
-                ''' FIX this - issue is with the line below stripping blanks for the first field'''
-                field_list = stripped_line.split()  # returns 23-24 digit field e.g. 22.324+0000000009042520
-                self.logger.debug('Field List: ' + str(field_list))
 
                 # dictionary consisting of Word ID and formatted line
                 formatted_line = {}
+
+                # Work with the first field '11' as its unique and can contain spaces and alphanumerics
+                field_eleven_value = line[8:24].lstrip('0')
+
+                if field_eleven_value == "":
+                    formatted_line[GSI.GSI_WORD_ID_DICT['11']] = "0"
+                else:
+                    formatted_line[GSI.GSI_WORD_ID_DICT['11']] = line[8:24].lstrip('0')
+
+                remaining_line = line[24:]
+
+                field_list = remaining_line.split()  # returns 23-24 digit field e.g. 22.324+0000000009042520
+                self.logger.debug('Field List: ' + str(field_list))
 
                 # match the 2-digit identification with the key in the dictionary
                 for field in field_list:
