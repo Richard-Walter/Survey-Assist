@@ -9,6 +9,7 @@ import tkinter.messagebox
 from GSI import GSI
 from GSIDatabase import GSIDatabase
 from GSIExceptions import *
+import os
 
 # logger = logging.getLogger(__name__)
 logger = logging.getLogger('GSIQuery')
@@ -60,7 +61,8 @@ class MenuBar(tk.Frame):
     def browse_and_format_gsi_file(self):
 
         self.filename_path = tk.filedialog.askopenfilename()
-        print(self.filename_path)
+
+        gui_app.status_bar.status['text'] = 'Working ...'
 
         try:
 
@@ -69,22 +71,30 @@ class MenuBar(tk.Frame):
             database.create_db()
             database.populate_table(gsi.formatted_lines)
 
-            # Populate listBox
+            # update the GUI
             gui_app.list_box.populate()
+            gui_app.status_bar.status['text'] = self.filename_path
+            self.enable_query_menu()
+
+        except FileNotFoundError:
+
+            # Do nothing: User has hit the cancel button
+            gui_app.status_bar.status['text'] = 'Please choose a GSI File'
 
         except CorruptedGSIFileError:
 
             # Open Dialog warning of incorrect or corrupted GSI file
             tk.messagebox.showerror("Error", 'Error reading GSI File:\nIt appears this file is a corrupted or '
                                              'incorrect GSI file')
+
+            gui_app.status_bar.status['text'] = 'Please choose a GSI File'
+
         except Exception:
 
             # Critical Error
             logger.exception('Critical Error has occurred')
             tk.messagebox.showerror("Critical Error", 'Critical Error has Occurred:\nCheck the log files or '
                                                       'contact author')
-
-        self.enable_query_menu()
 
     @staticmethod
     def display_about_dialog_box():
@@ -152,6 +162,9 @@ class ListBox(tk.Frame):
         self.list_box.pack(fill="both", expand=True)
 
     def populate(self):
+
+        # Remove any previous data first
+        self.list_box.delete(*self.list_box.get_children())
 
         # Build Display List which expands on the formatted lines from GSI class containing value for all fields
         for formatted_line in gsi.formatted_lines:

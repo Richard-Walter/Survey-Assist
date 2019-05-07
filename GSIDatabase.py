@@ -37,17 +37,19 @@ class GSIDatabase:
         except PermissionError:
             self.logger.exception("Database in use.  Unable to delete until it is closed")
 
+            # Drop table if exists.  This can happen if another GSI file is opened within the applicaton
+            self.conn.execute(f'DELETE FROM {TABLE_NAME}')
+
         except Exception:
             self.logger.exception("Error creating database: ")
             # self.conn.close()
 
     def create_table(self):
 
-        # Drop table if exists.  This can happen if another GSI file is opened within the applicaton
-        self.conn.execute(f'DROP TABLE IF EXISTS {TABLE_NAME}')
+        # # Drop table if exists.  This can happen if another GSI file is opened within the applicaton
+        # self.conn.execute(f'DROP TABLE IF EXISTS {TABLE_NAME}')
 
         # This database contains just one table - GSI Table
-        # Dynamically create the string to create database table
         create_table_string = f'CREATE TABLE {TABLE_NAME}('
 
         for name in self.gsi_word_id_dict.values():

@@ -12,7 +12,7 @@ class GSI:
 
         self.logger = logger
         self.filename = None
-        self.formatted_lines = []
+        self.formatted_lines = None
         self.column_names = list(GSI.GSI_WORD_ID_DICT.values())
 
     def format_gsi(self, filename):
@@ -20,6 +20,9 @@ class GSI:
         with open(filename, "r") as f:
 
             self.filename = filename
+
+            # Create new list of formatted lines each time this function is called
+            self.formatted_lines = []
 
             # Iterating through the file:
             for line in f:
@@ -53,7 +56,7 @@ class GSI:
                         field_value = field[7:].lstrip('0')
 
                         if two_digit_id == '51':
-                            # print("This field has no value")
+
                             field_value = self.format_prism_constant(field_value)
 
                         # Format timestamp
@@ -69,10 +72,9 @@ class GSI:
                             field_value = self.format_3dp(field_value)
 
                         elif field_value == "":
-                            # print("This field has no value")
+
                             field_value = 'N/A'
 
-                        # print(field_value)
                         formatted_line[field_name] = field_value
 
                     except KeyError:
@@ -86,7 +88,7 @@ class GSI:
     def format_timestamp(self, timestamp):
 
         try:
-            # print(timestamp)
+
             minute = timestamp[-2:]
             hour = timestamp[-4:-2]
 
@@ -106,7 +108,6 @@ class GSI:
             seconds = angle[-3:-1]
             minutes = angle[-5:-3]
             degrees = angle[:-5]
-            # print(degrees, minutes, seconds)
 
         except ValueError:
             self.logger.exception(f'Incorrect angle {angle}- cannot be formatted properly ')
