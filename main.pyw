@@ -9,7 +9,6 @@ import tkinter.messagebox
 from GSI import GSI
 from GSIDatabase import GSIDatabase
 from GSIExceptions import *
-from tkinter import simpledialog
 
 # logger = logging.getLogger(__name__)
 logger = logging.getLogger('GSIQuery')
@@ -30,6 +29,7 @@ class MenuBar(tk.Frame):
         self.master = master
         self.frame = tk.Frame(master)
         # self.gsi = None
+        self.query_dialog_box = None
 
         self.filename_path = ""
 
@@ -98,17 +98,7 @@ class MenuBar(tk.Frame):
 
     def display_query_input_box(self):
 
-        global logger
-
-        query_dialog_box = QueryDialog(self.master)
-
-        # sql_query = simpledialog.askstring("Input", "Please enter an SQL Query statement", parent=self.master,
-        #                                    initialvalue="whateveryouwant")
-
-        # sql_query = query_dialog_box.sql_entry_text
-        #
-        # print(sql_query)
-        # logger.info('SQL Query: ' + sql_query)
+        self.query_dialog_box = QueryDialog(self.master)
 
     def enable_query_menu(self):
         self.menu_bar.entryconfig("Query", state="normal")
@@ -143,15 +133,15 @@ class QueryDialog:
         tk.Label(self.dialog_window, text="Enter a column value:").grid(row=2, sticky="W", padx=5, pady=2)
 
         self.column = tk.StringVar()
-        self.column_entry = ttk.Combobox(self.dialog_window, width=12, textvariable=self.column, state='readonly')
-        self.column_entry['values'] = (1, 2, 4, 42, 100)
+        self.column_entry = ttk.Combobox(self.dialog_window, width=18, textvariable=self.column, state='readonly')
+        self.column_entry['values'] = gsi.column_names
         self.column_entry.grid(row=1, column=1, padx=5, pady=5)
         # self.column_entry.current(0)
 
         self.column_value = tk.StringVar()
-        self.column_value_entry = ttk.Combobox(self.dialog_window, width=12, textvariable=self.column_value,
+        self.column_value_entry = ttk.Combobox(self.dialog_window, width=18, textvariable=self.column_value,
                                                state='readonly')
-        self.column_entry['values'] = (0, 11,22, 33, 44)
+        self.column_value_entry['values'] = (0, 11, 22, 33, 44)
         self.column_value_entry.grid(row=2, column=1, padx=5, pady=2)
         # self.column_entry.current(0)
 
