@@ -136,19 +136,30 @@ class QueryDialog:
         #  Lets build the dialog box
         self.dialog_window = tk.Toplevel(master)
         self.dialog_window.title("SQL Query")
-        self.dialog_window.geometry("800x600")
+        self.dialog_window.geometry("350x150")
 
-        tk.Label(self.dialog_window, text="Lets build an SQL 'where' statement:").grid(row=0)
-        tk.Label(self.dialog_window, text="Select column:").grid(row=1, sticky="W")
-        tk.Label(self.dialog_window, text="Enter a column value:").grid(row=2, sticky="W")
+        tk.Label(self.dialog_window, text="Lets build an SQL 'where' statement:").grid(row=0, padx=5, pady=5)
+        tk.Label(self.dialog_window, text="Select column:").grid(row=1, sticky="W", padx=5, pady=5)
+        tk.Label(self.dialog_window, text="Enter a column value:").grid(row=2, sticky="W", padx=5, pady=2)
 
-        self.column_entry = tk.Entry(self.dialog_window)
-        self.column_value_entry = tk.Entry(self.dialog_window)
-        self.column_entry.grid(row=1, column=1)
-        self.column_value_entry.grid(row=2, column=1)
+        self.column = tk.StringVar()
+        self.column_entry = ttk.Combobox(self.dialog_window, width=12, textvariable=self.column, state='readonly')
+        self.column_entry['values'] = (1, 2, 4, 42, 100)
+        self.column_entry.grid(row=1, column=1, padx=5, pady=5)
+        # self.column_entry.current(0)
+
+        self.column_value = tk.StringVar()
+        self.column_value_entry = ttk.Combobox(self.dialog_window, width=12, textvariable=self.column_value,
+                                               state='readonly')
+        self.column_entry['values'] = (0, 11,22, 33, 44)
+        self.column_value_entry.grid(row=2, column=1, padx=5, pady=2)
+        # self.column_entry.current(0)
 
         ok_b = tk.Button(self.dialog_window, text="OK", command=self.ok)
-        ok_b.grid(row=3, column=0)
+        ok_b.grid(row=3, column=0, pady=10)
+
+        cancel_b = tk.Button(self.dialog_window, text="Cancel", command=self.cancel)
+        cancel_b.grid(row=3, column=1, pady=10)
 
     def ok(self):
 
@@ -157,6 +168,10 @@ class QueryDialog:
         print("SQL text is", self.sql_entry_text)
         logger.info('SQL Query: ' + self.sql_entry_text)
 
+        self.dialog_window.destroy()
+
+    def cancel(self):
+        self.sql_entry_text = ""
         self.dialog_window.destroy()
 
 
