@@ -128,7 +128,7 @@ class QueryDialog:
         self.dialog_window.title("SQL Query")
         self.dialog_window.geometry("350x150")
 
-        tk.Label(self.dialog_window, text="Lets build an SQL 'where' statement:").grid(row=0, padx=5, pady=5)
+        tk.Label(self.dialog_window, text="Build an SQL 'where' statement:").grid(row=0, padx=5, pady=5)
         tk.Label(self.dialog_window, text="Select column:").grid(row=1, sticky="W", padx=5, pady=5)
         tk.Label(self.dialog_window, text="Enter a column value:").grid(row=2, sticky="W", padx=5, pady=2)
 
@@ -136,20 +136,40 @@ class QueryDialog:
         self.column_entry = ttk.Combobox(self.dialog_window, width=18, textvariable=self.column, state='readonly')
         self.column_entry['values'] = gsi.column_names
         self.column_entry.grid(row=1, column=1, padx=5, pady=5)
-        # self.column_entry.current(0)
 
         self.column_value = tk.StringVar()
         self.column_value_entry = ttk.Combobox(self.dialog_window, width=18, textvariable=self.column_value,
-                                               state='readonly')
-        self.column_value_entry['values'] = (0, 11, 22, 33, 44)
+                                               state='disabled')
         self.column_value_entry.grid(row=2, column=1, padx=5, pady=2)
-        # self.column_entry.current(0)
 
-        ok_b = tk.Button(self.dialog_window, text="OK", command=self.ok)
+        # todo - need to bind the first combo box so once value is selected it changes the state of the second
+
+        # self.column_value_entry['values'] = (0, 11, 22, 33, 44)
+        self.column_value_entry['values'] = sorted(set(self.get_column_values(self.column_entry.get())), reverse=True)
+
+        print(f"Sorted unique column values are:  {self.column_value_entry['values']}")
+
+        ok_b = tk.Button(self.dialog_window, text="OK", width=10, command=self.ok)
         ok_b.grid(row=3, column=0, pady=10)
 
-        cancel_b = tk.Button(self.dialog_window, text="Cancel", command=self.cancel)
+        cancel_b = tk.Button(self.dialog_window, text="Cancel", width=10, command=self.cancel)
         cancel_b.grid(row=3, column=1, pady=10)
+
+    @staticmethod
+    def get_column_values(column_name):
+
+        column_values = []
+
+        for line in gsi.formatted_lines:
+
+            try:
+                # column_value = line['Prism_Constant']
+                column_value = line[column_name]
+                column_values.append(column_value)
+            except KeyError:
+                pass    # column value doesn't exist for this line
+
+        return column_values
 
     def ok(self):
 
