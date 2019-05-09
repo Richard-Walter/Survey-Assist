@@ -37,7 +37,7 @@ class GSIDatabase:
         except PermissionError:
             self.logger.exception("Database in use.  Unable to delete until it is closed")
 
-            # Drop table if exists.  This can happen if another GSI file is opened within the applicaton
+            # Clear table contents - this can happen if another GSI file is opened within the applicaton
             self.conn.execute(f'DELETE FROM {TABLE_NAME}')
 
         except Exception:
@@ -66,9 +66,9 @@ class GSIDatabase:
     def populate_table(self, formatted_lines):
 
         for formatted_line in formatted_lines:
-
             """Build INSERT statement
-            e.g. c.execute("INSERT INTO stuffToPlot (Point_Number, STN_Easting, STN_Northing) VALUES (?, ?, ?)",(Point_Number, STN_Easting, STN_Northing))"""
+            e.g. c.execute("INSERT INTO stuffToPlot (Point_Number, STN_Easting, STN_Northing) 
+            VALUES (?, ?, ?)",(Point_Number, STN_Easting, STN_Northing))"""
 
             keys = ', '.join(formatted_line.keys())  # e.g. Point_Number, STN_Easting, STN_Northing
             question_marks = ', '.join(list('?' * len(formatted_line)))  # e.g. ?, ?, ?, ?
