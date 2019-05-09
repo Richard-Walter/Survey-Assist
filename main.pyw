@@ -121,8 +121,6 @@ class QueryDialog:
 
     def __init__(self, master):
 
-        self.sql_entry_text = ""
-
         #  Lets build the dialog box
         self.dialog_window = tk.Toplevel(master)
         self.dialog_window.title("SQL Query")
@@ -152,13 +150,10 @@ class QueryDialog:
     def column_entry_cb_callback(self, event):
 
         # Set the values for the column_value combobox now that the column has been decided
-        print(f'column value is {self.column_entry.get()}')
         self.column_value_entry['values'] = sorted(set(self.get_column_values(self.column_entry.get())))
 
         print(f"Sorted unique column values are:  {self.column_value_entry['values']}")
         self.column_value_entry.config(state='readonly')
-
-        print(" Combobox selected")
 
     # TODO this method probably best put in GSI class
 
@@ -174,22 +169,39 @@ class QueryDialog:
                 column_value = line[column_name]
                 column_values.append(column_value)
             except KeyError:
-                pass    # column value doesn't exist for this line
+                pass    # column value doesn't exist for this line...continue
 
         return column_values
 
     def ok(self):
 
-        self.sql_entry_text = self.column_entry.get() + " " + self.column_value_entry.get()
-
-        print("SQL text is", self.sql_entry_text)
-        logger.info('SQL Query: ' + self.sql_entry_text)
+        self.execute_sql_query(database.TABLE_NAME, self.column_entry.get(), self.column_value_entry.get())
 
         self.dialog_window.destroy()
 
     def cancel(self):
-        self.sql_entry_text = ""
+
         self.dialog_window.destroy()
+
+    @staticmethod
+    def execute_sql_query(database_table, column_name, column_value):
+
+        sql_query_text = f'SELECT * FROM {database_table} WHERE {column_name}="{column_value}"'
+
+        try:
+            with database.conn:
+
+                cur = database.conn.cursor()
+                cur.execute(sql_query_text)
+                rows = cur.fetchall()
+
+                for row in rows:
+                    print(row)
+
+        except Exception:
+            logger.exception(f'Error creating executing SQL query:  {sql_query_text}')
+            tk.messagebox.showerror("Error", 'Error executing this query:\nPlease contact the developer of this '
+                                             'program')
 
 
 class StatusBar(tk.Frame):
