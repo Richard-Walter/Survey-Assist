@@ -135,6 +135,7 @@ class QueryDialog:
         self.column = tk.StringVar()
         self.column_entry = ttk.Combobox(self.dialog_window, width=18, textvariable=self.column, state='readonly')
         self.column_entry['values'] = gsi.column_names
+        self.column_entry.bind("<<ComboboxSelected>>", self.column_entry_cb_callback)
         self.column_entry.grid(row=1, column=1, padx=5, pady=5)
 
         self.column_value = tk.StringVar()
@@ -142,18 +143,24 @@ class QueryDialog:
                                                state='disabled')
         self.column_value_entry.grid(row=2, column=1, padx=5, pady=2)
 
-        # todo - need to bind the first combo box so once value is selected it changes the state of the second
-
-        # self.column_value_entry['values'] = (0, 11, 22, 33, 44)
-        self.column_value_entry['values'] = sorted(set(self.get_column_values(self.column_entry.get())), reverse=True)
-
-        print(f"Sorted unique column values are:  {self.column_value_entry['values']}")
-
         ok_b = tk.Button(self.dialog_window, text="OK", width=10, command=self.ok)
         ok_b.grid(row=3, column=0, pady=10)
 
         cancel_b = tk.Button(self.dialog_window, text="Cancel", width=10, command=self.cancel)
         cancel_b.grid(row=3, column=1, pady=10)
+
+    def column_entry_cb_callback(self, event):
+
+        # Set the values for the column_value combobox now that the column has been decided
+        print(f'column value is {self.column_entry.get()}')
+        self.column_value_entry['values'] = sorted(set(self.get_column_values(self.column_entry.get())))
+
+        print(f"Sorted unique column values are:  {self.column_value_entry['values']}")
+        self.column_value_entry.config(state='readonly')
+
+        print(" Combobox selected")
+
+    # TODO this method probably best put in GSI class
 
     @staticmethod
     def get_column_values(column_name):
