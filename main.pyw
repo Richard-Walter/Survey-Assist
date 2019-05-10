@@ -9,9 +9,7 @@ import tkinter.messagebox
 from GSI import GSI
 from GSIDatabase import GSIDatabase
 from GSIExceptions import *
-import threading
 
-# logger = logging.getLogger(__name__)
 logger = logging.getLogger('GSIQuery')
 
 # Create GSI and Database objects
@@ -207,7 +205,7 @@ class QueryDialog:
             QueryDialog(self.master)
             return
 
-        query_results = self.execute_sql_query(database.TABLE_NAME, column_entry,column_value_entry)
+        query_results = self.execute_sql_query(database.TABLE_NAME, column_entry, column_value_entry)
 
         self.dialog_window.destroy()
 
@@ -227,13 +225,15 @@ class QueryDialog:
 
     @staticmethod
     def execute_sql_query(database_table, column_name, column_value):
-        sql_query_text = f'SELECT * FROM {database_table} WHERE {column_name}="{column_value}"'
+        sql_query_text = f"SELECT * FROM {database_table} WHERE {column_name}=?"
+        # sql_query_text = f'SELECT * FROM {database_table} WHERE {column_name}="{column_value}"'
 
         try:
             with database.conn:
 
                 cur = database.conn.cursor()
-                cur.execute(sql_query_text)
+                # cur.execute("SELECT * FROM GSI WHERE column_name=?", (column_value,))
+                cur.execute(sql_query_text, (column_value,))
                 rows = cur.fetchall()
 
                 for row in rows:
@@ -271,9 +271,10 @@ class ListBox(tk.Frame):
         super().__init__(master)
 
         self.master = master
+        self.stn_tag = 'STN'
 
         # Use Treeview to create list of survey shots
-        self.list_box_view = ttk.Treeview(master, columns=gsi.column_names, selectmode='browse', show='headings')
+        self.list_box_view = ttk.Treeview(master, columns=gsi.column_names, selectmode='browse', show='headings', )
 
         # Add scrollbar
         vsb = ttk.Scrollbar(self.list_box_view, orient='vertical', command=self.list_box_view.yview)
@@ -313,11 +314,14 @@ class ListBox(tk.Frame):
                 complete_line.append(gsi_value)
 
                 # add STN tag if line is a station setup
-                if column_name == gsi.GSI_WORD_ID_DICT['84']:  # A station setupt must contain value for STN_easting
-                    tag = 'STN'
+                if column_name == gsi.GSI_WORD_ID_DICT['84'] and gsi_value is not "":
+                    tag = self.stn_tag
             # add complete line
             self.list_box_view.insert("", "end", values=complete_line, tags=(tag,))
-            # print(complete_line)
+
+        # color station setup rows
+        self.list_box_view.tag_configure(self.stn_tag, background='#ffe793')
+        self.list_box_view.tag_configure("", background='#eaf7f9')
 
     def selected_row(self, a):
 
@@ -351,7 +355,6 @@ def configure_logger():
 
     # Display debug messages to the console
     stream_handler = logging.StreamHandler()
-    # stream_handler.setLevel(logging.INFO)
     stream_handler.setLevel(logging.ERROR)
     stream_handler.setFormatter(formatter)
 
