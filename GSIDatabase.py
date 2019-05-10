@@ -13,7 +13,6 @@ class GSIDatabase:
         self.gsi_word_id_dict = gsi_word_id_dict
         self.logger = logger
         self.conn = None
-        self.c = None
 
         self.logger.debug(os.getcwd())
 
@@ -21,18 +20,15 @@ class GSIDatabase:
 
         try:
 
-            # os.chdir('.\\GSI Files')
-
             # Remove old database if exists
             if os.path.isfile(GSIDatabase.DATABASE_PATH):
                 os.remove(GSIDatabase.DATABASE_PATH)
 
-            # Create database
+            # Create database and empty table
             self.conn = sqlite3.connect(GSIDatabase.DATABASE_PATH)
 
             with self.conn:
                 self.create_table()
-                # self.c = self.conn.cursor()
 
         except PermissionError:
             self.logger.exception("Database in use.  Unable to delete until it is closed")
@@ -49,7 +45,7 @@ class GSIDatabase:
         # # Drop table if exists.  This can happen if another GSI file is opened within the applicaton
         # self.conn.execute(f'DROP TABLE IF EXISTS {TABLE_NAME}')
 
-        # This database contains just one table - GSI Table
+        # This database contains just one table - GSI Table.  Lets create the SQL command
         create_table_string = f'CREATE TABLE {GSIDatabase.TABLE_NAME}('
 
         for name in self.gsi_word_id_dict.values():
@@ -58,6 +54,7 @@ class GSIDatabase:
 
         create_table_string = create_table_string.rstrip(', ')
         create_table_string += ")"
+
         self.logger.info('SQL Create Table query: ' + create_table_string)
 
         with self.conn:
@@ -81,6 +78,6 @@ class GSIDatabase:
 
             self.logger.info(f'SQL statement is: {sql}')
 
-            # Insert a formatted line of GSI data
+            # Insert a formatted line of GSI data into database
             with self.conn:
                 self.conn.execute(sql, values)

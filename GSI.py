@@ -21,16 +21,14 @@ class GSI:
 
             self.filename = filename
 
-            # Create new list of formatted lines each time this function is called
+            # Create new list of formatted GSI lines each time this function is called
             self.formatted_lines = []
 
-            # Iterating through the file:
             for line in f:
 
-                # dictionary consisting of Word ID and formatted line
-                formatted_line = {}
+                formatted_line = {}  # dictionary of ID and ID value e.g. {'Point_ID': 'A', 'STN_Easting': '2858012',..
 
-                # Work with the first field '11' as its unique and can contain spaces and alphanumerics
+                # Work with the first field '11' separately - its unique and can contain spaces and alphanumerics
                 field_eleven_value = line[8:24].lstrip('0')
 
                 if field_eleven_value == "":
@@ -40,10 +38,10 @@ class GSI:
 
                 remaining_line = line[24:]
 
-                field_list = remaining_line.split()  # returns 23-24 digit field e.g. 22.324+0000000009042520
+                field_list = remaining_line.split()  # returns lists of fields e.g. [22.324+0000000009042520, .....
                 self.logger.debug('Field List: ' + str(field_list))
 
-                # match the 2-digit identification with the key in the dictionary
+                # match the 2-digit identification with the key in the dictionary and format its corresponding value
                 for field in field_list:
 
                     two_digit_id = field[0:2]
@@ -52,23 +50,20 @@ class GSI:
                         field_name = GSI.GSI_WORD_ID_DICT[two_digit_id]
                         self.logger.debug(two_digit_id + '  ' + field_name)
 
-                        # Strip off unnecessary digits
+                        # Strip off unnecessary digits to make the number readable
                         field_value = field[7:].lstrip('0')
 
+                        # apply special formatting rules to particular fields
                         if two_digit_id == '51':
-
                             field_value = self.format_prism_constant(field_value)
 
-                        # Format timestamp
                         elif two_digit_id == '19':
                             field_value = self.format_timestamp(field_value)
 
-                        # Format horizontal or vertical angles
-                        elif two_digit_id in ('21', '22'):
+                        elif two_digit_id in ('21', '22'):  # horizontal or vertical angles
                             field_value = self.format_angles(field_value)
 
-                        # Format horizontal or vertical angles
-                        elif two_digit_id in ('31', '32', '33', '87', '88'):
+                        elif two_digit_id in ('31', '32', '33', '87', '88'):    # distances
                             field_value = self.format_3dp(field_value)
 
                         elif field_value == "":
@@ -79,7 +74,7 @@ class GSI:
 
                     except KeyError:
                         self.logger.exception(
-                            f'File doesn\'t appear to be a valid GSI file.  Missing Key ID: {field_value}')
+                            f"File doesn't appear to be a valid GSI file.  Missing Key ID: {field_value}")
                         raise CorruptedGSIFileError
 
                 self.logger.info('Formatted Line: ' + str(formatted_line))
@@ -133,7 +128,20 @@ class GSI:
 
             return f'{int(number)*0.001:.3f}'
 
-        # return empty string if no number
+        # return empty string if not a number
         except ValueError:
             return number
 
+    def get_column_values(self, column_name):
+
+        column_values = []
+
+        for line in self.formatted_lines:
+
+            try:
+                column_value = line[column_name]
+                column_values.append(column_value)
+            except KeyError:
+                pass  # column value doesn't exist for this line...continue
+
+        return column_values
