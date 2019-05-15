@@ -332,7 +332,7 @@ class GUIApplication(tk.Frame):
 
 
 def configure_logger():
-    logger.setLevel(logging.INFO)
+    logger.setLevel(logging.ERROR)
     formatter = logging.Formatter('%(asctime)s:%(name)s:%(message)s')
 
     # Writes debug messages to the log
@@ -342,7 +342,7 @@ def configure_logger():
 
     # Display debug messages to the console
     stream_handler = logging.StreamHandler()
-    stream_handler.setLevel(logging.INFO)
+    stream_handler.setLevel(logging.ERROR)
     stream_handler.setFormatter(formatter)
 
     logger.addHandler(file_handler)
