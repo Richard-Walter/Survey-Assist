@@ -79,22 +79,3 @@ class GSIDatabase:
         # Insert a formatted line of GSI data into database
         with self.conn:
             self.conn.executemany(sql, values_list)
-
-        # for formatted_line in formatted_lines:
-        #
-        #     """Build INSERT statement
-        #     e.g. c.execute("INSERT INTO stuffToPlot (Point_Number, STN_Easting, STN_Northing)
-        #     VALUES (?, ?, ?)",(Point_Number, STN_Easting, STN_Northing))"""
-        #
-        #     keys = ', '.join(formatted_line.keys())  # e.g. Point_Number, STN_Easting, STN_Northing
-        #     question_marks = ', '.join(list('?' * len(formatted_line)))  # e.g. ?, ?, ?, ?
-        #     values = tuple(formatted_line.values())
-        #     sql = 'INSERT INTO {} ({}) VALUES ({})'.format(GSIDatabase.TABLE_NAME, keys, question_marks)
-        #
-        # print('SQL statement is: ' + sql)
-        # # self.logger.info(f'SQL statement is: {sql}')
-        # self.logger.info('SQL statement is: {}'.format(sql))
-        #
-        # # Insert a formatted line of GSI data into database
-        # with self.conn:
-        #     self.conn.execute(sql, values)
