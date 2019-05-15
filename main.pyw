@@ -1,5 +1,7 @@
 """ This program reads in a GSI file from a Leica 'Total Station' and displays the file
-in a clearer, more user-friendly format.  You can then execute queries on this data to extract relevant information"""
+in a clearer, more user-friendly format.  You can then execute queries on this data to extract relevant information
+
+NOTE: For 3.4 compatibility i) Replaced f-strings with.format method.  ii) had to use an ordered dictionary"""
 
 import tkinter as tk
 from tkinter import ttk
@@ -41,7 +43,7 @@ class MenuBar(tk.Frame):
         self.query_sub_menu = tk.Menu(self.menu_bar, tearoff=0)
         self.query_sub_menu.add_command(label="Query GSI...", command=self.display_query_input_box)
         self.query_sub_menu.add_command(label="Clear Query", command=self.clear_query)
-        self.menu_bar.add_cascade(label="Query", menu=self.query_sub_menu, state="disabled")    # disabled initially
+        self.menu_bar.add_cascade(label="Query", menu=self.query_sub_menu, state="disabled")  # disabled initially
 
         # Help menu
         self.help_sub_menu = tk.Menu(self.menu_bar, tearoff=0)
@@ -165,7 +167,7 @@ class QueryDialog:
         x = int((ws / 2) - (dialog_w / 2))
         y = int((hs / 2) - (dialog_w / 2))
 
-        return f'{dialog_w}x{dialog_h}+{x}+{y}'
+        return '{}x{}+{}+{}'.format(dialog_w, dialog_h, x, y)
 
     def column_entry_cb_callback(self, event):
 
@@ -173,7 +175,6 @@ class QueryDialog:
         # It removes any duplicate values and then orders the result.
         self.column_value_entry['values'] = sorted(set(gsi.get_column_values(self.column_entry.get())))
 
-        print(f"Sorted unique column values are:  {self.column_value_entry['values']}")
         self.column_value_entry.config(state='readonly')
 
     def ok(self):
@@ -184,7 +185,8 @@ class QueryDialog:
         if column_entry is "":
             tkinter.messagebox.showinfo("GSI Query", "Please enter valid search data")
             logger.info(
-                f"Invalid query data entered.  Column Name was {column_entry}: column value was {column_value_entry}")
+                "Invalid data entered.  Column Name was {}: column value was {}".format(column_entry,
+                                                                                        column_value_entry))
 
             # re-display query dialog
             QueryDialog(self.master)
@@ -201,7 +203,7 @@ class QueryDialog:
     @staticmethod
     def execute_sql_query(database_table, column_name, column_value):
 
-        sql_query_text = f"SELECT * FROM {database_table} WHERE {column_name}=?"
+        sql_query_text = "SELECT * FROM {} WHERE {}=?".format(database_table, column_name)
 
         try:
             with database.conn:
@@ -216,7 +218,7 @@ class QueryDialog:
             return rows
 
         except Exception:
-            logger.exception(f'Error creating executing SQL query:  {sql_query_text}')
+            logger.exception('Error creating executing SQL query:  {}'.format(sql_query_text))
             tk.messagebox.showerror("Error", 'Error executing this query:\nPlease contact the developer of this '
                                              'program')
 
@@ -224,8 +226,6 @@ class QueryDialog:
     def repopulate_list_box(query_results):
 
         if query_results is not None:
-
-            print(query_results)
 
             # Remove any previous data first
             gui_app.list_box.list_box_view.delete(*gui_app.list_box.list_box_view.get_children())
@@ -289,7 +289,7 @@ class ListBox(tk.Frame):
         # Build Display List which expands on the formatted lines from GSI class containing value for all fields
         for formatted_line in formatted_lines:
 
-            tag = ""    # Used to display STN setup rows with a color
+            tag = ""  # Used to display STN setup rows with a color
 
             complete_line = []
 
@@ -342,7 +342,7 @@ def configure_logger():
 
     # Display debug messages to the console
     stream_handler = logging.StreamHandler()
-    stream_handler.setLevel(logging.ERROR)
+    stream_handler.setLevel(logging.INFO)
     stream_handler.setFormatter(formatter)
 
     logger.addHandler(file_handler)
