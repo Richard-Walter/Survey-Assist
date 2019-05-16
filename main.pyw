@@ -18,7 +18,6 @@ logger = logging.getLogger('GSIQuery')
 gsi = GSI(logger)
 database = GSIDatabase(GSI.GSI_WORD_ID_DICT, logger)
 
-
 # This is the main GUI object that allows access to all the GUI's components
 gui_app = None
 
