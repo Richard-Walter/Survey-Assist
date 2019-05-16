@@ -1,0 +1,10 @@
+2019-05-16 11:39:44,714:GSIQuery:Database in use.  Unable to delete until it is closed
+Traceback (most recent call last):
+  File "c:\Users\rjwal_000\PycharmProjects\GSI QUERY\GSIDatabase.py", line 25, in create_db
+    os.remove(GSIDatabase.DATABASE_PATH)
+PermissionError: [WinError 32] The process cannot access the file because it is being used by another process: 'GSI Files\\GSI_database.db'
+2019-05-16 11:39:56,672:GSIQuery:Database in use.  Unable to delete until it is closed
+Traceback (most recent call last):
+  File "c:\Users\rjwal_000\PycharmProjects\GSI QUERY\GSIDatabase.py", line 25, in create_db
+    os.remove(GSIDatabase.DATABASE_PATH)
+PermissionError: [WinError 32] The process cannot access the file because it is being used by another process: 'GSI Files\\GSI_database.db'

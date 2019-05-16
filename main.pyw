@@ -1,7 +1,9 @@
 """ This program reads in a GSI file from a Leica 'Total Station' and displays the file
 in a clearer, more user-friendly format.  You can then execute queries on this data to extract relevant information
 
-NOTE: For 3.4 compatibility i) Replaced f-strings with.format method.  ii) had to use an ordered dictionary"""
+NOTE: For 3.4 compatibility
+    i) Replaced f-strings with.format method.
+    ii) had to use an ordered dictionary"""
 
 import tkinter as tk
 from tkinter import ttk
@@ -15,6 +17,7 @@ from GSIExceptions import *
 logger = logging.getLogger('GSIQuery')
 gsi = GSI(logger)
 database = GSIDatabase(GSI.GSI_WORD_ID_DICT, logger)
+
 
 # This is the main GUI class that allows access to all the GUI's components
 gui_app = None
