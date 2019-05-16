@@ -212,6 +212,9 @@ class QueryDialog:
                 cur.execute(sql_query_text, (column_value,))
                 rows = cur.fetchall()
 
+                # for row in rows:
+                #    print(row)
+
             return rows
 
         except Exception:
