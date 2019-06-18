@@ -276,7 +276,7 @@ class ListBox(tk.Frame):
         # set column headings
         for column_name in gsi.column_names:
             self.list_box_view.heading(column_name, text=column_name)
-            self.list_box_view.column(column_name, width=120, stretch=False)
+            self.list_box_view.column(column_name, width=80, stretch=True)
 
         # On mouse-click event
         self.list_box_view.bind('<Button-1>', self.selected_row)
@@ -360,7 +360,7 @@ def main():
 
     # Create main window
     root = tk.Tk()
-    root.geometry("1936x1000")
+    root.geometry("1600x1000")
     root.title("GSI Query")
     root.wm_iconbitmap(r'icons\analyser.ico')
     gui_app = GUIApplication(root)

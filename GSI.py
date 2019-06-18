@@ -4,11 +4,11 @@ from collections import OrderedDict
 
 class GSI:
     GSI_WORD_ID_DICT = OrderedDict([('11', 'Point_ID'), ('19', 'Timestamp'), ('21', 'Horizontal_Angle'),
-                                    ('22', 'Vertical_Angle'), ('31', 'Slope_Distance'), ('32', 'Horizontal_Distance'),
-                                    ('33', 'Height_Difference'), ('51', 'Prism_Constant'), ('81', 'Easting'),
+                                    ('22', 'Vertical_Angle'), ('31', 'Slope_Distance'), ('32', 'Horizontal_Dist'),
+                                    ('33', 'Height_Diff'), ('51', 'Prism_Constant'), ('81', 'Easting'),
                                     ('82', 'Northing'), ('83', 'Elevation'), ('84', 'STN_Easting'),
                                     ('85', 'STN_Northing'), ('86', 'STN_Elevation'), ('87', 'Target_Height'),
-                                    ('88', 'Instrument_Height')])
+                                    ('88', 'STN_Height')])
 
     def __init__(self, logger):
 
@@ -35,11 +35,11 @@ class GSI:
                     # First - create default empty string if no field
                     formatted_line = OrderedDict([('Point_ID', ''), ('Timestamp', ''), ('Horizontal_Angle', ''),
                                                   ('Vertical_Angle', ''), ('Slope_Distance', ''),
-                                                  ('Horizontal_Distance', ''), ('Height_Difference', ''),
+                                                  ('Horizontal_Dist', ''), ('Height_Diff', ''),
                                                   ('Prism_Constant', ''), ('Easting', ''), ('Northing', ''),
                                                   ('Elevation', ''), ('STN_Easting', ''), ('STN_Northing', ''),
                                                   ('STN_Elevation', ''), ('Target_Height', ''),
-                                                  ('Instrument_Height', '')])
+                                                  ('STN_Height', '')])
 
                     # Work with the first field '11' separately - its unique and can contain spaces and alphanumerics
                     field_value = self.format_point_id(line[8:24].lstrip('0'))
