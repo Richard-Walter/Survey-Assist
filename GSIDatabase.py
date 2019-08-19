@@ -3,7 +3,6 @@ import os
 
 
 class GSIDatabase:
-
     DATABASE_NAME = 'GSI_database.db'
     DATABASE_PATH = 'GSI Files\\GSI_database.db'
     TABLE_NAME = 'GSI'
@@ -51,6 +50,9 @@ class GSIDatabase:
             create_table_string += name
             create_table_string += " text, "
 
+        # add isSTN and isCP columns
+        # create_table_string += "isSTN text, isCP text"
+
         create_table_string = create_table_string.rstrip(', ')
         create_table_string += ")"
 
@@ -59,14 +61,17 @@ class GSIDatabase:
         with self.conn:
             self.conn.execute(create_table_string)
 
-    def populate_table(self, formatted_lines):
+    def populate_table(self, gsi_formatted_lines):
+
+        # formatted_lines = checkIsSTNandIsCP(gsi_formatted_lines)
 
         values_list = []
 
-        for formatted_line in formatted_lines:
+        for formatted_line in gsi_formatted_lines:
 
             # Build list of values
-            values = tuple(formatted_line.values())
+            gsi_values = list(formatted_line.values())
+            values = tuple(gsi_values)
             values_list.append(values)
 
         # Build SQL statement

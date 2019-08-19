@@ -1,3 +1,5 @@
+#! python3
+
 """ This program reads in a GSI file from a Leica 'Total Station' and displays the file
 in a clearer, more user-friendly format.  You can then execute queries on this data to extract relevant information
 
@@ -47,6 +49,11 @@ class MenuBar(tk.Frame):
         self.query_sub_menu.add_command(label="Clear Query", command=self.clear_query)
         self.menu_bar.add_cascade(label="Query", menu=self.query_sub_menu, state="disabled")  # disabled initially
 
+        # Check menu
+        self.check_sub_menu = tk.Menu(self.menu_bar, tearoff=0)
+        self.check_sub_menu.add_command(label="3D Survey", command=self.check_3d_survey)
+        self.menu_bar.add_cascade(label="Check", menu=self.check_sub_menu, state="disabled")  # disabled initially
+
         # Help menu
         self.help_sub_menu = tk.Menu(self.menu_bar, tearoff=0)
         self.help_sub_menu.add_command(label="About", command=self.display_about_dialog_box)
@@ -70,6 +77,7 @@ class MenuBar(tk.Frame):
             gui_app.list_box.populate(gsi.formatted_lines)
             gui_app.status_bar.status['text'] = self.filename_path
             self.enable_query_menu()
+            self.enable_check_menu()
 
         except FileNotFoundError:
 
@@ -92,6 +100,97 @@ class MenuBar(tk.Frame):
             tk.messagebox.showerror("ERROR", 'Error reading GSI File:\n\nThis file is a corrupted or '
                                              'incorrect GSI file.  If problem continues please contact author')
 
+    def check_3d_survey(self):
+
+        control_points = gsi.get_control_points()
+        change_points = gsi.get_change_points()
+        print('CONTROL POINTS: ' + str(control_points))
+        print('CHANGE POINTS: ' + str(change_points))
+
+        sql_query_columns = 'Point_ID, Easting, Northing, Elevation'
+        sql_where_column = 'Point_ID'
+
+        error_text = ""
+
+        try:
+            with database.conn:
+
+                sql_query_text = "SELECT {} FROM GSI WHERE {}=?".format(sql_query_columns, sql_where_column)
+
+                cur = database.conn.cursor()
+
+                # Check if points are outisde of tolerance e.g. 10mm
+                errors = []
+
+                for change_point in change_points:
+
+                    # create a list of eastings, northings and height and check min max value of each
+                    eastings = []
+                    northings = []
+                    elevation = []
+                    point_id = ""
+                    error_text = ""
+
+                    print('CHANGE POINT IS :' + change_point)
+                    cur.execute(sql_query_text, (change_point,))
+                    rows = cur.fetchall()
+
+                    for row in rows:
+                        print(row)
+                        point_id = row[0]
+
+                        # create a list of eastings, northings and height and check min max value of each
+                        eastings.append(row[1])
+                        northings.append(row[2])
+                        elevation.append(row[3])
+
+                    # print(point_id, max(eastings), min(eastings), max(northings), min(northings), max(elevation),
+                    #       min(elevation))
+
+                    # Check Eastings
+                    east_diff = float(max(eastings)) - float(min(eastings))
+
+                    if east_diff > 0.010:
+                        error_text = 'Change Point ' + point_id + ' is out of tolerance: E ' + str(round(
+                            east_diff,
+                            3)) + 'm\n'
+                        errors.append(error_text)
+
+                    # Check Northings
+                    north_diff = float(max(northings)) - float(min(northings))
+
+                    if north_diff > 0.010:
+                        error_text = 'Change Point ' + point_id + ' is out of tolerance: N ' + str(round(
+                            north_diff,
+                            3)) + 'm\n'
+                        errors.append(error_text)
+
+                    # Check Elevation
+                    height_diff = float(max(elevation)) - float(min(elevation))
+
+                    if height_diff > 0.015:
+                        error_text = 'Change Point ' + point_id + ' is out of tolerance in height: ' + \
+                                     str(round(
+                            height_diff,
+                            3)) + 'm \n'
+                        errors.append(error_text)
+
+                    # display any error messages in pop up dialog
+
+                for error in errors:
+                    error_text += error
+
+                if not errors:
+                    error_text = "Survey looks good!"
+
+                # display error dialog box
+                tkinter.messagebox.showinfo("Error found in survey", error_text)
+
+        except Exception:
+            logger.exception('Error creating executing SQL query:  {}'.format(sql_query_text))
+            tk.messagebox.showerror("Error", 'Error executing this query:\nPlease contact the developer of this '
+                                             'program')
+
     def display_query_input_box(self):
 
         QueryDialog(self.master)
@@ -105,17 +204,25 @@ class MenuBar(tk.Frame):
 
         self.menu_bar.entryconfig("Query", state="normal")
 
+    def enable_check_menu(self):
+
+        self.menu_bar.entryconfig("Check", state="normal")
+
     def disable_query_menu(self):
 
         self.query_sub_menu.entryconfig("Query", state="disabled")
+
+    def disable_check_menu(self):
+
+        self.query_sub_menu.entryconfig("Check", state="disabled")
 
     @staticmethod
     def display_about_dialog_box():
 
         about_me_text = "Written by Richard Walter 2019\n\n This program reads in a GSI file from a Leica 'Total " \
                         "Station' and displays the file in a clearer, more user-friendly format." \
-                        " You can then execute queries on this data to extract relevant information. \n\n" \
-                        "Contact Chris Kelly for help :)\n\n"
+                        " You can then execute queries on this data to extract relevant information, or check for " \
+                        "some errors in the survey. \n\n"
 
         tkinter.messagebox.showinfo("About GSI Query", about_me_text)
 
@@ -195,6 +302,7 @@ class QueryDialog:
             return
 
         query_results = self.execute_sql_query(database.TABLE_NAME, column_entry, column_value_entry)
+        print(query_results)
 
         self.dialog_window.destroy()
         self.repopulate_list_box(query_results)

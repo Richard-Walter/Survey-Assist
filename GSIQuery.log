@@ -8,3 +8,314 @@ Traceback (most recent call last):
   File "c:\Users\rjwal_000\PycharmProjects\GSI QUERY\GSIDatabase.py", line 25, in create_db
     os.remove(GSIDatabase.DATABASE_PATH)
 PermissionError: [WinError 32] The process cannot access the file because it is being used by another process: 'GSI Files\\GSI_database.db'
+2019-06-18 18:08:16,227:GSIQuery:Error creating database: 
+Traceback (most recent call last):
+  File "C:\Users\rjwal_000\PycharmProjects\GSI QUERY\GSIDatabase.py", line 31, in create_db
+    self.create_table()
+  File "C:\Users\rjwal_000\PycharmProjects\GSI QUERY\GSIDatabase.py", line 60, in create_table
+    self.conn.execute(create_table_string)
+sqlite3.OperationalError: near ".": syntax error
+2019-06-18 18:08:16,227:GSIQuery:Error has occurred
+Traceback (most recent call last):
+  File "C:/Users/rjwal_000/PycharmProjects/GSI QUERY/main.pyw", line 67, in browse_and_format_gsi_file
+    database.populate_table(gsi.formatted_lines)
+  File "C:\Users\rjwal_000\PycharmProjects\GSI QUERY\GSIDatabase.py", line 81, in populate_table
+    self.conn.executemany(sql, values_list)
+sqlite3.OperationalError: no such table: GSI
+2019-06-18 18:08:24,352:GSIQuery:File doesn't appear to be a valid GSI file.  Missing Key ID: 36000000
+Traceback (most recent call last):
+  File "C:\Users\rjwal_000\PycharmProjects\GSI QUERY\GSI.py", line 80, in format_gsi
+    field_name = GSI.GSI_WORD_ID_DICT[two_digit_id]
+KeyError: '1.'
+2019-06-18 18:08:33,539:GSIQuery:Database in use.  Unable to delete until it is closed
+Traceback (most recent call last):
+  File "C:\Users\rjwal_000\PycharmProjects\GSI QUERY\GSIDatabase.py", line 25, in create_db
+    os.remove(GSIDatabase.DATABASE_PATH)
+PermissionError: [WinError 32] The process cannot access the file because it is being used by another process: 'GSI Files\\GSI_database.db'
+2019-06-18 18:08:33,539:GSIQuery:Error has occurred
+Traceback (most recent call last):
+  File "C:\Users\rjwal_000\PycharmProjects\GSI QUERY\GSIDatabase.py", line 25, in create_db
+    os.remove(GSIDatabase.DATABASE_PATH)
+PermissionError: [WinError 32] The process cannot access the file because it is being used by another process: 'GSI Files\\GSI_database.db'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:/Users/rjwal_000/PycharmProjects/GSI QUERY/main.pyw", line 66, in browse_and_format_gsi_file
+    database.create_db()
+  File "C:\Users\rjwal_000\PycharmProjects\GSI QUERY\GSIDatabase.py", line 38, in create_db
+    self.conn.execute('DELETE FROM {}'.format(GSIDatabase.TABLE_NAME))
+sqlite3.OperationalError: no such table: GSI
+2019-06-18 18:09:00,174:GSIQuery:Error creating database: 
+Traceback (most recent call last):
+  File "C:\Users\rjwal_000\PycharmProjects\GSI QUERY\GSIDatabase.py", line 31, in create_db
+    self.create_table()
+  File "C:\Users\rjwal_000\PycharmProjects\GSI QUERY\GSIDatabase.py", line 60, in create_table
+    self.conn.execute(create_table_string)
+sqlite3.OperationalError: near ".": syntax error
+2019-06-18 18:09:00,175:GSIQuery:Error has occurred
+Traceback (most recent call last):
+  File "C:/Users/rjwal_000/PycharmProjects/GSI QUERY/main.pyw", line 67, in browse_and_format_gsi_file
+    database.populate_table(gsi.formatted_lines)
+  File "C:\Users\rjwal_000\PycharmProjects\GSI QUERY\GSIDatabase.py", line 81, in populate_table
+    self.conn.executemany(sql, values_list)
+sqlite3.OperationalError: no such table: GSI
+2019-06-18 18:10:07,606:GSIQuery:Error has occurred
+Traceback (most recent call last):
+  File "C:/Users/rjwal_000/PycharmProjects/GSI QUERY/main.pyw", line 67, in browse_and_format_gsi_file
+    database.populate_table(gsi.formatted_lines)
+  File "C:\Users\rjwal_000\PycharmProjects\GSI QUERY\GSIDatabase.py", line 81, in populate_table
+    self.conn.executemany(sql, values_list)
+sqlite3.ProgrammingError: Incorrect number of bindings supplied. The current statement uses 16, and there are 17 supplied.
+2019-06-18 18:11:19,684:GSIQuery:Error has occurred
+Traceback (most recent call last):
+  File "C:/Users/rjwal_000/PycharmProjects/GSI QUERY/main.pyw", line 67, in browse_and_format_gsi_file
+    database.populate_table(gsi.formatted_lines)
+  File "C:\Users\rjwal_000\PycharmProjects\GSI QUERY\GSIDatabase.py", line 81, in populate_table
+    self.conn.executemany(sql, values_list)
+sqlite3.ProgrammingError: Incorrect number of bindings supplied. The current statement uses 16, and there are 17 supplied.
+2019-06-18 18:13:04,778:GSIQuery:Database in use.  Unable to delete until it is closed
+Traceback (most recent call last):
+  File "C:\Users\rjwal_000\PycharmProjects\GSI QUERY\GSIDatabase.py", line 25, in create_db
+    os.remove(GSIDatabase.DATABASE_PATH)
+PermissionError: [WinError 32] The process cannot access the file because it is being used by another process: 'GSI Files\\GSI_database.db'
+2019-06-18 18:13:12,184:GSIQuery:Database in use.  Unable to delete until it is closed
+Traceback (most recent call last):
+  File "C:\Users\rjwal_000\PycharmProjects\GSI QUERY\GSIDatabase.py", line 25, in create_db
+    os.remove(GSIDatabase.DATABASE_PATH)
+PermissionError: [WinError 32] The process cannot access the file because it is being used by another process: 'GSI Files\\GSI_database.db'
+2019-08-17 09:14:07,943:GSIQuery:Error has occurred
+Traceback (most recent call last):
+  File "C:/Users/rjwal_000/PycharmProjects/GSI QUERY/main.pyw", line 69, in browse_and_format_gsi_file
+    database.populate_table(gsi.formatted_lines)
+  File "C:\Users\rjwal_000\PycharmProjects\GSI QUERY\GSIDatabase.py", line 84, in populate_table
+    self.conn.executemany(sql, values_list)
+sqlite3.OperationalError: table GSI has 18 columns but 16 values were supplied
+2019-08-17 09:14:15,483:GSIQuery:Database in use.  Unable to delete until it is closed
+Traceback (most recent call last):
+  File "C:\Users\rjwal_000\PycharmProjects\GSI QUERY\GSIDatabase.py", line 25, in create_db
+    os.remove(GSIDatabase.DATABASE_PATH)
+PermissionError: [WinError 32] The process cannot access the file because it is being used by another process: 'GSI Files\\GSI_database.db'
+2019-08-17 09:14:15,487:GSIQuery:Error has occurred
+Traceback (most recent call last):
+  File "C:/Users/rjwal_000/PycharmProjects/GSI QUERY/main.pyw", line 69, in browse_and_format_gsi_file
+    database.populate_table(gsi.formatted_lines)
+  File "C:\Users\rjwal_000\PycharmProjects\GSI QUERY\GSIDatabase.py", line 84, in populate_table
+    self.conn.executemany(sql, values_list)
+sqlite3.OperationalError: table GSI has 18 columns but 16 values were supplied
+2019-08-17 09:14:20,423:GSIQuery:Database in use.  Unable to delete until it is closed
+Traceback (most recent call last):
+  File "C:\Users\rjwal_000\PycharmProjects\GSI QUERY\GSIDatabase.py", line 25, in create_db
+    os.remove(GSIDatabase.DATABASE_PATH)
+PermissionError: [WinError 32] The process cannot access the file because it is being used by another process: 'GSI Files\\GSI_database.db'
+2019-08-17 09:14:20,426:GSIQuery:Error has occurred
+Traceback (most recent call last):
+  File "C:/Users/rjwal_000/PycharmProjects/GSI QUERY/main.pyw", line 69, in browse_and_format_gsi_file
+    database.populate_table(gsi.formatted_lines)
+  File "C:\Users\rjwal_000\PycharmProjects\GSI QUERY\GSIDatabase.py", line 84, in populate_table
+    self.conn.executemany(sql, values_list)
+sqlite3.OperationalError: table GSI has 18 columns but 16 values were supplied
+2019-08-17 09:17:02,800:GSIQuery:Error has occurred
+Traceback (most recent call last):
+  File "C:/Users/rjwal_000/PycharmProjects/GSI QUERY/main.pyw", line 69, in browse_and_format_gsi_file
+    database.populate_table(gsi.formatted_lines)
+  File "C:\Users\rjwal_000\PycharmProjects\GSI QUERY\GSIDatabase.py", line 84, in populate_table
+    self.conn.executemany(sql, values_list)
+sqlite3.ProgrammingError: Incorrect number of bindings supplied. The current statement uses 18, and there are 16 supplied.
+2019-08-17 09:25:37,298:GSIQuery:Error has occurred
+Traceback (most recent call last):
+  File "C:/Users/rjwal_000/PycharmProjects/GSI QUERY/main.pyw", line 69, in browse_and_format_gsi_file
+    database.populate_table(gsi.formatted_lines)
+  File "C:\Users\rjwal_000\PycharmProjects\GSI QUERY\GSIDatabase.py", line 75, in populate_table
+    init_values.append("N")
+AttributeError: 'odict_values' object has no attribute 'append'
+2019-08-17 09:49:22,503:GSIQuery:Error has occurred
+Traceback (most recent call last):
+  File "C:/Users/rjwal_000/PycharmProjects/GSI QUERY/main.pyw", line 69, in browse_and_format_gsi_file
+    database.populate_table(gsi.formatted_lines)
+  File "C:\Users\rjwal_000\PycharmProjects\GSI QUERY\GSIDatabase.py", line 91, in populate_table
+    self.conn.executemany(sql, values_list)
+sqlite3.ProgrammingError: Incorrect number of bindings supplied. The current statement uses 18, and there are 16 supplied.
+2019-08-17 10:01:27,855:GSIQuery:Database in use.  Unable to delete until it is closed
+Traceback (most recent call last):
+  File "C:\Users\rjwal_000\PycharmProjects\GSI QUERY\GSIDatabase.py", line 25, in create_db
+    os.remove(GSIDatabase.DATABASE_PATH)
+PermissionError: [WinError 32] The process cannot access the file because it is being used by another process: 'GSI Files\\GSI_database.db'
+2019-08-17 10:01:27,855:GSIQuery:Error has occurred
+Traceback (most recent call last):
+  File "C:\Users\rjwal_000\PycharmProjects\GSI QUERY\GSIDatabase.py", line 25, in create_db
+    os.remove(GSIDatabase.DATABASE_PATH)
+PermissionError: [WinError 32] The process cannot access the file because it is being used by another process: 'GSI Files\\GSI_database.db'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:/Users/rjwal_000/PycharmProjects/GSI QUERY/main.pyw", line 68, in browse_and_format_gsi_file
+    database.create_db()
+  File "C:\Users\rjwal_000\PycharmProjects\GSI QUERY\GSIDatabase.py", line 38, in create_db
+    self.conn.execute('DELETE FROM {}'.format(GSIDatabase.TABLE_NAME))
+AttributeError: 'NoneType' object has no attribute 'execute'
+2019-08-17 10:19:28,739:GSIQuery:Database in use.  Unable to delete until it is closed
+Traceback (most recent call last):
+  File "C:\Users\rjwal_000\PycharmProjects\GSI QUERY\GSIDatabase.py", line 25, in create_db
+    os.remove(GSIDatabase.DATABASE_PATH)
+PermissionError: [WinError 32] The process cannot access the file because it is being used by another process: 'GSI Files\\GSI_database.db'
+2019-08-17 10:19:28,740:GSIQuery:Error has occurred
+Traceback (most recent call last):
+  File "C:\Users\rjwal_000\PycharmProjects\GSI QUERY\GSIDatabase.py", line 25, in create_db
+    os.remove(GSIDatabase.DATABASE_PATH)
+PermissionError: [WinError 32] The process cannot access the file because it is being used by another process: 'GSI Files\\GSI_database.db'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:/Users/rjwal_000/PycharmProjects/GSI QUERY/main.pyw", line 68, in browse_and_format_gsi_file
+    database.create_db()
+  File "C:\Users\rjwal_000\PycharmProjects\GSI QUERY\GSIDatabase.py", line 38, in create_db
+    self.conn.execute('DELETE FROM {}'.format(GSIDatabase.TABLE_NAME))
+AttributeError: 'NoneType' object has no attribute 'execute'
+2019-08-17 10:29:38,933:GSIQuery:Error has occurred
+Traceback (most recent call last):
+  File "C:/Users/rjwal_000/PycharmProjects/GSI QUERY/main.pyw", line 69, in browse_and_format_gsi_file
+    database.populate_table(gsi.formatted_lines)
+  File "C:\Users\rjwal_000\PycharmProjects\GSI QUERY\GSIDatabase.py", line 75, in populate_table
+    stn_easting = gsi_values['STN_Easting']
+TypeError: list indices must be integers or slices, not str
+2019-08-17 11:35:05,792:GSIQuery:Error has occurred
+Traceback (most recent call last):
+  File "C:/Users/rjwal_000/PycharmProjects/GSI QUERY/main.pyw", line 69, in browse_and_format_gsi_file
+    database.populate_table(gsi.formatted_lines)
+  File "C:\Users\rjwal_000\PycharmProjects\GSI QUERY\GSIDatabase.py", line 100, in populate_table
+    self.conn.executemany(sql, values_list)
+sqlite3.ProgrammingError: Incorrect number of bindings supplied. The current statement uses 18, and there are 16 supplied.
+2019-08-17 11:36:42,106:GSIQuery:Error creating database: 
+Traceback (most recent call last):
+  File "C:\Users\rjwal_000\PycharmProjects\GSI QUERY\GSIDatabase.py", line 30, in create_db
+    self.create_table()
+  File "C:\Users\rjwal_000\PycharmProjects\GSI QUERY\GSIDatabase.py", line 62, in create_table
+    self.conn.execute(create_table_string)
+sqlite3.OperationalError: near ")": syntax error
+2019-08-17 11:36:42,107:GSIQuery:Error has occurred
+Traceback (most recent call last):
+  File "C:/Users/rjwal_000/PycharmProjects/GSI QUERY/main.pyw", line 69, in browse_and_format_gsi_file
+    database.populate_table(gsi.formatted_lines)
+  File "C:\Users\rjwal_000\PycharmProjects\GSI QUERY\GSIDatabase.py", line 70, in populate_table
+    for formatted_line in formatted_lines:
+NameError: name 'formatted_lines' is not defined
+2019-08-17 11:37:29,690:GSIQuery:Error creating database: 
+Traceback (most recent call last):
+  File "C:\Users\rjwal_000\PycharmProjects\GSI QUERY\GSIDatabase.py", line 30, in create_db
+    self.create_table()
+  File "C:\Users\rjwal_000\PycharmProjects\GSI QUERY\GSIDatabase.py", line 62, in create_table
+    self.conn.execute(create_table_string)
+sqlite3.OperationalError: near ")": syntax error
+2019-08-17 11:37:29,692:GSIQuery:Error has occurred
+Traceback (most recent call last):
+  File "C:/Users/rjwal_000/PycharmProjects/GSI QUERY/main.pyw", line 69, in browse_and_format_gsi_file
+    database.populate_table(gsi.formatted_lines)
+  File "C:\Users\rjwal_000\PycharmProjects\GSI QUERY\GSIDatabase.py", line 100, in populate_table
+    self.conn.executemany(sql, values_list)
+sqlite3.OperationalError: no such table: GSI
+2019-08-17 11:38:20,713:GSIQuery:Error has occurred
+Traceback (most recent call last):
+  File "C:/Users/rjwal_000/PycharmProjects/GSI QUERY/main.pyw", line 69, in browse_and_format_gsi_file
+    database.populate_table(gsi.formatted_lines)
+  File "C:\Users\rjwal_000\PycharmProjects\GSI QUERY\GSIDatabase.py", line 100, in populate_table
+    self.conn.executemany(sql, values_list)
+sqlite3.OperationalError: table GSI has 16 columns but 18 values were supplied
+2019-08-17 11:40:51,480:GSIQuery:Error has occurred
+Traceback (most recent call last):
+  File "C:/Users/rjwal_000/PycharmProjects/GSI QUERY/main.pyw", line 69, in browse_and_format_gsi_file
+    database.populate_table(gsi.formatted_lines)
+  File "C:\Users\rjwal_000\PycharmProjects\GSI QUERY\GSIDatabase.py", line 100, in populate_table
+    self.conn.executemany(sql, values_list)
+sqlite3.ProgrammingError: Incorrect number of bindings supplied. The current statement uses 16, and there are 18 supplied.
+2019-08-17 12:02:40,849:GSIQuery:Database in use.  Unable to delete until it is closed
+Traceback (most recent call last):
+  File "C:\Users\rjwal_000\PycharmProjects\GSI QUERY\GSIDatabase.py", line 24, in create_db
+    os.remove(GSIDatabase.DATABASE_PATH)
+PermissionError: [WinError 32] The process cannot access the file because it is being used by another process: 'GSI Files\\GSI_database.db'
+2019-08-17 22:15:45,738:GSIQuery:Error has occurred
+Traceback (most recent call last):
+  File "C:/Users/rjwal_000/PycharmProjects/GSI QUERY/main.pyw", line 74, in browse_and_format_gsi_file
+    gsi.determine_control_points()
+  File "C:\Users\rjwal_000\PycharmProjects\GSI QUERY\GSI.py", line 122, in determine_control_points
+    self.control_points.add(self.formatted_lines['Point_ID'])
+TypeError: list indices must be integers or slices, not str
+2019-08-17 22:18:00,910:GSIQuery:Error has occurred
+Traceback (most recent call last):
+  File "C:/Users/rjwal_000/PycharmProjects/GSI QUERY/main.pyw", line 74, in browse_and_format_gsi_file
+    gsi.determine_control_points()
+  File "C:\Users\rjwal_000\PycharmProjects\GSI QUERY\GSI.py", line 122, in determine_control_points
+    self.control_points.add(self.formatted_line['Point_ID'])
+AttributeError: 'GSI' object has no attribute 'formatted_line'
+2019-08-17 22:24:18,785:GSIQuery:Error has occurred
+Traceback (most recent call last):
+  File "C:/Users/rjwal_000/PycharmProjects/GSI QUERY/main.pyw", line 75, in browse_and_format_gsi_file
+    gsi.determine_control_points()
+AttributeError: 'GSI' object has no attribute 'determine_control_points'
+2019-08-17 22:48:47,523:GSIQuery:Error creating executing SQL query:  SELECT * FROM GSI WHERE Point_ID=?
+Traceback (most recent call last):
+  File "C:/Users/rjwal_000/PycharmProjects/GSI QUERY/main.pyw", line 244, in execute_sql_query
+    cur.executemany(sql_query_text, (column_value,))
+sqlite3.ProgrammingError: Incorrect number of bindings supplied. The current statement uses 1, and there are 6 supplied.
+2019-08-18 21:14:30,324:GSIQuery:Error creating executing SQL query:  SELECT Point_ID, Easting, Northing, Elevation FROM GSI WHERE Point_ID IN (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)=?
+Traceback (most recent call last):
+  File "C:/Users/rjwal_000/PycharmProjects/GSI QUERY/main.pyw", line 128, in check_3d_survey
+    cur.execute(sql_query_text, change_point_list)
+sqlite3.ProgrammingError: Incorrect number of bindings supplied. The current statement uses 16, and there are 15 supplied.
+2019-08-18 21:30:51,627:GSIQuery:Error creating executing SQL query:  SELECT Point_ID, Easting, Northing, Elevation FROM GSI WHERE Point_ID=?
+Traceback (most recent call last):
+  File "C:/Users/rjwal_000/PycharmProjects/GSI QUERY/main.pyw", line 128, in check_3d_survey
+    cur.execute(sql_query_text, change_point)
+sqlite3.ProgrammingError: Incorrect number of bindings supplied. The current statement uses 1, and there are 6 supplied.
+2019-08-18 21:32:47,889:GSIQuery:Error creating executing SQL query:  SELECT Point_ID, Easting, Northing, Elevation FROM GSI WHERE Point_ID=?
+Traceback (most recent call last):
+  File "C:/Users/rjwal_000/PycharmProjects/GSI QUERY/main.pyw", line 129, in check_3d_survey
+    cur.execute(sql_query_text, change_point)
+sqlite3.ProgrammingError: Incorrect number of bindings supplied. The current statement uses 1, and there are 6 supplied.
+2019-08-18 21:35:51,005:GSIQuery:Error creating executing SQL query:  SELECT Point_ID, Easting, Northing, Elevation FROM GSI WHERE Point_ID=?
+Traceback (most recent call last):
+  File "C:/Users/rjwal_000/PycharmProjects/GSI QUERY/main.pyw", line 130, in check_3d_survey
+    cur.execute(sql_query_text, change_point)
+sqlite3.ProgrammingError: Incorrect number of bindings supplied. The current statement uses 1, and there are 6 supplied.
+2019-08-18 21:37:53,041:GSIQuery:Error creating executing SQL query:  SELECT Point_ID, Easting, Northing, Elevation FROM GSI WHERE Point_ID=?
+Traceback (most recent call last):
+  File "C:/Users/rjwal_000/PycharmProjects/GSI QUERY/main.pyw", line 130, in check_3d_survey
+    cur.execute(sql_query_text, change_point)
+sqlite3.ProgrammingError: Incorrect number of bindings supplied. The current statement uses 1, and there are 6 supplied.
+2019-08-18 21:38:40,254:GSIQuery:Error creating executing SQL query:  SELECT Point_ID, Easting, Northing, Elevation FROM GSI WHERE Point_ID=?
+Traceback (most recent call last):
+  File "C:/Users/rjwal_000/PycharmProjects/GSI QUERY/main.pyw", line 130, in check_3d_survey
+    cur.execute(sql_query_text, change_point)
+sqlite3.ProgrammingError: Incorrect number of bindings supplied. The current statement uses 1, and there are 6 supplied.
+2019-08-18 21:40:21,407:GSIQuery:Error creating executing SQL query:  SELECT * FROM GSI WHERE Point_ID=?
+Traceback (most recent call last):
+  File "C:/Users/rjwal_000/PycharmProjects/GSI QUERY/main.pyw", line 130, in check_3d_survey
+    cur.execute(sql_query_text, change_point)
+sqlite3.ProgrammingError: Incorrect number of bindings supplied. The current statement uses 1, and there are 6 supplied.
+2019-08-18 21:56:03,681:GSIQuery:Error creating executing SQL query:  SELECT Point_ID, Easting, Northing, Elevation FROM GSI WHERE Point_ID=?
+Traceback (most recent call last):
+  File "C:/Users/rjwal_000/PycharmProjects/GSI QUERY/main.pyw", line 153, in check_3d_survey
+    east_diff = max(eastings) - min(eastings)
+TypeError: unsupported operand type(s) for -: 'str' and 'str'
+2019-08-18 21:57:38,474:GSIQuery:Error creating executing SQL query:  SELECT Point_ID, Easting, Northing, Elevation FROM GSI WHERE Point_ID=?
+Traceback (most recent call last):
+  File "C:/Users/rjwal_000/PycharmProjects/GSI QUERY/main.pyw", line 153, in check_3d_survey
+    east_diff = max(float(eastings)) - min(float(eastings))
+TypeError: float() argument must be a string or a number, not 'list'
+2019-08-18 21:58:23,796:GSIQuery:Error creating executing SQL query:  SELECT Point_ID, Easting, Northing, Elevation FROM GSI WHERE Point_ID=?
+Traceback (most recent call last):
+  File "C:/Users/rjwal_000/PycharmProjects/GSI QUERY/main.pyw", line 156, in check_3d_survey
+    print('Point ' + point_id + 'is out of tolerance: ' + east_diff )
+TypeError: can only concatenate str (not "float") to str
+2019-08-19 18:08:44,756:GSIQuery:Database in use.  Unable to delete until it is closed
+Traceback (most recent call last):
+  File "C:\Users\rjwal_000\PycharmProjects\GSI QUERY\GSIDatabase.py", line 24, in create_db
+    os.remove(GSIDatabase.DATABASE_PATH)
+PermissionError: [WinError 32] The process cannot access the file because it is being used by another process: 'GSI Files\\GSI_database.db'
+2019-08-19 18:08:53,600:GSIQuery:Error creating executing SQL query:  SELECT Point_ID, Easting, Northing, Elevation FROM GSI WHERE Point_ID=?
+Traceback (most recent call last):
+  File "C:/Users/rjwal_000/PycharmProjects/GSI QUERY/main.pyw", line 151, in check_3d_survey
+    east_diff = float(max(eastings)) - float(min(eastings))
+ValueError: could not convert string to float: 

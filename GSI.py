@@ -1,5 +1,6 @@
 from GSIExceptions import *
 from collections import OrderedDict
+from collections import Counter
 
 
 class GSI:
@@ -41,6 +42,9 @@ class GSI:
                                                   ('STN_Elevation', ''), ('Target_Height', ''),
                                                   ('STN_Height', '')])
 
+                    # flag for station setup line
+                    stn_setup = False
+
                     # Work with the first field '11' separately - its unique and can contain spaces and alphanumerics
                     field_value = self.format_point_id(line[8:24].lstrip('0'))
 
@@ -69,9 +73,20 @@ class GSI:
                         elif two_digit_id == '51':
                             field_value = self.format_prism_constant(field_value)
 
+                        elif two_digit_id == "84":
+                            stn_setup = True
+
                         # distance and coordinates
                         elif two_digit_id in ('31', '32', '33', '81', '82', '83', '84', '85', '86', '87', '88'):
                             field_value = self.format_3dp(field_value)
+
+                            #  if STN setup then set STN height to 0 if height is empty string
+                            if two_digit_id == '88' and field_value == "":
+                                field_value = '0.000'
+
+                            # set target height to 0 rather than empty string if line is not a station setup
+                            elif two_digit_id == '87' and field_value == "" and not stn_setup:
+                                field_value = '0'
 
                         elif field_value == "":
 
@@ -82,6 +97,8 @@ class GSI:
 
                     self.formatted_lines.append(formatted_line)
                     self.logger.info('Formatted Line: ' + str(formatted_line))
+
+                    stn_setup = False
 
             except KeyError:
                 self.logger.exception(
@@ -159,3 +176,35 @@ class GSI:
                 pass  # column value doesn't exist for this line...continue
 
         return column_values
+
+    def get_control_points(self):
+
+        control_points = set()
+
+        for formatted_line in self.formatted_lines:
+
+            # check to see if point id is a control point by see if STN_Easting exists
+            if formatted_line['STN_Easting']:
+                control_points.add(formatted_line['Point_ID'])
+
+        return sorted(control_points)
+
+    def get_change_points(self):
+
+        change_points = set()
+
+        # list of point_IDs used for determining change points
+        point_id_list = []
+
+        for formatted_line in self.formatted_lines:
+
+            point_id_list.append(formatted_line['Point_ID'])
+
+        # if point ID occurs 8 times then it must be a change point
+        point_id_frequency = Counter(point_id_list);
+
+        for point_id, count in point_id_frequency.items():
+            if count > 7:
+                change_points.add(point_id)
+
+        return sorted(change_points)
