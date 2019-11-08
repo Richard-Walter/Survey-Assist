@@ -73,12 +73,13 @@ class GSI:
                         elif two_digit_id == '51':
                             field_value = self.format_prism_constant(field_value)
 
-                        elif two_digit_id == "84":
-                            stn_setup = True
-
                         # distance and coordinates
                         elif two_digit_id in ('31', '32', '33', '81', '82', '83', '84', '85', '86', '87', '88'):
                             field_value = self.format_3dp(field_value)
+
+                            # Check to see if this line is a station setup
+                            if two_digit_id == "84":
+                                stn_setup = True
 
                             #  if STN setup then set STN height to 0 if height is empty string
                             if two_digit_id == '88' and field_value == "":
@@ -86,7 +87,7 @@ class GSI:
 
                             # set target height to 0 rather than empty string if line is not a station setup
                             elif two_digit_id == '87' and field_value == "" and not stn_setup:
-                                field_value = '0'
+                                field_value = '0.000'
 
                         elif field_value == "":
 
@@ -197,7 +198,6 @@ class GSI:
         point_id_list = []
 
         for formatted_line in self.formatted_lines:
-
             point_id_list.append(formatted_line['Point_ID'])
 
         # if point ID occurs 8 times then it must be a change point

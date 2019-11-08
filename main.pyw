@@ -104,13 +104,17 @@ class MenuBar(tk.Frame):
 
         control_points = gsi.get_control_points()
         change_points = gsi.get_change_points()
+        points = change_points + control_points
+
         print('CONTROL POINTS: ' + str(control_points))
         print('CHANGE POINTS: ' + str(change_points))
+        print('POINTS: ' + str(points))
 
         sql_query_columns = 'Point_ID, Easting, Northing, Elevation'
         sql_where_column = 'Point_ID'
 
         error_text = ""
+        error_subject = "Error found in Survey"
 
         try:
             with database.conn:
@@ -122,7 +126,7 @@ class MenuBar(tk.Frame):
                 # Check if points are outisde of tolerance e.g. 10mm
                 errors = []
 
-                for change_point in change_points:
+                for point in points:
 
                     # create a list of eastings, northings and height and check min max value of each
                     eastings = []
@@ -131,8 +135,8 @@ class MenuBar(tk.Frame):
                     point_id = ""
                     error_text = ""
 
-                    print('CHANGE POINT IS :' + change_point)
-                    cur.execute(sql_query_text, (change_point,))
+                    print('POINT IS : ' + point)
+                    cur.execute(sql_query_text, (point,))
                     rows = cur.fetchall()
 
                     for row in rows:
@@ -147,49 +151,55 @@ class MenuBar(tk.Frame):
                     # print(point_id, max(eastings), min(eastings), max(northings), min(northings), max(elevation),
                     #       min(elevation))
 
-                    # Check Eastings
-                    east_diff = float(max(eastings)) - float(min(eastings))
+                    try:
+                        # Check Eastings
+                        east_diff = float(max(eastings)) - float(min(eastings))
 
-                    if east_diff > 0.010:
-                        error_text = 'Change Point ' + point_id + ' is out of tolerance: E ' + str(round(
-                            east_diff,
-                            3)) + 'm\n'
-                        errors.append(error_text)
+                        if east_diff > 0.007:
+                            error_text = 'Point ' + point_id + ' is out of tolerance: E ' + str(round(
+                                east_diff,
+                                3)) + 'm\n'
+                            errors.append(error_text)
 
-                    # Check Northings
-                    north_diff = float(max(northings)) - float(min(northings))
+                        # Check Northings
+                        north_diff = float(max(northings)) - float(min(northings))
 
-                    if north_diff > 0.010:
-                        error_text = 'Change Point ' + point_id + ' is out of tolerance: N ' + str(round(
-                            north_diff,
-                            3)) + 'm\n'
-                        errors.append(error_text)
+                        if north_diff > 0.007:
+                            error_text = 'Point ' + point_id + ' is out of tolerance: N ' + str(round(
+                                north_diff,
+                                3)) + 'm\n'
+                            errors.append(error_text)
 
-                    # Check Elevation
-                    height_diff = float(max(elevation)) - float(min(elevation))
+                        # Check Elevation
+                        height_diff = float(max(elevation)) - float(min(elevation))
 
-                    if height_diff > 0.015:
-                        error_text = 'Change Point ' + point_id + ' is out of tolerance in height: ' + \
-                                     str(round(
-                            height_diff,
-                            3)) + 'm \n'
-                        errors.append(error_text)
+                        if height_diff > 0.015:
+                            error_text = 'Point ' + point_id + ' is out of tolerance in height: ' + \
+                                         str(round(
+                                             height_diff,
+                                             3)) + 'm \n'
+                            errors.append(error_text)
+                    except ValueError:
+                        print('This line for point : ' + point + ' is probably a station setup.  Do not check '
+                                                                 'tolerances for this '
+                                                                 'point')
+                        pass
 
-                    # display any error messages in pop up dialog
-
+                # display any error messages in pop up dialog
                 for error in errors:
                     error_text += error
 
                 if not errors:
                     error_text = "Survey looks good!"
+                    error_subject = "3D Survey Analysis"
 
                 # display error dialog box
-                tkinter.messagebox.showinfo("Error found in survey", error_text)
+                tkinter.messagebox.showinfo(error_subject, error_text)
 
         except Exception:
             logger.exception('Error creating executing SQL query:  {}'.format(sql_query_text))
             tk.messagebox.showerror("Error", 'Error executing this query:\nPlease contact the developer of this '
-                                             'program')
+                                             'program or see log file for further information')
 
     def display_query_input_box(self):
 
