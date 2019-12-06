@@ -1,7 +1,8 @@
 #! python3
 
 """ This program reads in a GSI file from a Leica 'Total Station' and displays the file
-in a clearer, more user-friendly format.  You can then execute queries on this data to extract relevant information
+in a clearer, more user-friendly format.  You can then execute queries on this data to extract relevant information.
+It also checks for survey errors in a 3D survey.
 
 NOTE: For 3.4 compatibility
     i) Replaced f-strings with.format method.
@@ -406,6 +407,7 @@ class ListBox(tk.Frame):
 
         self.master = master
         self.stn_tag = 'STN'
+        self.orientation_tag = 'ORI'
 
         self.treeview_column_names = gsi.column_names.copy()
         self.treeview_column_names.insert(0, "#")
@@ -464,12 +466,16 @@ class ListBox(tk.Frame):
 
                 # add STN tag if line is a station setup
                 if column_name == gsi.GSI_WORD_ID_DICT['84'] and gsi_value is not "":
-                    tag = self.stn_tag
+                    tag = self.stn_tag                # add STN tag if line is a station setup
+
+                elif column_name == gsi.GSI_WORD_ID_DICT['32'] and gsi_value is "":
+                    tag = self.orientation_tag
 
             self.list_box_view.insert("", "end", values=complete_line, tags=(tag,))
 
         # color station setup and the remaining rows
         self.list_box_view.tag_configure(self.stn_tag, background='#ffe793')
+        self.list_box_view.tag_configure(self.orientation_tag, background='#d1fac5')
         self.list_box_view.tag_configure("", background='#eaf7f9')
 
     def delete_selected_row(self, event):
