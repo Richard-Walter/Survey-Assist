@@ -246,10 +246,10 @@ class MenuBar(tk.Frame):
     @staticmethod
     def display_about_dialog_box():
 
-        about_me_text = "Written by Richard Walter 2019\n\n This program reads in a GSI file from a Leica 'Total " \
-                        "Station' and displays the file in a clearer, more user-friendly format." \
-                        " You can then execute queries on this data to extract relevant information, or check for " \
-                        "some errors in the survey. \n\n"
+        about_me_text = "Written by Richard Walter 2019\n\n This program reads a GSI file from a Leica Total " \
+                        "Station and displays the data in a clearer, more user-friendly format." \
+                        " \n\nYou can then execute queries on this data to extract relevant information, or check for " \
+                        " errors in a 3D the survey. \n\n"
 
         tkinter.messagebox.showinfo("About GSI Query", about_me_text)
 
@@ -362,13 +362,23 @@ class QueryDialog:
     @staticmethod
     def repopulate_list_box(query_results):
 
+        line_number = 0
+
         if query_results is not None:
 
             # Remove any previous data first
             gui_app.list_box.list_box_view.delete(*gui_app.list_box.list_box_view.get_children())
 
             for query_result in query_results:
-                gui_app.list_box.list_box_view.insert("", "end", values=query_result)
+
+                query_list = list(query_result)
+                print(query_list)
+                line_number += 1
+                query_list.insert(0, line_number)
+                gui_app.list_box.list_box_view.insert("", "end", values=query_list)
+
+        # disable the ability to delete line as the line # doesnt match the GSI file in a query
+        gui_app.list_box.list_box_view.unbind('<Delete>')
 
 
 class StatusBar(tk.Frame):
@@ -470,12 +480,11 @@ class ListBox(tk.Frame):
 
             print("row to be deleted is " + line_number_values[0])
 
-            # delete row from list_box_view
-            self.list_box_view.delete(self.list_box_view.focus())
+            # # delete row from list_box_view
+            # self.list_box_view.delete(self.list_box_view.focus())
 
             # remove line from gsi, update database and rebuild list view
             print("removing line from GSI and rebuilding treeview")
-            print("Filename path = " + MenuBar.filename_path)
 
             try:
 
