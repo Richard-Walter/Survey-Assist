@@ -61,6 +61,10 @@ class GSIDatabase:
         with self.conn:
             self.conn.execute(create_table_string)
 
+    def close_database(self):
+
+        self.conn.close()
+
     def populate_table(self, gsi_formatted_lines):
 
         # formatted_lines = checkIsSTNandIsCP(gsi_formatted_lines)
@@ -84,3 +88,4 @@ class GSIDatabase:
         # Insert a formatted line of GSI data into database
         with self.conn:
             self.conn.executemany(sql, values_list)
+

@@ -26,6 +26,8 @@ gui_app = None
 
 class MenuBar(tk.Frame):
 
+    filename_path = ""
+
     def __init__(self, master):
         super().__init__(master)
 
@@ -39,7 +41,7 @@ class MenuBar(tk.Frame):
 
         # File Menu
         file_sub_menu = tk.Menu(self.menu_bar, tearoff=0)
-        file_sub_menu.add_command(label="Open...", command=self.browse_and_format_gsi_file)
+        file_sub_menu.add_command(label="Open...", command=self.choose_gsi_file)
         file_sub_menu.add_command(label="Exit", command=self.client_exit)
         self.menu_bar.add_cascade(label="File", menu=file_sub_menu)
 
@@ -59,25 +61,24 @@ class MenuBar(tk.Frame):
         self.help_sub_menu.add_command(label="About", command=self.display_about_dialog_box)
         self.menu_bar.add_cascade(label="Help", menu=self.help_sub_menu)
 
-    def browse_and_format_gsi_file(self):
+    def choose_gsi_file(self):
 
-        self.filename_path = tk.filedialog.askopenfilename()
+        # global filename_path
+        MenuBar.filename_path = tk.filedialog.askopenfilename()
+        MenuBar.format_gsi_file()
+        MenuBar.create_and_populate_database()
+        MenuBar.update_gui()
+        self.enable_query_menu()
+        self.enable_check_menu()
+
+    @staticmethod
+    def format_gsi_file():
 
         gui_app.status_bar.status['text'] = 'Working ...'
 
         try:
 
-            gsi.format_gsi(self.filename_path)
-
-            # create and populate database
-            database.create_db()
-            database.populate_table(gsi.formatted_lines)
-
-            # update the GUI
-            gui_app.list_box.populate(gsi.formatted_lines)
-            gui_app.status_bar.status['text'] = self.filename_path
-            self.enable_query_menu()
-            self.enable_check_menu()
+            gsi.format_gsi(MenuBar.filename_path)
 
         except FileNotFoundError:
 
@@ -95,10 +96,26 @@ class MenuBar(tk.Frame):
         except Exception:
 
             # Most likely an incorrect file was chosen
-            logger.exception('Error has occurred')
+            logger.exception('Error has occurred. ')
 
-            tk.messagebox.showerror("ERROR", 'Error reading GSI File:\n\nThis file is a corrupted or '
-                                             'incorrect GSI file.  If problem continues please contact author')
+            tk.messagebox.showerror("ERROR", 'Error reading GSI File:\n\nPlease make sure file is not opened '
+                                             'by another program.  If problem continues please contact Richard Walter')
+
+    @staticmethod
+    def create_and_populate_database():
+        database.create_db()
+        database.populate_table(gsi.formatted_lines)
+
+    @staticmethod
+    def update_database():
+
+        database.populate_table(gsi.formatted_lines)
+
+
+    @staticmethod
+    def update_gui():
+        gui_app.list_box.populate(gsi.formatted_lines)
+        gui_app.status_bar.status['text'] = MenuBar.filename_path
 
     def check_3d_survey(self):
 
@@ -380,8 +397,12 @@ class ListBox(tk.Frame):
         self.master = master
         self.stn_tag = 'STN'
 
+        self.treeview_column_names = gsi.column_names.copy()
+        self.treeview_column_names.insert(0, "#")
+        print(self.treeview_column_names)
+
         # Use Treeview to create list of capture survey shots
-        self.list_box_view = ttk.Treeview(master, columns=gsi.column_names, selectmode='browse', show='headings', )
+        self.list_box_view = ttk.Treeview(master, columns=self.treeview_column_names, selectmode='browse', show='headings', )
 
         # Add scrollbar
         vsb = ttk.Scrollbar(self.list_box_view, orient='vertical', command=self.list_box_view.yview)
@@ -392,12 +413,18 @@ class ListBox(tk.Frame):
         self.list_box_view.configure(xscrollcommand=hsb.set)
 
         # set column headings
-        for column_name in gsi.column_names:
+        for column_name in self.treeview_column_names:
             self.list_box_view.heading(column_name, text=column_name)
-            self.list_box_view.column(column_name, width=80, stretch=True)
+            if column_name == "#":
+                self.list_box_view.column(column_name, width=20, stretch=True)
+            else:
+                self.list_box_view.column(column_name, width=80, stretch=True)
 
         # On mouse-click event
-        self.list_box_view.bind('<Button-1>', self.selected_row)
+        # self.list_box_view.bind('<Button-1>', self.selected_row)
+
+        # on delete-keyboard event
+        self.list_box_view.bind('<Delete>', self.delete_selected_row)
 
         self.list_box_view.pack(fill="both", expand=True)
 
@@ -406,12 +433,18 @@ class ListBox(tk.Frame):
         # Remove any previous data first
         self.list_box_view.delete(*self.list_box_view.get_children())
 
+        line_number = 0
+
         # Build Display List which expands on the formatted lines from GSI class containing value for all fields
         for formatted_line in formatted_lines:
 
             tag = ""  # Used to display STN setup rows with a color
 
             complete_line = []
+            line_number += 1
+
+            # add line number first
+            complete_line.append(line_number)
 
             # iterate though column names and find value, assign value if doesnt exist and append to complete list
             for column_name in gsi.column_names:
@@ -429,10 +462,59 @@ class ListBox(tk.Frame):
         self.list_box_view.tag_configure(self.stn_tag, background='#ffe793')
         self.list_box_view.tag_configure("", background='#eaf7f9')
 
-    def selected_row(self, a):
+    def delete_selected_row(self, event):
 
-        cur_item = self.list_box_view.focus()
-        print(self.list_box_view.item(cur_item)['values'])
+        line_number_values = self.list_box_view.item(self.list_box_view.focus(), 'values')
+
+        if line_number_values:
+
+            print("row to be deleted is " + line_number_values[0])
+
+            # delete row from list_box_view
+            self.list_box_view.delete(self.list_box_view.focus())
+
+            # remove line from gsi, update database and rebuild list view
+            print("removing line from GSI and rebuilding treeview")
+            print("Filename path = " + MenuBar.filename_path)
+
+            try:
+
+                with open(MenuBar.filename_path, "r") as gsi_file:
+
+                    line_list = list(gsi_file)  # puts all lines in a list
+
+                del line_list[int(line_number_values[0]) - 1]  # delete regarding element
+
+                # rewrite the line_list from list contents/elements:
+                with open(MenuBar.filename_path, "w") as gsi_file:
+                    for line in line_list:
+                        gsi_file.write(line)
+
+            except FileNotFoundError:
+
+                # Do nothing: User has hit the cancel button
+                gui_app.status_bar.status['text'] = 'Please choose a GSI File'
+
+            except CorruptedGSIFileError:
+
+                # Most likely an corrupted GSI file was selected
+                tk.messagebox.showerror("ERROR", 'Error reading GSI File:\n\nThis file is a corrupted or '
+                                                 'incorrect GSI file')
+
+                gui_app.status_bar.status['text'] = 'Please choose a GSI File'
+
+            except Exception:
+
+                # Most likely an incorrect file was chosen
+                logger.exception('Error has occurred. ')
+
+                tk.messagebox.showerror("ERROR", 'Error reading GSI File:\n\nPlease make sure file is not opened '
+                                                 'by another program.  If problem continues please contact Richard Walter')
+
+            # rebuild database and GUI
+            MenuBar.format_gsi_file()
+            MenuBar.update_database()
+            MenuBar.update_gui()
 
 
 class GUIApplication(tk.Frame):
