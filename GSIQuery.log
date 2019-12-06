@@ -38,3 +38,28 @@ Traceback (most recent call last):
   File "C:\Users\rjwal_000\PycharmProjects\GSI QUERY\GSIDatabase.py", line 24, in create_db
     os.remove(GSIDatabase.DATABASE_PATH)
 PermissionError: [WinError 32] The process cannot access the file because it is being used by another process: 'GSI Files\\GSI_database.db'
+2019-12-06 16:12:26,636:GSIQuery:Error has occurred. 
+Traceback (most recent call last):
+  File "C:/Users/rjwal_000/PycharmProjects/GSI QUERY/main.pyw", line 285, in delete_orientation_shots
+    del line_list[int(orientation_line_number) - 1]
+IndexError: list assignment index out of range
+2019-12-06 16:23:56,052:GSIQuery:Error has occurred. 
+Traceback (most recent call last):
+  File "C:/Users/rjwal_000/PycharmProjects/GSI QUERY/main.pyw", line 285, in delete_orientation_shots
+    del line_list[int(orientation_line_number) - 1]
+IndexError: list assignment index out of range
+2019-12-06 16:40:53,808:GSIQuery:Error has occurred. 
+Traceback (most recent call last):
+  File "C:/Users/rjwal_000/PycharmProjects/GSI QUERY/main.pyw", line 301, in delete_orientation_shots
+    print("deleted lines are: \n\n" + line_list)
+TypeError: can only concatenate str (not "list") to str
+2019-12-06 16:43:18,005:GSIQuery:Database in use.  Unable to delete until it is closed
+Traceback (most recent call last):
+  File "C:\Users\rjwal_000\PycharmProjects\GSI QUERY\GSIDatabase.py", line 24, in create_db
+    os.remove(GSIDatabase.DATABASE_PATH)
+PermissionError: [WinError 32] The process cannot access the file because it is being used by another process: 'GSI Files\\GSI_database.db'
+2019-12-06 16:46:47,875:GSIQuery:Error has occurred. 
+Traceback (most recent call last):
+  File "C:/Users/rjwal_000/PycharmProjects/GSI QUERY/main.pyw", line 292, in delete_orientation_shots
+    deleted_lines = line_list[int(orientation_line_number) - counter]
+IndexError: list index out of range

@@ -57,6 +57,11 @@ class MenuBar(tk.Frame):
         self.check_sub_menu.add_command(label="3D Survey", command=self.check_3d_survey)
         self.menu_bar.add_cascade(label="Check", menu=self.check_sub_menu, state="disabled")  # disabled initially
 
+        # Delete menu
+        self.check_sub_menu = tk.Menu(self.menu_bar, tearoff=0)
+        self.check_sub_menu.add_command(label="Orientation Shots", command=self.delete_orientation_shots)
+        self.menu_bar.add_cascade(label="Delete...", menu=self.check_sub_menu, state="disabled")  # disabled initially
+
         # Help menu
         self.help_sub_menu = tk.Menu(self.menu_bar, tearoff=0)
         self.help_sub_menu.add_command(label="About", command=self.display_about_dialog_box)
@@ -71,6 +76,7 @@ class MenuBar(tk.Frame):
         MenuBar.update_gui()
         self.enable_query_menu()
         self.enable_check_menu()
+        self.enable_delete_menu()
 
     @staticmethod
     def format_gsi_file():
@@ -236,6 +242,14 @@ class MenuBar(tk.Frame):
 
         self.menu_bar.entryconfig("Check", state="normal")
 
+    def enable_delete_menu(self):
+
+        self.menu_bar.entryconfig("Delete...", state="normal")
+
+    def disable_delete_menu(self):
+
+        self.menu_bar.entryconfig("Delete...", state="normal")
+
     def disable_query_menu(self):
 
         self.query_sub_menu.entryconfig("Query", state="disabled")
@@ -257,6 +271,62 @@ class MenuBar(tk.Frame):
     @staticmethod
     def client_exit():
         exit()
+
+    @staticmethod
+    def delete_orientation_shots():
+
+        deleted_lines = []  # used to display to user after deletion
+
+        try:
+
+            with open(MenuBar.filename_path, "r") as gsi_file:
+
+                line_list = list(gsi_file)  # puts all lines in a list
+
+                counter = 1  # this is used to keep track so the correct line is deleted
+
+                for orientation_line_number in ListBox.orientation_line_numbers:
+
+                    deleted_lines.append(line_list[int(orientation_line_number) - counter])
+
+                    del line_list[int(orientation_line_number) - counter]
+                    counter += 1
+
+            # rewrite the line_list from list contents/elements:
+            with open(MenuBar.filename_path, "w") as gsi_file:
+                for line in line_list:
+                    gsi_file.write(line)
+
+            print("deleted lines are: \n\n" + str(deleted_lines))
+
+            # rebuild database and GUI
+            MenuBar.format_gsi_file()
+            MenuBar.update_database()
+            MenuBar.update_gui()
+
+            # display deleted lines dialog box
+            tkinter.messagebox.showinfo("Orientation Lines", "All orientation shots have been deleted")
+
+        except FileNotFoundError:
+
+            # Do nothing: User has hit the cancel button
+            gui_app.status_bar.status['text'] = 'Please choose a GSI File'
+
+        except CorruptedGSIFileError:
+
+            # Most likely an corrupted GSI file was selected
+            tk.messagebox.showerror("ERROR", 'Error reading GSI File:\n\nThis file is a corrupted or '
+                                             'incorrect GSI file')
+
+            gui_app.status_bar.status['text'] = 'Please choose a GSI File'
+
+        except Exception:
+
+            # Most likely an incorrect file was chosen
+            logger.exception('Error has occurred. ')
+
+            tk.messagebox.showerror("ERROR", 'Error reading GSI File:\n\nPlease make sure file is not opened '
+                                             'by another program.  If problem continues please contact Richard Walter')
 
 
 class QueryDialog:
@@ -402,6 +472,8 @@ class MainWindow(tk.Frame):
 
 class ListBox(tk.Frame):
 
+    orientation_line_numbers = []
+
     def __init__(self, master):
         super().__init__(master)
 
@@ -470,6 +542,10 @@ class ListBox(tk.Frame):
 
                 elif column_name == gsi.GSI_WORD_ID_DICT['32'] and gsi_value is "":
                     tag = self.orientation_tag
+
+            if tag == self.orientation_tag:
+
+                ListBox.orientation_line_numbers.append(line_number)
 
             self.list_box_view.insert("", "end", values=complete_line, tags=(tag,))
 
