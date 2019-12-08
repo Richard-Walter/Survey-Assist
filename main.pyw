@@ -59,8 +59,9 @@ class MenuBar(tk.Frame):
 
         # Delete menu
         self.check_sub_menu = tk.Menu(self.menu_bar, tearoff=0)
-        self.check_sub_menu.add_command(label="Orientation Shots", command=self.delete_orientation_shots)
-        self.menu_bar.add_cascade(label="Delete...", menu=self.check_sub_menu, state="disabled")  # disabled initially
+        self.check_sub_menu.add_command(label="All 2D Orientation Shots", command=self.delete_orientation_shots)
+        self.menu_bar.add_cascade(label="Delete...", menu=self.check_sub_menu, state="disabled")  # disabled
+        # initially
 
         # Help menu
         self.help_sub_menu = tk.Menu(self.menu_bar, tearoff=0)
@@ -304,8 +305,10 @@ class MenuBar(tk.Frame):
             MenuBar.update_database()
             MenuBar.update_gui()
 
+            msg_deleted_lines = str(len(deleted_lines)) + " 2D orientation shots have been deleted"
+
             # display deleted lines dialog box
-            tkinter.messagebox.showinfo("Orientation Lines", "All orientation shots have been deleted")
+            tkinter.messagebox.showinfo("2D Orientation Shots", msg_deleted_lines)
 
         except FileNotFoundError:
 
@@ -516,6 +519,7 @@ class ListBox(tk.Frame):
 
         # Remove any previous data first
         self.list_box_view.delete(*self.list_box_view.get_children())
+        ListBox.orientation_line_numbers = []
 
         line_number = 0
 
