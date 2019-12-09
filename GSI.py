@@ -2,6 +2,7 @@ from GSIExceptions import *
 from collections import OrderedDict
 from collections import Counter
 
+# TODO fix formatting for4 dp GSI files
 
 class GSI:
     GSI_WORD_ID_DICT = OrderedDict([('11', 'Point_ID'), ('19', 'Timestamp'), ('21', 'Horizontal_Angle'),
@@ -200,7 +201,7 @@ class GSI:
         for formatted_line in self.formatted_lines:
             point_id_list.append(formatted_line['Point_ID'])
 
-        # if point ID occurs 8 times then it must be a change point
+        # if point ID occurs 8 times then it probably is a change point be a change point
         point_id_frequency = Counter(point_id_list);
 
         for point_id, count in point_id_frequency.items():

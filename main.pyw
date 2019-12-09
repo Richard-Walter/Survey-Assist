@@ -160,7 +160,7 @@ class MenuBar(tk.Frame):
                     point_id = ""
                     error_text = ""
 
-                    print('POINT IS : ' + point)
+                    print('Survey mark is: ' + point)
                     cur.execute(sql_query_text, (point,))
                     rows = cur.fetchall()
 
@@ -169,12 +169,18 @@ class MenuBar(tk.Frame):
                         point_id = row[0]
 
                         # create a list of eastings, northings and height and check min max value of each
-                        eastings.append(row[1])
-                        northings.append(row[2])
-                        elevation.append(row[3])
 
-                    # print(point_id, max(eastings), min(eastings), max(northings), min(northings), max(elevation),
-                    #       min(elevation))
+                        if row[1] == '':
+                            print('This line for point : ' + point + ' is probably a station setup.  Do not check tolerances for this point')
+
+                        else:
+
+                            eastings.append(row[1])
+                            northings.append(row[2])
+                            elevation.append(row[3])
+
+                        # print(point_id, max(eastings), min(eastings), max(northings), min(northings), max(elevation),
+                        #       min(elevation))
 
                     try:
                         # Check Eastings
@@ -185,6 +191,7 @@ class MenuBar(tk.Frame):
                                 east_diff,
                                 3)) + 'm\n'
                             errors.append(error_text)
+                            print(error_text)
 
                         # Check Northings
                         north_diff = float(max(northings)) - float(min(northings))
@@ -194,6 +201,7 @@ class MenuBar(tk.Frame):
                                 north_diff,
                                 3)) + 'm\n'
                             errors.append(error_text)
+                            print(error_text)
 
                         # Check Elevation
                         height_diff = float(max(elevation)) - float(min(elevation))
@@ -204,13 +212,16 @@ class MenuBar(tk.Frame):
                                              height_diff,
                                              3)) + 'm \n'
                             errors.append(error_text)
+                            print(error_text)
+
                     except ValueError:
-                        print('This line for point : ' + point + ' is probably a station setup.  Do not check '
-                                                                 'tolerances for this '
-                                                                 'point')
+                        print('Value error at point : ' + point)
                         pass
 
                 # display any error messages in pop up dialog
+
+                error_text = ""
+
                 for error in errors:
                     error_text += error
 
