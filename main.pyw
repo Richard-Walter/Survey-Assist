@@ -12,6 +12,7 @@ import tkinter as tk
 from tkinter import ttk
 import logging.config
 from tkinter import filedialog
+
 import tkinter.messagebox
 from GSI import GSI
 from GSIDatabase import GSIDatabase
@@ -26,7 +27,6 @@ gui_app = None
 
 
 class MenuBar(tk.Frame):
-
     filename_path = ""
 
     def __init__(self, master):
@@ -54,8 +54,11 @@ class MenuBar(tk.Frame):
 
         # Check menu
         self.check_sub_menu = tk.Menu(self.menu_bar, tearoff=0)
-        self.check_sub_menu.add_command(label="3D Survey", command=self.check_3d_survey)
-        self.menu_bar.add_cascade(label="Check", menu=self.check_sub_menu, state="disabled")  # disabled initially
+        self.check_sub_menu.add_command(label="Check Tolerances", command=self.check_3d_survey)
+        self.check_sub_menu.add_command(label="Check Control Naming ", command=self.check_control_naming)
+
+        self.menu_bar.add_cascade(label="3D Survey", menu=self.check_sub_menu, state="disabled")  # disabled
+        # initially
 
         # Delete menu
         self.check_sub_menu = tk.Menu(self.menu_bar, tearoff=0)
@@ -76,7 +79,7 @@ class MenuBar(tk.Frame):
         MenuBar.create_and_populate_database()
         MenuBar.update_gui()
         self.enable_query_menu()
-        self.enable_check_menu()
+        self.enable_3d_survey_menu()
         self.enable_delete_menu()
 
     @staticmethod
@@ -118,7 +121,6 @@ class MenuBar(tk.Frame):
     def update_database():
 
         database.populate_table(gsi.formatted_lines)
-
 
     @staticmethod
     def update_gui():
@@ -171,7 +173,8 @@ class MenuBar(tk.Frame):
                         # create a list of eastings, northings and height and check min max value of each
 
                         if row[1] == '':
-                            print('This line for point : ' + point + ' is probably a station setup.  Do not check tolerances for this point')
+                            print(
+                                'This line for point : ' + point + ' is probably a station setup.  Do not check tolerances for this point')
 
                         else:
 
@@ -227,13 +230,73 @@ class MenuBar(tk.Frame):
 
                 if not errors:
                     error_text = "Survey looks good!"
-                    error_subject = "3D Survey Analysis"
+                    error_subject = "3D Survey Tolerance Analysis"
 
                 # display error dialog box
                 tkinter.messagebox.showinfo(error_subject, error_text)
 
         except Exception:
             logger.exception('Error creating executing SQL query:  {}'.format(sql_query_text))
+            tk.messagebox.showerror("Error", 'Error executing this query:\nPlease contact the developer of this '
+                                             'program or see log file for further information')
+
+    def check_control_naming(self):
+
+        station_setups = gsi.get_control_points()
+
+        print('STATION SETUP LIST: ' + str(station_setups))
+
+        sql_query_columns = 'Point_ID'
+        sql_where_column = 'Point_ID'
+
+        stn_shots_not_in_setup = []
+
+        line_number_errors = []
+        error_text = ""
+        error_subject = "POTENTIAL SURVEY ERROR"
+        all_good_subject = "3D SURVEY"
+
+        line_number = 0
+
+        try:
+            # First, lets check all shots that are labelled 'STN' and make sure that it in the station setup list.
+            for formatted_line in gsi.formatted_lines:
+
+                line_number += 1
+                point_id = formatted_line['Point_ID']
+
+                # Check to see if this point is a shot to a STN
+                if 'STN' in point_id:
+
+                    # Check to see if this shot is in the list of station setups.
+                    if point_id not in station_setups:
+                        stn_shots_not_in_setup.append(point_id)
+                        line_number_errors.append(line_number)
+
+            print("STATION SHOTS THAT ARE NOT IN SETUP:")
+            print(stn_shots_not_in_setup)
+
+            # Display message to user of the station shots not found in station setups.
+            if stn_shots_not_in_setup:
+
+                error_text = "Possible point labelling error with the following control shots: \n\n"
+
+                for shot in stn_shots_not_in_setup:
+                    error_text += shot + "\n"
+
+            print(error_text)
+
+            if not error_text:
+                error_text = "Control naming looks good"
+                error_subject = all_good_subject
+
+            # display error dialog box
+            tkinter.messagebox.showinfo(error_subject, error_text)
+
+            gui_app.list_box.populate(gsi.formatted_lines, line_number_errors)
+
+        except Exception:
+            logger.exception('Error checking station naming')
             tk.messagebox.showerror("Error", 'Error executing this query:\nPlease contact the developer of this '
                                              'program or see log file for further information')
 
@@ -250,9 +313,9 @@ class MenuBar(tk.Frame):
 
         self.menu_bar.entryconfig("Query", state="normal")
 
-    def enable_check_menu(self):
+    def enable_3d_survey_menu(self):
 
-        self.menu_bar.entryconfig("Check", state="normal")
+        self.menu_bar.entryconfig("3D Survey", state="normal")
 
     def enable_delete_menu(self):
 
@@ -266,17 +329,17 @@ class MenuBar(tk.Frame):
 
         self.query_sub_menu.entryconfig("Query", state="disabled")
 
-    def disable_check_menu(self):
+    def disable_3d_survey_menu(self):
 
-        self.query_sub_menu.entryconfig("Check", state="disabled")
+        self.query_sub_menu.entryconfig("3D Survey", state="disabled")
 
     @staticmethod
     def display_about_dialog_box():
 
         about_me_text = "Written by Richard Walter 2019\n\n This program reads a GSI file from a Leica Total " \
                         "Station and displays the data in a clearer, more user-friendly format." \
-                        " \n\nYou can then execute queries on this data to extract relevant information, or check for " \
-                        " errors in a 3D the survey. \n\n"
+                        " \n\nYou can then execute queries on this data to extract relevant information, or check for" \
+                        " errors in a 3D the survey, such as incorrect station labelling and tolerance errors. \n\n"
 
         tkinter.messagebox.showinfo("About GSI Query", about_me_text)
 
@@ -298,7 +361,6 @@ class MenuBar(tk.Frame):
                 counter = 1  # this is used to keep track so the correct line is deleted
 
                 for orientation_line_number in ListBox.orientation_line_numbers:
-
                     deleted_lines.append(line_list[int(orientation_line_number) - counter])
 
                     del line_list[int(orientation_line_number) - counter]
@@ -455,7 +517,6 @@ class QueryDialog:
             gui_app.list_box.list_box_view.delete(*gui_app.list_box.list_box_view.get_children())
 
             for query_result in query_results:
-
                 query_list = list(query_result)
                 print(query_list)
                 line_number += 1
@@ -485,7 +546,6 @@ class MainWindow(tk.Frame):
 
 
 class ListBox(tk.Frame):
-
     orientation_line_numbers = []
 
     def __init__(self, master):
@@ -494,13 +554,15 @@ class ListBox(tk.Frame):
         self.master = master
         self.stn_tag = 'STN'
         self.orientation_tag = 'ORI'
+        self.highlight_tag = 'HIGHLIGHT'
 
         self.treeview_column_names = gsi.column_names.copy()
         self.treeview_column_names.insert(0, "#")
         print(self.treeview_column_names)
 
         # Use Treeview to create list of capture survey shots
-        self.list_box_view = ttk.Treeview(master, columns=self.treeview_column_names, selectmode='browse', show='headings', )
+        self.list_box_view = ttk.Treeview(master, columns=self.treeview_column_names, selectmode='browse',
+                                          show='headings', )
 
         # Add scrollbar
         vsb = ttk.Scrollbar(self.list_box_view, orient='vertical', command=self.list_box_view.yview)
@@ -526,7 +588,7 @@ class ListBox(tk.Frame):
 
         self.list_box_view.pack(fill="both", expand=True)
 
-    def populate(self, formatted_lines):
+    def populate(self, formatted_lines, highlight_lines=[]):
 
         # Remove any previous data first
         self.list_box_view.delete(*self.list_box_view.get_children())
@@ -553,13 +615,15 @@ class ListBox(tk.Frame):
 
                 # add STN tag if line is a station setup
                 if column_name == gsi.GSI_WORD_ID_DICT['84'] and gsi_value is not "":
-                    tag = self.stn_tag                # add STN tag if line is a station setup
+                    tag = self.stn_tag  # add STN tag if line is a station setup
 
                 elif column_name == gsi.GSI_WORD_ID_DICT['32'] and gsi_value is "":
                     tag = self.orientation_tag
 
-            if tag == self.orientation_tag:
+                elif line_number in highlight_lines:
+                    tag = self.highlight_tag
 
+            if tag == self.orientation_tag:
                 ListBox.orientation_line_numbers.append(line_number)
 
             self.list_box_view.insert("", "end", values=complete_line, tags=(tag,))
@@ -567,6 +631,7 @@ class ListBox(tk.Frame):
         # color station setup and the remaining rows
         self.list_box_view.tag_configure(self.stn_tag, background='#ffe793')
         self.list_box_view.tag_configure(self.orientation_tag, background='#d1fac5')
+        self.list_box_view.tag_configure(self.highlight_tag, background='#ffff00')
         self.list_box_view.tag_configure("", background='#eaf7f9')
 
     def delete_selected_row(self, event):
