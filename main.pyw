@@ -12,6 +12,7 @@ import tkinter as tk
 from tkinter import ttk
 import logging.config
 from tkinter import filedialog
+from collections import Counter
 
 import tkinter.messagebox
 from GSI import GSI
@@ -43,7 +44,7 @@ class MenuBar(tk.Frame):
         # File Menu
         file_sub_menu = tk.Menu(self.menu_bar, tearoff=0)
         file_sub_menu.add_command(label="Open...", command=self.choose_gsi_file)
-        file_sub_menu.add_command(label="Exit", command=self.client_exit)
+        # file_sub_menu.add_command(label="Exit", command=self.client_exit)
         self.menu_bar.add_cascade(label="File", menu=file_sub_menu)
 
         # Query menu
@@ -70,6 +71,9 @@ class MenuBar(tk.Frame):
         self.help_sub_menu = tk.Menu(self.menu_bar, tearoff=0)
         self.help_sub_menu.add_command(label="About", command=self.display_about_dialog_box)
         self.menu_bar.add_cascade(label="Help", menu=self.help_sub_menu)
+
+        # Exit menu
+        self.menu_bar.add_command(label="Exit", command=self.client_exit)
 
     def choose_gsi_file(self):
 
@@ -250,11 +254,14 @@ class MenuBar(tk.Frame):
         sql_where_column = 'Point_ID'
 
         stn_shots_not_in_setup = []
+        shots_to_stations = []
 
         line_number_errors = []
         error_text = ""
         error_subject = "POTENTIAL SURVEY ERROR"
         all_good_subject = "3D SURVEY"
+
+        shots_to_stations_message = "The number of times each station was shot is shown below:\n\n"
 
         line_number = 0
 
@@ -273,8 +280,16 @@ class MenuBar(tk.Frame):
                         stn_shots_not_in_setup.append(point_id)
                         line_number_errors.append(line_number)
 
+                    # Also want to track of how many times each station is shot so this info can be displayed to user
+                    # check to see if point id is a station setup
+                    if not formatted_line['STN_Easting']:
+                        shots_to_stations.append(formatted_line['Point_ID'])
+
             print("STATION SHOTS THAT ARE NOT IN SETUP:")
             print(stn_shots_not_in_setup)
+
+            print("COUNT OF SHOTS TO STATIONS:")
+            print(Counter(shots_to_stations))
 
             # Display message to user of the station shots not found in station setups.
             if stn_shots_not_in_setup:
@@ -287,8 +302,17 @@ class MenuBar(tk.Frame):
             print(error_text)
 
             if not error_text:
-                error_text = "Control naming looks good"
+                error_text = "Control naming looks good!\n"
                 error_subject = all_good_subject
+
+
+            # Create and display no. of times each station was shot;'
+            counter = Counter(shots_to_stations)
+            for key, value in sorted(counter.items()):
+
+                shots_to_stations_message += str(key) + '  ' + str(value) + '\n'
+
+            error_text += '\n\n' + shots_to_stations_message
 
             # display error dialog box
             tkinter.messagebox.showinfo(error_subject, error_text)

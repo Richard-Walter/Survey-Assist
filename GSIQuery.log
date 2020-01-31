@@ -200,3 +200,38 @@ Traceback (most recent call last):
   File "C:/Users/rjwal_000/PycharmProjects/GSI QUERY/main.pyw", line 594, in populate
     self.list_box_view.delete(*self.list_box_view.get_children())
 AttributeError: 'list' object has no attribute 'list_box_view'
+2020-01-31 13:51:26,646:GSIQuery:Database in use.  Unable to delete until it is closed
+Traceback (most recent call last):
+  File "C:\Users\rjwal_000\PycharmProjects\GSI QUERY\GSIDatabase.py", line 24, in create_db
+    os.remove(GSIDatabase.DATABASE_PATH)
+PermissionError: [WinError 32] The process cannot access the file because it is being used by another process: 'GSI Files\\GSI_database.db'
+2020-01-31 14:02:26,252:GSIQuery:Error checking station naming
+Traceback (most recent call last):
+  File "C:/Users/rjwal_000/PycharmProjects/GSI QUERY/main.pyw", line 308, in check_control_naming
+    for key, value in sorted(Counter.iteritems()):
+AttributeError: type object 'Counter' has no attribute 'iteritems'
+2020-01-31 14:04:14,644:GSIQuery:Error checking station naming
+Traceback (most recent call last):
+  File "C:/Users/rjwal_000/PycharmProjects/GSI QUERY/main.pyw", line 308, in check_control_naming
+    for key, value in sorted(Counter.iteritems()):
+AttributeError: type object 'Counter' has no attribute 'iteritems'
+2020-01-31 14:04:43,199:GSIQuery:Error checking station naming
+Traceback (most recent call last):
+  File "C:/Users/rjwal_000/PycharmProjects/GSI QUERY/main.pyw", line 308, in check_control_naming
+    for key, value in sorted(counter.iteritems()):
+AttributeError: 'Counter' object has no attribute 'iteritems'
+2020-01-31 14:05:10,568:GSIQuery:Error checking station naming
+Traceback (most recent call last):
+  File "C:/Users/rjwal_000/PycharmProjects/GSI QUERY/main.pyw", line 308, in check_control_naming
+    for key, value in sorted(counter.iteritems()):
+AttributeError: 'Counter' object has no attribute 'iteritems'
+2020-01-31 14:07:42,663:GSIQuery:Error checking station naming
+Traceback (most recent call last):
+  File "C:/Users/rjwal_000/PycharmProjects/GSI QUERY/main.pyw", line 310, in check_control_naming
+    shots_to_stations_message += key + '  ' + value + '\n'
+TypeError: can only concatenate str (not "int") to str
+2020-01-31 14:11:21,351:GSIQuery:Database in use.  Unable to delete until it is closed
+Traceback (most recent call last):
+  File "C:\Users\rjwal_000\PycharmProjects\GSI QUERY\GSIDatabase.py", line 24, in create_db
+    os.remove(GSIDatabase.DATABASE_PATH)
+PermissionError: [WinError 32] The process cannot access the file because it is being used by another process: 'GSI Files\\GSI_database.db'
