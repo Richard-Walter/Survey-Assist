@@ -193,7 +193,7 @@ class MenuBar(tk.Frame):
                         # Check Eastings
                         east_diff = float(max(eastings)) - float(min(eastings))
 
-                        if east_diff > 0.007:
+                        if east_diff > 0.010:
                             error_text = 'Point ' + point_id + ' is out of tolerance: E ' + str(round(
                                 east_diff,
                                 3)) + 'm\n'
@@ -203,7 +203,7 @@ class MenuBar(tk.Frame):
                         # Check Northings
                         north_diff = float(max(northings)) - float(min(northings))
 
-                        if north_diff > 0.007:
+                        if north_diff > 0.010:
                             error_text = 'Point ' + point_id + ' is out of tolerance: N ' + str(round(
                                 north_diff,
                                 3)) + 'm\n'
