@@ -1,6 +1,9 @@
+# -*- coding: utf-8 -*-
+
 from GSIExceptions import *
 from collections import OrderedDict
 from collections import Counter
+import logging.config
 
 # TODO fix formatting for4 dp GSI files
 
@@ -209,3 +212,40 @@ class GSI:
                 change_points.add(point_id)
 
         return sorted(change_points)
+
+    # Create a new GSI with suffix that contains only control.  ALl other shots are removed from the GSI
+    def create_control_only_gsi(self):
+
+        control_only_gsi_file_contents = ''
+        control_only_filename = self.filename[:-4] + '_CONTROL_ONLY.gsi'
+        control_points = self.get_control_points()
+
+        with open(self.filename, "r") as f_orig:
+
+            # Create new list of formatted GSI lines each time this function is called
+            gsi_orig_filecontents = f_orig.readlines()
+
+        # Loop through and original gsi and find all shots that are control
+        for line in gsi_orig_filecontents:
+            for control in control_points:
+                if control in line:
+                    control_only_gsi_file_contents += line
+
+        print(control_only_gsi_file_contents)
+
+        # write out new GSI
+        with open(control_only_filename, 'w') as f_stripped:
+            f_stripped.write(control_only_gsi_file_contents)
+
+
+
+# def main():
+#
+#     # testing
+#     gsi = GSI(logging.getLogger('CompNet Assist'))
+#     gsi.format_gsi('C:/Users/rjwal_000/PycharmProjects/CompNetAssist/Files/A9_ARTC_902_2.GSI')
+#     gsi.create_control_only_gsi()
+#
+# if __name__ == "__main__":
+#
+#         main()
