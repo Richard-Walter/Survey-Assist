@@ -34,7 +34,6 @@ survey_config = None
 # This is the main GUI object that allows access to all the GUI's components
 gui_app = None
 
-
 class MenuBar(tk.Frame):
     filename_path = ""
 
@@ -203,7 +202,7 @@ class MenuBar(tk.Frame):
                         # Check Eastings
                         east_diff = float(max(eastings)) - float(min(eastings))
 
-                        if east_diff > 0.010:
+                        if east_diff > float(survey_config.easting_tolerance):
                             error_text = 'Point ' + point_id + ' is out of tolerance: E ' + str(round(
                                 east_diff,
                                 3)) + 'm\n'
@@ -213,7 +212,7 @@ class MenuBar(tk.Frame):
                         # Check Northings
                         north_diff = float(max(northings)) - float(min(northings))
 
-                        if north_diff > 0.010:
+                        if north_diff > float(survey_config.northing_tolerance):
                             error_text = 'Point ' + point_id + ' is out of tolerance: N ' + str(round(
                                 north_diff,
                                 3)) + 'm\n'
@@ -223,7 +222,7 @@ class MenuBar(tk.Frame):
                         # Check Elevation
                         height_diff = float(max(elevation)) - float(min(elevation))
 
-                        if height_diff > 0.015:
+                        if height_diff > float(survey_config.height_tolerance):
                             error_text = 'Point ' + point_id + ' is out of tolerance in height: ' + \
                                          str(round(
                                              height_diff,
@@ -503,6 +502,8 @@ class ConfigDialog:
 
     def save(self):
 
+        global survey_config
+
         precision_dictionary = {}
         survey_tolerance_dictionary = {}
 
@@ -537,6 +538,9 @@ class ConfigDialog:
 
             self.dialog_window.destroy()
             survey_config.create_config_file(precision_dictionary, survey_tolerance_dictionary)
+
+            survey_config = SurveyConfiguration()
+
 
     def cancel(self):
 
@@ -840,6 +844,7 @@ class GUIApplication(tk.Frame):
 
 
 class SurveyConfiguration:
+
     section_instrument = 'INSTRUMENT'
     section_survey_tolerances = 'SURVEY_TOLERANCES'
     precision_value_list = ['3dp', '4dp']

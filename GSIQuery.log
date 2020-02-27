@@ -312,3 +312,8 @@ Traceback (most recent call last):
   File "C:\Users\rjwal_000\AppData\Local\Programs\Python\Python37-32\lib\configparser.py", line 1146, in _unify_values
     raise NoSectionError(section) from None
 configparser.NoSectionError: No section: 'INSTRUMENT'
+2020-02-28 10:41:46,865:GSIQuery:Error creating executing SQL query:  SELECT Point_ID, Easting, Northing, Elevation FROM GSI WHERE Point_ID=?
+Traceback (most recent call last):
+  File "C:/Users/rjwal_000/PycharmProjects/GSI QUERY/main.pyw", line 205, in check_3d_survey
+    if east_diff > survey_config.easting_tolerance:
+TypeError: '>' not supported between instances of 'float' and 'str'
