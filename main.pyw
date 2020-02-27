@@ -8,6 +8,10 @@ NOTE: For 3.4 compatibility
     i) Replaced f-strings with.format method.
     ii) had to use an ordered dictionary"""
 
+# TODO add config file - 3 or 4dp, tolerances etc
+# TODO compare prism constants (maybe others in future distance) between same surveys (current vs past)
+# TODO move fix coordinates and override station coordinates
+
 import tkinter as tk
 from tkinter import ttk
 import logging.config
@@ -51,21 +55,23 @@ class MenuBar(tk.Frame):
         self.query_sub_menu = tk.Menu(self.menu_bar, tearoff=0)
         self.query_sub_menu.add_command(label="Query GSI...", command=self.display_query_input_box)
         self.query_sub_menu.add_command(label="Clear Query", command=self.clear_query)
-        self.menu_bar.add_cascade(label="Query", menu=self.query_sub_menu, state="disabled")  # disabled initially
+        self.menu_bar.add_cascade(label="Query", menu=self.query_sub_menu, state="disabled")
 
         # Check menu
         self.check_sub_menu = tk.Menu(self.menu_bar, tearoff=0)
         self.check_sub_menu.add_command(label="Check Tolerances", command=self.check_3d_survey)
         self.check_sub_menu.add_command(label="Check Control Naming ", command=self.check_control_naming)
+        self.check_sub_menu.add_command(label="Compare Survey ", command=self.compare_survey)
 
-        self.menu_bar.add_cascade(label="3D Survey", menu=self.check_sub_menu, state="disabled")  # disabled
-        # initially
+        self.menu_bar.add_cascade(label="3D Survey", menu=self.check_sub_menu, state="disabled")
 
         # Delete menu
         self.check_sub_menu = tk.Menu(self.menu_bar, tearoff=0)
         self.check_sub_menu.add_command(label="All 2D Orientation Shots", command=self.delete_orientation_shots)
-        self.menu_bar.add_cascade(label="Delete...", menu=self.check_sub_menu, state="disabled")  # disabled
-        # initially
+        self.menu_bar.add_cascade(label="Delete...", menu=self.check_sub_menu, state="disabled")
+
+        # Config menu
+        self.menu_bar.add_command(label="Config", command=self.configure_survey)
 
         # Help menu
         self.help_sub_menu = tk.Menu(self.menu_bar, tearoff=0)
@@ -324,9 +330,15 @@ class MenuBar(tk.Frame):
             tk.messagebox.showerror("Error", 'Error executing this query:\nPlease contact the developer of this '
                                              'program or see log file for further information')
 
+    def compare_survey(self):
+        pass
+
     def display_query_input_box(self):
 
         QueryDialog(self.master)
+
+    def configure_survey(self):
+        pass
 
     @staticmethod
     def clear_query():
