@@ -315,11 +315,9 @@ class MenuBar(tk.Frame):
                 error_text = "Control naming looks good!\n"
                 error_subject = all_good_subject
 
-
             # Create and display no. of times each station was shot;'
             counter = Counter(shots_to_stations)
             for key, value in sorted(counter.items()):
-
                 shots_to_stations_message += str(key) + '  ' + str(value) + '\n'
 
             error_text += '\n\n' + shots_to_stations_message
@@ -341,6 +339,10 @@ class MenuBar(tk.Frame):
         QueryDialog(self.master)
 
     def configure_survey(self):
+
+        global survey_config
+
+        survey_config = SurveyConfiguration()
 
         ConfigDialog(self.master)
 
@@ -457,28 +459,40 @@ class ConfigDialog:
 
         self.dialog_window.geometry(self.center_screen())
 
-        tk.Label(self.dialog_window, text="Precision").grid(row=0, column=0, padx=5, pady=5)
+        tk.Label(self.dialog_window, text="Precision:").grid(row=0, column=0, padx=5, pady=5)
         self.precision = tk.StringVar()
-        self.precision_entry = ttk.Combobox(self.dialog_window, width=18, textvariable=self.precision, state='readonly')
+        self.precision_entry = ttk.Combobox(self.dialog_window, width=10, textvariable=self.precision, state='readonly')
         self.precision_entry['values'] = SurveyConfiguration.precision_value_list
-        print(survey_config.precision_value)
-        self.precision_entry.current(SurveyConfiguration.precision_value_list.index(survey_config.precision_value))
-        self.precision_entry.bind("<<ComboboxSelected>>", self.precision_entry_cb_callback)
-        self.precision_entry.grid(row=0, column=1, padx=5, pady=5)
 
-        tk.Label(self.dialog_window, text="Select column:").grid(row=1, sticky="W", padx=5, pady=5)
-        tk.Label(self.dialog_window, text="Enter a column value:").grid(row=2, sticky="W", padx=5, pady=2)
+        self.precision_entry.current(SurveyConfiguration.precision_value_list.index(survey_config.precision_value))
+        self.precision_entry.bind("<<ComboboxSelected>>")
+        self.precision_entry.grid(row=0, column=1, padx=1, pady=5)
+
+        tk.Label(self.dialog_window, text="Easting Tolerance: ").grid(row=1, column=0, padx=5, pady=5)
+        self.entry_easting = tk.Entry(self.dialog_window, width=13)
+        self.entry_easting.insert(tkinter.END, survey_config.easting_tolerance)
+        self.entry_easting.grid(row=1, column=1, padx=5, pady=5)
+
+        tk.Label(self.dialog_window, text="Northing Tolerance: ").grid(row=2, column=0, padx=5, pady=5)
+        self.entry_northing = tk.Entry(self.dialog_window, width=13)
+        self.entry_northing.insert(tkinter.END, survey_config.northing_tolerance)
+        self.entry_northing.grid(row=2, column=1, padx=5, pady=5)
+
+        tk.Label(self.dialog_window, text="Height Tolerance: ").grid(row=3, column=0, padx=5, pady=5)
+        self.entry_height = tk.Entry(self.dialog_window, width=13)
+        self.entry_height.insert(tkinter.END, survey_config.height_tolerance)
+        self.entry_height.grid(row=3, column=1, padx=5, pady=5)
 
         save_b = tk.Button(self.dialog_window, text="Save", width=10, command=self.save)
-        save_b.grid(row=3, column=0, pady=10)
+        save_b.grid(row=4, column=0, pady=10)
 
         cancel_b = tk.Button(self.dialog_window, text="Cancel", width=10, command=self.cancel)
-        cancel_b.grid(row=3, column=1, pady=10)
+        cancel_b.grid(row=4, column=1, pady=10)
 
     def center_screen(self):
 
-        dialog_w = 350
-        dialog_h = 150
+        dialog_w = 270
+        dialog_h = 200
 
         ws = self.master.winfo_width()
         hs = self.master.winfo_height()
@@ -487,35 +501,47 @@ class ConfigDialog:
 
         return '{}x{}+{}+{}'.format(dialog_w, dialog_h, x, y)
 
-    def precision_entry_cb_callback(self, event):
-
-        pass
-
-        # Set the values for the column_value combobox now that the column name has been selected
-        # It removes any duplicate values and then orders the result.
-        # self.precision_value_entry['values'] = self.precision_entry_entry.get()
-        #
-        # self.precision_value_entry.config(state='readonly')
-
     def save(self):
 
-        print(self.precision_entry_entry.get())
+        precision_dictionary = {}
+        survey_tolerance_dictionary = {}
 
-        # if column_entry is "":
-        #     tkinter.messagebox.showinfo("GSI Query", "Please enter valid search data")
-        #     logger.info(
-        #         "Invalid data entered.  Column Name was {}: column value was {}".format(column_entry,
-        #                                                                                 column_value_entry))
-        #
-        #     # re-display query dialog
-        #     QueryDialog(self.master)
-        #     return
-        #
-        # self.dialog_window.destroy()
+        precision_dictionary['instrument_precision'] = self.precision_entry.get()
+        survey_tolerance_dictionary['eastings'] = self.entry_easting.get()
+        survey_tolerance_dictionary['northings'] = self.entry_northing.get()
+        survey_tolerance_dictionary['height'] = self.entry_height.get()
 
+        input_error = False
+
+        # check to make sure number is entered
+        for value in survey_tolerance_dictionary.values():
+
+            try:
+                float(value)
+
+            except ValueError:
+
+                input_error = True
+
+                break
+
+        if input_error:
+
+            tkinter.messagebox.showinfo("Survey Config", "Please enter a numerical tolerance value")
+            logger.info("Invalid tolerance configuration value entered")
+            self.dialog_window.destroy()
+
+            # re-display query dialog
+            ConfigDialog(self.master)
+        else:
+
+            self.dialog_window.destroy()
+            survey_config.create_config_file(precision_dictionary, survey_tolerance_dictionary)
 
     def cancel(self):
+
         self.dialog_window.destroy()
+
 
 class QueryDialog:
 
@@ -607,9 +633,6 @@ class QueryDialog:
                 cur = database.conn.cursor()
                 cur.execute(sql_query_text, (column_value,))
                 rows = cur.fetchall()
-
-                # for row in rows:
-                #    print(row)
 
             return rows
 
@@ -817,10 +840,18 @@ class GUIApplication(tk.Frame):
 
 
 class SurveyConfiguration:
-
     section_instrument = 'INSTRUMENT'
     section_survey_tolerances = 'SURVEY_TOLERANCES'
     precision_value_list = ['3dp', '4dp']
+    default_instrument_values = {
+        'instrument_precision': '3dp'
+    }
+
+    default_survey_tolerance_values = {
+        'eastings': '0.010',
+        'northings': '0.010',
+        'height': '0.015'
+    }
 
     def __init__(self):
 
@@ -831,7 +862,8 @@ class SurveyConfiguration:
         try:
             # read in config file
             self.config_parser.read(self.config_file_path)
-            self.precision_value = self.config_parser.get(SurveyConfiguration.section_instrument, 'instrument_precision')
+            self.precision_value = self.config_parser.get(SurveyConfiguration.section_instrument,
+                                                          'instrument_precision')
             self.easting_tolerance = self.config_parser.get(SurveyConfiguration.section_survey_tolerances, 'eastings')
             self.northing_tolerance = self.config_parser.get(SurveyConfiguration.section_survey_tolerances, 'northings')
             self.height_tolerance = self.config_parser.get(SurveyConfiguration.section_survey_tolerances, 'height')
@@ -845,20 +877,13 @@ class SurveyConfiguration:
 
         pass
 
-    # creates a new config file if for some reason the user has deleted it previously
-    def create_new_config_file(self):
+    def create_config_file(self, instrument_values, survey_tolerance_values):
 
-        self.config_parser[SurveyConfiguration.section_instrument] = {
-            'instrument_precision': '3dp'
-        }
+        self.config_parser[SurveyConfiguration.section_instrument] = instrument_values
 
-        self.config_parser[SurveyConfiguration.section_survey_tolerances] = {
-            'eastings':'0.010',
-            'northings': '0.010',
-            'height': '0.015'
-        }
+        self.config_parser[SurveyConfiguration.section_survey_tolerances] = survey_tolerance_values
 
-        with open(self.config_file_path,'w') as f:
+        with open(self.config_file_path, 'w') as f:
             self.config_parser.write(f)
 
 
@@ -897,8 +922,6 @@ def main():
     # Setup default survey configuration
     survey_config = SurveyConfiguration()
     root.mainloop()
-
-
 
     logger.info('Application Ended')
 
