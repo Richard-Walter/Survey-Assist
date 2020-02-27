@@ -17,6 +17,7 @@ from tkinter import ttk
 import logging.config
 from tkinter import filedialog
 from collections import Counter
+from configparser import ConfigParser
 
 import tkinter.messagebox
 from GSI import GSI
@@ -24,8 +25,11 @@ from GSIDatabase import GSIDatabase
 from GSIExceptions import *
 
 logger = logging.getLogger('GSIQuery')
+
 gsi = GSI(logger)
 database = GSIDatabase(GSI.GSI_WORD_ID_DICT, logger)
+
+# survey_config = None
 
 # This is the main GUI object that allows access to all the GUI's components
 gui_app = None
@@ -740,6 +744,26 @@ class GUIApplication(tk.Frame):
         self.main_window.pack(fill="both", expand=True)
 
 
+class SurveyConfiguration:
+
+    def __init__(self):
+
+        config = ConfigParser()
+
+        config['instrument'] = {
+            'instrument_precision': '3dp'
+        }
+
+        config['survey_tolerances'] = {
+            'eastings':'0.010',
+            'northings': '0.010',
+            'height': '0.015'
+        }
+
+        with open('./settings.ini','w') as f:
+            config.write(f)
+
+
 def configure_logger():
     logger.setLevel(logging.ERROR)
     formatter = logging.Formatter('%(asctime)s:%(name)s:%(message)s')
@@ -761,9 +785,13 @@ def configure_logger():
 
 def main():
     global gui_app
+    global survey_config
 
     # Setup logger
     configure_logger()
+
+    # Setup default survey configuration
+    survey_config = SurveyConfiguration()
 
     # Create main window
     root = tk.Tk()
