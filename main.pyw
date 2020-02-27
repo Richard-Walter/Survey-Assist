@@ -29,7 +29,7 @@ logger = logging.getLogger('GSIQuery')
 gsi = GSI(logger)
 database = GSIDatabase(GSI.GSI_WORD_ID_DICT, logger)
 
-# survey_config = None
+survey_config = None
 
 # This is the main GUI object that allows access to all the GUI's components
 gui_app = None
@@ -326,7 +326,6 @@ class MenuBar(tk.Frame):
 
             # display error dialog box
             tkinter.messagebox.showinfo(error_subject, error_text)
-
             gui_app.list_box.populate(gsi.formatted_lines, line_number_errors)
 
         except Exception:
@@ -342,7 +341,8 @@ class MenuBar(tk.Frame):
         QueryDialog(self.master)
 
     def configure_survey(self):
-        pass
+
+        ConfigDialog(self.master)
 
     @staticmethod
     def clear_query():
@@ -444,6 +444,78 @@ class MenuBar(tk.Frame):
             tk.messagebox.showerror("ERROR", 'Error reading GSI File:\n\nPlease make sure file is not opened '
                                              'by another program.  If problem continues please contact Richard Walter')
 
+
+class ConfigDialog:
+
+    def __init__(self, master):
+
+        self.master = master
+
+        #  Lets build the dialog box
+        self.dialog_window = tk.Toplevel(master)
+        self.dialog_window.title("Survey Configuration")
+
+        self.dialog_window.geometry(self.center_screen())
+
+        tk.Label(self.dialog_window, text="Precision").grid(row=0, column=0, padx=5, pady=5)
+        self.precision = tk.StringVar()
+        self.precision_entry = ttk.Combobox(self.dialog_window, width=18, textvariable=self.precision, state='readonly')
+        self.precision_entry['values'] = SurveyConfiguration.precision_value_list
+        print(survey_config.precision_value)
+        self.precision_entry.current(SurveyConfiguration.precision_value_list.index(survey_config.precision_value))
+        self.precision_entry.bind("<<ComboboxSelected>>", self.precision_entry_cb_callback)
+        self.precision_entry.grid(row=0, column=1, padx=5, pady=5)
+
+        tk.Label(self.dialog_window, text="Select column:").grid(row=1, sticky="W", padx=5, pady=5)
+        tk.Label(self.dialog_window, text="Enter a column value:").grid(row=2, sticky="W", padx=5, pady=2)
+
+        save_b = tk.Button(self.dialog_window, text="Save", width=10, command=self.save)
+        save_b.grid(row=3, column=0, pady=10)
+
+        cancel_b = tk.Button(self.dialog_window, text="Cancel", width=10, command=self.cancel)
+        cancel_b.grid(row=3, column=1, pady=10)
+
+    def center_screen(self):
+
+        dialog_w = 350
+        dialog_h = 150
+
+        ws = self.master.winfo_width()
+        hs = self.master.winfo_height()
+        x = int((ws / 2) - (dialog_w / 2))
+        y = int((hs / 2) - (dialog_w / 2))
+
+        return '{}x{}+{}+{}'.format(dialog_w, dialog_h, x, y)
+
+    def precision_entry_cb_callback(self, event):
+
+        pass
+
+        # Set the values for the column_value combobox now that the column name has been selected
+        # It removes any duplicate values and then orders the result.
+        # self.precision_value_entry['values'] = self.precision_entry_entry.get()
+        #
+        # self.precision_value_entry.config(state='readonly')
+
+    def save(self):
+
+        print(self.precision_entry_entry.get())
+
+        # if column_entry is "":
+        #     tkinter.messagebox.showinfo("GSI Query", "Please enter valid search data")
+        #     logger.info(
+        #         "Invalid data entered.  Column Name was {}: column value was {}".format(column_entry,
+        #                                                                                 column_value_entry))
+        #
+        #     # re-display query dialog
+        #     QueryDialog(self.master)
+        #     return
+        #
+        # self.dialog_window.destroy()
+
+
+    def cancel(self):
+        self.dialog_window.destroy()
 
 class QueryDialog:
 
@@ -746,22 +818,48 @@ class GUIApplication(tk.Frame):
 
 class SurveyConfiguration:
 
+    section_instrument = 'INSTRUMENT'
+    section_survey_tolerances = 'SURVEY_TOLERANCES'
+    precision_value_list = ['3dp', '4dp']
+
     def __init__(self):
 
-        config = ConfigParser()
+        self.config_file_path = './settings.ini'
 
-        config['instrument'] = {
+        self.config_parser = ConfigParser()
+
+        try:
+            # read in config file
+            self.config_parser.read(self.config_file_path)
+            self.precision_value = self.config_parser.get(SurveyConfiguration.section_instrument, 'instrument_precision')
+            self.easting_tolerance = self.config_parser.get(SurveyConfiguration.section_survey_tolerances, 'eastings')
+            self.northing_tolerance = self.config_parser.get(SurveyConfiguration.section_survey_tolerances, 'northings')
+            self.height_tolerance = self.config_parser.get(SurveyConfiguration.section_survey_tolerances, 'height')
+
+        except Exception as ex:
+            logger.exception('Error reading config file')
+            tk.messagebox.showerror("Error", 'Error reading config file.  Please re-enter config values\nPlease '
+                                             'contact Richard if problem persists')
+
+    def update(self, section, key, value):
+
+        pass
+
+    # creates a new config file if for some reason the user has deleted it previously
+    def create_new_config_file(self):
+
+        self.config_parser[SurveyConfiguration.section_instrument] = {
             'instrument_precision': '3dp'
         }
 
-        config['survey_tolerances'] = {
+        self.config_parser[SurveyConfiguration.section_survey_tolerances] = {
             'eastings':'0.010',
             'northings': '0.010',
             'height': '0.015'
         }
 
-        with open('./settings.ini','w') as f:
-            config.write(f)
+        with open(self.config_file_path,'w') as f:
+            self.config_parser.write(f)
 
 
 def configure_logger():
@@ -790,16 +888,18 @@ def main():
     # Setup logger
     configure_logger()
 
-    # Setup default survey configuration
-    survey_config = SurveyConfiguration()
-
     # Create main window
     root = tk.Tk()
     root.geometry("1600x1000")
     root.title("GSI Query")
     root.wm_iconbitmap(r'icons\analyser.ico')
     gui_app = GUIApplication(root)
+    # Setup default survey configuration
+    survey_config = SurveyConfiguration()
     root.mainloop()
+
+
+
     logger.info('Application Ended')
 
 

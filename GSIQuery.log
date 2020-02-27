@@ -240,3 +240,75 @@ Traceback (most recent call last):
   File "C:\Users\rjwal_000\PycharmProjects\GSI QUERY\GSIDatabase.py", line 24, in create_db
     os.remove(GSIDatabase.DATABASE_PATH)
 PermissionError: [WinError 32] The process cannot access the file because it is being used by another process: 'GSI Files\\GSI_database.db'
+2020-02-27 14:46:00,924:GSIQuery:Error reading config file
+Traceback (most recent call last):
+  File "C:/Users/rjwal_000/PycharmProjects/GSI QUERY/main.pyw", line 833, in __init__
+    self.precision_value = self.config_parser.get(SurveyConfiguration.section_instrument, 'instrument_precision')
+  File "C:\Users\rjwal_000\AppData\Local\Programs\Python\Python37-32\lib\configparser.py", line 780, in get
+    d = self._unify_values(section, vars)
+  File "C:\Users\rjwal_000\AppData\Local\Programs\Python\Python37-32\lib\configparser.py", line 1146, in _unify_values
+    raise NoSectionError(section) from None
+configparser.NoSectionError: No section: 'INSTRUMENT'
+2020-02-27 14:46:55,451:GSIQuery:Error reading config file
+Traceback (most recent call last):
+  File "C:/Users/rjwal_000/PycharmProjects/GSI QUERY/main.pyw", line 833, in __init__
+    self.precision_value = self.config_parser.get(SurveyConfiguration.section_instrument, 'instrument_precision')
+  File "C:\Users\rjwal_000\AppData\Local\Programs\Python\Python37-32\lib\configparser.py", line 780, in get
+    d = self._unify_values(section, vars)
+  File "C:\Users\rjwal_000\AppData\Local\Programs\Python\Python37-32\lib\configparser.py", line 1146, in _unify_values
+    raise NoSectionError(section) from None
+configparser.NoSectionError: No section: 'INSTRUMENT'
+2020-02-27 14:47:01,062:GSIQuery:Error reading config file
+Traceback (most recent call last):
+  File "C:/Users/rjwal_000/PycharmProjects/GSI QUERY/main.pyw", line 833, in __init__
+    self.precision_value = self.config_parser.get(SurveyConfiguration.section_instrument, 'instrument_precision')
+  File "C:\Users\rjwal_000\AppData\Local\Programs\Python\Python37-32\lib\configparser.py", line 780, in get
+    d = self._unify_values(section, vars)
+  File "C:\Users\rjwal_000\AppData\Local\Programs\Python\Python37-32\lib\configparser.py", line 1146, in _unify_values
+    raise NoSectionError(section) from None
+configparser.NoSectionError: No section: 'INSTRUMENT'
+2020-02-27 14:47:52,342:GSIQuery:Error reading config file
+Traceback (most recent call last):
+  File "C:/Users/rjwal_000/PycharmProjects/GSI QUERY/main.pyw", line 833, in __init__
+    self.precision_value = self.config_parser.get(SurveyConfiguration.section_instrument, 'instrument_precision')
+  File "C:\Users\rjwal_000\AppData\Local\Programs\Python\Python37-32\lib\configparser.py", line 780, in get
+    d = self._unify_values(section, vars)
+  File "C:\Users\rjwal_000\AppData\Local\Programs\Python\Python37-32\lib\configparser.py", line 1146, in _unify_values
+    raise NoSectionError(section) from None
+configparser.NoSectionError: No section: 'INSTRUMENT'
+2020-02-27 14:48:50,531:GSIQuery:Error reading config file
+Traceback (most recent call last):
+  File "C:/Users/rjwal_000/PycharmProjects/GSI QUERY/main.pyw", line 833, in __init__
+    self.precision_value = self.config_parser.get(SurveyConfiguration.section_instrument, 'instrument_precision')
+  File "C:\Users\rjwal_000\AppData\Local\Programs\Python\Python37-32\lib\configparser.py", line 780, in get
+    d = self._unify_values(section, vars)
+  File "C:\Users\rjwal_000\AppData\Local\Programs\Python\Python37-32\lib\configparser.py", line 1146, in _unify_values
+    raise NoSectionError(section) from None
+configparser.NoSectionError: No section: 'INSTRUMENT'
+2020-02-27 14:49:23,022:GSIQuery:Error reading config file
+Traceback (most recent call last):
+  File "C:/Users/rjwal_000/PycharmProjects/GSI QUERY/main.pyw", line 833, in __init__
+    self.precision_value = self.config_parser.get(SurveyConfiguration.section_instrument, 'instrument_precision')
+  File "C:\Users\rjwal_000\AppData\Local\Programs\Python\Python37-32\lib\configparser.py", line 780, in get
+    d = self._unify_values(section, vars)
+  File "C:\Users\rjwal_000\AppData\Local\Programs\Python\Python37-32\lib\configparser.py", line 1146, in _unify_values
+    raise NoSectionError(section) from None
+configparser.NoSectionError: No section: 'INSTRUMENT'
+2020-02-27 14:49:35,663:GSIQuery:Error reading config file
+Traceback (most recent call last):
+  File "C:/Users/rjwal_000/PycharmProjects/GSI QUERY/main.pyw", line 833, in __init__
+    self.precision_value = self.config_parser.get(SurveyConfiguration.section_instrument, 'instrument_precision')
+  File "C:\Users\rjwal_000\AppData\Local\Programs\Python\Python37-32\lib\configparser.py", line 780, in get
+    d = self._unify_values(section, vars)
+  File "C:\Users\rjwal_000\AppData\Local\Programs\Python\Python37-32\lib\configparser.py", line 1146, in _unify_values
+    raise NoSectionError(section) from None
+configparser.NoSectionError: No section: 'INSTRUMENT'
+2020-02-27 14:50:42,656:GSIQuery:Error reading config file
+Traceback (most recent call last):
+  File "C:/Users/rjwal_000/PycharmProjects/GSI QUERY/main.pyw", line 833, in __init__
+    self.precision_value = self.config_parser.get(SurveyConfiguration.section_instrument, 'instrument_precision')
+  File "C:\Users\rjwal_000\AppData\Local\Programs\Python\Python37-32\lib\configparser.py", line 780, in get
+    d = self._unify_values(section, vars)
+  File "C:\Users\rjwal_000\AppData\Local\Programs\Python\Python37-32\lib\configparser.py", line 1146, in _unify_values
+    raise NoSectionError(section) from None
+configparser.NoSectionError: No section: 'INSTRUMENT'
