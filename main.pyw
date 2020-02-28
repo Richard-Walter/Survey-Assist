@@ -8,7 +8,6 @@ NOTE: For 3.4 compatibility
     i) Replaced f-strings with.format method.
     ii) had to use an ordered dictionary"""
 
-# TODO add config file - 3 or 4dp, tolerances etc
 # TODO compare prism constants (maybe others in future distance) between same surveys (current vs past)
 # TODO move fix coordinates and override station coordinates
 
@@ -24,12 +23,12 @@ from GSI import GSI
 from GSIDatabase import GSIDatabase
 from GSIExceptions import *
 
+survey_config = None
+
 logger = logging.getLogger('GSIQuery')
 
-gsi = GSI(logger)
+gsi = None
 database = GSIDatabase(GSI.GSI_WORD_ID_DICT, logger)
-
-survey_config = None
 
 # This is the main GUI object that allows access to all the GUI's components
 gui_app = None
@@ -914,6 +913,7 @@ def configure_logger():
 def main():
     global gui_app
     global survey_config
+    global gsi
 
     # Setup logger
     configure_logger()
@@ -923,12 +923,13 @@ def main():
     root.geometry("1600x1000")
     root.title("GSI Query")
     root.wm_iconbitmap(r'icons\analyser.ico')
-    gui_app = GUIApplication(root)
-    # Setup default survey configuration
-    survey_config = SurveyConfiguration()
-    root.mainloop()
 
-    logger.info('Application Ended')
+    survey_config = SurveyConfiguration()
+    gsi = GSI(logger, survey_config)
+    gui_app = GUIApplication(root)
+
+    # Setup default survey configuration
+    root.mainloop()
 
 
 if __name__ == "__main__":

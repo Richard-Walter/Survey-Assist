@@ -317,3 +317,8 @@ Traceback (most recent call last):
   File "C:/Users/rjwal_000/PycharmProjects/GSI QUERY/main.pyw", line 205, in check_3d_survey
     if east_diff > survey_config.easting_tolerance:
 TypeError: '>' not supported between instances of 'float' and 'str'
+2020-02-28 11:05:43,901:GSIQuery:Database in use.  Unable to delete until it is closed
+Traceback (most recent call last):
+  File "C:\Users\rjwal_000\PycharmProjects\GSI QUERY\GSIDatabase.py", line 24, in create_db
+    os.remove(GSIDatabase.DATABASE_PATH)
+PermissionError: [WinError 32] The process cannot access the file because it is being used by another process: 'GSI Files\\GSI_database.db'

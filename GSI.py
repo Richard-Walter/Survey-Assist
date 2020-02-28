@@ -16,15 +16,19 @@ class GSI:
                                     ('85', 'STN_Northing'), ('86', 'STN_Elevation'), ('87', 'Target_Height'),
                                     ('88', 'STN_Height')])
 
-    def __init__(self, logger):
+    def __init__(self, logger, survey_config):
 
         self.logger = logger
         self.filename = None
         self.formatted_lines = None
         self.column_names = list(GSI.GSI_WORD_ID_DICT.values())
         self.column_ids = list(GSI.GSI_WORD_ID_DICT.keys())
+        self.survey_precision = survey_config.precision_value
+        print(self.survey_precision)
 
     def format_gsi(self, filename):
+
+
 
         with open(filename, "r") as f:
 
