@@ -8,9 +8,6 @@ from SurveyConfiguration import SurveyConfiguration
 import logging.config
 
 
-# TODO fix formatting for4 dp GSI files
-
-
 class GSI:
     GSI_WORD_ID_DICT = OrderedDict([('11', 'Point_ID'), ('19', 'Timestamp'), ('21', 'Horizontal_Angle'),
                                     ('22', 'Vertical_Angle'), ('31', 'Slope_Distance'), ('32', 'Horizontal_Dist'),
