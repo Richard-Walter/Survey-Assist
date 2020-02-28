@@ -322,3 +322,121 @@ Traceback (most recent call last):
   File "C:\Users\rjwal_000\PycharmProjects\GSI QUERY\GSIDatabase.py", line 24, in create_db
     os.remove(GSIDatabase.DATABASE_PATH)
 PermissionError: [WinError 32] The process cannot access the file because it is being used by another process: 'GSI Files\\GSI_database.db'
+2020-02-28 11:13:42,496:GSIQuery:Database in use.  Unable to delete until it is closed
+Traceback (most recent call last):
+  File "C:\Users\rjwal_000\PycharmProjects\GSI QUERY\GSIDatabase.py", line 24, in create_db
+    os.remove(GSIDatabase.DATABASE_PATH)
+PermissionError: [WinError 32] The process cannot access the file because it is being used by another process: 'GSI Files\\GSI_database.db'
+2020-02-28 11:26:03,134:GSIQuery:Database in use.  Unable to delete until it is closed
+Traceback (most recent call last):
+  File "C:\Users\rjwal_000\PycharmProjects\GSI QUERY\GSIDatabase.py", line 24, in create_db
+    os.remove(GSIDatabase.DATABASE_PATH)
+PermissionError: [WinError 32] The process cannot access the file because it is being used by another process: 'GSI Files\\GSI_database.db'
+2020-02-28 11:33:51,358:GSIQuery:Database in use.  Unable to delete until it is closed
+Traceback (most recent call last):
+  File "C:\Users\rjwal_000\PycharmProjects\GSI QUERY\GSIDatabase.py", line 24, in create_db
+    os.remove(GSIDatabase.DATABASE_PATH)
+PermissionError: [WinError 32] The process cannot access the file because it is being used by another process: 'GSI Files\\GSI_database.db'
+2020-02-28 11:49:46,310:GSIQuery:Database in use.  Unable to delete until it is closed
+Traceback (most recent call last):
+  File "C:\Users\rjwal_000\PycharmProjects\GSI QUERY\GSIDatabase.py", line 24, in create_db
+    os.remove(GSIDatabase.DATABASE_PATH)
+PermissionError: [WinError 32] The process cannot access the file because it is being used by another process: 'GSI Files\\GSI_database.db'
+2020-02-28 11:49:58,242:GSIQuery:Database in use.  Unable to delete until it is closed
+Traceback (most recent call last):
+  File "C:\Users\rjwal_000\PycharmProjects\GSI QUERY\GSIDatabase.py", line 24, in create_db
+    os.remove(GSIDatabase.DATABASE_PATH)
+PermissionError: [WinError 32] The process cannot access the file because it is being used by another process: 'GSI Files\\GSI_database.db'
+2020-02-28 11:50:24,445:GSIQuery:Database in use.  Unable to delete until it is closed
+Traceback (most recent call last):
+  File "C:\Users\rjwal_000\PycharmProjects\GSI QUERY\GSIDatabase.py", line 24, in create_db
+    os.remove(GSIDatabase.DATABASE_PATH)
+PermissionError: [WinError 32] The process cannot access the file because it is being used by another process: 'GSI Files\\GSI_database.db'
+2020-02-28 12:04:51,008:GSIQuery:Database in use.  Unable to delete until it is closed
+Traceback (most recent call last):
+  File "C:\Users\rjwal_000\PycharmProjects\GSI QUERY\GSIDatabase.py", line 24, in create_db
+    os.remove(GSIDatabase.DATABASE_PATH)
+PermissionError: [WinError 32] The process cannot access the file because it is being used by another process: 'GSI Files\\GSI_database.db'
+2020-02-28 13:16:18,971:GSIQuery:Database in use.  Unable to delete until it is closed
+Traceback (most recent call last):
+  File "C:\Users\rjwal_000\PycharmProjects\GSI QUERY\GSIDatabase.py", line 24, in create_db
+    os.remove(GSIDatabase.DATABASE_PATH)
+PermissionError: [WinError 32] The process cannot access the file because it is being used by another process: 'GSI Files\\GSI_database.db'
+2020-02-28 13:16:32,099:GSIQuery:Database in use.  Unable to delete until it is closed
+Traceback (most recent call last):
+  File "C:\Users\rjwal_000\PycharmProjects\GSI QUERY\GSIDatabase.py", line 24, in create_db
+    os.remove(GSIDatabase.DATABASE_PATH)
+PermissionError: [WinError 32] The process cannot access the file because it is being used by another process: 'GSI Files\\GSI_database.db'
+2020-02-28 13:16:40,496:GSIQuery:Database in use.  Unable to delete until it is closed
+Traceback (most recent call last):
+  File "C:\Users\rjwal_000\PycharmProjects\GSI QUERY\GSIDatabase.py", line 24, in create_db
+    os.remove(GSIDatabase.DATABASE_PATH)
+PermissionError: [WinError 32] The process cannot access the file because it is being used by another process: 'GSI Files\\GSI_database.db'
+2020-02-28 13:21:46,175:GSIQuery:Database in use.  Unable to delete until it is closed
+Traceback (most recent call last):
+  File "C:\Users\rjwal_000\PycharmProjects\GSI QUERY\GSIDatabase.py", line 24, in create_db
+    os.remove(GSIDatabase.DATABASE_PATH)
+PermissionError: [WinError 32] The process cannot access the file because it is being used by another process: 'GSI Files\\GSI_database.db'
+2020-02-28 13:39:40,331:GSIQuery:Error has occurred. 
+Traceback (most recent call last):
+  File "C:\Users\rjwal_000\PycharmProjects\GSI QUERY\GSI.py", line 180, in format_number
+    temp = '{:.4f}'.format(float(number) * 0.001)
+ValueError: could not convert string to float: 
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:/Users/rjwal_000/PycharmProjects/GSI QUERY/main.pyw", line 103, in format_gsi_file
+    gsi.format_gsi(MenuBar.filename_path)
+  File "C:\Users\rjwal_000\PycharmProjects\GSI QUERY\GSI.py", line 89, in format_gsi
+    field_value = self.format_number(field_value)
+  File "C:\Users\rjwal_000\PycharmProjects\GSI QUERY\GSI.py", line 185, in format_number
+    raise Exception
+Exception
+2020-02-28 13:46:09,962:GSIQuery:Error has occurred. 
+Traceback (most recent call last):
+  File "C:\Users\rjwal_000\PycharmProjects\GSI QUERY\GSI.py", line 180, in format_number
+    temp1 = float(number) * 0.001
+ValueError: could not convert string to float: 
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:/Users/rjwal_000/PycharmProjects/GSI QUERY/main.pyw", line 103, in format_gsi_file
+    gsi.format_gsi(MenuBar.filename_path)
+  File "C:\Users\rjwal_000\PycharmProjects\GSI QUERY\GSI.py", line 89, in format_gsi
+    field_value = self.format_number(field_value)
+  File "C:\Users\rjwal_000\PycharmProjects\GSI QUERY\GSI.py", line 187, in format_number
+    raise Exception
+Exception
+2020-02-28 13:46:47,303:GSIQuery:Error has occurred. 
+Traceback (most recent call last):
+  File "C:\Users\rjwal_000\PycharmProjects\GSI QUERY\GSI.py", line 180, in format_number
+    temp1 = float(number) * 0.001
+ValueError: could not convert string to float: 
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:/Users/rjwal_000/PycharmProjects/GSI QUERY/main.pyw", line 103, in format_gsi_file
+    gsi.format_gsi(MenuBar.filename_path)
+  File "C:\Users\rjwal_000\PycharmProjects\GSI QUERY\GSI.py", line 89, in format_gsi
+    field_value = self.format_number(field_value)
+  File "C:\Users\rjwal_000\PycharmProjects\GSI QUERY\GSI.py", line 187, in format_number
+    raise Exception
+Exception
+2020-02-28 13:46:48,547:GSIQuery:Database in use.  Unable to delete until it is closed
+Traceback (most recent call last):
+  File "C:\Users\rjwal_000\PycharmProjects\GSI QUERY\GSIDatabase.py", line 24, in create_db
+    os.remove(GSIDatabase.DATABASE_PATH)
+PermissionError: [WinError 32] The process cannot access the file because it is being used by another process: 'GSI Files\\GSI_database.db'
+2020-02-28 13:51:08,677:GSIQuery:Database in use.  Unable to delete until it is closed
+Traceback (most recent call last):
+  File "C:\Users\rjwal_000\PycharmProjects\GSI QUERY\GSIDatabase.py", line 24, in create_db
+    os.remove(GSIDatabase.DATABASE_PATH)
+PermissionError: [WinError 32] The process cannot access the file because it is being used by another process: 'GSI Files\\GSI_database.db'
+2020-02-28 13:51:19,285:GSIQuery:Database in use.  Unable to delete until it is closed
+Traceback (most recent call last):
+  File "C:\Users\rjwal_000\PycharmProjects\GSI QUERY\GSIDatabase.py", line 24, in create_db
+    os.remove(GSIDatabase.DATABASE_PATH)
+PermissionError: [WinError 32] The process cannot access the file because it is being used by another process: 'GSI Files\\GSI_database.db'

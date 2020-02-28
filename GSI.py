@@ -3,7 +3,10 @@
 from GSIExceptions import *
 from collections import OrderedDict
 from collections import Counter
+from SurveyConfiguration import SurveyConfiguration
+
 import logging.config
+
 
 # TODO fix formatting for4 dp GSI files
 
@@ -16,19 +19,18 @@ class GSI:
                                     ('85', 'STN_Northing'), ('86', 'STN_Elevation'), ('87', 'Target_Height'),
                                     ('88', 'STN_Height')])
 
-    def __init__(self, logger, survey_config):
+    def __init__(self, logger):
 
         self.logger = logger
         self.filename = None
         self.formatted_lines = None
         self.column_names = list(GSI.GSI_WORD_ID_DICT.values())
         self.column_ids = list(GSI.GSI_WORD_ID_DICT.keys())
-        self.survey_precision = survey_config.precision_value
-        print(self.survey_precision)
+        self.survey_config = SurveyConfiguration()
 
     def format_gsi(self, filename):
 
-
+        self.survey_config = SurveyConfiguration()
 
         with open(filename, "r") as f:
 
@@ -84,7 +86,7 @@ class GSI:
 
                         # distance and coordinates
                         elif two_digit_id in ('31', '32', '33', '81', '82', '83', '84', '85', '86', '87', '88'):
-                            field_value = self.format_3dp(field_value)
+                            field_value = self.format_number(field_value)
 
                             # Check to see if this line is a station setup
                             if two_digit_id == "84":
@@ -138,21 +140,25 @@ class GSI:
 
     def format_angles(self, angle):
 
-        if len(angle) == 0:
-            angle = '00000000'
-        try:
-            seconds = angle[-3:-1]
-            minutes = angle[-5:-3]
-            degrees = angle[:-5]
+        degrees = '000'
+        minutes = '00'
+        seconds = '00'
 
-        except ValueError:
-            # self.logger.exception(f'Incorrect angle {angle}- cannot be formatted properly ')
-            self.logger.exception('Incorrect angle {}- cannot be formatted properly'.format(angle))
+        if self.survey_config.precision_value == '3dp':
 
-        else:
-            angle = '{}° {}\' {}"'.format(degrees.zfill(3), minutes, seconds)
+            if len(angle) != 0:
+                seconds = angle[-3:-1]
+                minutes = angle[-5:-3]
+                degrees = angle[:-5]
 
-        return angle
+        else:  # survey is 4 dp
+
+            if len(angle) != 3:
+                seconds = angle[-5:-1]
+                minutes = angle[-7:-5]
+                degrees = angle[:-7]
+
+        return '{}° {}\' {}"'.format(degrees.zfill(3), minutes, seconds)
 
     @staticmethod
     def format_prism_constant(constant):
@@ -163,11 +169,14 @@ class GSI:
             return "0"
         return constant
 
-    @staticmethod
-    def format_3dp(number):
+    def format_number(self, number):
 
         try:
-            return '{:.3f}'.format(int(number) * 0.001)
+            if self.survey_config.precision_value == '3dp':
+                return '{:.3f}'.format(float(number) * 0.001)
+
+            else:  # survey is 4 dp
+                return '{:.4f}'.format(float(number) * 0.001)
 
         # return empty string if not a number
         except ValueError:
@@ -241,8 +250,6 @@ class GSI:
         # write out new GSI
         with open(control_only_filename, 'w') as f_stripped:
             f_stripped.write(control_only_gsi_file_contents)
-
-
 
 # def main():
 #

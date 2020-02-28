@@ -16,14 +16,12 @@ from tkinter import ttk
 import logging.config
 from tkinter import filedialog
 from collections import Counter
-from configparser import ConfigParser
 
 import tkinter.messagebox
 from GSI import GSI
+from SurveyConfiguration import SurveyConfiguration
 from GSIDatabase import GSIDatabase
 from GSIExceptions import *
-
-survey_config = None
 
 logger = logging.getLogger('GSIQuery')
 
@@ -32,6 +30,7 @@ database = GSIDatabase(GSI.GSI_WORD_ID_DICT, logger)
 
 # This is the main GUI object that allows access to all the GUI's components
 gui_app = None
+
 
 class MenuBar(tk.Frame):
     filename_path = ""
@@ -540,7 +539,6 @@ class ConfigDialog:
 
             survey_config = SurveyConfiguration()
 
-
     def cancel(self):
 
         self.dialog_window.destroy()
@@ -842,55 +840,6 @@ class GUIApplication(tk.Frame):
         self.main_window.pack(fill="both", expand=True)
 
 
-class SurveyConfiguration:
-
-    section_instrument = 'INSTRUMENT'
-    section_survey_tolerances = 'SURVEY_TOLERANCES'
-    precision_value_list = ['3dp', '4dp']
-    default_instrument_values = {
-        'instrument_precision': '3dp'
-    }
-
-    default_survey_tolerance_values = {
-        'eastings': '0.010',
-        'northings': '0.010',
-        'height': '0.015'
-    }
-
-    def __init__(self):
-
-        self.config_file_path = './settings.ini'
-
-        self.config_parser = ConfigParser()
-
-        try:
-            # read in config file
-            self.config_parser.read(self.config_file_path)
-            self.precision_value = self.config_parser.get(SurveyConfiguration.section_instrument,
-                                                          'instrument_precision')
-            self.easting_tolerance = self.config_parser.get(SurveyConfiguration.section_survey_tolerances, 'eastings')
-            self.northing_tolerance = self.config_parser.get(SurveyConfiguration.section_survey_tolerances, 'northings')
-            self.height_tolerance = self.config_parser.get(SurveyConfiguration.section_survey_tolerances, 'height')
-
-        except Exception as ex:
-            logger.exception('Error reading config file')
-            tk.messagebox.showerror("Error", 'Error reading config file.  Please re-enter config values\nPlease '
-                                             'contact Richard if problem persists')
-
-    def update(self, section, key, value):
-
-        pass
-
-    def create_config_file(self, instrument_values, survey_tolerance_values):
-
-        self.config_parser[SurveyConfiguration.section_instrument] = instrument_values
-
-        self.config_parser[SurveyConfiguration.section_survey_tolerances] = survey_tolerance_values
-
-        with open(self.config_file_path, 'w') as f:
-            self.config_parser.write(f)
-
-
 def configure_logger():
     logger.setLevel(logging.ERROR)
     formatter = logging.Formatter('%(asctime)s:%(name)s:%(message)s')
@@ -912,7 +861,6 @@ def configure_logger():
 
 def main():
     global gui_app
-    global survey_config
     global gsi
 
     # Setup logger
@@ -924,8 +872,7 @@ def main():
     root.title("GSI Query")
     root.wm_iconbitmap(r'icons\analyser.ico')
 
-    survey_config = SurveyConfiguration()
-    gsi = GSI(logger, survey_config)
+    gsi = GSI(logger)
     gui_app = GUIApplication(root)
 
     # Setup default survey configuration
