@@ -205,6 +205,19 @@ class GSI:
 
         return sorted(control_points)
 
+    # returns gsi lines containing all shots except setups from GSI
+    def get_all_lines_except_setup(self):
+
+        shot_points = []
+
+        for formatted_line in self.formatted_lines:
+
+            # check to see if point id is a control point by see if STN_Easting exists
+            if not formatted_line['STN_Easting']:
+                shot_points.append(formatted_line)
+
+        return shot_points
+
     def get_change_points(self):
 
         change_points = set()
@@ -225,6 +238,7 @@ class GSI:
         return sorted(change_points)
 
     # Create a new GSI with suffix that contains only control.  ALl other shots are removed from the GSI
+
     def create_control_only_gsi(self):
 
         control_only_gsi_file_contents = ''

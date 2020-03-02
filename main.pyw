@@ -9,13 +9,14 @@ NOTE: For 3.4 compatibility
     ii) had to use an ordered dictionary"""
 
 # TODO compare prism constants (maybe others in future distance) between same surveys (current vs past)
-# TODO move fix coordinates and override station coordinates
+# TODO move fix coordinates and override station coordinates.  WIll need to append all coordinate values in this case
 
 import tkinter as tk
 from tkinter import ttk
 import logging.config
 from tkinter import filedialog
 from collections import Counter
+from collections import OrderedDict
 
 import tkinter.messagebox
 from GSI import GSI
@@ -329,7 +330,47 @@ class MenuBar(tk.Frame):
                                              'program or see log file for further information')
 
     def compare_survey(self):
-        pass
+
+        points_diff_PC_dict = {}
+
+        old_survey_filepath = tk.filedialog.askopenfilename()
+        old_survey_gsi = GSI(logger)
+        old_survey_gsi.format_gsi(old_survey_filepath)
+        old_survey_formatted_lines_except_setups = old_survey_gsi.get_all_lines_except_setup()
+
+        current_survey_formatted_lines_except_setups = gsi.get_all_lines_except_setup()
+
+        old_point_PC_dict = OrderedDict()
+
+        # Create a dictionary of points and their prism constant.
+        # Assumption if the prism constant is and should be the same for the same point
+        for formatted_line in old_survey_formatted_lines_except_setups:
+
+            temp = formatted_line['Point_ID']
+            pc = formatted_line['Prism_Constant']
+
+
+            old_point_PC_dict[formatted_line['Point_ID']] = formatted_line['Prism_Constant']
+
+        print(old_point_PC_dict)
+
+        for old_point_ID, old_PC in old_point_PC_dict.items():
+
+            for current_gsi_line in current_survey_formatted_lines_except_setups:
+
+                current_point_ID = current_gsi_line['Point_ID']
+                current_PC = current_gsi_line['Prism_Constant']
+
+                if old_point_ID == current_point_ID:
+
+                    # Compare PC - they should be the same.  If not report to user
+                    if old_PC != current_PC:
+                        points_diff_PC_dict[current_point_ID] = {'current pc': current_PC, 'old_pc': old_PC}
+
+
+        # TODO highlight lines that have different prism constants
+
+        print(points_diff_PC_dict)
 
     def display_query_input_box(self):
 
