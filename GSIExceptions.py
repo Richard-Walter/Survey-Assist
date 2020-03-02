@@ -1,4 +1,3 @@
-
 # GSI Query user-defined exceptions
 
 

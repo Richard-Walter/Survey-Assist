@@ -3,7 +3,6 @@ import os
 
 
 class GSIDatabase:
-
     DATABASE_NAME = 'GSI_database.db'
     DATABASE_PATH = 'GSI Files\\GSI_database.db'
     TABLE_NAME = 'GSI'
@@ -34,7 +33,8 @@ class GSIDatabase:
             self.logger.exception("Database in use.  Unable to delete until it is closed")
 
             # Clear table contents - this can happen if another GSI file is opened within the applicaton
-            self.conn.execute(f'DELETE FROM {GSIDatabase.TABLE_NAME}')
+            # self.conn.execute(f'DELETE FROM {GSIDatabase.TABLE_NAME}')
+            self.conn.execute('DELETE FROM {}'.format(GSIDatabase.TABLE_NAME))
 
         except Exception:
             self.logger.exception("Error creating database: ")
@@ -42,15 +42,16 @@ class GSIDatabase:
 
     def create_table(self):
 
-        # # Drop table if exists.  This can happen if another GSI file is opened within the applicaton
-        # self.conn.execute(f'DROP TABLE IF EXISTS {TABLE_NAME}')
-
         # This database contains just one table - GSI Table.  Lets create the SQL command
-        create_table_string = f'CREATE TABLE {GSIDatabase.TABLE_NAME}('
+        # create_table_string = f'CREATE TABLE {GSIDatabase.TABLE_NAME}('
+        create_table_string = 'CREATE TABLE {}('.format(GSIDatabase.TABLE_NAME)
 
         for name in self.gsi_word_id_dict.values():
             create_table_string += name
             create_table_string += " text, "
+
+        # add isSTN and isCP columns
+        # create_table_string += "isSTN text, isCP text"
 
         create_table_string = create_table_string.rstrip(', ')
         create_table_string += ")"
@@ -60,24 +61,31 @@ class GSIDatabase:
         with self.conn:
             self.conn.execute(create_table_string)
 
-    def populate_table(self, formatted_lines):
+    def close_database(self):
 
-        for formatted_line in formatted_lines:
-            """Build INSERT statement
-            e.g. c.execute("INSERT INTO stuffToPlot (Point_Number, STN_Easting, STN_Northing) 
-            VALUES (?, ?, ?)",(Point_Number, STN_Easting, STN_Northing))"""
+        self.conn.close()
 
-            keys = ', '.join(formatted_line.keys())  # e.g. Point_Number, STN_Easting, STN_Northing
-            question_marks = ', '.join(list('?' * len(formatted_line)))  # e.g. ?, ?, ?, ?
-            values = tuple(formatted_line.values())
-            sql = f'INSERT INTO {GSIDatabase.TABLE_NAME} ({keys}) VALUES ({question_marks})'
+    def populate_table(self, gsi_formatted_lines):
 
-            # print(f'keys are: {keys}')
-            # print(f'question marks are: {question_marks}')
-            # print(f'values are: {values}')
+        # formatted_lines = checkIsSTNandIsCP(gsi_formatted_lines)
 
-            self.logger.info(f'SQL statement is: {sql}')
+        values_list = []
 
-            # Insert a formatted line of GSI data into database
-            with self.conn:
-                self.conn.execute(sql, values)
+        for formatted_line in gsi_formatted_lines:
+
+            # Build list of values
+            gsi_values = list(formatted_line.values())
+            values = tuple(gsi_values)
+            values_list.append(values)
+
+        # Build SQL statement
+        question_marks = ', '.join(list('?' * len(self.gsi_word_id_dict)))  # e.g. ?, ?, ?, ?
+        sql = 'INSERT INTO {} VALUES ({})'.format(GSIDatabase.TABLE_NAME, question_marks)
+
+        self.logger.info('SQL statement is: {}'.format(sql))
+        self.logger.info('SQL values are: {}'.format(str(values_list)))
+
+        # Insert a formatted line of GSI data into database
+        with self.conn:
+            self.conn.executemany(sql, values_list)
+
