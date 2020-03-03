@@ -218,6 +218,14 @@ class GSI:
 
         return shot_points
 
+    @staticmethod
+    def is_control_point(formatted_line):
+
+        if formatted_line['STN_Easting']:
+            return True
+
+        return False
+
     def get_change_points(self):
 
         change_points = set()

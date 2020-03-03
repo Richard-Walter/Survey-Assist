@@ -10,6 +10,7 @@ NOTE: For 3.4 compatibility
 
 # TODO compare prism constants (maybe others in future distance) between same surveys (current vs past)
 # TODO move fix coordinates and override station coordinates.  WIll need to append all coordinate values in this case
+# TODO Integrate compnet Assist
 
 import tkinter as tk
 from tkinter import ttk
@@ -337,26 +338,30 @@ class MenuBar(tk.Frame):
         old_survey_gsi = GSI(logger)
         old_survey_gsi.format_gsi(old_survey_filepath)
         old_survey_formatted_lines_except_setups = old_survey_gsi.get_all_lines_except_setup()
-
-        current_survey_formatted_lines_except_setups = gsi.get_all_lines_except_setup()
-
         old_point_PC_dict = OrderedDict()
 
+        line_number_errors = []
+
+        dialog_subject = "Prism Constant Comparision"
+        dialog_text = "Prism constants match between surveys "
+        error_text = "Prism constants mismatch (yellow highlight) found between the two surveys. "
+
         # Create a dictionary of points and their prism constant.
-        # Assumption if the prism constant is and should be the same for the same point
+        # ASSUMPTION: prism constant for an old survey with no errors should be the same for the same point ID
         for formatted_line in old_survey_formatted_lines_except_setups:
-
-            temp = formatted_line['Point_ID']
-            pc = formatted_line['Prism_Constant']
-
 
             old_point_PC_dict[formatted_line['Point_ID']] = formatted_line['Prism_Constant']
 
         print(old_point_PC_dict)
 
+        # for each point and its corresponding PC in old survey, check to see it matches PC in current survey
         for old_point_ID, old_PC in old_point_PC_dict.items():
 
-            for current_gsi_line in current_survey_formatted_lines_except_setups:
+            for line_number, current_gsi_line in enumerate(gsi.formatted_lines, start=1):
+
+                # check to see if point id is a control point and skip if true
+                if gsi.is_control_point(current_gsi_line):
+                    continue
 
                 current_point_ID = current_gsi_line['Point_ID']
                 current_PC = current_gsi_line['Prism_Constant']
@@ -366,9 +371,11 @@ class MenuBar(tk.Frame):
                     # Compare PC - they should be the same.  If not report to user
                     if old_PC != current_PC:
                         points_diff_PC_dict[current_point_ID] = {'current pc': current_PC, 'old_pc': old_PC}
+                        line_number_errors.append(line_number)
+                        dialog_text = error_text
 
-
-        # TODO highlight lines that have different prism constants
+        tkinter.messagebox.showinfo(dialog_subject, dialog_text)
+        gui_app.list_box.populate(gsi.formatted_lines, line_number_errors)
 
         print(points_diff_PC_dict)
 
