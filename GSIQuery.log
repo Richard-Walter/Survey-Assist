@@ -450,3 +450,13 @@ Traceback (most recent call last):
   File "C:\Users\rjwal_000\PycharmProjects\GSI QUERY\GSIDatabase.py", line 24, in create_db
     os.remove(GSIDatabase.DATABASE_PATH)
 PermissionError: [WinError 32] The process cannot access the file because it is being used by another process: 'GSI Files\\GSI_database.db'
+2020-03-14 15:47:09,351:GSIQuery:Error creating executing SQL query:  SELECT Point_ID, Easting, Northing, Elevation FROM GSI WHERE Point_ID=?
+Traceback (most recent call last):
+  File "C:/Users/rjwal_000/PycharmProjects/GSI QUERY/main.pyw", line 213, in check_3d_survey
+    if east_diff > float(survey_config.easting_tolerance):
+NameError: name 'survey_config' is not defined
+2020-03-14 15:47:17,543:GSIQuery:Error creating executing SQL query:  SELECT Point_ID, Easting, Northing, Elevation FROM GSI WHERE Point_ID=?
+Traceback (most recent call last):
+  File "C:/Users/rjwal_000/PycharmProjects/GSI QUERY/main.pyw", line 213, in check_3d_survey
+    if east_diff > float(survey_config.easting_tolerance):
+NameError: name 'survey_config' is not defined

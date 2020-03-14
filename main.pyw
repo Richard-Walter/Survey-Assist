@@ -8,11 +8,12 @@ NOTE: For 3.4 compatibility
     i) Replaced f-strings with.format method.
     ii) had to use an ordered dictionary"""
 
-# TODO compare prism constants (maybe others in future distance) between same surveys (current vs past)
 # TODO move fix coordinates and override station coordinates.  WIll need to append all coordinate values in this case
-# TODO Integrate compnet Assist
+# TODO Integrate Compnet Assist
+# TODO Rename GSI Query to Survey Assist
 
 import tkinter as tk
+import re
 from tkinter import ttk
 import logging.config
 from tkinter import filedialog
@@ -65,21 +66,28 @@ class MenuBar(tk.Frame):
         self.check_sub_menu.add_command(label="Check Tolerances", command=self.check_3d_survey)
         self.check_sub_menu.add_command(label="Check Control Naming ", command=self.check_control_naming)
         self.check_sub_menu.add_command(label="Compare Survey ", command=self.compare_survey)
-
         self.menu_bar.add_cascade(label="3D Survey", menu=self.check_sub_menu, state="disabled")
 
         # Delete menu
-        self.check_sub_menu = tk.Menu(self.menu_bar, tearoff=0)
-        self.check_sub_menu.add_command(label="All 2D Orientation Shots", command=self.delete_orientation_shots)
-        self.menu_bar.add_cascade(label="Delete...", menu=self.check_sub_menu, state="disabled")
+        self.delete_sub_menu = tk.Menu(self.menu_bar, tearoff=0)
+        self.delete_sub_menu.add_command(label="All 2D Orientation Shots", command=self.delete_orientation_shots)
+        self.menu_bar.add_cascade(label="Delete...", menu=self.delete_sub_menu, state="disabled")
+
+        # Compnet menu
+        self.compnet_sub_menu = tk.Menu(self.menu_bar, tearoff=0)
+        self.compnet_sub_menu.add_command(label="Update Fixed File", command=self.update_fixed_file)
+        self.compnet_sub_menu.add_command(label="Compare CRD Files", command=self.compare_crd_files)
+        self.compnet_sub_menu.add_command(label="Strip Non-control Shots", command=self.strip_non_control_shots)
+        self.menu_bar.add_cascade(label="Compnet", menu=self.compnet_sub_menu, state="disabled")
 
         # Config menu
         self.menu_bar.add_command(label="Config", command=self.configure_survey)
 
-        # Help menu
-        self.help_sub_menu = tk.Menu(self.menu_bar, tearoff=0)
-        self.help_sub_menu.add_command(label="About", command=self.display_about_dialog_box)
-        self.menu_bar.add_cascade(label="Help", menu=self.help_sub_menu)
+        # About menu
+        self.menu_bar.add_command(label="About", command=self.display_about_dialog_box)
+        # self.help_sub_menu = tk.Menu(self.menu_bar, tearoff=0)
+        # self.help_sub_menu.add_command(label="About", command=self.display_about_dialog_box)
+        # self.menu_bar.add_cascade(label="Help", menu=self.help_sub_menu)
 
         # Exit menu
         self.menu_bar.add_command(label="Exit", command=self.client_exit)
@@ -91,9 +99,10 @@ class MenuBar(tk.Frame):
         MenuBar.format_gsi_file()
         MenuBar.create_and_populate_database()
         MenuBar.update_gui()
-        self.enable_query_menu()
-        self.enable_3d_survey_menu()
-        self.enable_delete_menu()
+        self.enable_menus()
+        # self.enable_query_menu()
+        # self.enable_3d_survey_menu()
+        # self.enable_delete_menu()
 
     @staticmethod
     def format_gsi_file():
@@ -349,7 +358,6 @@ class MenuBar(tk.Frame):
         # Create a dictionary of points and their prism constant.
         # ASSUMPTION: prism constant for an old survey with no errors should be the same for the same point ID
         for formatted_line in old_survey_formatted_lines_except_setups:
-
             old_point_PC_dict[formatted_line['Point_ID']] = formatted_line['Prism_Constant']
 
         print(old_point_PC_dict)
@@ -383,6 +391,22 @@ class MenuBar(tk.Frame):
 
         QueryDialog(self.master)
 
+    def update_fixed_file(self):
+
+        pass
+        # QueryDialog(self.master)
+
+    def compare_crd_files(self):
+
+        pass
+        # QueryDialog(self.master)
+
+    def strip_non_control_shots(self):
+
+        pass
+        # QueryDialog(self.master)
+
+
     def configure_survey(self):
 
         global survey_config
@@ -396,29 +420,45 @@ class MenuBar(tk.Frame):
 
         gui_app.list_box.populate(gsi.formatted_lines)
 
-    def enable_query_menu(self):
+    def enable_menus(self):
 
         self.menu_bar.entryconfig("Query", state="normal")
-
-    def enable_3d_survey_menu(self):
-
         self.menu_bar.entryconfig("3D Survey", state="normal")
-
-    def enable_delete_menu(self):
-
         self.menu_bar.entryconfig("Delete...", state="normal")
+        self.menu_bar.entryconfig("Compnet", state="normal")
 
-    def disable_delete_menu(self):
+    def disable_menus(self):
 
-        self.menu_bar.entryconfig("Delete...", state="normal")
+        self.menu_bar.entryconfig("Query", state="disabled")
+        self.menu_bar.entryconfig("3D Survey", state="disabled")
+        self.menu_bar.entryconfig("Delete...", state="disabled")
+        # self.query_sub_menu.entryconfig("Query", state="disabled")
+        # self.query_sub_menu.entryconfig("3D Survey", state="disabled")
+        self.compnet_sub_menu.entryconfig("Compnet", state="disabled")
 
-    def disable_query_menu(self):
-
-        self.query_sub_menu.entryconfig("Query", state="disabled")
-
-    def disable_3d_survey_menu(self):
-
-        self.query_sub_menu.entryconfig("3D Survey", state="disabled")
+    # def enable_query_menu(self):
+    #
+    #     self.menu_bar.entryconfig("Query", state="normal")
+    #
+    # def enable_3d_survey_menu(self):
+    #
+    #     self.menu_bar.entryconfig("3D Survey", state="normal")
+    #
+    # def enable_delete_menu(self):
+    #
+    #     self.menu_bar.entryconfig("Delete...", state="normal")
+    #
+    # def disable_delete_menu(self):
+    #
+    #     self.menu_bar.entryconfig("Delete...", state="normal")
+    #
+    # def disable_query_menu(self):
+    #
+    #     self.query_sub_menu.entryconfig("Query", state="disabled")
+    #
+    # def disable_3d_survey_menu(self):
+    #
+    #     self.query_sub_menu.entryconfig("3D Survey", state="disabled")
 
     @staticmethod
     def display_about_dialog_box():
@@ -426,7 +466,9 @@ class MenuBar(tk.Frame):
         about_me_text = "Written by Richard Walter 2019\n\n This program reads a GSI file from a Leica Total " \
                         "Station and displays the data in a clearer, more user-friendly format." \
                         " \n\nYou can then execute queries on this data to extract relevant information, or check for" \
-                        " errors in a 3D the survey, such as incorrect station labelling and tolerance errors. \n\n"
+                        " errors in a 3D the survey, such as incorrect station labelling and tolerance errors. \n\n"\
+                        "This program also assists with Compnet - copying over fixed files, comparing CRD files, and "\
+                        "stripping out GSI leaving just the control stations for easier analysis of problems"
 
         tkinter.messagebox.showinfo("About GSI Query", about_me_text)
 
@@ -886,6 +928,170 @@ class GUIApplication(tk.Frame):
         self.menu_bar.pack(side="top", fill="x")
 
         self.main_window.pack(fill="both", expand=True)
+
+
+class FixedFile:
+
+    def __init__(self, fixed_file_path):
+
+        self.fixed_file_path = fixed_file_path
+        self.fixed_file_contents = None
+        self.station_list = []
+        self.updated_file_contents = ""
+
+        with open(fixed_file_path, 'r') as f_orig:
+            self.fixed_file_contents = f_orig.readlines()
+
+    @staticmethod
+    def get_station(line):
+
+        station = "UNKNOWN"
+
+        # Line number is at the start of a string and contains digits followed by whiespace
+        re_pattern = re.compile(r'"\w+"')
+        match = re_pattern.search(line)
+
+        # strip of quotation marks and add to station list
+        if match is not None:
+            station = match.group()[1:-1]
+
+        return station
+
+    @staticmethod
+    def get_line_number(line):
+
+        line_number = "???"
+
+        # Line number is at the start of a line
+        re_pattern = re.compile(r'^\d+\s')
+
+        match = re_pattern.search(line)
+
+        if match:
+            line_number = match.group().strip()
+
+        return line_number
+
+    def update(self, coordinate_file):
+
+        for line in self.fixed_file_contents:
+
+            # Get coordinates for this station if exists in the coordinate file
+            station = self.get_station(line)
+
+            coordinate_dict = coordinate_file.get_point_coordinates(station)
+
+            # update fixed_file coordinate if a match was found
+            if coordinate_dict:
+                easting = coordinate_dict['Eastings']
+                northing = coordinate_dict['Northings']
+
+                updated_line = self.get_line_number(line) + ' ' + easting + '  ' + northing + ' "' + station + '"\n'
+                self.updated_file_contents += updated_line
+
+            else:
+                self.updated_file_contents += line
+
+        # update fixed file with updated contents
+        with open(self.fixed_file_path, 'w') as f_update:
+            f_update.write(self.updated_file_contents)
+
+
+class CoordinateFile:
+    re_pattern_easting = re.compile(r'\b2[789]\d{4}\.\d{4}')
+    re_pattern_northing = re.compile(r'\b6[123]\d{5}\.\d{4}')
+    re_pattern_point_crd = re.compile(r'\b\S+\b')
+    re_pattern_point_std = re.compile(r'"\S+"')
+    re_pattern_point_asc = re.compile(r'@#\S+')
+
+    def __init__(self, coordinate_file_path):
+
+        self.file_contents = None
+        self.coordinate_dictionary = {}
+
+        try:
+            with open(coordinate_file_path, 'r') as f_orig:
+
+                self.file_contents = f_orig.readlines()
+
+        except Exception as ex:
+            print(ex, type(ex))
+
+        else:
+
+            # remove first 12 lines which contain header text if it is a CRD file
+            # remove the first 10 to check 'DESCRIPTION' exists in the header
+            if coordinate_file_path[-3:] == 'CRD':
+                del self.file_contents[0: 10]
+                if 'DESCRIPTION' in self.file_contents[0]:
+
+                    # remove 'description' line plus following blank space'
+                    del self.file_contents[0:2]
+
+                else:
+                    raise Exception('CRD file Header should contain only 12 rows')
+
+                # build coordinate dictionary
+                self.build_coordinate_dictionary('CRD')
+
+            elif coordinate_file_path[-3:] == 'STD':
+
+                # build coordinate dictionary
+                self.build_coordinate_dictionary('STD')
+
+            # remove first 12 lines which contain header text if it is a CRD file
+            # remove the first 10 to check '@%Projection set' exists in the header
+            elif coordinate_file_path[-3:] == 'asc':
+                del self.file_contents[0: 3]
+                if '@%Projection set' in self.file_contents[0]:
+                    del self.file_contents[0]
+                # build coordinate dictionary
+                else:
+                    raise Exception('Unsupported file type')
+
+                self.build_coordinate_dictionary('ASC')
+
+    def get_point_coordinates(self, point):
+
+        if point in self.coordinate_dictionary.keys():
+            return self.coordinate_dictionary[point]
+
+    def build_coordinate_dictionary(self, file_type):
+
+        for coordinate_contents_line in self.file_contents:
+
+            point_coordinate_dict = {}
+            point_match = None
+
+            try:
+                # grab easting and northing for this station
+                easting_match = self.re_pattern_easting.search(coordinate_contents_line)
+                northing_match = self.re_pattern_northing.search(coordinate_contents_line)
+
+                if file_type == 'CRD':
+
+                    point_match = self.re_pattern_point_crd.search(coordinate_contents_line)
+
+                elif file_type == 'STD':
+
+                    point_match = self.re_pattern_point_std.search(coordinate_contents_line)
+
+                elif file_type == 'ASC':
+
+                    point_match = self.re_pattern_point_asc.search(coordinate_contents_line)
+
+                point_name = point_match.group()
+                point_name = point_name.replace('"', '')  # for *STD files
+                point_name = point_name.replace('@#', '')  # for *asc files
+
+                point_coordinate_dict['Eastings'] = easting_match.group()
+                point_coordinate_dict['Northings'] = northing_match.group()
+
+                self.coordinate_dictionary[point_name] = point_coordinate_dict
+
+            except ValueError:
+                # probabaly a blank line
+                pass
 
 
 def configure_logger():
