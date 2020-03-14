@@ -78,7 +78,7 @@ class MenuBar(tk.Frame):
         self.compnet_sub_menu.add_command(label="Update Fixed File", command=self.update_fixed_file)
         self.compnet_sub_menu.add_command(label="Compare CRD Files", command=self.compare_crd_files)
         self.compnet_sub_menu.add_command(label="Strip Non-control Shots", command=self.strip_non_control_shots)
-        self.menu_bar.add_cascade(label="Compnet", menu=self.compnet_sub_menu, state="disabled")
+        self.menu_bar.add_cascade(label="Compnet", menu=self.compnet_sub_menu)
 
         # Config menu
         self.menu_bar.add_command(label="Config", command=self.configure_survey)
@@ -393,8 +393,7 @@ class MenuBar(tk.Frame):
 
     def update_fixed_file(self):
 
-        pass
-        # QueryDialog(self.master)
+        CompnetWindow(self.master)
 
     def compare_crd_files(self):
 
@@ -405,7 +404,6 @@ class MenuBar(tk.Frame):
 
         pass
         # QueryDialog(self.master)
-
 
     def configure_survey(self):
 
@@ -425,7 +423,7 @@ class MenuBar(tk.Frame):
         self.menu_bar.entryconfig("Query", state="normal")
         self.menu_bar.entryconfig("3D Survey", state="normal")
         self.menu_bar.entryconfig("Delete...", state="normal")
-        self.menu_bar.entryconfig("Compnet", state="normal")
+        # self.menu_bar.entryconfig("Compnet", state="normal")
 
     def disable_menus(self):
 
@@ -434,7 +432,7 @@ class MenuBar(tk.Frame):
         self.menu_bar.entryconfig("Delete...", state="disabled")
         # self.query_sub_menu.entryconfig("Query", state="disabled")
         # self.query_sub_menu.entryconfig("3D Survey", state="disabled")
-        self.compnet_sub_menu.entryconfig("Compnet", state="disabled")
+        # self.compnet_sub_menu.entryconfig("Compnet", state="disabled")
 
     # def enable_query_menu(self):
     #
@@ -466,8 +464,8 @@ class MenuBar(tk.Frame):
         about_me_text = "Written by Richard Walter 2019\n\n This program reads a GSI file from a Leica Total " \
                         "Station and displays the data in a clearer, more user-friendly format." \
                         " \n\nYou can then execute queries on this data to extract relevant information, or check for" \
-                        " errors in a 3D the survey, such as incorrect station labelling and tolerance errors. \n\n"\
-                        "This program also assists with Compnet - copying over fixed files, comparing CRD files, and "\
+                        " errors in a 3D the survey, such as incorrect station labelling and tolerance errors. \n\n" \
+                        "This program also assists with Compnet - copying over fixed files, comparing CRD files, and " \
                         "stripping out GSI leaving just the control stations for easier analysis of problems"
 
         tkinter.messagebox.showinfo("About GSI Query", about_me_text)
@@ -912,6 +910,214 @@ class ListBox(tk.Frame):
             MenuBar.format_gsi_file()
             MenuBar.update_database()
             MenuBar.update_gui()
+
+
+class CompnetWindow:
+
+    coordinate_file_path = ""
+    fixed_file_path = ""
+    crd_file_path_1 = ""
+    crd_file_path_2 = ""
+
+    def __init__(self, master):
+
+        self.master = master
+        self.outliers_dict = {}
+
+        #  Lets build the dialog box
+        self.dialog_window = tk.Toplevel(master)
+        self.dialog_window.title("Compnet Assist")
+        self.dialog_window.geometry(self.center_screen())
+        # self.dialog_window.attributes("-topmost", True)
+
+        # Update Fixed File GUI
+        self.update_fixed_file_lbl = tk.Label(self.dialog_window, text='\nUPDATE FIXED FILE\n')
+        self.fixed_btn = tk.Button(self.dialog_window, text='(1) Choose Fixed File: ', command=self.get_fixed_file_path)
+        self.coord_btn = tk.Button(self.dialog_window, text='(2) Choose Coordinate File: ', command=self.get_coordinate_file_path)
+        self.update_btn = tk.Button(self.dialog_window, text='(3) UPDATE FIXED FILE ', command=self.update_fixed_file)
+        self.fixed_result_lbl = tk.Label(self.dialog_window, text=' ')
+        self.blank_lbl = tk.Label(self.dialog_window, text='')
+
+        self.update_fixed_file_lbl.pack()
+        self.fixed_btn.pack()
+        self.coord_btn.pack()
+        self.update_btn.pack()
+        self.fixed_result_lbl.pack()
+        # self.blank_lbl.pack()
+
+        # Compare CRD Files GUI
+        self.compare_crd_files_lbl = tk.Label(self.dialog_window, text='\nCOMPARE CRD FILES\n')
+        self.tolE_lbl = tk.Label(self.dialog_window, text='Tolerance E: ')
+        self.entry_tolE = tk.Entry(self.dialog_window)
+        self.entry_tolE.insert(tk.END, '0.05')
+
+        self.tolN_lbl = tk.Label(self.dialog_window, text='Tolerance N: ')
+        self.entry_tolN = tk.Entry(self.dialog_window)
+        self.entry_tolN.insert(tk.END, '0.05')
+
+        self.crd_file_1_btn = tk.Button(self.dialog_window, text='(1) Choose CRD File 1: ',
+                                        command=lambda: self.get_crd_file_path(1))
+        self.crd_file_2_btn = tk.Button(self.dialog_window, text='(2) Choose CRD File 2: ',
+                                        command=lambda: self.get_crd_file_path(2))
+
+        self.compare_crd_btn = tk.Button(self.dialog_window, text='(3) COMPARE FILES ', command=self.compare_crd_files_outliers)
+        self.compare_result_lbl = tk.Label(self.dialog_window, text=' ')
+
+        self.compare_crd_files_lbl.pack()
+        self.tolE_lbl.pack()
+        self.entry_tolE.pack()
+        self.tolN_lbl.pack()
+        self.entry_tolN.pack()
+
+        self.crd_file_1_btn.pack()
+        self.crd_file_2_btn.pack()
+        self.compare_crd_btn.pack()
+        self.compare_result_lbl.pack()
+
+        # Strip all shots except control
+        self.strip_non_control_shots_lbl = tk.Label(self.dialog_window, text='\nSTRIP ALL SHOTS EXCEPT CONTROL:\n')
+        self.strip_non_control_shots_btn = tk.Button(self.dialog_window, text='Choose GSI File to strip',
+                                                     command=self.strip_non_control_shots)
+        self.strip_non_control_shots_lbl.pack()
+        self.strip_non_control_shots_btn.pack()
+
+    def center_screen(self):
+
+        dialog_w = 400
+        dialog_h = 500
+
+        ws = self.master.winfo_width()
+        hs = self.master.winfo_height()
+        x = int((ws / 2) - (dialog_w / 2))
+        y = int((hs / 2) - (dialog_w / 2))
+
+        return '{}x{}+{}+{}'.format(dialog_w, dialog_h, x, y)
+
+    def strip_non_control_shots(self):
+
+        # let user choose GSI file
+        gsi_file_path = tk.filedialog.askopenfilename()
+
+        try:
+            old_gsi = GSI(logger)
+            old_gsi.format_gsi(gsi_file_path)
+            control_only_filepath = old_gsi.create_control_only_gsi()
+            control_only_gsi = GSI(logger)
+            control_only_gsi.format_gsi(control_only_filepath)
+            gui_app.list_box.populate(control_only_gsi.formatted_lines)
+            gui_app.status_bar.status['text'] = control_only_filepath
+
+        except Exception as ex:
+            # most likely no file choosen or incorrect GSI
+            print(ex, type(ex))
+
+    def update_fixed_file(self):
+
+        try:
+
+            # open up fixed file & update the fixed file's easting/northings from the coordinate file
+            fixed_file = FixedFile(self.fixed_file_path)
+            coordinate_file = CoordinateFile(self.coordinate_file_path)
+            fixed_file.update(coordinate_file)
+
+        except Exception as ex:
+            print(ex, type(ex))
+            self.fixed_result_lbl.config(text='ERROR - See Richard')
+            tk.messagebox.showerror("Error", ex)
+
+        else:
+
+            self.fixed_result_lbl.config(text='SUCCESS')
+
+    def compare_crd_files_outliers(self):
+
+        self.outliers_dict = {}
+
+        # Tolerances - let user decide in GUI???
+
+        tol_E = float(self.entry_tolE.get())
+        tol_N = float(self.entry_tolN.get())
+
+        print(tol_E, tol_N)
+
+        common_points = []
+
+        try:
+
+            # open up the two CRD files and compare common values for outliers
+            coordinate_file1 = CoordinateFile(self.crd_file_path_1)
+            coordinate_file2 = CoordinateFile(self.crd_file_path_2)
+
+            # find common points between files
+            for key in coordinate_file1.coordinate_dictionary.keys():
+                if key in coordinate_file2.coordinate_dictionary:
+                    common_points.append(key)
+
+            # Lets check for outliers for common points
+            for point in common_points:
+                cf1_E = float(coordinate_file1.coordinate_dictionary[point]['Eastings'])
+                cf1_N = float(coordinate_file1.coordinate_dictionary[point]['Northings'])
+                cf2_E = float(coordinate_file2.coordinate_dictionary[point]['Eastings'])
+                cf2_N = float(coordinate_file2.coordinate_dictionary[point]['Northings'])
+
+                diff_E = cf1_E - cf2_E
+                diff_N = cf1_N - cf2_N
+
+                if abs(diff_E) > tol_E:
+                    self.outliers_dict[point] = "  Easting: " + '{0:.3f}'.format(round(diff_E, 3))
+                if abs(diff_N) > tol_N:
+                    self.outliers_dict[point] = "  Northing: " + '{0:.3f}'.format(round(diff_N, 3))
+
+        except Exception as ex:
+            print(ex, type(ex))
+            self.compare_result_lbl.config(text='ERROR - See Richard\n')
+            tk.messagebox.showerror("Error", ex)
+
+        else:
+
+            self.compare_result_lbl.config(text='SUCCESS')
+
+            # display results to user
+            # msg_header = "EASTING TOLERANCE = " + str(tol_E) + "\nNORTHING TOLERANCE = " + str(tol_N) +"\n\n"
+
+            msg_body = ''
+
+            for point in sorted(self.outliers_dict, key=lambda k: k):
+                msg_body += point + ': ' + self.outliers_dict[point] + '\n'
+
+            # msg_complete = msg_header + msg_body
+            msg_complete = msg_body
+
+            top = tk.Toplevel()
+            top.title("POINTS THAT EXCEED TOLERANCE")
+            top.geometry('400x600')
+
+            msg = tk.Message(top, text=msg_body)
+            msg.pack()
+
+    def get_fixed_file_path(self):
+        self.fixed_file_path = tk.filedialog.askopenfilename()
+        self.dialog_window.lift()   # bring window to the front again
+        print(self.fixed_file_path)
+
+    def get_coordinate_file_path(self):
+        self.coordinate_file_path = tk.filedialog.askopenfilename()
+        self.dialog_window.lift()  # bring window to the front again
+        print(self.coordinate_file_path)
+
+    def get_crd_file_path(self, file_path_number):
+
+        if file_path_number is 1:
+            self.crd_file_path_1 = tk.filedialog.askopenfilename()
+            self.dialog_window.lift()  # bring window to the front again
+            print(self.crd_file_path_1)
+        elif file_path_number is 2:
+            self.crd_file_path_2 = tk.filedialog.askopenfilename()
+            self.dialog_window.lift()  # bring window to the front again
+            print(self.crd_file_path_2)
+        else:
+
+            tk.messagebox.showerror("Error", "No filepath no exists: " + str(file_path_number))
 
 
 class GUIApplication(tk.Frame):
