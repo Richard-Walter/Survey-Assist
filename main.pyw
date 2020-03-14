@@ -11,6 +11,7 @@ NOTE: For 3.4 compatibility
 # TODO move fix coordinates and override station coordinates.  WIll need to append all coordinate values in this case
 # TODO Integrate Compnet Assist
 # TODO Rename GSI Query to Survey Assist
+# TODO Combine all survey checks into a 'Check all'
 
 import tkinter as tk
 import re
@@ -393,17 +394,15 @@ class MenuBar(tk.Frame):
 
     def update_fixed_file(self):
 
-        CompnetWindow(self.master)
+        CompnetUpdateFixedFileWindow(self.master)
 
     def compare_crd_files(self):
 
-        pass
-        # QueryDialog(self.master)
+        CompnetCompareCRDFWindow(self.master)
 
     def strip_non_control_shots(self):
 
-        pass
-        # QueryDialog(self.master)
+        CompnetStripNonControlShotsWindow(self.master)
 
     def configure_survey(self):
 
@@ -912,12 +911,10 @@ class ListBox(tk.Frame):
             MenuBar.update_gui()
 
 
-class CompnetWindow:
+class CompnetUpdateFixedFileWindow:
 
     coordinate_file_path = ""
     fixed_file_path = ""
-    crd_file_path_1 = ""
-    crd_file_path_2 = ""
 
     def __init__(self, master):
 
@@ -933,7 +930,8 @@ class CompnetWindow:
         # Update Fixed File GUI
         self.update_fixed_file_lbl = tk.Label(self.dialog_window, text='\nUPDATE FIXED FILE\n')
         self.fixed_btn = tk.Button(self.dialog_window, text='(1) Choose Fixed File: ', command=self.get_fixed_file_path)
-        self.coord_btn = tk.Button(self.dialog_window, text='(2) Choose Coordinate File: ', command=self.get_coordinate_file_path)
+        self.coord_btn = tk.Button(self.dialog_window, text='(2) Choose Coordinate File: ',
+                                   command=self.get_coordinate_file_path)
         self.update_btn = tk.Button(self.dialog_window, text='(3) UPDATE FIXED FILE ', command=self.update_fixed_file)
         self.fixed_result_lbl = tk.Label(self.dialog_window, text=' ')
         self.blank_lbl = tk.Label(self.dialog_window, text='')
@@ -944,42 +942,6 @@ class CompnetWindow:
         self.update_btn.pack()
         self.fixed_result_lbl.pack()
         # self.blank_lbl.pack()
-
-        # Compare CRD Files GUI
-        self.compare_crd_files_lbl = tk.Label(self.dialog_window, text='\nCOMPARE CRD FILES\n')
-        self.tolE_lbl = tk.Label(self.dialog_window, text='Tolerance E: ')
-        self.entry_tolE = tk.Entry(self.dialog_window)
-        self.entry_tolE.insert(tk.END, '0.05')
-
-        self.tolN_lbl = tk.Label(self.dialog_window, text='Tolerance N: ')
-        self.entry_tolN = tk.Entry(self.dialog_window)
-        self.entry_tolN.insert(tk.END, '0.05')
-
-        self.crd_file_1_btn = tk.Button(self.dialog_window, text='(1) Choose CRD File 1: ',
-                                        command=lambda: self.get_crd_file_path(1))
-        self.crd_file_2_btn = tk.Button(self.dialog_window, text='(2) Choose CRD File 2: ',
-                                        command=lambda: self.get_crd_file_path(2))
-
-        self.compare_crd_btn = tk.Button(self.dialog_window, text='(3) COMPARE FILES ', command=self.compare_crd_files_outliers)
-        self.compare_result_lbl = tk.Label(self.dialog_window, text=' ')
-
-        self.compare_crd_files_lbl.pack()
-        self.tolE_lbl.pack()
-        self.entry_tolE.pack()
-        self.tolN_lbl.pack()
-        self.entry_tolN.pack()
-
-        self.crd_file_1_btn.pack()
-        self.crd_file_2_btn.pack()
-        self.compare_crd_btn.pack()
-        self.compare_result_lbl.pack()
-
-        # Strip all shots except control
-        self.strip_non_control_shots_lbl = tk.Label(self.dialog_window, text='\nSTRIP ALL SHOTS EXCEPT CONTROL:\n')
-        self.strip_non_control_shots_btn = tk.Button(self.dialog_window, text='Choose GSI File to strip',
-                                                     command=self.strip_non_control_shots)
-        self.strip_non_control_shots_lbl.pack()
-        self.strip_non_control_shots_btn.pack()
 
     def center_screen(self):
 
@@ -992,24 +954,6 @@ class CompnetWindow:
         y = int((hs / 2) - (dialog_w / 2))
 
         return '{}x{}+{}+{}'.format(dialog_w, dialog_h, x, y)
-
-    def strip_non_control_shots(self):
-
-        # let user choose GSI file
-        gsi_file_path = tk.filedialog.askopenfilename()
-
-        try:
-            old_gsi = GSI(logger)
-            old_gsi.format_gsi(gsi_file_path)
-            control_only_filepath = old_gsi.create_control_only_gsi()
-            control_only_gsi = GSI(logger)
-            control_only_gsi.format_gsi(control_only_filepath)
-            gui_app.list_box.populate(control_only_gsi.formatted_lines)
-            gui_app.status_bar.status['text'] = control_only_filepath
-
-        except Exception as ex:
-            # most likely no file choosen or incorrect GSI
-            print(ex, type(ex))
 
     def update_fixed_file(self):
 
@@ -1028,6 +972,73 @@ class CompnetWindow:
         else:
 
             self.fixed_result_lbl.config(text='SUCCESS')
+
+    def get_fixed_file_path(self):
+        self.fixed_file_path = tk.filedialog.askopenfilename()
+        self.dialog_window.lift()  # bring window to the front again
+        print(self.fixed_file_path)
+
+    def get_coordinate_file_path(self):
+        self.coordinate_file_path = tk.filedialog.askopenfilename()
+        print(self.coordinate_file_path)
+
+
+class CompnetCompareCRDFWindow:
+    crd_file_path_1 = ""
+    crd_file_path_2 = ""
+
+    def __init__(self, master):
+
+        self.master = master
+        self.outliers_dict = {}
+
+        #  Lets build the dialog box
+        self.dialog_window = tk.Toplevel(master)
+        self.dialog_window.title("Compnet Assist")
+        self.dialog_window.geometry(self.center_screen())
+        # self.dialog_window.attributes("-topmost", True)
+
+        # Compare CRD Files GUI
+        self.compare_crd_files_lbl = tk.Label(self.dialog_window, text='\nCOMPARE CRD FILES\n')
+        self.tolE_lbl = tk.Label(self.dialog_window, text='Tolerance E: ')
+        self.entry_tolE = tk.Entry(self.dialog_window)
+        self.entry_tolE.insert(tk.END, '0.05')
+
+        self.tolN_lbl = tk.Label(self.dialog_window, text='Tolerance N: ')
+        self.entry_tolN = tk.Entry(self.dialog_window)
+        self.entry_tolN.insert(tk.END, '0.05')
+
+        self.crd_file_1_btn = tk.Button(self.dialog_window, text='(1) Choose CRD File 1: ',
+                                        command=lambda: self.get_crd_file_path(1))
+        self.crd_file_2_btn = tk.Button(self.dialog_window, text='(2) Choose CRD File 2: ',
+                                        command=lambda: self.get_crd_file_path(2))
+
+        self.compare_crd_btn = tk.Button(self.dialog_window, text='(3) COMPARE FILES ',
+                                         command=self.compare_crd_files_outliers)
+        self.compare_result_lbl = tk.Label(self.dialog_window, text=' ')
+
+        self.compare_crd_files_lbl.pack()
+        self.tolE_lbl.pack()
+        self.entry_tolE.pack()
+        self.tolN_lbl.pack()
+        self.entry_tolN.pack()
+
+        self.crd_file_1_btn.pack()
+        self.crd_file_2_btn.pack()
+        self.compare_crd_btn.pack()
+        self.compare_result_lbl.pack()
+
+    def center_screen(self):
+
+        dialog_w = 400
+        dialog_h = 500
+
+        ws = self.master.winfo_width()
+        hs = self.master.winfo_height()
+        x = int((ws / 2) - (dialog_w / 2))
+        y = int((hs / 2) - (dialog_w / 2))
+
+        return '{}x{}+{}+{}'.format(dialog_w, dialog_h, x, y)
 
     def compare_crd_files_outliers(self):
 
@@ -1095,16 +1106,6 @@ class CompnetWindow:
             msg = tk.Message(top, text=msg_body)
             msg.pack()
 
-    def get_fixed_file_path(self):
-        self.fixed_file_path = tk.filedialog.askopenfilename()
-        self.dialog_window.lift()   # bring window to the front again
-        print(self.fixed_file_path)
-
-    def get_coordinate_file_path(self):
-        self.coordinate_file_path = tk.filedialog.askopenfilename()
-        self.dialog_window.lift()  # bring window to the front again
-        print(self.coordinate_file_path)
-
     def get_crd_file_path(self, file_path_number):
 
         if file_path_number is 1:
@@ -1118,6 +1119,57 @@ class CompnetWindow:
         else:
 
             tk.messagebox.showerror("Error", "No filepath no exists: " + str(file_path_number))
+
+
+class CompnetStripNonControlShotsWindow:
+
+    def __init__(self, master):
+
+        self.master = master
+        self.outliers_dict = {}
+
+        #  Lets build the dialog box
+        self.dialog_window = tk.Toplevel(master)
+        self.dialog_window.title("Compnet Assist")
+        self.dialog_window.geometry(self.center_screen())
+        # self.dialog_window.attributes("-topmost", True)
+
+        # Strip all shots except control
+        self.strip_non_control_shots_lbl = tk.Label(self.dialog_window, text='\nSTRIP ALL SHOTS EXCEPT CONTROL:\n')
+        self.strip_non_control_shots_btn = tk.Button(self.dialog_window, text='Choose GSI File to strip',
+                                                     command=self.strip_non_control_shots)
+        self.strip_non_control_shots_lbl.pack()
+        self.strip_non_control_shots_btn.pack()
+
+    def center_screen(self):
+
+        dialog_w = 400
+        dialog_h = 500
+
+        ws = self.master.winfo_width()
+        hs = self.master.winfo_height()
+        x = int((ws / 2) - (dialog_w / 2))
+        y = int((hs / 2) - (dialog_w / 2))
+
+        return '{}x{}+{}+{}'.format(dialog_w, dialog_h, x, y)
+
+    def strip_non_control_shots(self):
+
+        # let user choose GSI file
+        gsi_file_path = tk.filedialog.askopenfilename()
+
+        try:
+            old_gsi = GSI(logger)
+            old_gsi.format_gsi(gsi_file_path)
+            control_only_filepath = old_gsi.create_control_only_gsi()
+            control_only_gsi = GSI(logger)
+            control_only_gsi.format_gsi(control_only_filepath)
+            gui_app.list_box.populate(control_only_gsi.formatted_lines)
+            gui_app.status_bar.status['text'] = control_only_filepath
+
+        except Exception as ex:
+            # most likely no file choosen or incorrect GSI
+            print(ex, type(ex))
 
 
 class GUIApplication(tk.Frame):
