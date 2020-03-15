@@ -1,0 +1,787 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="ca2bf562-6ed1-41b9-8b6b-e72a3ab9e82c" name="Default Changelist" comment="test">
+      <change afterPath="$PROJECT_DIR$/../Survey Assist/.idea/.name" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Survey Assist/.idea/Survey Assist.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Survey Assist/.idea/dictionaries/Richard.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Survey Assist/.idea/encodings.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Survey Assist/.idea/misc.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Survey Assist/.idea/modules.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Survey Assist/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Survey Assist/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Survey Assist/GSI Files/A9_ARTC_902_2.GSI" beforeDir="false" afterPath="$PROJECT_DIR$/../Survey Assist/GSI Files/A9_ARTC_902_2.GSI" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Survey Assist/GSI Files/GSI_database.db" beforeDir="false" afterPath="$PROJECT_DIR$/../Survey Assist/GSI Files/GSI_database.db" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Survey Assist/GSIQuery.log" beforeDir="false" afterPath="$PROJECT_DIR$/../Survey Assist/GSIQuery.log" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Survey Assist/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/../Survey Assist/main.py" afterDir="false" />
+    </list>
+    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileEditorManager">
+    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/../Survey Assist/main.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="323">
+              <caret line="19" column="31" lean-forward="true" selection-start-line="19" selection-start-column="31" selection-end-line="19" selection-end-column="31" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+    </leaf>
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Python Script" />
+      </list>
+    </option>
+  </component>
+  <component name="FindInProjectRecents">
+    <findStrings>
+      <find>formatte</find>
+      <find>filedialog</find>
+      <find>client_exit</find>
+      <find>self.column</find>
+      <find>OrderedDict</find>
+      <find>Counter</find>
+      <find>line</find>
+      <find>number</find>
+      <find>line_number_errors</find>
+      <find>check_3d_survey</find>
+      <find>disable_query_menu</find>
+      <find>disable_delete_menu</find>
+      <find>enable_query_menu</find>
+      <find>disable_3d_survey_menu</find>
+      <find>disable</find>
+      <find>pass</find>
+      <find>enable</find>
+      <find>choose</find>
+      <find>status</find>
+      <find>gui_app</find>
+      <find>survey</find>
+      <find>SurveyConfiguration</find>
+      <find>survey_config</find>
+      <find>config</find>
+      <find>3D Survey</find>
+      <find>3D</find>
+      <find>gsi</find>
+      <find>configure</find>
+      <find>sql_query_columns</find>
+      <find>sql_query_text</find>
+    </findStrings>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/../Survey Assist" />
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="Python_3.4" />
+      </map>
+    </option>
+  </component>
+  <component name="IdeDocumentHistory">
+    <option name="CHANGED_PATHS">
+      <list>
+        <option value="$PROJECT_DIR$/GSIDatabase.py" />
+        <option value="$PROJECT_DIR$/GSIQuery.log" />
+        <option value="$PROJECT_DIR$/../The Escort/TheEscort_TKINTER_INTERFACE_p3.pyw" />
+        <option value="$PROJECT_DIR$/settings.ini" />
+        <option value="$PROJECT_DIR$/GSI.py" />
+        <option value="$PROJECT_DIR$/SurveyConfiguration.py" />
+        <option value="$PROJECT_DIR$/main.pyw" />
+        <option value="$PROJECT_DIR$/../Survey Assist/GSI.py" />
+        <option value="$PROJECT_DIR$/../Survey Assist/settings.ini" />
+        <option value="$PROJECT_DIR$/../Survey Assist/.gitignore" />
+        <option value="$PROJECT_DIR$/../Survey Assist/main.py" />
+      </list>
+    </option>
+  </component>
+  <component name="ProjectFrameBounds">
+    <option name="x" value="79" />
+    <option name="y" value="78" />
+    <option name="width" value="1500" />
+    <option name="height" value="1341" />
+  </component>
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectView">
+    <navigator proportions="" version="1">
+      <foldersAlwaysOnTop value="true" />
+    </navigator>
+    <panes>
+      <pane id="ProjectPane">
+        <subPane>
+          <expand>
+            <path>
+              <item name="Survey Assist" type="b2602c69:ProjectViewProjectNode" />
+              <item name="Survey Assist" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="Survey Assist" type="b2602c69:ProjectViewProjectNode" />
+              <item name="Scratches and Consoles" type="1a2a3e82:ScratchProjectViewPane$MyProjectNode" />
+            </path>
+            <path>
+              <item name="Survey Assist" type="b2602c69:ProjectViewProjectNode" />
+              <item name="Scratches and Consoles" type="1a2a3e82:ScratchProjectViewPane$MyProjectNode" />
+              <item name="Scratches" type="d62648e6:ScratchProjectViewPane$MyRootNode" />
+            </path>
+          </expand>
+          <select />
+        </subPane>
+      </pane>
+      <pane id="Scope" />
+    </panes>
+  </component>
+  <component name="PropertiesComponent">
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../Survey Assist/main.py" />
+    <property name="restartRequiresConfirmation" value="false" />
+    <property name="settings.editor.selected.configurable" value="file.status.colors" />
+  </component>
+  <component name="RunDashboard">
+    <option name="ruleStates">
+      <list>
+        <RuleState>
+          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
+        </RuleState>
+        <RuleState>
+          <option name="name" value="StatusDashboardGroupingRule" />
+        </RuleState>
+      </list>
+    </option>
+  </component>
+  <component name="RunManager" selected="Python.Survey Assist">
+    <configuration name="Main" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <module name="Groove" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/../Groove" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/../Groove/Main.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="Survey Assist" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <module name="Survey Assist" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/../Survey Assist" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/../Survey Assist/main.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="Teachings" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <module name="Python Teachings" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/../Python Teachings/Automate the Boring Stuff/Reading and Writing Files" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/../Python Teachings/Automate the Boring Stuff/Reading and Writing Files/Teachings.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration default="true" type="PythonConfigurationType" factoryName="Python">
+      <module name="Survey Assist" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="main" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <module name="Survey Assist" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/main.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="scratch" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <module name="Survey Assist" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$APPLICATION_CONFIG_DIR$/scratches" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$APPLICATION_CONFIG_DIR$/scratches/scratch.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration default="true" type="Tox" factoryName="Tox">
+      <module name="Survey Assist" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <method v="2" />
+    </configuration>
+    <configuration default="true" type="tests" factoryName="Doctests">
+      <module name="Survey Assist" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="" />
+      <option name="CLASS_NAME" value="" />
+      <option name="METHOD_NAME" value="" />
+      <option name="FOLDER_NAME" value="" />
+      <option name="TEST_TYPE" value="TEST_SCRIPT" />
+      <option name="PATTERN" value="" />
+      <option name="USE_PATTERN" value="false" />
+      <method v="2" />
+    </configuration>
+    <configuration default="true" type="tests" factoryName="Nosetests">
+      <module name="Survey Assist" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="_new_regexPattern" value="&quot;&quot;" />
+      <option name="_new_additionalArguments" value="&quot;&quot;" />
+      <option name="_new_target" value="&quot;&quot;" />
+      <option name="_new_targetType" value="&quot;PATH&quot;" />
+      <method v="2" />
+    </configuration>
+    <configuration default="true" type="tests" factoryName="Twisted Trial">
+      <module name="Survey Assist" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="_new_additionalArguments" value="&quot;&quot;" />
+      <option name="_new_target" value="&quot;&quot;" />
+      <option name="_new_targetType" value="&quot;PATH&quot;" />
+      <method v="2" />
+    </configuration>
+    <configuration default="true" type="tests" factoryName="Unittests">
+      <module name="Survey Assist" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="_new_additionalArguments" value="&quot;&quot;" />
+      <option name="_new_target" value="&quot;&quot;" />
+      <option name="_new_targetType" value="&quot;PATH&quot;" />
+      <method v="2" />
+    </configuration>
+    <configuration default="true" type="tests" factoryName="py.test">
+      <module name="Survey Assist" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="_new_keywords" value="&quot;&quot;" />
+      <option name="_new_additionalArguments" value="&quot;&quot;" />
+      <option name="_new_target" value="&quot;&quot;" />
+      <option name="_new_targetType" value="&quot;PATH&quot;" />
+      <method v="2" />
+    </configuration>
+    <list>
+      <item itemvalue="Python.Main" />
+      <item itemvalue="Python.main" />
+      <item itemvalue="Python.Survey Assist" />
+      <item itemvalue="Python.scratch" />
+      <item itemvalue="Python.Teachings" />
+    </list>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Python.Survey Assist" />
+        <item itemvalue="Python.Teachings" />
+        <item itemvalue="Python.scratch" />
+        <item itemvalue="Python.main" />
+        <item itemvalue="Python.Main" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="StructureViewFactory">
+    <option name="ACTIVE_ACTIONS" value=",SHOW_FIELDS,SHOW_INHERITED" />
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="ca2bf562-6ed1-41b9-8b6b-e72a3ab9e82c" name="Default Changelist" comment="" />
+      <created>1557973317655</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1557973317655</updated>
+    </task>
+    <task id="LOCAL-00001" summary="fixed formatting">
+      <created>1560845645365</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1560845645365</updated>
+    </task>
+    <task id="LOCAL-00002" summary="added 3D survey check">
+      <created>1566202238910</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1566202238910</updated>
+    </task>
+    <task id="LOCAL-00003" summary="added station checks in 3D checks">
+      <created>1573177911771</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1573177911771</updated>
+    </task>
+    <task id="LOCAL-00004" summary="remove line functionality">
+      <created>1575603039573</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1575603039573</updated>
+    </task>
+    <task id="LOCAL-00005" summary="bug fix query display for line number">
+      <created>1575607135254</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1575607135254</updated>
+    </task>
+    <task id="LOCAL-00006" summary="add color to orientation row">
+      <created>1575607764158</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1575607764158</updated>
+    </task>
+    <task id="LOCAL-00007" summary="add color to orientation row">
+      <created>1575611994331</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1575611994331</updated>
+    </task>
+    <task id="LOCAL-00008" summary="bug fix orientation lines removed when opening two files">
+      <created>1575793865885</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1575793865885</updated>
+    </task>
+    <task id="LOCAL-00009" summary="3d check bug fix">
+      <created>1575883510107</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1575883510107</updated>
+    </task>
+    <task id="LOCAL-00010" summary="add functionality to check station naming">
+      <created>1580365951303</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1580365951303</updated>
+    </task>
+    <task id="LOCAL-00011" summary="add functionality to check station naming">
+      <created>1580440355334</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1580440355334</updated>
+    </task>
+    <task id="LOCAL-00012" summary="increased tolerances">
+      <created>1581316072626</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1581316072626</updated>
+    </task>
+    <task id="LOCAL-00013" summary="create control only GSI">
+      <created>1582704710752</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1582704710752</updated>
+    </task>
+    <task id="LOCAL-00014" summary="added config and compare to menu">
+      <created>1582764726169</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1582764726169</updated>
+    </task>
+    <task id="LOCAL-00015" summary="add SurveyConfig class to store survey settings">
+      <created>1582766874631</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1582766874631</updated>
+    </task>
+    <task id="LOCAL-00016" summary="add Config dialog box">
+      <created>1582775760697</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1582775760697</updated>
+    </task>
+    <task id="LOCAL-00017" summary="config dialog box saves values to settings.ini">
+      <created>1582846099009</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1582846099009</updated>
+    </task>
+    <task id="LOCAL-00018" summary="bug fix - changing tolerances usable whilst remaining in app">
+      <created>1582847724042</created>
+      <option name="number" value="00018" />
+      <option name="presentableId" value="LOCAL-00018" />
+      <option name="project" value="LOCAL" />
+      <updated>1582847724042</updated>
+    </task>
+    <task id="LOCAL-00019" summary="given GSI the config file during initilization">
+      <created>1582848391157</created>
+      <option name="number" value="00019" />
+      <option name="presentableId" value="LOCAL-00019" />
+      <option name="project" value="LOCAL" />
+      <updated>1582848391157</updated>
+    </task>
+    <task id="LOCAL-00020" summary="now displays correctly 4dp surveys">
+      <created>1582858336918</created>
+      <option name="number" value="00020" />
+      <option name="presentableId" value="LOCAL-00020" />
+      <option name="project" value="LOCAL" />
+      <updated>1582858336918</updated>
+    </task>
+    <task id="LOCAL-00021" summary="removed TODO">
+      <created>1582858432965</created>
+      <option name="number" value="00021" />
+      <option name="presentableId" value="LOCAL-00021" />
+      <option name="project" value="LOCAL" />
+      <updated>1582858432965</updated>
+    </task>
+    <task id="LOCAL-00022" summary="added compare functionality">
+      <created>1583142609623</created>
+      <option name="number" value="00022" />
+      <option name="presentableId" value="LOCAL-00022" />
+      <option name="project" value="LOCAL" />
+      <updated>1583142609623</updated>
+    </task>
+    <task id="LOCAL-00023" summary="highlight PC comparison mismatches">
+      <created>1583229256641</created>
+      <option name="number" value="00023" />
+      <option name="presentableId" value="LOCAL-00023" />
+      <option name="project" value="LOCAL" />
+      <updated>1583229256641</updated>
+    </task>
+    <task id="LOCAL-00024" summary="added test files">
+      <created>1583229369705</created>
+      <option name="number" value="00024" />
+      <option name="presentableId" value="LOCAL-00024" />
+      <option name="project" value="LOCAL" />
+      <updated>1583229369705</updated>
+    </task>
+    <task id="LOCAL-00025" summary="add compnet to menu bar">
+      <created>1584161637450</created>
+      <option name="number" value="00025" />
+      <option name="presentableId" value="LOCAL-00025" />
+      <option name="project" value="LOCAL" />
+      <updated>1584161637451</updated>
+    </task>
+    <task id="LOCAL-00026" summary="dispaly the new gsi when stripping out non-control shots">
+      <created>1584165291867</created>
+      <option name="number" value="00026" />
+      <option name="presentableId" value="LOCAL-00026" />
+      <option name="project" value="LOCAL" />
+      <updated>1584165291867</updated>
+    </task>
+    <task id="LOCAL-00027" summary="compnet dialogs display correctly">
+      <created>1584165945627</created>
+      <option name="number" value="00027" />
+      <option name="presentableId" value="LOCAL-00027" />
+      <option name="project" value="LOCAL" />
+      <updated>1584165945627</updated>
+    </task>
+    <task id="LOCAL-00028" summary="integrated fully compnet assist">
+      <created>1584234358667</created>
+      <option name="number" value="00028" />
+      <option name="presentableId" value="LOCAL-00028" />
+      <option name="project" value="LOCAL" />
+      <updated>1584234358667</updated>
+    </task>
+    <task id="LOCAL-00029" summary="Change name to Survey Assist">
+      <created>1584240558090</created>
+      <option name="number" value="00029" />
+      <option name="presentableId" value="LOCAL-00029" />
+      <option name="project" value="LOCAL" />
+      <updated>1584240558090</updated>
+    </task>
+    <task id="LOCAL-00030" summary="Change name to Survey Assist">
+      <created>1584241608045</created>
+      <option name="number" value="00030" />
+      <option name="presentableId" value="LOCAL-00030" />
+      <option name="project" value="LOCAL" />
+      <updated>1584241608045</updated>
+    </task>
+    <task id="LOCAL-00031" summary="test">
+      <created>1584242425422</created>
+      <option name="number" value="00031" />
+      <option name="presentableId" value="LOCAL-00031" />
+      <option name="project" value="LOCAL" />
+      <updated>1584242425422</updated>
+    </task>
+    <task id="LOCAL-00032" summary="updated gitignore">
+      <created>1584242654981</created>
+      <option name="number" value="00032" />
+      <option name="presentableId" value="LOCAL-00032" />
+      <option name="project" value="LOCAL" />
+      <updated>1584242654981</updated>
+    </task>
+    <task id="LOCAL-00033" summary="updated the COmpnet GUI's to use Grid">
+      <created>1584249482928</created>
+      <option name="number" value="00033" />
+      <option name="presentableId" value="LOCAL-00033" />
+      <option name="project" value="LOCAL" />
+      <updated>1584249482928</updated>
+    </task>
+    <option name="localTasksCounter" value="34" />
+    <servers />
+  </component>
+  <component name="TodoView">
+    <todo-panel id="selected-file">
+      <is-autoscroll-to-source value="true" />
+    </todo-panel>
+    <todo-panel id="all">
+      <are-packages-shown value="true" />
+      <is-autoscroll-to-source value="true" />
+    </todo-panel>
+  </component>
+  <component name="ToolWindowManager">
+    <frame x="79" y="78" width="1500" height="1341" extended-state="0" />
+    <editor active="true" />
+    <layout>
+      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.40183696" visible="true" weight="0.2756498" />
+      <window_info id="Structure" order="1" sideWeight="0.598163" side_tool="true" visible="true" weight="0.2756498" />
+      <window_info id="Favorites" order="2" side_tool="true" />
+      <window_info anchor="bottom" id="Message" order="0" />
+      <window_info anchor="bottom" id="Find" order="1" weight="0.32911393" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" sideWeight="0.499316" visible="true" weight="0.26497892" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.29451478" />
+      <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
+      <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
+      <window_info anchor="bottom" id="TODO" order="6" weight="0.32861477" />
+      <window_info anchor="bottom" id="Version Control" order="7" weight="0.32236287" />
+      <window_info anchor="bottom" id="Terminal" order="8" weight="0.32760364" />
+      <window_info anchor="bottom" id="Event Log" order="9" sideWeight="0.500684" side_tool="true" weight="0.26497892" />
+      <window_info anchor="bottom" id="Python Console" order="10" weight="0.32760364" />
+      <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
+      <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
+      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
+    </layout>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <ignored-roots>
+      <path value="$PROJECT_DIR$" />
+    </ignored-roots>
+    <MESSAGE value="add color to orientation row" />
+    <MESSAGE value="bug fix orientation lines removed when opening two files" />
+    <MESSAGE value="3d check bug fix" />
+    <MESSAGE value="add functionality to check station naming" />
+    <MESSAGE value="increased tolerances" />
+    <MESSAGE value="create control only GSI" />
+    <MESSAGE value="added config and compare to menu" />
+    <MESSAGE value="add SurveyConfig class to store survey settings" />
+    <MESSAGE value="add Config dialog box" />
+    <MESSAGE value="config dialog box saves values to settings.ini" />
+    <MESSAGE value="bug fix - changing tolerances usable whilst remaining in app" />
+    <MESSAGE value="given GSI the config file during initilization" />
+    <MESSAGE value="now displays correctly 4dp surveys" />
+    <MESSAGE value="removed TODO" />
+    <MESSAGE value="added compare functionality" />
+    <MESSAGE value="highlight PC comparison mismatches" />
+    <MESSAGE value="added test files" />
+    <MESSAGE value="add compnet to menu bar" />
+    <MESSAGE value="dispaly the new gsi when stripping out non-control shots" />
+    <MESSAGE value="compnet dialogs display correctly" />
+    <MESSAGE value="integrated fully compnet assist" />
+    <MESSAGE value="Change name to Survey Assist" />
+    <MESSAGE value="test" />
+    <MESSAGE value="updated gitignore" />
+    <MESSAGE value="updated the COmpnet GUI's to use Grid" />
+    <option name="LAST_COMMIT_MESSAGE" value="updated the COmpnet GUI's to use Grid" />
+  </component>
+  <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/../Survey Assist/GSI Files/ERROR.GSI">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-903" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../Survey Assist/GSI Files/MR140519.GSI">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="68">
+          <caret line="4" column="9" lean-forward="true" selection-start-line="4" selection-start-column="9" selection-end-line="4" selection-end-column="9" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../Survey Assist/GSIQuery.log">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../The Escort/TheEscort_TKINTER_INTERFACE_p3.py" />
+    <entry file="file://$PROJECT_DIR$/../The Escort/TheEscort_TKINTER_INTERFACE_p3.pyw">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="151">
+          <caret line="14" selection-start-line="14" selection-end-line="14" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/AppData/Local/Programs/Python/Python37-32/Lib/tkinter/__init__.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="215">
+          <caret line="1704" selection-start-line="1704" selection-end-line="1704" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../Survey Assist/GSIExceptions.py">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../Survey Assist/GSIDatabase.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="510">
+          <caret line="31" selection-start-line="31" selection-end-line="31" />
+          <folding>
+            <element signature="e#0#14#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../Survey Assist/main.pyw">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="269">
+          <caret line="508" selection-start-line="508" selection-end-line="508" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../Survey Assist/SurveyConfiguration.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="51">
+          <caret line="3" column="25" selection-start-line="3" selection-start-column="6" selection-end-line="3" selection-end-column="25" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../Survey Assist/settings.ini">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="119">
+          <caret line="7" lean-forward="true" selection-start-line="7" selection-end-line="7" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../Survey Assist/.gitignore">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="51">
+          <caret line="3" column="5" lean-forward="true" selection-start-line="3" selection-start-column="5" selection-end-line="3" selection-end-column="5" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../Survey Assist/GSI.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="408">
+          <caret line="24" column="59" lean-forward="true" selection-start-line="24" selection-start-column="59" selection-end-line="24" selection-end-column="59" />
+          <folding>
+            <element signature="e#25#52#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../Survey Assist/main.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="323">
+          <caret line="19" column="31" lean-forward="true" selection-start-line="19" selection-start-column="31" selection-end-line="19" selection-end-column="31" />
+        </state>
+      </provider>
+    </entry>
+  </component>
+</project>

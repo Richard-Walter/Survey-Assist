@@ -9,7 +9,6 @@ NOTE: For 3.4 compatibility
     ii) had to use an ordered dictionary"""
 
 # TODO move fix coordinates and override station coordinates.  WIll need to append all coordinate values in this case
-# TODO Combine all survey checks into a 'Check all'
 
 
 import tkinter as tk
@@ -67,6 +66,9 @@ class MenuBar(tk.Frame):
         self.check_sub_menu.add_command(label="Check Tolerances (3D only)",
                                         command=self.check_3d_survey)
         self.check_sub_menu.add_command(label="Check Control Naming (3D only) ", command=self.check_control_naming)
+        self.check_sub_menu.add_command(label="Check All (3D only)",
+                                        command=self.check_3d_all)
+        self.check_sub_menu.add_separator()
         self.check_sub_menu.add_command(label="Compare Prism Constants to another survey ... ",
                                         command=self.compare_survey)
         self.menu_bar.add_cascade(label="Check Survey", menu=self.check_sub_menu, state="disabled")
@@ -250,8 +252,8 @@ class MenuBar(tk.Frame):
                     error_text += error
 
                 if not errors:
-                    error_text = "Survey looks good!"
-                    error_subject = "3D Survey Tolerance Analysis"
+                    error_text = "Survey is within the specified tolerance.  Well done!"
+                    error_subject = "CHECKING SURVEY IS WITHIN TOLERANCE"
 
                 # display error dialog box
                 tkinter.messagebox.showinfo(error_subject, error_text)
@@ -276,9 +278,10 @@ class MenuBar(tk.Frame):
         line_number_errors = []
         error_text = ""
         error_subject = "POTENTIAL SURVEY ERROR"
-        all_good_subject = "CHECK SURVEY"
+        all_good_subject = "CHECKING FOR CONTROL NAMING MISTAKES"
 
-        shots_to_stations_message = "The number of times each station was shot is shown below:\n\n"
+        shots_to_stations_message = "The number of times each station was shot is shown below.\nIn most cases they " \
+                                    "should be all even numbers:\n\n"
 
         line_number = 0
 
@@ -337,6 +340,11 @@ class MenuBar(tk.Frame):
             logger.exception('Error checking station naming')
             tk.messagebox.showerror("Error", 'Error executing this query:\nPlease contact the developer of this '
                                              'program or see log file for further information')
+
+    def check_3d_all(self):
+
+        self.check_3d_survey()
+        self.check_control_naming()
 
     def compare_survey(self):
 
@@ -1058,7 +1066,7 @@ class CompnetCompareCRDFWindow:
             if self.outliers_dict:
                 for point in sorted(self.outliers_dict, key=lambda k: k):
                     msg_body += point + ': ' + self.outliers_dict[point] + '\n'
-            else:   #no outliers
+            else:  # no outliers
                 msg_body = " \nThere are no points that exceed the specified tolerance\n"
 
             msg_complete = msg_body
@@ -1097,34 +1105,8 @@ class CompnetStripNonControlShots:
 
     def __init__(self):
 
-        # self.master = master
         self.outliers_dict = {}
         self.strip_non_control_shots()
-
-        # #  Lets build the dialog box
-        # self.dialog_window = tk.Toplevel(master)
-        # self.dialog_window.title("Compnet Assist")
-        # self.dialog_window.geometry(self.center_screen())
-        # # self.dialog_window.attributes("-topmost", True)
-        #
-        # # Strip all shots except control
-        # self.strip_non_control_shots_lbl = tk.Label(self.dialog_window, text='\nSTRIP ALL SHOTS EXCEPT TO CONTROL:\n')
-        # self.strip_non_control_shots_btn = tk.Button(self.dialog_window, text='Choose GSI File to strip:',
-        #                                              command=self.strip_non_control_shots)
-        # self.strip_non_control_shots_lbl.pack()
-        # self.strip_non_control_shots_btn.pack()
-
-    # def center_screen(self):
-    #
-    #     dialog_w = 400
-    #     dialog_h = 150
-    #
-    #     ws = self.master.winfo_width()
-    #     hs = self.master.winfo_height()
-    #     x = int((ws / 2) - (dialog_w / 2))
-    #     y = int((hs / 2) - (dialog_w / 2))
-    #
-    #     return '{}x{}+{}+{}'.format(dialog_w, dialog_h, x, y)
 
     def strip_non_control_shots(self):
 
@@ -1143,12 +1125,6 @@ class CompnetStripNonControlShots:
             MenuBar.create_and_populate_database()
             MenuBar.update_gui()
             gui_app.menu_bar.enable_menus()
-
-            # control_only_gsi = GSI(logger)
-            # control_only_gsi.format_gsi(control_only_filepath)
-            # gui_app.list_box.populate(control_only_gsi.formatted_lines)
-            # gui_app.status_bar.status['text'] = control_only_filepath
-            # gui_app.menu_bar.enable_menus()
 
         except FileNotFoundError as ex:
 
