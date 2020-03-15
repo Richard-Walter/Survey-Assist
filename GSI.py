@@ -39,7 +39,8 @@ class GSI:
             try:
                 for line in f:
 
-                    """ Need to create dictionary of ID and value e.g. {'Point_ID': 'A', 'STN_Easting': '2858012',.. """
+                    """ Need to create dictionary of ID's and value's e.g. {'Point_ID': 'A', 'STN_Easting': '2858012',
+                    .. """
 
                     # First - create default empty string if no field
                     formatted_line = OrderedDict([('Point_ID', ''), ('Timestamp', ''), ('Horizontal_Angle', ''),

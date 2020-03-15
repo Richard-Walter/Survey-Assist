@@ -503,6 +503,7 @@ class MenuBar(tk.Frame):
                                              'by another program.  If problem continues please contact Richard Walter')
 
 
+
 class ConfigDialog:
 
     def __init__(self, master):
