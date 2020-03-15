@@ -270,6 +270,8 @@ class GSI:
         with open(control_only_filename, 'w') as f_stripped:
             f_stripped.write(control_only_gsi_file_contents)
 
+        return control_only_filename
+
 # def main():
 #
 #     # testing
