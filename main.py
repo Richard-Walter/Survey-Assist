@@ -547,8 +547,8 @@ class ConfigDialog:
 
     def center_screen(self):
 
-        dialog_w = 350
-        dialog_h = 300
+        dialog_w = 250
+        dialog_h = 200
 
         ws = self.master.winfo_width()
         hs = self.master.winfo_height()
