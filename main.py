@@ -9,12 +9,12 @@ NOTE: For 3.4 compatibility
     ii) had to use an ordered dictionary"""
 
 # TODO move fix coordinates and override station coordinates.  WIll need to append all coordinate values in this case
-# TODO Rename GSI Query to Survey Assist
 # TODO Combine all survey checks into a 'Check all'
-# TODO update compnet gui to grid so i can add padding around buttons
+
 
 import tkinter as tk
 import re
+import os
 from tkinter import ttk
 import logging.config
 from tkinter import filedialog
@@ -88,9 +88,6 @@ class MenuBar(tk.Frame):
 
         # About menu
         self.menu_bar.add_command(label="About", command=self.display_about_dialog_box)
-        # self.help_sub_menu = tk.Menu(self.menu_bar, tearoff=0)
-        # self.help_sub_menu.add_command(label="About", command=self.display_about_dialog_box)
-        # self.menu_bar.add_cascade(label="Help", menu=self.help_sub_menu)
 
         # Exit menu
         self.menu_bar.add_command(label="Exit", command=self.client_exit)
@@ -161,6 +158,8 @@ class MenuBar(tk.Frame):
 
         sql_query_columns = 'Point_ID, Easting, Northing, Elevation'
         sql_where_column = 'Point_ID'
+
+        sql_query_text = ""
 
         error_text = ""
         error_subject = "Error found in Survey"
@@ -268,8 +267,8 @@ class MenuBar(tk.Frame):
 
         print('STATION SETUP LIST: ' + str(station_setups))
 
-        sql_query_columns = 'Point_ID'
-        sql_where_column = 'Point_ID'
+        # sql_query_columns = 'Point_ID'
+        # sql_where_column = 'Point_ID'
 
         stn_shots_not_in_setup = []
         shots_to_stations = []
@@ -501,7 +500,6 @@ class MenuBar(tk.Frame):
 
             tk.messagebox.showerror("ERROR", 'Error reading GSI File:\n\nPlease make sure file is not opened '
                                              'by another program.  If problem continues please contact Richard Walter')
-
 
 
 class ConfigDialog:
@@ -896,36 +894,24 @@ class CompnetUpdateFixedFileWindow:
         #  Lets build the dialog box
         self.dialog_window = tk.Toplevel(master)
         self.dialog_window.title("Compnet Assist")
-        self.dialog_window.geometry(self.center_screen())
-        # self.dialog_window.attributes("-topmost", True)
 
         # Update Fixed File GUI
-        self.update_fixed_file_lbl = tk.Label(self.dialog_window, text='\nUPDATE FIXED FILE\n')
+        self.update_fixed_file_lbl = tk.Label(self.dialog_window, text='\nUPDATE FIXED FILE\n', font=('Helvetica',
+                                                                                                      14, 'bold'))
         self.fixed_btn = tk.Button(self.dialog_window, text='(1) Choose Fixed File: ', command=self.get_fixed_file_path)
         self.coord_btn = tk.Button(self.dialog_window, text='(2) Choose Coordinate File: ',
                                    command=self.get_coordinate_file_path)
         self.update_btn = tk.Button(self.dialog_window, text='(3) UPDATE FIXED FILE ', command=self.update_fixed_file)
-        self.fixed_result_lbl = tk.Label(self.dialog_window, text=' ')
+        self.fixed_result_lbl = tk.Label(self.dialog_window, text=' ', font=('Helvetica',
+                                                                             12, 'bold'))
         # self.blank_lbl = tk.Label(self.dialog_window, text='')
 
-        self.update_fixed_file_lbl.pack()
-        self.fixed_btn.pack()
-        self.coord_btn.pack()
-        self.update_btn.pack()
-        self.fixed_result_lbl.pack()
+        self.update_fixed_file_lbl.grid(row=0, column=1, padx=50, pady=2)
+        self.fixed_btn.grid(row=1, column=1, sticky='nesw', padx=25, pady=3)
+        self.coord_btn.grid(row=2, column=1, sticky='nesw', padx=25, pady=3)
+        self.update_btn.grid(row=3, column=1, sticky='nesw', padx=25, pady=3)
+        self.fixed_result_lbl.grid(row=4, sticky='nesw', column=1, padx=25, pady=15)
         # self.blank_lbl.pack()
-
-    def center_screen(self):
-
-        dialog_w = 280
-        dialog_h = 200
-
-        ws = self.master.winfo_width()
-        hs = self.master.winfo_height()
-        x = int((ws / 2) - (dialog_w / 2))
-        y = int((hs / 2) - (dialog_w / 2))
-
-        return '{}x{}+{}+{}'.format(dialog_w, dialog_h, x, y)
 
     def update_fixed_file(self):
 
@@ -939,7 +925,7 @@ class CompnetUpdateFixedFileWindow:
         except Exception as ex:
             print(ex, type(ex))
             self.fixed_result_lbl.config(text='ERROR - See Richard')
-            tk.messagebox.showerror("Error", ex)
+            tk.messagebox.showerror("Error", "Have you selected both files?\n\nIf problem persists, please see Richard")
 
         else:
 
@@ -947,13 +933,15 @@ class CompnetUpdateFixedFileWindow:
 
     def get_fixed_file_path(self):
         self.fixed_file_path = tk.filedialog.askopenfilename()
+        if self.fixed_file_path != "":
+            self.fixed_btn.config(text=os.path.basename(self.fixed_file_path))
         self.dialog_window.lift()  # bring window to the front again
-        print(self.fixed_file_path)
 
     def get_coordinate_file_path(self):
         self.coordinate_file_path = tk.filedialog.askopenfilename()
+        if self.coordinate_file_path != "":
+            self.coord_btn.config(text=os.path.basename(self.coordinate_file_path))
         self.dialog_window.lift()  # bring window to the front again
-        print(self.coordinate_file_path)
 
 
 class CompnetCompareCRDFWindow:
@@ -968,11 +956,12 @@ class CompnetCompareCRDFWindow:
         #  Lets build the dialog box
         self.dialog_window = tk.Toplevel(master)
         self.dialog_window.title("Compnet Assist")
-        self.dialog_window.geometry(self.center_screen())
+        # self.dialog_window.geometry(self.center_screen())
         # self.dialog_window.attributes("-topmost", True)
 
         # Compare CRD Files GUI
-        self.compare_crd_files_lbl = tk.Label(self.dialog_window, text='\nCOMPARE CRD FILES\n')
+        self.compare_crd_files_lbl = tk.Label(self.dialog_window, text='\nCOMPARE CRD FILES\n', font=('Helvetica',
+                                                                                                      14, 'bold'))
         self.tolE_lbl = tk.Label(self.dialog_window, text='Tolerance E: ')
         self.entry_tolE = tk.Entry(self.dialog_window)
         self.entry_tolE.insert(tk.END, '0.05')
@@ -986,32 +975,32 @@ class CompnetCompareCRDFWindow:
         self.crd_file_2_btn = tk.Button(self.dialog_window, text='(2) Choose CRD File 2: ',
                                         command=lambda: self.get_crd_file_path(2))
 
-        self.compare_crd_btn = tk.Button(self.dialog_window, text='(3) COMPARE FILES ',
+        self.compare_crd_btn = tk.Button(self.dialog_window, text='(3) COMPARE FILES ', state=tk.DISABLED,
                                          command=self.compare_crd_files_outliers)
-        self.compare_result_lbl = tk.Label(self.dialog_window, text=' ')
+        # self.compare_result_lbl = tk.Label(self.dialog_window, text=' ')
 
-        self.compare_crd_files_lbl.pack()
-        self.tolE_lbl.pack()
-        self.entry_tolE.pack()
-        self.tolN_lbl.pack()
-        self.entry_tolN.pack()
+        self.compare_crd_files_lbl.grid(row=0, column=1, columnspan=2, padx=50, pady=2)
+        self.tolE_lbl.grid(row=1, column=1, sticky='nesw', padx=(25, 5), pady=3)
+        self.entry_tolE.grid(row=1, column=2, sticky='nesw', padx=(5, 25), pady=2)
+        self.tolN_lbl.grid(row=2, column=1, sticky='nesw', padx=(25, 5), pady=3)
+        self.entry_tolN.grid(row=2, column=2, sticky='nesw', padx=(5, 25), pady=3)
 
-        self.crd_file_1_btn.pack()
-        self.crd_file_2_btn.pack()
-        self.compare_crd_btn.pack()
-        self.compare_result_lbl.pack()
+        self.crd_file_1_btn.grid(row=5, column=1, columnspan=2, sticky='nesw', padx=25, pady=(25, 3))
+        self.crd_file_2_btn.grid(row=6, column=1, columnspan=2, sticky='nesw', padx=25, pady=3)
+        self.compare_crd_btn.grid(row=7, column=1, columnspan=2, sticky='nesw', padx=25, pady=(3, 25))
+        # self.compare_result_lbl.grid(row=8, column=1, columnspan=2, sticky='nesw', padx=25, pady=15)
 
-    def center_screen(self):
-
-        dialog_w = 400
-        dialog_h = 300
-
-        ws = self.master.winfo_width()
-        hs = self.master.winfo_height()
-        x = int((ws / 2) - (dialog_w / 2))
-        y = int((hs / 2) - (dialog_w / 2))
-
-        return '{}x{}+{}+{}'.format(dialog_w, dialog_h, x, y)
+    # def center_screen(self):
+    #
+    #     dialog_w = 400
+    #     dialog_h = 300
+    #
+    #     ws = self.master.winfo_width()
+    #     hs = self.master.winfo_height()
+    #     x = int((ws / 2) - (dialog_w / 2))
+    #     y = int((hs / 2) - (dialog_w / 2))
+    #
+    #     return '{}x{}+{}+{}'.format(dialog_w, dialog_h, x, y)
 
     def compare_crd_files_outliers(self):
 
@@ -1054,44 +1043,54 @@ class CompnetCompareCRDFWindow:
 
         except Exception as ex:
             print(ex, type(ex))
-            self.compare_result_lbl.config(text='ERROR - See Richard\n')
+            # self.compare_result_lbl.config(text='ERROR - See Richard\n')
             tk.messagebox.showerror("Error", ex)
 
         else:
 
-            self.compare_result_lbl.config(text='SUCCESS')
+            # self.compare_result_lbl.config(text='SUCCESS')
 
             # display results to user
             # msg_header = "EASTING TOLERANCE = " + str(tol_E) + "\nNORTHING TOLERANCE = " + str(tol_N) +"\n\n"
 
-            msg_body = ''
+            msg_body = 'POINTS THAT EXCEED TOLERANCE:\n\n'
 
-            for point in sorted(self.outliers_dict, key=lambda k: k):
-                msg_body += point + ': ' + self.outliers_dict[point] + '\n'
+            if self.outliers_dict:
+                for point in sorted(self.outliers_dict, key=lambda k: k):
+                    msg_body += point + ': ' + self.outliers_dict[point] + '\n'
+            else:   #no outliers
+                msg_body = " \nThere are no points that exceed the specified tolerance\n"
 
-            # msg_complete = msg_header + msg_body
             msg_complete = msg_body
 
             top = tk.Toplevel()
-            top.title("POINTS THAT EXCEED TOLERANCE")
-            top.geometry('400x600')
+            top.title("COMPARE CRD's")
+            # top.geometry('400x600')
 
             msg = tk.Message(top, text=msg_body)
-            msg.pack()
+            msg.grid(row=1, column=1, padx=30, pady=10)
 
     def get_crd_file_path(self, file_path_number):
 
         if file_path_number is 1:
             self.crd_file_path_1 = tk.filedialog.askopenfilename()
+
+            if self.crd_file_path_1 != "":
+                self.crd_file_1_btn.config(text=os.path.basename(self.crd_file_path_1))
             self.dialog_window.lift()  # bring window to the front again
-            print(self.crd_file_path_1)
+
         elif file_path_number is 2:
             self.crd_file_path_2 = tk.filedialog.askopenfilename()
-            self.dialog_window.lift()  # bring window to the front again
-            print(self.crd_file_path_2)
-        else:
 
+            if self.crd_file_path_2 != "":
+                self.crd_file_2_btn.config(text=os.path.basename(self.crd_file_path_2))
+            self.dialog_window.lift()  # bring window to the front again
+        else:
             tk.messagebox.showerror("Error", "No filepath no exists: " + str(file_path_number))
+
+        if all([self.crd_file_path_1 != "", self.crd_file_path_2 != ""]):
+            # enablebutton
+            self.compare_crd_btn.configure(state=tk.NORMAL)
 
 
 class CompnetStripNonControlShots:
@@ -1128,7 +1127,6 @@ class CompnetStripNonControlShots:
     #     return '{}x{}+{}+{}'.format(dialog_w, dialog_h, x, y)
 
     def strip_non_control_shots(self):
-
 
         # let user choose GSI file
         gsi_file_path = MenuBar.filename_path
