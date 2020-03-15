@@ -27,7 +27,7 @@ from SurveyConfiguration import SurveyConfiguration
 from GSIDatabase import GSIDatabase
 from GSIExceptions import *
 
-logger = logging.getLogger('GSIQuery')
+logger = logging.getLogger('Survey Assist')
 
 gsi = None
 database = GSIDatabase(GSI.GSI_WORD_ID_DICT, logger)
@@ -439,7 +439,7 @@ class MenuBar(tk.Frame):
                         "This program also assists with Compnet - copying over fixed files, comparing CRD files, and " \
                         "stripping out GSI leaving just the control stations for easier analysis of problems"
 
-        tkinter.messagebox.showinfo("About GSI Query", about_me_text)
+        tkinter.messagebox.showinfo("About Survey Assist", about_me_text)
 
     @staticmethod
     def client_exit():
@@ -1375,7 +1375,7 @@ def main():
     # Create main window
     root = tk.Tk()
     root.geometry("1600x1000")
-    root.title("GSI Query")
+    root.title("Survey Assist")
     root.wm_iconbitmap(r'icons\analyser.ico')
 
     gsi = GSI(logger)
