@@ -2,16 +2,16 @@
 
 """ This program reads in a GSI file from a Leica 'Total Station' and displays the file
 in a clearer, more user-friendly format.  You can then execute queries on this data to extract relevant information.
-It also checks for survey errors in a 3D survey.
+It also checks for survey errors in a survey, and contains some utilities to help with CompNet.
 
 NOTE: For 3.4 compatibility
     i) Replaced f-strings with.format method.
     ii) had to use an ordered dictionary"""
 
 # TODO move fix coordinates and override station coordinates.  WIll need to append all coordinate values in this case
-# TODO Integrate Compnet Assist
 # TODO Rename GSI Query to Survey Assist
 # TODO Combine all survey checks into a 'Check all'
+# TODO update compnet gui to grid so i can add padding around buttons
 
 import tkinter as tk
 import re
@@ -64,10 +64,12 @@ class MenuBar(tk.Frame):
 
         # Check menu
         self.check_sub_menu = tk.Menu(self.menu_bar, tearoff=0)
-        self.check_sub_menu.add_command(label="Check Tolerances", command=self.check_3d_survey)
-        self.check_sub_menu.add_command(label="Check Control Naming ", command=self.check_control_naming)
-        self.check_sub_menu.add_command(label="Compare Survey ", command=self.compare_survey)
-        self.menu_bar.add_cascade(label="3D Survey", menu=self.check_sub_menu, state="disabled")
+        self.check_sub_menu.add_command(label="Check Tolerances (3D only)",
+                                        command=self.check_3d_survey)
+        self.check_sub_menu.add_command(label="Check Control Naming (3D only) ", command=self.check_control_naming)
+        self.check_sub_menu.add_command(label="Compare Prism Constants to another survey ... ",
+                                        command=self.compare_survey)
+        self.menu_bar.add_cascade(label="Check Survey", menu=self.check_sub_menu, state="disabled")
 
         # Delete menu
         self.delete_sub_menu = tk.Menu(self.menu_bar, tearoff=0)
@@ -76,8 +78,8 @@ class MenuBar(tk.Frame):
 
         # Compnet menu
         self.compnet_sub_menu = tk.Menu(self.menu_bar, tearoff=0)
-        self.compnet_sub_menu.add_command(label="Update Fixed File", command=self.update_fixed_file)
-        self.compnet_sub_menu.add_command(label="Compare CRD Files", command=self.compare_crd_files)
+        self.compnet_sub_menu.add_command(label="Update Fixed File...", command=self.update_fixed_file)
+        self.compnet_sub_menu.add_command(label="Compare CRD Files...", command=self.compare_crd_files)
         self.compnet_sub_menu.add_command(label="Strip Non-control Shots", command=self.strip_non_control_shots)
         self.menu_bar.add_cascade(label="Compnet", menu=self.compnet_sub_menu)
 
@@ -101,9 +103,6 @@ class MenuBar(tk.Frame):
         MenuBar.create_and_populate_database()
         MenuBar.update_gui()
         self.enable_menus()
-        # self.enable_query_menu()
-        # self.enable_3d_survey_menu()
-        # self.enable_delete_menu()
 
     @staticmethod
     def format_gsi_file():
@@ -278,7 +277,7 @@ class MenuBar(tk.Frame):
         line_number_errors = []
         error_text = ""
         error_subject = "POTENTIAL SURVEY ERROR"
-        all_good_subject = "3D SURVEY"
+        all_good_subject = "CHECK SURVEY"
 
         shots_to_stations_message = "The number of times each station was shot is shown below:\n\n"
 
@@ -402,7 +401,7 @@ class MenuBar(tk.Frame):
 
     def strip_non_control_shots(self):
 
-        CompnetStripNonControlShotsWindow(self.master)
+        CompnetStripNonControlShots()
 
     def configure_survey(self):
 
@@ -420,42 +419,15 @@ class MenuBar(tk.Frame):
     def enable_menus(self):
 
         self.menu_bar.entryconfig("Query", state="normal")
-        self.menu_bar.entryconfig("3D Survey", state="normal")
+        self.menu_bar.entryconfig("Check Survey", state="normal")
         self.menu_bar.entryconfig("Delete...", state="normal")
         # self.menu_bar.entryconfig("Compnet", state="normal")
 
     def disable_menus(self):
 
         self.menu_bar.entryconfig("Query", state="disabled")
-        self.menu_bar.entryconfig("3D Survey", state="disabled")
+        self.menu_bar.entryconfig("Check Survey", state="disabled")
         self.menu_bar.entryconfig("Delete...", state="disabled")
-        # self.query_sub_menu.entryconfig("Query", state="disabled")
-        # self.query_sub_menu.entryconfig("3D Survey", state="disabled")
-        # self.compnet_sub_menu.entryconfig("Compnet", state="disabled")
-
-    # def enable_query_menu(self):
-    #
-    #     self.menu_bar.entryconfig("Query", state="normal")
-    #
-    # def enable_3d_survey_menu(self):
-    #
-    #     self.menu_bar.entryconfig("3D Survey", state="normal")
-    #
-    # def enable_delete_menu(self):
-    #
-    #     self.menu_bar.entryconfig("Delete...", state="normal")
-    #
-    # def disable_delete_menu(self):
-    #
-    #     self.menu_bar.entryconfig("Delete...", state="normal")
-    #
-    # def disable_query_menu(self):
-    #
-    #     self.query_sub_menu.entryconfig("Query", state="disabled")
-    #
-    # def disable_3d_survey_menu(self):
-    #
-    #     self.query_sub_menu.entryconfig("3D Survey", state="disabled")
 
     @staticmethod
     def display_about_dialog_box():
@@ -463,7 +435,7 @@ class MenuBar(tk.Frame):
         about_me_text = "Written by Richard Walter 2019\n\n This program reads a GSI file from a Leica Total " \
                         "Station and displays the data in a clearer, more user-friendly format." \
                         " \n\nYou can then execute queries on this data to extract relevant information, or check for" \
-                        " errors in a 3D the survey, such as incorrect station labelling and tolerance errors. \n\n" \
+                        " errors in a survey, such as incorrect station labelling and tolerance errors. \n\n" \
                         "This program also assists with Compnet - copying over fixed files, comparing CRD files, and " \
                         "stripping out GSI leaving just the control stations for easier analysis of problems"
 
@@ -575,8 +547,8 @@ class ConfigDialog:
 
     def center_screen(self):
 
-        dialog_w = 270
-        dialog_h = 200
+        dialog_w = 350
+        dialog_h = 300
 
         ws = self.master.winfo_width()
         hs = self.master.winfo_height()
@@ -912,7 +884,6 @@ class ListBox(tk.Frame):
 
 
 class CompnetUpdateFixedFileWindow:
-
     coordinate_file_path = ""
     fixed_file_path = ""
 
@@ -934,7 +905,7 @@ class CompnetUpdateFixedFileWindow:
                                    command=self.get_coordinate_file_path)
         self.update_btn = tk.Button(self.dialog_window, text='(3) UPDATE FIXED FILE ', command=self.update_fixed_file)
         self.fixed_result_lbl = tk.Label(self.dialog_window, text=' ')
-        self.blank_lbl = tk.Label(self.dialog_window, text='')
+        # self.blank_lbl = tk.Label(self.dialog_window, text='')
 
         self.update_fixed_file_lbl.pack()
         self.fixed_btn.pack()
@@ -945,8 +916,8 @@ class CompnetUpdateFixedFileWindow:
 
     def center_screen(self):
 
-        dialog_w = 400
-        dialog_h = 500
+        dialog_w = 280
+        dialog_h = 200
 
         ws = self.master.winfo_width()
         hs = self.master.winfo_height()
@@ -980,6 +951,7 @@ class CompnetUpdateFixedFileWindow:
 
     def get_coordinate_file_path(self):
         self.coordinate_file_path = tk.filedialog.askopenfilename()
+        self.dialog_window.lift()  # bring window to the front again
         print(self.coordinate_file_path)
 
 
@@ -1031,7 +1003,7 @@ class CompnetCompareCRDFWindow:
     def center_screen(self):
 
         dialog_w = 400
-        dialog_h = 500
+        dialog_h = 300
 
         ws = self.master.winfo_width()
         hs = self.master.winfo_height()
@@ -1121,54 +1093,75 @@ class CompnetCompareCRDFWindow:
             tk.messagebox.showerror("Error", "No filepath no exists: " + str(file_path_number))
 
 
-class CompnetStripNonControlShotsWindow:
+class CompnetStripNonControlShots:
 
-    def __init__(self, master):
+    def __init__(self):
 
-        self.master = master
+        # self.master = master
         self.outliers_dict = {}
+        self.strip_non_control_shots()
 
-        #  Lets build the dialog box
-        self.dialog_window = tk.Toplevel(master)
-        self.dialog_window.title("Compnet Assist")
-        self.dialog_window.geometry(self.center_screen())
-        # self.dialog_window.attributes("-topmost", True)
+        # #  Lets build the dialog box
+        # self.dialog_window = tk.Toplevel(master)
+        # self.dialog_window.title("Compnet Assist")
+        # self.dialog_window.geometry(self.center_screen())
+        # # self.dialog_window.attributes("-topmost", True)
+        #
+        # # Strip all shots except control
+        # self.strip_non_control_shots_lbl = tk.Label(self.dialog_window, text='\nSTRIP ALL SHOTS EXCEPT TO CONTROL:\n')
+        # self.strip_non_control_shots_btn = tk.Button(self.dialog_window, text='Choose GSI File to strip:',
+        #                                              command=self.strip_non_control_shots)
+        # self.strip_non_control_shots_lbl.pack()
+        # self.strip_non_control_shots_btn.pack()
 
-        # Strip all shots except control
-        self.strip_non_control_shots_lbl = tk.Label(self.dialog_window, text='\nSTRIP ALL SHOTS EXCEPT CONTROL:\n')
-        self.strip_non_control_shots_btn = tk.Button(self.dialog_window, text='Choose GSI File to strip',
-                                                     command=self.strip_non_control_shots)
-        self.strip_non_control_shots_lbl.pack()
-        self.strip_non_control_shots_btn.pack()
-
-    def center_screen(self):
-
-        dialog_w = 400
-        dialog_h = 500
-
-        ws = self.master.winfo_width()
-        hs = self.master.winfo_height()
-        x = int((ws / 2) - (dialog_w / 2))
-        y = int((hs / 2) - (dialog_w / 2))
-
-        return '{}x{}+{}+{}'.format(dialog_w, dialog_h, x, y)
+    # def center_screen(self):
+    #
+    #     dialog_w = 400
+    #     dialog_h = 150
+    #
+    #     ws = self.master.winfo_width()
+    #     hs = self.master.winfo_height()
+    #     x = int((ws / 2) - (dialog_w / 2))
+    #     y = int((hs / 2) - (dialog_w / 2))
+    #
+    #     return '{}x{}+{}+{}'.format(dialog_w, dialog_h, x, y)
 
     def strip_non_control_shots(self):
 
+
         # let user choose GSI file
-        gsi_file_path = tk.filedialog.askopenfilename()
+        gsi_file_path = MenuBar.filename_path
 
         try:
+            # create a new stripped GSI
             old_gsi = GSI(logger)
             old_gsi.format_gsi(gsi_file_path)
-            control_only_filepath = old_gsi.create_control_only_gsi()
-            control_only_gsi = GSI(logger)
-            control_only_gsi.format_gsi(control_only_filepath)
-            gui_app.list_box.populate(control_only_gsi.formatted_lines)
-            gui_app.status_bar.status['text'] = control_only_filepath
+            control_only_filename = old_gsi.create_control_only_gsi()
+
+            # Update GUI
+            MenuBar.filename_path = control_only_filename
+            MenuBar.format_gsi_file()
+            MenuBar.create_and_populate_database()
+            MenuBar.update_gui()
+            gui_app.menu_bar.enable_menus()
+
+            # control_only_gsi = GSI(logger)
+            # control_only_gsi.format_gsi(control_only_filepath)
+            # gui_app.list_box.populate(control_only_gsi.formatted_lines)
+            # gui_app.status_bar.status['text'] = control_only_filepath
+            # gui_app.menu_bar.enable_menus()
+
+        except FileNotFoundError as ex:
+
+            # most likely no file choosen or incorrect GSI
+            print(ex, type(ex))
+
+            tk.messagebox.showerror("ERROR", 'No GSI FIle Selected.  Please open a GSI file first')
+
+            gui_app.status_bar.status['text'] = 'Please choose a GSI File'
 
         except Exception as ex:
-            # most likely no file choosen or incorrect GSI
+            # most likely incorrect GSI
             print(ex, type(ex))
 
 
@@ -1374,6 +1367,7 @@ def configure_logger():
 def main():
     global gui_app
     global gsi
+    global survey_config
 
     # Setup logger
     configure_logger()
@@ -1386,6 +1380,8 @@ def main():
 
     gsi = GSI(logger)
     gui_app = GUIApplication(root)
+
+    survey_config = SurveyConfiguration()
 
     # Setup default survey configuration
     root.mainloop()
