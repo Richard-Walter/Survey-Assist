@@ -855,61 +855,6 @@ class ListBox(tk.Frame):
         self.list_box_view.tag_configure(self.highlight_tag, background='#ffff00')
         self.list_box_view.tag_configure("", background='#eaf7f9')
 
-    def delete_selected_row(self, event):
-
-        line_number_values = self.list_box_view.item(self.list_box_view.focus(), 'values')
-
-        print(line_number_values)
-
-        if line_number_values:
-
-            print("row to be deleted is " + line_number_values[0])
-
-            # # delete row from list_box_view
-            # self.list_box_view.delete(self.list_box_view.focus())
-
-            # remove line from gsi, update database and rebuild list view
-            print("removing line from GSI and rebuilding treeview")
-
-            try:
-
-                with open(MenuBar.filename_path, "r") as gsi_file:
-
-                    line_list = list(gsi_file)  # puts all lines in a list
-
-                del line_list[int(line_number_values[0]) - 1]  # delete regarding element
-
-                # rewrite the line_list from list contents/elements:
-                with open(MenuBar.filename_path, "w") as gsi_file:
-                    for line in line_list:
-                        gsi_file.write(line)
-
-            except FileNotFoundError:
-
-                # Do nothing: User has hit the cancel button
-                gui_app.status_bar.status['text'] = 'Please choose a GSI File'
-
-            except CorruptedGSIFileError:
-
-                # Most likely an corrupted GSI file was selected
-                tk.messagebox.showerror("ERROR", 'Error reading GSI File:\n\nThis file is a corrupted or '
-                                                 'incorrect GSI file')
-
-                gui_app.status_bar.status['text'] = 'Please choose a GSI File'
-
-            except Exception:
-
-                # Most likely an incorrect file was chosen
-                logger.exception('Error has occurred. ')
-
-                tk.messagebox.showerror("ERROR", 'Error reading GSI File:\n\nPlease make sure file is not opened '
-                                                 'by another program.  If problem continues please contact Richard Walter')
-
-            # rebuild database and GUI
-            MenuBar.format_gsi_file()
-            MenuBar.update_database()
-            MenuBar.update_gui()
-
     def delete_selected_rows(self, event):
 
         selected_items = self.list_box_view.selection()
