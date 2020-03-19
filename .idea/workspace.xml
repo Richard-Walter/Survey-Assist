@@ -2,8 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="ca2bf562-6ed1-41b9-8b6b-e72a3ab9e82c" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/GSI Files/GSI_database.db" beforeDir="false" afterPath="$PROJECT_DIR$/GSI Files/GSI_database.db" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/GSIQuery.log" beforeDir="false" afterPath="$PROJECT_DIR$/GSIQuery.log" afterDir="false" />
@@ -20,8 +18,26 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/main.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="319">
-              <caret line="963" column="13" lean-forward="true" selection-start-line="963" selection-start-column="13" selection-end-line="963" selection-end-column="13" />
+            <state relative-caret-position="340">
+              <caret line="33" lean-forward="true" selection-start-line="33" selection-end-line="33" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://C:/Python34/Lib/tkinter/__init__.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="297">
+              <caret line="1541" selection-start-line="1541" selection-end-line="1541" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$APPLICATION_HOME_DIR$/helpers/pydev/_pydev_imps/_pydev_execfile.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="289">
+              <caret line="17" selection-start-line="17" selection-end-line="17" />
             </state>
           </provider>
         </entry>
@@ -29,7 +45,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/GSI.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="374">
+            <state relative-caret-position="4165">
               <caret line="250" column="20" selection-start-line="250" selection-start-column="20" selection-end-line="250" selection-end-column="20" />
               <folding>
                 <element signature="e#25#52#0" expanded="true" />
@@ -49,7 +65,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>number</find>
       <find>line_number_errors</find>
       <find>check_3d_survey</find>
       <find>disable_query_menu</find>
@@ -79,13 +94,14 @@
       <find>query</find>
       <find>center</find>
       <find>about</find>
+      <find>de</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="Python_3.4" />
+        <entry key="$PROJECT_DIR$" value="master" />
       </map>
     </option>
   </component>
@@ -108,8 +124,8 @@
     </option>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="161" />
-    <option name="y" value="62" />
+    <option name="x" value="131" />
+    <option name="y" value="101" />
     <option name="width" value="1537" />
     <option name="height" value="1167" />
   </component>
@@ -119,7 +135,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -140,6 +155,7 @@
           <select />
         </subPane>
       </pane>
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -534,7 +550,14 @@
       <option name="project" value="LOCAL" />
       <updated>1584250938786</updated>
     </task>
-    <option name="localTasksCounter" value="35" />
+    <task id="LOCAL-00035" summary="combine basic gsi functionality">
+      <created>1584588328441</created>
+      <option name="number" value="00035" />
+      <option name="presentableId" value="LOCAL-00035" />
+      <option name="project" value="LOCAL" />
+      <updated>1584588328441</updated>
+    </task>
+    <option name="localTasksCounter" value="36" />
     <servers />
   </component>
   <component name="TodoView">
@@ -547,16 +570,16 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="161" y="62" width="1537" height="1167" extended-state="0" />
+    <frame x="131" y="101" width="1537" height="1167" extended-state="0" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.39714286" visible="true" weight="0.30887258" />
-      <window_info id="Structure" order="1" sideWeight="0.6028572" side_tool="true" visible="true" weight="0.30887258" />
+      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.39571428" visible="true" weight="0.30887258" />
+      <window_info id="Structure" order="1" sideWeight="0.6042857" side_tool="true" visible="true" weight="0.30887258" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.32838774" />
       <window_info active="true" anchor="bottom" id="Run" order="2" sideWeight="0.499316" visible="true" weight="0.30761623" />
-      <window_info anchor="bottom" id="Debug" order="3" weight="0.29421768" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.29376855" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" weight="0.32861477" />
@@ -573,7 +596,6 @@
     <ignored-roots>
       <path value="$PROJECT_DIR$" />
     </ignored-roots>
-    <MESSAGE value="bug fix orientation lines removed when opening two files" />
     <MESSAGE value="3d check bug fix" />
     <MESSAGE value="add functionality to check station naming" />
     <MESSAGE value="increased tolerances" />
@@ -598,14 +620,15 @@
     <MESSAGE value="updated gitignore" />
     <MESSAGE value="updated the COmpnet GUI's to use Grid" />
     <MESSAGE value="survey - check all added" />
-    <option name="LAST_COMMIT_MESSAGE" value="survey - check all added" />
+    <MESSAGE value="combine basic gsi functionality" />
+    <option name="LAST_COMMIT_MESSAGE" value="combine basic gsi functionality" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/main.py</url>
-          <line>1202</line>
+          <line>1254</line>
           <option name="timeStamp" value="3" />
         </line-breakpoint>
       </breakpoints>
@@ -682,16 +705,19 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://C:/Python34/Lib/tkinter/__init__.py">
+    <entry file="file://$APPLICATION_CONFIG_DIR$/scratches/scratch.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="260">
-          <caret line="1124" selection-start-line="1124" selection-end-line="1124" />
+        <state relative-caret-position="374">
+          <caret line="22" lean-forward="true" selection-start-line="22" selection-end-line="22" />
+          <folding>
+            <element signature="e#0#20#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/GSI.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="374">
+        <state relative-caret-position="4165">
           <caret line="250" column="20" selection-start-line="250" selection-start-column="20" selection-end-line="250" selection-end-column="20" />
           <folding>
             <element signature="e#25#52#0" expanded="true" />
@@ -699,17 +725,24 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$APPLICATION_CONFIG_DIR$/scratches/scratch.py">
+    <entry file="file://$APPLICATION_HOME_DIR$/helpers/pydev/_pydev_imps/_pydev_execfile.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="136">
-          <caret line="8" column="15" lean-forward="true" selection-start-line="8" selection-start-column="15" selection-end-line="8" selection-end-column="15" />
+        <state relative-caret-position="289">
+          <caret line="17" selection-start-line="17" selection-end-line="17" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://C:/Python34/Lib/tkinter/__init__.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="297">
+          <caret line="1541" selection-start-line="1541" selection-end-line="1541" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/main.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="319">
-          <caret line="963" column="13" lean-forward="true" selection-start-line="963" selection-start-column="13" selection-end-line="963" selection-end-column="13" />
+        <state relative-caret-position="340">
+          <caret line="33" lean-forward="true" selection-start-line="33" selection-end-line="33" />
         </state>
       </provider>
     </entry>

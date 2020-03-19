@@ -10,8 +10,6 @@ NOTE: For 3.4 compatibility
 
 # TODO move fix coordinates and override station coordinates.  WIll need to append all coordinate values in this case
 # TODO sort combine GSI files
-# TODO pin compnet, config and dialog pop up windwos to current window
-# TODO delete multiple lines instead of just one
 # TODO compnet compare and move fixed coordinates - add msg showing coorindates not found or updated.
 
 import tkinter as tk
@@ -102,7 +100,7 @@ class MenuBar(tk.Frame):
     def choose_gsi_file(self):
 
         # global filename_path
-        MenuBar.filename_path = tk.filedialog.askopenfilename()
+        MenuBar.filename_path = tk.filedialog.askopenfilename(filetypes=[("GSI Files", ".gsi")])
         MenuBar.format_gsi_file()
         MenuBar.create_and_populate_database()
         MenuBar.update_gui()
@@ -783,7 +781,7 @@ class ListBox(tk.Frame):
         print(self.treeview_column_names)
 
         # Use Treeview to create list of capture survey shots
-        self.list_box_view = ttk.Treeview(master, columns=self.treeview_column_names, selectmode='browse',
+        self.list_box_view = ttk.Treeview(master, columns=self.treeview_column_names, selectmode='extended',
                                           show='headings', )
 
         # Add scrollbar
@@ -806,7 +804,8 @@ class ListBox(tk.Frame):
         # self.list_box_view.bind('<Button-1>', self.selected_row)
 
         # on delete-keyboard event
-        self.list_box_view.bind('<Delete>', self.delete_selected_row)
+        # self.list_box_view.bind('<Delete>', self.delete_selected_row)
+        self.list_box_view.bind('<Delete>', self.delete_selected_rows)
 
         self.list_box_view.pack(fill="both", expand=True)
 
@@ -860,6 +859,8 @@ class ListBox(tk.Frame):
 
         line_number_values = self.list_box_view.item(self.list_box_view.focus(), 'values')
 
+        print(line_number_values)
+
         if line_number_values:
 
             print("row to be deleted is " + line_number_values[0])
@@ -909,6 +910,57 @@ class ListBox(tk.Frame):
             MenuBar.update_database()
             MenuBar.update_gui()
 
+    def delete_selected_rows(self, event):
+
+        selected_items = self.list_box_view.selection()
+        line_numbers_to_delete = []
+
+        # build list of line numbers to delete
+        for selected_item in selected_items:
+            line_numbers_to_delete.append(self.list_box_view.item(selected_item)['values'][0])
+
+        try:
+            # get gsi file so lines can be deleted
+            with open(MenuBar.filename_path, "r") as gsi_file:
+
+                gsi_line_list = list(gsi_file)  # puts all lines in a list
+
+                for index, line_number in enumerate(line_numbers_to_delete, start=1):
+
+                    del gsi_line_list[line_number - index]
+
+                print(gsi_line_list)
+
+            # rewrite the line_list from list contents/elements:
+            with open(MenuBar.filename_path, "w") as gsi_file:
+                for line in gsi_line_list:
+                    gsi_file.write(line)
+
+        except FileNotFoundError:
+
+            # Do nothing: User has hit the cancel button
+            gui_app.status_bar.status['text'] = 'Please choose a GSI File'
+
+        except CorruptedGSIFileError:
+
+            # Most likely an corrupted GSI file was selected
+            tk.messagebox.showerror("ERROR", 'Error reading GSI File:\n\nThis file is a corrupted or '
+                                             'incorrect GSI file')
+
+            gui_app.status_bar.status['text'] = 'Please choose a GSI File'
+
+        except Exception:
+
+            # Most likely an incorrect file was chosen
+            logger.exception('Error has occurred. ')
+
+            tk.messagebox.showerror("ERROR", 'Error reading GSI File:\n\nPlease make sure file is not opened '
+                                             'by another program.  If problem continues please contact Richard Walter')
+            #
+            # # rebuild database and GUI
+        MenuBar.format_gsi_file()
+        MenuBar.update_database()
+        MenuBar.update_gui()
 
 class CompnetUpdateFixedFileWindow:
     coordinate_file_path = ""
