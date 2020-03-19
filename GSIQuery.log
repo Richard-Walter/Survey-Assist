@@ -555,3 +555,43 @@ Traceback (most recent call last):
   File "C:\Users\rjwal_000\PycharmProjects\Survey Assist\GSIDatabase.py", line 24, in create_db
     os.remove(GSIDatabase.DATABASE_PATH)
 PermissionError: [WinError 32] The process cannot access the file because it is being used by another process: 'GSI Files\\GSI_database.db'
+2020-03-19 09:48:27,683:Survey Assist:File doesn't appear to be a valid GSI file.  Missing Key ID: \DA3B\SW13
+Traceback (most recent call last):
+  File "C:\Users\rjwal_000\PycharmProjects\Survey Assist\GSI.py", line 105, in format_gsi
+    field_name = GSI.GSI_WORD_ID_DICT[two_digit_id]
+KeyError: 'AT'
+2020-03-19 09:51:09,700:Survey Assist:File doesn't appear to be a valid GSI file.  Missing Key ID: ons
+Traceback (most recent call last):
+  File "C:\Users\rjwal_000\PycharmProjects\Survey Assist\GSI.py", line 105, in format_gsi
+    field_name = GSI.GSI_WORD_ID_DICT[two_digit_id]
+KeyError: 'ex'
+2020-03-19 09:57:44,449:Survey Assist:File doesn't appear to be a valid GSI file.  Missing Key ID: se.db'
+Traceback (most recent call last):
+  File "C:\Users\rjwal_000\PycharmProjects\Survey Assist\GSI.py", line 105, in format_gsi
+    field_name = GSI.GSI_WORD_ID_DICT[two_digit_id]
+KeyError: '_d'
+2020-03-19 09:57:49,098:Survey Assist:Database in use.  Unable to delete until it is closed
+Traceback (most recent call last):
+  File "C:\Users\rjwal_000\PycharmProjects\Survey Assist\GSIDatabase.py", line 24, in create_db
+    os.remove(GSIDatabase.DATABASE_PATH)
+PermissionError: [WinError 32] The process cannot access the file because it is being used by another process: 'GSI Files\\GSI_database.db'
+2020-03-19 10:38:10,401:Survey Assist:Database in use.  Unable to delete until it is closed
+Traceback (most recent call last):
+  File "C:\Users\rjwal_000\PycharmProjects\Survey Assist\GSIDatabase.py", line 24, in create_db
+    os.remove(GSIDatabase.DATABASE_PATH)
+PermissionError: [WinError 32] The process cannot access the file because it is being used by another process: 'GSI Files\\GSI_database.db'
+2020-03-19 13:35:02,034:Survey Assist:Database in use.  Unable to delete until it is closed
+Traceback (most recent call last):
+  File "C:\Users\rjwal_000\PycharmProjects\Survey Assist\GSIDatabase.py", line 24, in create_db
+    os.remove(GSIDatabase.DATABASE_PATH)
+PermissionError: [WinError 32] The process cannot access the file because it is being used by another process: 'GSI Files\\GSI_database.db'
+2020-03-19 13:39:03,505:Survey Assist:Database in use.  Unable to delete until it is closed
+Traceback (most recent call last):
+  File "C:\Users\rjwal_000\PycharmProjects\Survey Assist\GSIDatabase.py", line 24, in create_db
+    os.remove(GSIDatabase.DATABASE_PATH)
+PermissionError: [WinError 32] The process cannot access the file because it is being used by another process: 'GSI Files\\GSI_database.db'
+2020-03-19 13:39:07,254:Survey Assist:Database in use.  Unable to delete until it is closed
+Traceback (most recent call last):
+  File "C:\Users\rjwal_000\PycharmProjects\Survey Assist\GSIDatabase.py", line 24, in create_db
+    os.remove(GSIDatabase.DATABASE_PATH)
+PermissionError: [WinError 32] The process cannot access the file because it is being used by another process: 'GSI Files\\GSI_database.db'

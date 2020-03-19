@@ -9,7 +9,10 @@ NOTE: For 3.4 compatibility
     ii) had to use an ordered dictionary"""
 
 # TODO move fix coordinates and override station coordinates.  WIll need to append all coordinate values in this case
-
+# TODO sort combine GSI files
+# TODO pin compnet, config and dialog pop up windwos to current window
+# TODO delete multiple lines instead of just one
+# TODO compnet compare and move fixed coordinates - add msg showing coorindates not found or updated.
 
 import tkinter as tk
 import re
@@ -83,6 +86,8 @@ class MenuBar(tk.Frame):
         self.compnet_sub_menu.add_command(label="Update Fixed File...", command=self.update_fixed_file)
         self.compnet_sub_menu.add_command(label="Compare CRD Files...", command=self.compare_crd_files)
         self.compnet_sub_menu.add_command(label="Strip Non-control Shots", command=self.strip_non_control_shots)
+        self.compnet_sub_menu.add_command(label="Combine GSI Files", command=self.combine_gsi_files)
+
         self.menu_bar.add_cascade(label="Compnet", menu=self.compnet_sub_menu)
 
         # Config menu
@@ -410,6 +415,10 @@ class MenuBar(tk.Frame):
 
         CompnetStripNonControlShots()
 
+    def combine_gsi_files(self):
+
+        CombineGSIFilesWindow(self)
+
     def configure_survey(self):
 
         global survey_config
@@ -512,6 +521,9 @@ class MenuBar(tk.Frame):
 
 class ConfigDialog:
 
+    dialog_w = 250
+    dialog_h = 200
+
     def __init__(self, master):
 
         self.master = master
@@ -520,7 +532,7 @@ class ConfigDialog:
         self.dialog_window = tk.Toplevel(master)
         self.dialog_window.title("Survey Configuration")
 
-        self.dialog_window.geometry(self.center_screen())
+        self.dialog_window.geometry(MainWindow.position_popup(master, ConfigDialog.dialog_w, ConfigDialog.dialog_h))
 
         tk.Label(self.dialog_window, text="Precision:").grid(row=0, column=0, padx=5, pady=5)
         self.precision = tk.StringVar()
@@ -552,17 +564,6 @@ class ConfigDialog:
         cancel_b = tk.Button(self.dialog_window, text="Cancel", width=10, command=self.cancel)
         cancel_b.grid(row=4, column=1, pady=10)
 
-    def center_screen(self):
-
-        dialog_w = 250
-        dialog_h = 200
-
-        ws = self.master.winfo_width()
-        hs = self.master.winfo_height()
-        x = int((ws / 2) - (dialog_w / 2))
-        y = int((hs / 2) - (dialog_w / 2))
-
-        return '{}x{}+{}+{}'.format(dialog_w, dialog_h, x, y)
 
     def save(self):
 
@@ -620,7 +621,9 @@ class QueryDialog:
         self.dialog_window = tk.Toplevel(master)
         self.dialog_window.title("SQL Query")
 
-        self.dialog_window.geometry(self.center_screen())
+        # self.dialog_window.geometry(self.center_screen())
+        self.dialog_window.geometry(MainWindow.position_popup(master, 330,
+                                                              150))
 
         tk.Label(self.dialog_window, text="Build an SQL 'where' statement:").grid(row=0, padx=5, pady=5)
         tk.Label(self.dialog_window, text="Select column:").grid(row=1, sticky="W", padx=5, pady=5)
@@ -645,17 +648,17 @@ class QueryDialog:
         cancel_b = tk.Button(self.dialog_window, text="Cancel", width=10, command=self.cancel)
         cancel_b.grid(row=3, column=1, pady=10)
 
-    def center_screen(self):
-
-        dialog_w = 350
-        dialog_h = 150
-
-        ws = self.master.winfo_width()
-        hs = self.master.winfo_height()
-        x = int((ws / 2) - (dialog_w / 2))
-        y = int((hs / 2) - (dialog_w / 2))
-
-        return '{}x{}+{}+{}'.format(dialog_w, dialog_h, x, y)
+    # def center_screen(self):
+    #
+    #     dialog_w = 350
+    #     dialog_h = 150
+    #
+    #     ws = self.master.winfo_width()
+    #     hs = self.master.winfo_height()
+    #     x = int((ws / 2) - (dialog_w / 2))
+    #     y = int((hs / 2) - (dialog_w / 2))
+    #
+    #     return '{}x{}+{}+{}'.format(dialog_w, dialog_h, x, y)
 
     def column_entry_cb_callback(self, event):
 
@@ -736,7 +739,7 @@ class StatusBar(tk.Frame):
 
         self.master = master
         self.frame = tk.Frame(master)
-        self.status = tk.Label(master, text='Welcome to GSI Query', relief=tk.SUNKEN, anchor=tk.W)
+        self.status = tk.Label(master, text='Welcome to Survey Assist', relief=tk.SUNKEN, anchor=tk.W)
 
 
 class MainWindow(tk.Frame):
@@ -745,6 +748,23 @@ class MainWindow(tk.Frame):
         super().__init__(master)
 
         self.master = master
+
+    @staticmethod
+    def position_popup(master, popup_w, popup_h):
+
+        master.update_idletasks()
+        mx = master.winfo_x()
+        my = master.winfo_y()
+        mw = master.winfo_width()
+        mh = master.winfo_height()
+
+        offset_x = 100
+        offset_y = 100
+
+        x = mx + offset_x
+        y = my + offset_y
+
+        return '{}x{}+{}+{}'.format(popup_w, popup_h, x, y)
 
 
 class ListBox(tk.Frame):
@@ -903,14 +923,16 @@ class CompnetUpdateFixedFileWindow:
         self.dialog_window = tk.Toplevel(master)
         self.dialog_window.title("Compnet Assist")
 
+        container = tk.Frame(self.dialog_window, width=100, height=100)
+
         # Update Fixed File GUI
-        self.update_fixed_file_lbl = tk.Label(self.dialog_window, text='\nUPDATE FIXED FILE\n', font=('Helvetica',
+        self.update_fixed_file_lbl = tk.Label(container, text='\nUPDATE FIXED FILE\n', font=('Helvetica',
                                                                                                       14, 'bold'))
-        self.fixed_btn = tk.Button(self.dialog_window, text='(1) Choose Fixed File: ', command=self.get_fixed_file_path)
-        self.coord_btn = tk.Button(self.dialog_window, text='(2) Choose Coordinate File: ',
+        self.fixed_btn = tk.Button(container, text='(1) Choose Fixed File: ', command=self.get_fixed_file_path)
+        self.coord_btn = tk.Button(container, text='(2) Choose Coordinate File: ',
                                    command=self.get_coordinate_file_path)
-        self.update_btn = tk.Button(self.dialog_window, text='(3) UPDATE FIXED FILE ', command=self.update_fixed_file)
-        self.fixed_result_lbl = tk.Label(self.dialog_window, text=' ', font=('Helvetica',
+        self.update_btn = tk.Button(container, text='(3) UPDATE FIXED FILE ', command=self.update_fixed_file)
+        self.fixed_result_lbl = tk.Label(container, text=' ', font=('Helvetica',
                                                                              12, 'bold'))
         # self.blank_lbl = tk.Label(self.dialog_window, text='')
 
@@ -919,7 +941,11 @@ class CompnetUpdateFixedFileWindow:
         self.coord_btn.grid(row=2, column=1, sticky='nesw', padx=25, pady=3)
         self.update_btn.grid(row=3, column=1, sticky='nesw', padx=25, pady=3)
         self.fixed_result_lbl.grid(row=4, sticky='nesw', column=1, padx=25, pady=15)
-        # self.blank_lbl.pack()
+
+        container.pack(fill="both", expand=True)
+
+        self.dialog_window.geometry(MainWindow.position_popup(master, 300,
+                                                              220))
 
     def update_fixed_file(self):
 
@@ -940,13 +966,14 @@ class CompnetUpdateFixedFileWindow:
             self.fixed_result_lbl.config(text='SUCCESS')
 
     def get_fixed_file_path(self):
-        self.fixed_file_path = tk.filedialog.askopenfilename()
+        self.fixed_file_path = tk.filedialog.askopenfilename(parent=self.master, filetypes=[("FIX Files", ".FIX")])
         if self.fixed_file_path != "":
             self.fixed_btn.config(text=os.path.basename(self.fixed_file_path))
         self.dialog_window.lift()  # bring window to the front again
 
     def get_coordinate_file_path(self):
-        self.coordinate_file_path = tk.filedialog.askopenfilename()
+        self.coordinate_file_path = tk.filedialog.askopenfilename(parent=self.master, filetypes=[("Coordinate Files",
+                                                                                                  ".asc .CRD .STD")])
         if self.coordinate_file_path != "":
             self.coord_btn.config(text=os.path.basename(self.coordinate_file_path))
         self.dialog_window.lift()  # bring window to the front again
@@ -972,11 +999,11 @@ class CompnetCompareCRDFWindow:
                                                                                                       14, 'bold'))
         self.tolE_lbl = tk.Label(self.dialog_window, text='Tolerance E: ')
         self.entry_tolE = tk.Entry(self.dialog_window)
-        self.entry_tolE.insert(tk.END, '0.05')
+        self.entry_tolE.insert(tk.END, '0.005')
 
         self.tolN_lbl = tk.Label(self.dialog_window, text='Tolerance N: ')
         self.entry_tolN = tk.Entry(self.dialog_window)
-        self.entry_tolN.insert(tk.END, '0.05')
+        self.entry_tolN.insert(tk.END, '0.005')
 
         self.crd_file_1_btn = tk.Button(self.dialog_window, text='(1) Choose CRD File 1: ',
                                         command=lambda: self.get_crd_file_path(1))
@@ -997,6 +1024,9 @@ class CompnetCompareCRDFWindow:
         self.crd_file_2_btn.grid(row=6, column=1, columnspan=2, sticky='nesw', padx=25, pady=3)
         self.compare_crd_btn.grid(row=7, column=1, columnspan=2, sticky='nesw', padx=25, pady=(3, 25))
         # self.compare_result_lbl.grid(row=8, column=1, columnspan=2, sticky='nesw', padx=25, pady=15)
+
+        self.dialog_window.geometry(MainWindow.position_popup(master, 310,
+                                                              300))
 
     # def center_screen(self):
     #
@@ -1081,14 +1111,14 @@ class CompnetCompareCRDFWindow:
     def get_crd_file_path(self, file_path_number):
 
         if file_path_number is 1:
-            self.crd_file_path_1 = tk.filedialog.askopenfilename()
+            self.crd_file_path_1 = tk.filedialog.askopenfilename(parent=self.master, filetypes=[("CRD Files", ".CRD")])
 
             if self.crd_file_path_1 != "":
                 self.crd_file_1_btn.config(text=os.path.basename(self.crd_file_path_1))
             self.dialog_window.lift()  # bring window to the front again
 
         elif file_path_number is 2:
-            self.crd_file_path_2 = tk.filedialog.askopenfilename()
+            self.crd_file_path_2 = tk.filedialog.askopenfilename(parent=self.master, filetypes=[("CRD Files", ".CRD")])
 
             if self.crd_file_path_2 != "":
                 self.crd_file_2_btn.config(text=os.path.basename(self.crd_file_path_2))
@@ -1138,6 +1168,64 @@ class CompnetStripNonControlShots:
         except Exception as ex:
             # most likely incorrect GSI
             print(ex, type(ex))
+
+
+class CombineGSIFilesWindow:
+
+    def __init__(self, master):
+
+        self.master = master
+
+        #  Lets build the dialog box
+        self.dialog_window = tk.Toplevel(master)
+        self.dialog_window.title("Compnet Assist")
+
+        self.files_btn = tk.Button(self.dialog_window, text='Choose GSI files to combine',
+                                   command=self.select_gsi_files)
+        self.files_btn.grid(row=1, column=1, sticky='nesw', padx=20, pady=25)
+
+        # self.dialog_window.geometry(MainWindow.position_popup(master, 200,
+        #                                                     75))
+
+
+    def select_gsi_files(self):
+
+        combined_gsi_filename = "COMPNET_COMBINED.gsi"
+        gsi_contents = ""
+
+        try:
+            gsi_filenames = list(tk.filedialog.askopenfilenames(parent=self.master, filetypes=[("GSI Files", ".gsi")]))
+            combined_gsi_directory = os.path.dirname(gsi_filenames[0])
+            file_path = os.path.join(combined_gsi_directory, combined_gsi_filename)
+
+            for filename in gsi_filenames:
+                gsi_file = GSIFile(filename)
+                gsi_contents += gsi_file.get_filecontents()
+
+            with open(file_path, 'w') as f_update:
+                f_update.write(gsi_contents)
+
+                # display results to the user
+                MenuBar.filename_path = file_path
+                MenuBar.format_gsi_file()
+                MenuBar.create_and_populate_database()
+                MenuBar.update_gui()
+                gui_app.menu_bar.enable_menus()
+
+
+        except Exception as ex:
+
+            print(ex)
+            tk.messagebox.showerror("Error", "Please select at least one GSI file.\n\nIf problem persists see "
+                                             "Richard")
+
+        else:
+
+            if gsi_filenames:
+                tk.messagebox.showinfo("Success",
+                                       "The gsi files have been combined into one file called " + file_path)
+            else:
+                tk.messagebox.showinfo("Error", "Please select GSI files.")
 
 
 class GUIApplication(tk.Frame):
@@ -1318,6 +1406,20 @@ class CoordinateFile:
             except ValueError:
                 # probabaly a blank line
                 pass
+
+
+class GSIFile:
+
+    def __init__(self, gsi_file_path):
+        self.fixed_file_path = gsi_file_path
+        self.gsi_file_contents = None
+
+        with open(gsi_file_path, 'r') as f_orig:
+            self.gsi_file_contents = f_orig.read()
+            print(self.gsi_file_contents)
+
+    def get_filecontents(self):
+        return self.gsi_file_contents
 
 
 def configure_logger():

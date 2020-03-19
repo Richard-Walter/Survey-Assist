@@ -1,19 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="ca2bf562-6ed1-41b9-8b6b-e72a3ab9e82c" name="Default Changelist" comment="test">
-      <change afterPath="$PROJECT_DIR$/../Survey Assist/.idea/.name" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Survey Assist/.idea/Survey Assist.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Survey Assist/.idea/dictionaries/Richard.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Survey Assist/.idea/encodings.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Survey Assist/.idea/misc.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Survey Assist/.idea/modules.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Survey Assist/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Survey Assist/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Survey Assist/GSI Files/A9_ARTC_902_2.GSI" beforeDir="false" afterPath="$PROJECT_DIR$/../Survey Assist/GSI Files/A9_ARTC_902_2.GSI" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Survey Assist/GSI Files/GSI_database.db" beforeDir="false" afterPath="$PROJECT_DIR$/../Survey Assist/GSI Files/GSI_database.db" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Survey Assist/GSIQuery.log" beforeDir="false" afterPath="$PROJECT_DIR$/../Survey Assist/GSIQuery.log" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Survey Assist/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/../Survey Assist/main.py" afterDir="false" />
+    <list default="true" id="ca2bf562-6ed1-41b9-8b6b-e72a3ab9e82c" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/GSI Files/GSI_database.db" beforeDir="false" afterPath="$PROJECT_DIR$/GSI Files/GSI_database.db" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/GSIQuery.log" beforeDir="false" afterPath="$PROJECT_DIR$/GSIQuery.log" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -24,10 +18,22 @@
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/../Survey Assist/main.py">
+        <entry file="file://$PROJECT_DIR$/main.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="323">
-              <caret line="19" column="31" lean-forward="true" selection-start-line="19" selection-start-column="31" selection-end-line="19" selection-end-column="31" />
+            <state relative-caret-position="319">
+              <caret line="963" column="13" lean-forward="true" selection-start-line="963" selection-start-column="13" selection-end-line="963" selection-end-column="13" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/GSI.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="374">
+              <caret line="250" column="20" selection-start-line="250" selection-start-column="20" selection-end-line="250" selection-end-column="20" />
+              <folding>
+                <element signature="e#25#52#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -43,13 +49,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>formatte</find>
-      <find>filedialog</find>
-      <find>client_exit</find>
-      <find>self.column</find>
-      <find>OrderedDict</find>
-      <find>Counter</find>
-      <find>line</find>
       <find>number</find>
       <find>line_number_errors</find>
       <find>check_3d_survey</find>
@@ -73,10 +72,17 @@
       <find>configure</find>
       <find>sql_query_columns</find>
       <find>sql_query_text</find>
+      <find>&quot;Strip Non-control Shots&quot;</find>
+      <find>Strip Non-control Shots</find>
+      <find>strip_non_control_shots</find>
+      <find>readlines</find>
+      <find>query</find>
+      <find>center</find>
+      <find>about</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
-    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/../Survey Assist" />
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
         <entry key="$PROJECT_DIR$" value="Python_3.4" />
@@ -93,18 +99,19 @@
         <option value="$PROJECT_DIR$/GSI.py" />
         <option value="$PROJECT_DIR$/SurveyConfiguration.py" />
         <option value="$PROJECT_DIR$/main.pyw" />
-        <option value="$PROJECT_DIR$/../Survey Assist/GSI.py" />
-        <option value="$PROJECT_DIR$/../Survey Assist/settings.ini" />
-        <option value="$PROJECT_DIR$/../Survey Assist/.gitignore" />
-        <option value="$PROJECT_DIR$/../Survey Assist/main.py" />
+        <option value="$PROJECT_DIR$/GSI.py" />
+        <option value="$PROJECT_DIR$/settings.ini" />
+        <option value="$PROJECT_DIR$/.gitignore" />
+        <option value="$APPLICATION_CONFIG_DIR$/scratches/scratch.py" />
+        <option value="$PROJECT_DIR$/main.py" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="79" />
-    <option name="y" value="78" />
-    <option name="width" value="1500" />
-    <option name="height" value="1341" />
+    <option name="x" value="161" />
+    <option name="y" value="62" />
+    <option name="width" value="1537" />
+    <option name="height" value="1167" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectView">
@@ -112,6 +119,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -132,13 +140,12 @@
           <select />
         </subPane>
       </pane>
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../Survey Assist/main.py" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/main.py" />
     <property name="restartRequiresConfirmation" value="false" />
-    <property name="settings.editor.selected.configurable" value="file.status.colors" />
+    <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
   </component>
   <component name="RunDashboard">
     <option name="ruleStates">
@@ -181,12 +188,12 @@
       <envs>
         <env name="PYTHONUNBUFFERED" value="1" />
       </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/../Survey Assist" />
-      <option name="IS_MODULE_SDK" value="true" />
+      <option name="SDK_HOME" value="C:\Python34\python.exe" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="false" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/../Survey Assist/main.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/main.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -208,27 +215,6 @@
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/../Python Teachings/Automate the Boring Stuff/Reading and Writing Files/Teachings.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <option name="MODULE_MODE" value="false" />
-      <option name="REDIRECT_INPUT" value="false" />
-      <option name="INPUT_FILE" value="" />
-      <method v="2" />
-    </configuration>
-    <configuration default="true" type="PythonConfigurationType" factoryName="Python">
-      <module name="Survey Assist" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="" />
-      <option name="IS_MODULE_SDK" value="false" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -279,93 +265,6 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration default="true" type="Tox" factoryName="Tox">
-      <module name="Survey Assist" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="" />
-      <option name="IS_MODULE_SDK" value="false" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <method v="2" />
-    </configuration>
-    <configuration default="true" type="tests" factoryName="Doctests">
-      <module name="Survey Assist" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="" />
-      <option name="IS_MODULE_SDK" value="false" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="" />
-      <option name="CLASS_NAME" value="" />
-      <option name="METHOD_NAME" value="" />
-      <option name="FOLDER_NAME" value="" />
-      <option name="TEST_TYPE" value="TEST_SCRIPT" />
-      <option name="PATTERN" value="" />
-      <option name="USE_PATTERN" value="false" />
-      <method v="2" />
-    </configuration>
-    <configuration default="true" type="tests" factoryName="Nosetests">
-      <module name="Survey Assist" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="" />
-      <option name="IS_MODULE_SDK" value="false" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="_new_regexPattern" value="&quot;&quot;" />
-      <option name="_new_additionalArguments" value="&quot;&quot;" />
-      <option name="_new_target" value="&quot;&quot;" />
-      <option name="_new_targetType" value="&quot;PATH&quot;" />
-      <method v="2" />
-    </configuration>
-    <configuration default="true" type="tests" factoryName="Twisted Trial">
-      <module name="Survey Assist" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="" />
-      <option name="IS_MODULE_SDK" value="false" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="_new_additionalArguments" value="&quot;&quot;" />
-      <option name="_new_target" value="&quot;&quot;" />
-      <option name="_new_targetType" value="&quot;PATH&quot;" />
-      <method v="2" />
-    </configuration>
-    <configuration default="true" type="tests" factoryName="Unittests">
-      <module name="Survey Assist" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="" />
-      <option name="IS_MODULE_SDK" value="false" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="_new_additionalArguments" value="&quot;&quot;" />
-      <option name="_new_target" value="&quot;&quot;" />
-      <option name="_new_targetType" value="&quot;PATH&quot;" />
-      <method v="2" />
-    </configuration>
-    <configuration default="true" type="tests" factoryName="py.test">
-      <module name="Survey Assist" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="" />
-      <option name="IS_MODULE_SDK" value="false" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="_new_keywords" value="&quot;&quot;" />
-      <option name="_new_additionalArguments" value="&quot;&quot;" />
-      <option name="_new_target" value="&quot;&quot;" />
-      <option name="_new_targetType" value="&quot;PATH&quot;" />
-      <method v="2" />
-    </configuration>
     <list>
       <item itemvalue="Python.Main" />
       <item itemvalue="Python.main" />
@@ -376,8 +275,8 @@
     <recent_temporary>
       <list>
         <item itemvalue="Python.Survey Assist" />
-        <item itemvalue="Python.Teachings" />
         <item itemvalue="Python.scratch" />
+        <item itemvalue="Python.Teachings" />
         <item itemvalue="Python.main" />
         <item itemvalue="Python.Main" />
       </list>
@@ -628,7 +527,14 @@
       <option name="project" value="LOCAL" />
       <updated>1584249482928</updated>
     </task>
-    <option name="localTasksCounter" value="34" />
+    <task id="LOCAL-00034" summary="survey - check all added">
+      <created>1584250938786</created>
+      <option name="number" value="00034" />
+      <option name="presentableId" value="LOCAL-00034" />
+      <option name="project" value="LOCAL" />
+      <updated>1584250938786</updated>
+    </task>
+    <option name="localTasksCounter" value="35" />
     <servers />
   </component>
   <component name="TodoView">
@@ -641,16 +547,16 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="79" y="78" width="1500" height="1341" extended-state="0" />
+    <frame x="161" y="62" width="1537" height="1167" extended-state="0" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.40183696" visible="true" weight="0.2756498" />
-      <window_info id="Structure" order="1" sideWeight="0.598163" side_tool="true" visible="true" weight="0.2756498" />
+      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.39714286" visible="true" weight="0.30887258" />
+      <window_info id="Structure" order="1" sideWeight="0.6028572" side_tool="true" visible="true" weight="0.30887258" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
-      <window_info anchor="bottom" id="Find" order="1" weight="0.32911393" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" sideWeight="0.499316" visible="true" weight="0.26497892" />
-      <window_info anchor="bottom" id="Debug" order="3" weight="0.29451478" />
+      <window_info anchor="bottom" id="Find" order="1" weight="0.32838774" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" sideWeight="0.499316" visible="true" weight="0.30761623" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.29421768" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" weight="0.32861477" />
@@ -667,7 +573,6 @@
     <ignored-roots>
       <path value="$PROJECT_DIR$" />
     </ignored-roots>
-    <MESSAGE value="add color to orientation row" />
     <MESSAGE value="bug fix orientation lines removed when opening two files" />
     <MESSAGE value="3d check bug fix" />
     <MESSAGE value="add functionality to check station naming" />
@@ -692,22 +597,39 @@
     <MESSAGE value="test" />
     <MESSAGE value="updated gitignore" />
     <MESSAGE value="updated the COmpnet GUI's to use Grid" />
-    <option name="LAST_COMMIT_MESSAGE" value="updated the COmpnet GUI's to use Grid" />
+    <MESSAGE value="survey - check all added" />
+    <option name="LAST_COMMIT_MESSAGE" value="survey - check all added" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/main.py</url>
+          <line>1202</line>
+          <option name="timeStamp" value="3" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
+    <watches-manager>
+      <configuration name="PythonConfigurationType">
+        <watch expression="self.dialog_window" />
+      </configuration>
+    </watches-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/../Survey Assist/GSI Files/ERROR.GSI">
+    <entry file="file://$PROJECT_DIR$/GSI Files/ERROR.GSI">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-903" />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/../Survey Assist/GSI Files/MR140519.GSI">
+    <entry file="file://$PROJECT_DIR$/GSI Files/MR140519.GSI">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="68">
           <caret line="4" column="9" lean-forward="true" selection-start-line="4" selection-start-column="9" selection-end-line="4" selection-end-column="9" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/../Survey Assist/GSIQuery.log">
+    <entry file="file://$PROJECT_DIR$/GSIQuery.log">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
     <entry file="file://$PROJECT_DIR$/../The Escort/TheEscort_TKINTER_INTERFACE_p3.py" />
@@ -725,10 +647,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/../Survey Assist/GSIExceptions.py">
+    <entry file="file://$PROJECT_DIR$/GSIExceptions.py">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/../Survey Assist/GSIDatabase.py">
+    <entry file="file://$PROJECT_DIR$/GSIDatabase.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="510">
           <caret line="31" selection-start-line="31" selection-end-line="31" />
@@ -738,48 +660,56 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/../Survey Assist/main.pyw">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="269">
-          <caret line="508" selection-start-line="508" selection-end-line="508" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../Survey Assist/SurveyConfiguration.py">
+    <entry file="file://$PROJECT_DIR$/main.pyw" />
+    <entry file="file://$PROJECT_DIR$/SurveyConfiguration.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="51">
           <caret line="3" column="25" selection-start-line="3" selection-start-column="6" selection-end-line="3" selection-end-column="25" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/../Survey Assist/settings.ini">
+    <entry file="file://$PROJECT_DIR$/settings.ini">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="119">
           <caret line="7" lean-forward="true" selection-start-line="7" selection-end-line="7" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/../Survey Assist/.gitignore">
+    <entry file="file://$PROJECT_DIR$/.gitignore">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="51">
           <caret line="3" column="5" lean-forward="true" selection-start-line="3" selection-start-column="5" selection-end-line="3" selection-end-column="5" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/../Survey Assist/GSI.py">
+    <entry file="file://C:/Python34/Lib/tkinter/__init__.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="408">
-          <caret line="24" column="59" lean-forward="true" selection-start-line="24" selection-start-column="59" selection-end-line="24" selection-end-column="59" />
+        <state relative-caret-position="260">
+          <caret line="1124" selection-start-line="1124" selection-end-line="1124" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/GSI.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="374">
+          <caret line="250" column="20" selection-start-line="250" selection-start-column="20" selection-end-line="250" selection-end-column="20" />
           <folding>
             <element signature="e#25#52#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/../Survey Assist/main.py">
+    <entry file="file://$APPLICATION_CONFIG_DIR$/scratches/scratch.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="323">
-          <caret line="19" column="31" lean-forward="true" selection-start-line="19" selection-start-column="31" selection-end-line="19" selection-end-column="31" />
+        <state relative-caret-position="136">
+          <caret line="8" column="15" lean-forward="true" selection-start-line="8" selection-start-column="15" selection-end-line="8" selection-end-column="15" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/main.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="319">
+          <caret line="963" column="13" lean-forward="true" selection-start-line="963" selection-start-column="13" selection-end-line="963" selection-end-column="13" />
         </state>
       </provider>
     </entry>
