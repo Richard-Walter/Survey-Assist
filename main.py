@@ -10,8 +10,6 @@ NOTE: For 3.4 compatibility
 
 # TODO move fix coordinates and override station coordinates.  WIll need to append all coordinate values in this case
 # TODO sort combine GSI files
-# TODO pin compnet, config and dialog pop up windwos to current window
-# TODO delete multiple lines instead of just one
 # TODO compnet compare and move fixed coordinates - add msg showing coorindates not found or updated.
 
 import tkinter as tk
@@ -102,7 +100,7 @@ class MenuBar(tk.Frame):
     def choose_gsi_file(self):
 
         # global filename_path
-        MenuBar.filename_path = tk.filedialog.askopenfilename()
+        MenuBar.filename_path = tk.filedialog.askopenfilename(filetypes=[("GSI Files", ".gsi")])
         MenuBar.format_gsi_file()
         MenuBar.create_and_populate_database()
         MenuBar.update_gui()
@@ -783,7 +781,7 @@ class ListBox(tk.Frame):
         print(self.treeview_column_names)
 
         # Use Treeview to create list of capture survey shots
-        self.list_box_view = ttk.Treeview(master, columns=self.treeview_column_names, selectmode='browse',
+        self.list_box_view = ttk.Treeview(master, columns=self.treeview_column_names, selectmode='extended',
                                           show='headings', )
 
         # Add scrollbar
@@ -806,7 +804,8 @@ class ListBox(tk.Frame):
         # self.list_box_view.bind('<Button-1>', self.selected_row)
 
         # on delete-keyboard event
-        self.list_box_view.bind('<Delete>', self.delete_selected_row)
+        # self.list_box_view.bind('<Delete>', self.delete_selected_row)
+        self.list_box_view.bind('<Delete>', self.delete_selected_rows)
 
         self.list_box_view.pack(fill="both", expand=True)
 
@@ -856,59 +855,57 @@ class ListBox(tk.Frame):
         self.list_box_view.tag_configure(self.highlight_tag, background='#ffff00')
         self.list_box_view.tag_configure("", background='#eaf7f9')
 
-    def delete_selected_row(self, event):
+    def delete_selected_rows(self, event):
 
-        line_number_values = self.list_box_view.item(self.list_box_view.focus(), 'values')
+        selected_items = self.list_box_view.selection()
+        line_numbers_to_delete = []
 
-        if line_number_values:
+        # build list of line numbers to delete
+        for selected_item in selected_items:
+            line_numbers_to_delete.append(self.list_box_view.item(selected_item)['values'][0])
 
-            print("row to be deleted is " + line_number_values[0])
+        try:
+            # get gsi file so lines can be deleted
+            with open(MenuBar.filename_path, "r") as gsi_file:
 
-            # # delete row from list_box_view
-            # self.list_box_view.delete(self.list_box_view.focus())
+                gsi_line_list = list(gsi_file)  # puts all lines in a list
 
-            # remove line from gsi, update database and rebuild list view
-            print("removing line from GSI and rebuilding treeview")
+                for index, line_number in enumerate(line_numbers_to_delete, start=1):
 
-            try:
+                    del gsi_line_list[line_number - index]
 
-                with open(MenuBar.filename_path, "r") as gsi_file:
+                print(gsi_line_list)
 
-                    line_list = list(gsi_file)  # puts all lines in a list
+            # rewrite the line_list from list contents/elements:
+            with open(MenuBar.filename_path, "w") as gsi_file:
+                for line in gsi_line_list:
+                    gsi_file.write(line)
 
-                del line_list[int(line_number_values[0]) - 1]  # delete regarding element
+        except FileNotFoundError:
 
-                # rewrite the line_list from list contents/elements:
-                with open(MenuBar.filename_path, "w") as gsi_file:
-                    for line in line_list:
-                        gsi_file.write(line)
+            # Do nothing: User has hit the cancel button
+            gui_app.status_bar.status['text'] = 'Please choose a GSI File'
 
-            except FileNotFoundError:
+        except CorruptedGSIFileError:
 
-                # Do nothing: User has hit the cancel button
-                gui_app.status_bar.status['text'] = 'Please choose a GSI File'
+            # Most likely an corrupted GSI file was selected
+            tk.messagebox.showerror("ERROR", 'Error reading GSI File:\n\nThis file is a corrupted or '
+                                             'incorrect GSI file')
 
-            except CorruptedGSIFileError:
+            gui_app.status_bar.status['text'] = 'Please choose a GSI File'
 
-                # Most likely an corrupted GSI file was selected
-                tk.messagebox.showerror("ERROR", 'Error reading GSI File:\n\nThis file is a corrupted or '
-                                                 'incorrect GSI file')
+        except Exception:
 
-                gui_app.status_bar.status['text'] = 'Please choose a GSI File'
+            # Most likely an incorrect file was chosen
+            logger.exception('Error has occurred. ')
 
-            except Exception:
-
-                # Most likely an incorrect file was chosen
-                logger.exception('Error has occurred. ')
-
-                tk.messagebox.showerror("ERROR", 'Error reading GSI File:\n\nPlease make sure file is not opened '
-                                                 'by another program.  If problem continues please contact Richard Walter')
-
-            # rebuild database and GUI
-            MenuBar.format_gsi_file()
-            MenuBar.update_database()
-            MenuBar.update_gui()
-
+            tk.messagebox.showerror("ERROR", 'Error reading GSI File:\n\nPlease make sure file is not opened '
+                                             'by another program.  If problem continues please contact Richard Walter')
+            #
+            # # rebuild database and GUI
+        MenuBar.format_gsi_file()
+        MenuBar.update_database()
+        MenuBar.update_gui()
 
 class CompnetUpdateFixedFileWindow:
     coordinate_file_path = ""
