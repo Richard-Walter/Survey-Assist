@@ -18,26 +18,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/main.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="340">
-              <caret line="33" lean-forward="true" selection-start-line="33" selection-end-line="33" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://C:/Python34/Lib/tkinter/__init__.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="297">
-              <caret line="1541" selection-start-line="1541" selection-end-line="1541" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$APPLICATION_HOME_DIR$/helpers/pydev/_pydev_imps/_pydev_execfile.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="289">
-              <caret line="17" selection-start-line="17" selection-end-line="17" />
+            <state relative-caret-position="394">
+              <caret line="960" column="85" selection-start-line="960" selection-start-column="85" selection-end-line="960" selection-end-column="85" />
             </state>
           </provider>
         </entry>
@@ -65,8 +47,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>line_number_errors</find>
-      <find>check_3d_survey</find>
       <find>disable_query_menu</find>
       <find>disable_delete_menu</find>
       <find>enable_query_menu</find>
@@ -95,13 +75,15 @@
       <find>center</find>
       <find>about</find>
       <find>de</find>
+      <find>station_list</find>
+      <find>showinfo</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="master" />
+        <entry key="$PROJECT_DIR$" value="gsi_delete_selection" />
       </map>
     </option>
   </component>
@@ -117,17 +99,17 @@
         <option value="$PROJECT_DIR$/main.pyw" />
         <option value="$PROJECT_DIR$/GSI.py" />
         <option value="$PROJECT_DIR$/settings.ini" />
-        <option value="$PROJECT_DIR$/.gitignore" />
         <option value="$APPLICATION_CONFIG_DIR$/scratches/scratch.py" />
+        <option value="$PROJECT_DIR$/.gitignore" />
         <option value="$PROJECT_DIR$/main.py" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="131" />
-    <option name="y" value="101" />
+    <option name="x" value="345" />
+    <option name="y" value="30" />
     <option name="width" value="1537" />
-    <option name="height" value="1167" />
+    <option name="height" value="1344" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectView">
@@ -570,26 +552,26 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="131" y="101" width="1537" height="1167" extended-state="0" />
+    <frame x="345" y="30" width="1537" height="1344" extended-state="0" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.39571428" visible="true" weight="0.30887258" />
-      <window_info id="Structure" order="1" sideWeight="0.6042857" side_tool="true" visible="true" weight="0.30887258" />
+      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.3919523" visible="true" weight="0.34623083" />
+      <window_info active="true" id="Structure" order="1" sideWeight="0.60804766" side_tool="true" visible="true" weight="0.34623083" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.32838774" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" sideWeight="0.499316" visible="true" weight="0.30761623" />
-      <window_info anchor="bottom" id="Debug" order="3" weight="0.29376855" />
+      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.499316" visible="true" weight="0.4351852" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.2929293" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" weight="0.32861477" />
-      <window_info anchor="bottom" id="Version Control" order="7" weight="0.32236287" />
+      <window_info anchor="bottom" id="Version Control" order="7" weight="0.32146388" />
       <window_info anchor="bottom" id="Terminal" order="8" weight="0.32760364" />
       <window_info anchor="bottom" id="Event Log" order="9" sideWeight="0.500684" side_tool="true" weight="0.26497892" />
       <window_info anchor="bottom" id="Python Console" order="10" weight="0.32760364" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
-      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
+      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.2494382" />
     </layout>
   </component>
   <component name="VcsManagerConfiguration">
@@ -628,7 +610,7 @@
       <breakpoints>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/main.py</url>
-          <line>1254</line>
+          <line>1233</line>
           <option name="timeStamp" value="3" />
         </line-breakpoint>
       </breakpoints>
@@ -715,16 +697,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/GSI.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="4165">
-          <caret line="250" column="20" selection-start-line="250" selection-start-column="20" selection-end-line="250" selection-end-column="20" />
-          <folding>
-            <element signature="e#25#52#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$APPLICATION_HOME_DIR$/helpers/pydev/_pydev_imps/_pydev_execfile.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="289">
@@ -741,8 +713,18 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/main.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="340">
-          <caret line="33" lean-forward="true" selection-start-line="33" selection-end-line="33" />
+        <state relative-caret-position="394">
+          <caret line="960" column="85" selection-start-line="960" selection-start-column="85" selection-end-line="960" selection-end-column="85" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/GSI.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="4165">
+          <caret line="250" column="20" selection-start-line="250" selection-start-column="20" selection-end-line="250" selection-end-column="20" />
+          <folding>
+            <element signature="e#25#52#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

@@ -8,9 +8,9 @@ NOTE: For 3.4 compatibility
     i) Replaced f-strings with.format method.
     ii) had to use an ordered dictionary"""
 
-# TODO move fix coordinates and override station coordinates.  WIll need to append all coordinate values in this case
+# TODO add right functionality (change target height)
 # TODO sort combine GSI files
-# TODO compnet compare and move fixed coordinates - add msg showing coorindates not found or updated.
+# TODO compnet move fixed coordinates - add msg showing coorindates not found or updated.
 
 import tkinter as tk
 import re
@@ -446,12 +446,15 @@ class MenuBar(tk.Frame):
     @staticmethod
     def display_about_dialog_box():
 
-        about_me_text = "Written by Richard Walter 2019\n\n This program reads a GSI file from a Leica Total " \
+        about_me_text = "This program reads a GSI file from a Leica Total " \
                         "Station and displays the data in a clearer, more user-friendly format." \
                         " \n\nYou can then execute queries on this data to extract relevant information, or check for" \
-                        " errors in a survey, such as incorrect station labelling and tolerance errors. \n\n" \
-                        "This program also assists with Compnet - copying over fixed files, comparing CRD files, and " \
-                        "stripping out GSI leaving just the control stations for easier analysis of problems"
+                        " errors in a survey, such as incorrect station labelling, prism constants and tolerance " \
+                        "errors. \n\n" \
+                        "This program also assists with Compnet - combining gsi files, copying over fixed files, " \
+                        "comparing CRD files, and " \
+                        "stripping out GSI leaving just the control stations for easier analysis of problems\n\n" \
+                        "Written by Richard Walter 2019"
 
         tkinter.messagebox.showinfo("About Survey Assist", about_me_text)
 
@@ -518,7 +521,6 @@ class MenuBar(tk.Frame):
 
 
 class ConfigDialog:
-
     dialog_w = 250
     dialog_h = 200
 
@@ -561,7 +563,6 @@ class ConfigDialog:
 
         cancel_b = tk.Button(self.dialog_window, text="Cancel", width=10, command=self.cancel)
         cancel_b.grid(row=4, column=1, pady=10)
-
 
     def save(self):
 
@@ -749,7 +750,6 @@ class MainWindow(tk.Frame):
 
     @staticmethod
     def position_popup(master, popup_w, popup_h):
-
         master.update_idletasks()
         mx = master.winfo_x()
         my = master.winfo_y()
@@ -871,7 +871,6 @@ class ListBox(tk.Frame):
                 gsi_line_list = list(gsi_file)  # puts all lines in a list
 
                 for index, line_number in enumerate(line_numbers_to_delete, start=1):
-
                     del gsi_line_list[line_number - index]
 
                 print(gsi_line_list)
@@ -907,6 +906,7 @@ class ListBox(tk.Frame):
         MenuBar.update_database()
         MenuBar.update_gui()
 
+
 class CompnetUpdateFixedFileWindow:
     coordinate_file_path = ""
     fixed_file_path = ""
@@ -924,20 +924,20 @@ class CompnetUpdateFixedFileWindow:
 
         # Update Fixed File GUI
         self.update_fixed_file_lbl = tk.Label(container, text='\nUPDATE FIXED FILE\n', font=('Helvetica',
-                                                                                                      14, 'bold'))
+                                                                                             14, 'bold'))
         self.fixed_btn = tk.Button(container, text='(1) Choose Fixed File: ', command=self.get_fixed_file_path)
         self.coord_btn = tk.Button(container, text='(2) Choose Coordinate File: ',
                                    command=self.get_coordinate_file_path)
         self.update_btn = tk.Button(container, text='(3) UPDATE FIXED FILE ', command=self.update_fixed_file)
-        self.fixed_result_lbl = tk.Label(container, text=' ', font=('Helvetica',
-                                                                             12, 'bold'))
+        # self.fixed_result_lbl = tk.Label(container, text=' ', font=('Helvetica',
+        #                                                             12, 'bold'))
         # self.blank_lbl = tk.Label(self.dialog_window, text='')
 
         self.update_fixed_file_lbl.grid(row=0, column=1, padx=50, pady=2)
         self.fixed_btn.grid(row=1, column=1, sticky='nesw', padx=25, pady=3)
         self.coord_btn.grid(row=2, column=1, sticky='nesw', padx=25, pady=3)
         self.update_btn.grid(row=3, column=1, sticky='nesw', padx=25, pady=3)
-        self.fixed_result_lbl.grid(row=4, sticky='nesw', column=1, padx=25, pady=15)
+        # self.fixed_result_lbl.grid(row=4, sticky='nesw', column=1, padx=25, pady=15)
 
         container.pack(fill="both", expand=True)
 
@@ -951,16 +951,31 @@ class CompnetUpdateFixedFileWindow:
             # open up fixed file & update the fixed file's easting/northings from the coordinate file
             fixed_file = FixedFile(self.fixed_file_path)
             coordinate_file = CoordinateFile(self.coordinate_file_path)
-            fixed_file.update(coordinate_file)
+            stations_updated = fixed_file.update(coordinate_file)
+            stations_not_updated = set(fixed_file.get_stations()).difference(stations_updated)
 
         except Exception as ex:
             print(ex, type(ex))
-            self.fixed_result_lbl.config(text='ERROR - See Richard')
-            tk.messagebox.showerror("Error", "Have you selected both files?\n\nIf problem persists, please see Richard")
+            tk.messagebox.showerror("Error", "Have you selected both files?\n\nIf problem persists, please see "
+                                             "Richard.  Check coordinates are MGA 56 ")
 
         else:
 
-            self.fixed_result_lbl.config(text='SUCCESS')
+            msg_body = str(len(stations_updated)) + ' station coordinates have been updated.\n\n'
+
+            if stations_updated:  # display to user
+
+                for station in stations_updated:
+                    msg_body += station + '\n'
+
+            if stations_not_updated:  # display to user
+
+                msg_body += '\nWARNING: The following fixed file stations were not found in the coordintate file:\n\n'
+
+                for station in stations_not_updated:
+                    msg_body += station + '\n'
+
+            tkinter.messagebox.showinfo("Update Fixed File", msg_body)
 
     def get_fixed_file_path(self):
         self.fixed_file_path = tk.filedialog.askopenfilename(parent=self.master, filetypes=[("FIX Files", ".FIX")])
@@ -1049,6 +1064,7 @@ class CompnetCompareCRDFWindow:
         print(tol_E, tol_N)
 
         common_points = []
+        uncommon_points = []
 
         try:
 
@@ -1060,6 +1076,8 @@ class CompnetCompareCRDFWindow:
             for key in coordinate_file1.coordinate_dictionary.keys():
                 if key in coordinate_file2.coordinate_dictionary:
                     common_points.append(key)
+                else:
+                    uncommon_points.append(key)
 
             # Lets check for outliers for common points
             for point in common_points:
@@ -1096,7 +1114,14 @@ class CompnetCompareCRDFWindow:
             else:  # no outliers
                 msg_body = " \nThere are no points that exceed the specified tolerance\n"
 
-            msg_complete = msg_body
+            # Display to the user points that are uncommon
+            if uncommon_points:
+
+                msg = '\n\nTHE FOLLOWING POINTS WERE NOT FOUND IN THE 2ND FILE\n\n'
+                for point in uncommon_points:
+                    msg += point + '\n'
+
+                msg_body += msg
 
             top = tk.Toplevel()
             top.title("COMPARE CRD's")
@@ -1184,7 +1209,6 @@ class CombineGSIFilesWindow:
         # self.dialog_window.geometry(MainWindow.position_popup(master, 200,
         #                                                     75))
 
-
     def select_gsi_files(self):
 
         combined_gsi_filename = "COMPNET_COMBINED.gsi"
@@ -1220,7 +1244,7 @@ class CombineGSIFilesWindow:
 
             if gsi_filenames:
                 tk.messagebox.showinfo("Success",
-                                       "The gsi files have been combined into one file called " + file_path)
+                                       "The gsi files have been combined:\n\n" + file_path)
             else:
                 tk.messagebox.showinfo("Error", "Please select GSI files.")
 
@@ -1253,6 +1277,13 @@ class FixedFile:
         with open(fixed_file_path, 'r') as f_orig:
             self.fixed_file_contents = f_orig.readlines()
 
+    def get_stations(self):
+        for line in self.fixed_file_contents:
+            station = FixedFile.get_station(line)
+            if station != "UNKNOWN":
+                self.station_list.append(station)
+        return self.station_list
+
     @staticmethod
     def get_station(line):
 
@@ -1283,7 +1314,10 @@ class FixedFile:
 
         return line_number
 
+    # updates the fixed file and returns a list of stations that were found and updated in the coordinate file
     def update(self, coordinate_file):
+
+        stations_updated = []
 
         for line in self.fixed_file_contents:
 
@@ -1299,6 +1333,7 @@ class FixedFile:
 
                 updated_line = self.get_line_number(line) + ' ' + easting + '  ' + northing + ' "' + station + '"\n'
                 self.updated_file_contents += updated_line
+                stations_updated.append(station)
 
             else:
                 self.updated_file_contents += line
@@ -1307,10 +1342,12 @@ class FixedFile:
         with open(self.fixed_file_path, 'w') as f_update:
             f_update.write(self.updated_file_contents)
 
+        return stations_updated
+
 
 class CoordinateFile:
-    re_pattern_easting = re.compile(r'\b2[789]\d{4}\.\d{4}')
-    re_pattern_northing = re.compile(r'\b6[123]\d{5}\.\d{4}')
+    re_pattern_easting = re.compile(r'\b\d{6}\.\d{4}')
+    re_pattern_northing = re.compile(r'\b\d{7}\.\d{4}')
     re_pattern_point_crd = re.compile(r'\b\S+\b')
     re_pattern_point_std = re.compile(r'"\S+"')
     re_pattern_point_asc = re.compile(r'@#\S+')
@@ -1403,6 +1440,8 @@ class CoordinateFile:
             except ValueError:
                 # probabaly a blank line
                 pass
+            except Exception as ex:
+                print(ex)
 
 
 class GSIFile:
