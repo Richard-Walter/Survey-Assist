@@ -18,20 +18,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/main.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="394">
-              <caret line="960" column="85" selection-start-line="960" selection-start-column="85" selection-end-line="960" selection-end-column="85" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/GSI.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="4165">
-              <caret line="250" column="20" selection-start-line="250" selection-start-column="20" selection-end-line="250" selection-end-column="20" />
-              <folding>
-                <element signature="e#25#52#0" expanded="true" />
-              </folding>
+            <state relative-caret-position="402">
+              <caret line="1214" column="65" lean-forward="true" selection-start-line="1214" selection-start-column="65" selection-end-line="1214" selection-end-column="65" />
             </state>
           </provider>
         </entry>
@@ -91,7 +79,6 @@
     <option name="CHANGED_PATHS">
       <list>
         <option value="$PROJECT_DIR$/GSIDatabase.py" />
-        <option value="$PROJECT_DIR$/GSIQuery.log" />
         <option value="$PROJECT_DIR$/../The Escort/TheEscort_TKINTER_INTERFACE_p3.pyw" />
         <option value="$PROJECT_DIR$/settings.ini" />
         <option value="$PROJECT_DIR$/GSI.py" />
@@ -101,14 +88,15 @@
         <option value="$PROJECT_DIR$/settings.ini" />
         <option value="$APPLICATION_CONFIG_DIR$/scratches/scratch.py" />
         <option value="$PROJECT_DIR$/.gitignore" />
+        <option value="$PROJECT_DIR$/GSIQuery.log" />
         <option value="$PROJECT_DIR$/main.py" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="345" />
-    <option name="y" value="30" />
-    <option name="width" value="1537" />
+    <option name="x" value="517" />
+    <option name="y" value="44" />
+    <option name="width" value="1785" />
     <option name="height" value="1344" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
@@ -539,7 +527,21 @@
       <option name="project" value="LOCAL" />
       <updated>1584588328441</updated>
     </task>
-    <option name="localTasksCounter" value="36" />
+    <task id="LOCAL-00036" summary="show user results of updating fixed file">
+      <created>1584664215104</created>
+      <option name="number" value="00036" />
+      <option name="presentableId" value="LOCAL-00036" />
+      <option name="project" value="LOCAL" />
+      <updated>1584664215104</updated>
+    </task>
+    <task id="LOCAL-00037" summary="empty log">
+      <created>1584664409838</created>
+      <option name="number" value="00037" />
+      <option name="presentableId" value="LOCAL-00037" />
+      <option name="project" value="LOCAL" />
+      <updated>1584664409839</updated>
+    </task>
+    <option name="localTasksCounter" value="38" />
     <servers />
   </component>
   <component name="TodoView">
@@ -552,22 +554,22 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="345" y="30" width="1537" height="1344" extended-state="0" />
+    <frame x="517" y="44" width="1785" height="1344" extended-state="0" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.3919523" visible="true" weight="0.34623083" />
-      <window_info active="true" id="Structure" order="1" sideWeight="0.60804766" side_tool="true" visible="true" weight="0.34623083" />
+      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.38599107" visible="true" weight="0.2970807" />
+      <window_info id="Structure" order="1" sideWeight="0.61400896" side_tool="true" visible="true" weight="0.2970807" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
-      <window_info anchor="bottom" id="Find" order="1" weight="0.32838774" />
-      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.499316" visible="true" weight="0.4351852" />
-      <window_info anchor="bottom" id="Debug" order="3" weight="0.2929293" />
+      <window_info anchor="bottom" id="Find" order="1" weight="0.32828283" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" sideWeight="0.49627933" visible="true" weight="0.4351852" />
+      <window_info anchor="bottom" id="Debug" order="3" sideWeight="0.49966997" weight="0.2929293" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" weight="0.32861477" />
       <window_info anchor="bottom" id="Version Control" order="7" weight="0.32146388" />
       <window_info anchor="bottom" id="Terminal" order="8" weight="0.32760364" />
-      <window_info anchor="bottom" id="Event Log" order="9" sideWeight="0.500684" side_tool="true" weight="0.26497892" />
+      <window_info anchor="bottom" id="Event Log" order="9" sideWeight="0.50372064" side_tool="true" visible="true" weight="0.4351852" />
       <window_info anchor="bottom" id="Python Console" order="10" weight="0.32760364" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
@@ -578,8 +580,6 @@
     <ignored-roots>
       <path value="$PROJECT_DIR$" />
     </ignored-roots>
-    <MESSAGE value="3d check bug fix" />
-    <MESSAGE value="add functionality to check station naming" />
     <MESSAGE value="increased tolerances" />
     <MESSAGE value="create control only GSI" />
     <MESSAGE value="added config and compare to menu" />
@@ -603,18 +603,11 @@
     <MESSAGE value="updated the COmpnet GUI's to use Grid" />
     <MESSAGE value="survey - check all added" />
     <MESSAGE value="combine basic gsi functionality" />
-    <option name="LAST_COMMIT_MESSAGE" value="combine basic gsi functionality" />
+    <MESSAGE value="show user results of updating fixed file" />
+    <MESSAGE value="empty log" />
+    <option name="LAST_COMMIT_MESSAGE" value="empty log" />
   </component>
   <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/main.py</url>
-          <line>1233</line>
-          <option name="timeStamp" value="3" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
     <watches-manager>
       <configuration name="PythonConfigurationType">
         <watch expression="self.dialog_window" />
@@ -633,9 +626,6 @@
           <caret line="4" column="9" lean-forward="true" selection-start-line="4" selection-start-column="9" selection-end-line="4" selection-end-column="9" />
         </state>
       </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/GSIQuery.log">
-      <provider selected="true" editor-type-id="text-editor" />
     </entry>
     <entry file="file://$PROJECT_DIR$/../The Escort/TheEscort_TKINTER_INTERFACE_p3.py" />
     <entry file="file://$PROJECT_DIR$/../The Escort/TheEscort_TKINTER_INTERFACE_p3.pyw">
@@ -680,13 +670,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/.gitignore">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="51">
-          <caret line="3" column="5" lean-forward="true" selection-start-line="3" selection-start-column="5" selection-end-line="3" selection-end-column="5" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$APPLICATION_CONFIG_DIR$/scratches/scratch.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="374">
@@ -711,20 +694,30 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/main.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="394">
-          <caret line="960" column="85" selection-start-line="960" selection-start-column="85" selection-end-line="960" selection-end-column="85" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/GSI.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="4165">
+        <state relative-caret-position="589">
           <caret line="250" column="20" selection-start-line="250" selection-start-column="20" selection-end-line="250" selection-end-column="20" />
           <folding>
             <element signature="e#25#52#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/GSIQuery.log">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/.gitignore">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="68">
+          <caret line="4" column="12" lean-forward="true" selection-start-line="4" selection-start-column="12" selection-end-line="4" selection-end-column="12" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/main.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="402">
+          <caret line="1214" column="65" lean-forward="true" selection-start-line="1214" selection-start-column="65" selection-end-line="1214" selection-end-column="65" />
         </state>
       </provider>
     </entry>

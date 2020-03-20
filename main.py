@@ -10,7 +10,6 @@ NOTE: For 3.4 compatibility
 
 # TODO add right functionality (change target height)
 # TODO sort combine GSI files
-# TODO compnet move fixed coordinates - add msg showing coorindates not found or updated.
 
 import tkinter as tk
 import re
@@ -1198,21 +1197,65 @@ class CombineGSIFilesWindow:
 
         self.master = master
 
+        self.sorted_station_list_filepath = ""
         #  Lets build the dialog box
+
         self.dialog_window = tk.Toplevel(master)
-        self.dialog_window.title("Compnet Assist")
+        self.dialog_window.title("COMBINE GSI FILES")
 
+        self.radio_option = tk.StringVar()
+        self.radio_option.set("1")
+        self.radio_no_sort = tk.Radiobutton(self.dialog_window, text="Don't Sort", value="1",
+                                            var=self.radio_option, command=self.disable_config_button)
+        self.radio_sort_auto = tk.Radiobutton(self.dialog_window, text="Sort Automatically", value="2",
+                                              var=self.radio_option, command=self.disable_config_button)
+        self.radio_sort_config = tk.Radiobutton(self.dialog_window, text="Sort based on config file", value="3",
+                                                var=self.radio_option, command=self.enable_config_button)
+        self.sorted_file_btn = tk.Button(self.dialog_window, text='Change sorted config file', state="disabled",
+                                   command=self.open_config_file)
+        self.current_config_label = tk.Label(self.dialog_window, text='place holder', state="disabled")
         self.files_btn = tk.Button(self.dialog_window, text='Choose GSI files to combine',
-                                   command=self.select_gsi_files)
-        self.files_btn.grid(row=1, column=1, sticky='nesw', padx=20, pady=25)
+                                   command=self.select_and_combine_gsi_files)
 
-        # self.dialog_window.geometry(MainWindow.position_popup(master, 200,
-        #                                                     75))
+        self.radio_no_sort.grid(row=1, column=1, sticky='w', columnspan=3, padx=60, pady=(20, 2))
+        self.radio_sort_auto.grid(row=2, column=1, sticky='w', columnspan=3, padx=60, pady=2)
+        self.radio_sort_config.grid(row=3, column=1, sticky='w', columnspan=3, padx=60, pady=(2,10))
+        self.sorted_file_btn.grid(row=4, column=1, sticky='w', columnspan=3, padx=60, pady=(10,2))
+        self.current_config_label.grid(row=5, column=1, sticky='w', columnspan=3, padx=60, pady=(1,2))
+        self.files_btn.grid(row=6, column=1, sticky='nesw', columnspan=3, padx=60, pady=(20, 20))
 
-    def select_gsi_files(self):
+        self.dialog_window.geometry(MainWindow.position_popup(master, 280,
+                                                              240))
+        # self.dialog_window.attributes('-topmost', 'true')
+
+    def enable_config_button(self):
+
+        # enable button and label
+        self.sorted_file_btn.config(state="normal")
+        self.current_config_label.config(state="normal")
+
+    def disable_config_button(self):
+
+        # enable button and label
+        self.sorted_file_btn.config(state="disabled")
+        self.current_config_label.config(state="disabled")
+
+    def open_config_file(self):
+
+        # enable button and label
+
+        self.sorted_station_list_filepath = tk.filedialog.askopenfilename(parent=self.master, filetypes=[("TXT Files",
+                                                                                            ".txt")])
+
+    def select_and_combine_gsi_files(self):
+
+        # determine sorting method
+        radio_button_selection = self.radio_option.get()
 
         combined_gsi_filename = "COMPNET_COMBINED.gsi"
         gsi_contents = ""
+        file_path = ""
+
 
         try:
             gsi_filenames = list(tk.filedialog.askopenfilenames(parent=self.master, filetypes=[("GSI Files", ".gsi")]))
@@ -1223,16 +1266,10 @@ class CombineGSIFilesWindow:
                 gsi_file = GSIFile(filename)
                 gsi_contents += gsi_file.get_filecontents()
 
-            with open(file_path, 'w') as f_update:
-                f_update.write(gsi_contents)
 
-                # display results to the user
-                MenuBar.filename_path = file_path
-                MenuBar.format_gsi_file()
-                MenuBar.create_and_populate_database()
-                MenuBar.update_gui()
-                gui_app.menu_bar.enable_menus()
-
+            # no sorting
+            if radio_button_selection == "1":
+                self.write_out_combined_gsi(gsi_contents, file_path)
 
         except Exception as ex:
 
@@ -1245,8 +1282,20 @@ class CombineGSIFilesWindow:
             if gsi_filenames:
                 tk.messagebox.showinfo("Success",
                                        "The gsi files have been combined:\n\n" + file_path)
+                # display results to the user
+                MenuBar.filename_path = file_path
+                MenuBar.format_gsi_file()
+                MenuBar.create_and_populate_database()
+                MenuBar.update_gui()
+                gui_app.menu_bar.enable_menus()
+
             else:
                 tk.messagebox.showinfo("Error", "Please select GSI files.")
+
+    def write_out_combined_gsi(self, gsi_contents, file_path):
+
+        with open(file_path, 'w') as f_update:
+            f_update.write(gsi_contents)
 
 
 class GUIApplication(tk.Frame):
