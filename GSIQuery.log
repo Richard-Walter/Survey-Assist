@@ -18,3 +18,18 @@ Traceback (most recent call last):
   File "C:\Users\rjwal_000\PycharmProjects\Survey Assist\GSI.py", line 105, in format_gsi
     field_name = GSI.GSI_WORD_ID_DICT[two_digit_id]
 KeyError: '*1'
+2020-03-20 20:16:41,672:Survey Assist:File doesn't appear to be a valid GSI file.  Missing Key ID: +00000000000STN01
+Traceback (most recent call last):
+  File "C:\Users\rjwal_000\PycharmProjects\Survey Assist\GSI.py", line 105, in format_gsi
+    field_name = GSI.GSI_WORD_ID_DICT[two_digit_id]
+KeyError: '*1'
+2020-03-20 20:16:46,457:Survey Assist:Database in use.  Unable to delete until it is closed
+Traceback (most recent call last):
+  File "C:\Users\rjwal_000\PycharmProjects\Survey Assist\GSIDatabase.py", line 24, in create_db
+    os.remove(GSIDatabase.DATABASE_PATH)
+PermissionError: [WinError 32] The process cannot access the file because it is being used by another process: 'GSI Files\\GSI_database.db'
+2020-03-20 20:19:38,515:Survey Assist:Database in use.  Unable to delete until it is closed
+Traceback (most recent call last):
+  File "C:\Users\rjwal_000\PycharmProjects\Survey Assist\GSIDatabase.py", line 24, in create_db
+    os.remove(GSIDatabase.DATABASE_PATH)
+PermissionError: [WinError 32] The process cannot access the file because it is being used by another process: 'GSI Files\\GSI_database.db'

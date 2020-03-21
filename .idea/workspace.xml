@@ -5,7 +5,9 @@
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/GSI Files/GSI_database.db" beforeDir="false" afterPath="$PROJECT_DIR$/GSI Files/GSI_database.db" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/GSIQuery.log" beforeDir="false" afterPath="$PROJECT_DIR$/GSIQuery.log" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SurveyConfiguration.py" beforeDir="false" afterPath="$PROJECT_DIR$/SurveyConfiguration.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/settings.ini" beforeDir="false" afterPath="$PROJECT_DIR$/settings.ini" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -15,11 +17,20 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/main.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="402">
-              <caret line="1214" column="65" lean-forward="true" selection-start-line="1214" selection-start-column="65" selection-end-line="1214" selection-end-column="65" />
+            <state relative-caret-position="229">
+              <caret line="537" column="56" selection-start-line="537" selection-start-column="56" selection-end-line="537" selection-end-column="56" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/SurveyConfiguration.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="461">
+              <caret line="34" lean-forward="true" selection-start-line="34" selection-end-line="34" />
             </state>
           </provider>
         </entry>
@@ -82,22 +93,22 @@
         <option value="$PROJECT_DIR$/../The Escort/TheEscort_TKINTER_INTERFACE_p3.pyw" />
         <option value="$PROJECT_DIR$/settings.ini" />
         <option value="$PROJECT_DIR$/GSI.py" />
-        <option value="$PROJECT_DIR$/SurveyConfiguration.py" />
         <option value="$PROJECT_DIR$/main.pyw" />
         <option value="$PROJECT_DIR$/GSI.py" />
         <option value="$PROJECT_DIR$/settings.ini" />
         <option value="$APPLICATION_CONFIG_DIR$/scratches/scratch.py" />
         <option value="$PROJECT_DIR$/.gitignore" />
         <option value="$PROJECT_DIR$/GSIQuery.log" />
+        <option value="$PROJECT_DIR$/SurveyConfiguration.py" />
         <option value="$PROJECT_DIR$/main.py" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="517" />
-    <option name="y" value="44" />
+    <option name="x" value="164" />
+    <option name="y" value="69" />
     <option name="width" value="1785" />
-    <option name="height" value="1344" />
+    <option name="height" value="1326" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectView">
@@ -541,7 +552,14 @@
       <option name="project" value="LOCAL" />
       <updated>1584664409839</updated>
     </task>
-    <option name="localTasksCounter" value="38" />
+    <task id="LOCAL-00038" summary="add gui component to sort combining GSI files">
+      <created>1584695762837</created>
+      <option name="number" value="00038" />
+      <option name="presentableId" value="LOCAL-00038" />
+      <option name="project" value="LOCAL" />
+      <updated>1584695762837</updated>
+    </task>
+    <option name="localTasksCounter" value="39" />
     <servers />
   </component>
   <component name="TodoView">
@@ -554,33 +572,51 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="517" y="44" width="1785" height="1344" extended-state="0" />
+    <frame x="164" y="69" width="1785" height="1326" extended-state="0" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.38599107" visible="true" weight="0.2970807" />
-      <window_info id="Structure" order="1" sideWeight="0.61400896" side_tool="true" visible="true" weight="0.2970807" />
+      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.3841229" visible="true" weight="0.124212936" />
+      <window_info id="Structure" order="1" sideWeight="0.6158771" side_tool="true" weight="0.2970807" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.32828283" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" sideWeight="0.49627933" visible="true" weight="0.4351852" />
-      <window_info anchor="bottom" id="Debug" order="3" sideWeight="0.49966997" weight="0.2929293" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" sideWeight="0.4951345" visible="true" weight="0.33247864" />
+      <window_info anchor="bottom" id="Debug" order="3" sideWeight="0.4991414" weight="0.2929293" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" weight="0.32861477" />
       <window_info anchor="bottom" id="Version Control" order="7" weight="0.32146388" />
       <window_info anchor="bottom" id="Terminal" order="8" weight="0.32760364" />
-      <window_info anchor="bottom" id="Event Log" order="9" sideWeight="0.50372064" side_tool="true" visible="true" weight="0.4351852" />
+      <window_info anchor="bottom" id="Event Log" order="9" sideWeight="0.50486547" side_tool="true" weight="0.44188035" />
       <window_info anchor="bottom" id="Python Console" order="10" weight="0.32760364" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.2494382" />
     </layout>
+    <layout-to-restore>
+      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.3841229" visible="true" weight="0.2970807" />
+      <window_info active="true" id="Structure" order="1" sideWeight="0.6158771" side_tool="true" visible="true" weight="0.2970807" />
+      <window_info id="Favorites" order="2" side_tool="true" />
+      <window_info anchor="bottom" id="Message" order="0" />
+      <window_info anchor="bottom" id="Find" order="1" weight="0.32828283" />
+      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.4951345" visible="true" weight="0.33247864" />
+      <window_info anchor="bottom" id="Debug" order="3" sideWeight="0.4991414" weight="0.2929293" />
+      <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
+      <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
+      <window_info anchor="bottom" id="TODO" order="6" weight="0.32861477" />
+      <window_info anchor="bottom" id="Version Control" order="7" weight="0.32146388" />
+      <window_info anchor="bottom" id="Terminal" order="8" weight="0.32760364" />
+      <window_info anchor="bottom" id="Event Log" order="9" sideWeight="0.50486547" side_tool="true" weight="0.44188035" />
+      <window_info anchor="bottom" id="Python Console" order="10" weight="0.32760364" />
+      <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
+      <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
+      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.2494382" />
+    </layout-to-restore>
   </component>
   <component name="VcsManagerConfiguration">
     <ignored-roots>
       <path value="$PROJECT_DIR$" />
     </ignored-roots>
-    <MESSAGE value="increased tolerances" />
     <MESSAGE value="create control only GSI" />
     <MESSAGE value="added config and compare to menu" />
     <MESSAGE value="add SurveyConfig class to store survey settings" />
@@ -605,7 +641,8 @@
     <MESSAGE value="combine basic gsi functionality" />
     <MESSAGE value="show user results of updating fixed file" />
     <MESSAGE value="empty log" />
-    <option name="LAST_COMMIT_MESSAGE" value="empty log" />
+    <MESSAGE value="add gui component to sort combining GSI files" />
+    <option name="LAST_COMMIT_MESSAGE" value="add gui component to sort combining GSI files" />
   </component>
   <component name="XDebuggerManager">
     <watches-manager>
@@ -656,13 +693,6 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/main.pyw" />
-    <entry file="file://$PROJECT_DIR$/SurveyConfiguration.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="51">
-          <caret line="3" column="25" selection-start-line="3" selection-start-column="6" selection-end-line="3" selection-end-column="25" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/settings.ini">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="119">
@@ -694,16 +724,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/GSI.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="589">
-          <caret line="250" column="20" selection-start-line="250" selection-start-column="20" selection-end-line="250" selection-end-column="20" />
-          <folding>
-            <element signature="e#25#52#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/GSIQuery.log">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
@@ -714,10 +734,27 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/GSI.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="470">
+          <caret line="111" selection-start-line="111" selection-end-line="111" />
+          <folding>
+            <element signature="e#25#52#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/main.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="402">
-          <caret line="1214" column="65" lean-forward="true" selection-start-line="1214" selection-start-column="65" selection-end-line="1214" selection-end-column="65" />
+        <state relative-caret-position="229">
+          <caret line="537" column="56" selection-start-line="537" selection-start-column="56" selection-end-line="537" selection-end-column="56" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/SurveyConfiguration.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="461">
+          <caret line="34" lean-forward="true" selection-start-line="34" selection-end-line="34" />
         </state>
       </provider>
     </entry>

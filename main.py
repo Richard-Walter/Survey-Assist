@@ -520,8 +520,8 @@ class MenuBar(tk.Frame):
 
 
 class ConfigDialog:
-    dialog_w = 250
-    dialog_h = 200
+    dialog_w = 300
+    dialog_h = 240
 
     def __init__(self, master):
 
@@ -533,35 +533,45 @@ class ConfigDialog:
 
         self.dialog_window.geometry(MainWindow.position_popup(master, ConfigDialog.dialog_w, ConfigDialog.dialog_h))
 
-        tk.Label(self.dialog_window, text="Precision:").grid(row=0, column=0, padx=5, pady=5)
+        tk.Label(self.dialog_window, text="Precision:").grid(row=0, column=0, padx=5, pady=(15, 5), sticky='w')
         self.precision = tk.StringVar()
-        self.precision_entry = ttk.Combobox(self.dialog_window, width=10, textvariable=self.precision, state='readonly')
+        self.precision_entry = ttk.Combobox(self.dialog_window, textvariable=self.precision, state='readonly')
         self.precision_entry['values'] = SurveyConfiguration.precision_value_list
 
         self.precision_entry.current(SurveyConfiguration.precision_value_list.index(survey_config.precision_value))
         self.precision_entry.bind("<<ComboboxSelected>>")
-        self.precision_entry.grid(row=0, column=1, padx=1, pady=5)
+        self.precision_entry.grid(row=0, column=1, padx=5, pady=(15, 5), sticky='w')
 
-        tk.Label(self.dialog_window, text="Easting Tolerance: ").grid(row=1, column=0, padx=5, pady=5)
-        self.entry_easting = tk.Entry(self.dialog_window, width=13)
+        tk.Label(self.dialog_window, text="Easting Tolerance: ").grid(row=1, column=0, padx=5, pady=5, sticky='w')
+        self.entry_easting = tk.Entry(self.dialog_window)
         self.entry_easting.insert(tkinter.END, survey_config.easting_tolerance)
-        self.entry_easting.grid(row=1, column=1, padx=5, pady=5)
+        self.entry_easting.grid(row=1, column=1, padx=5, pady=5, sticky='w', )
 
-        tk.Label(self.dialog_window, text="Northing Tolerance: ").grid(row=2, column=0, padx=5, pady=5)
-        self.entry_northing = tk.Entry(self.dialog_window, width=13)
+        tk.Label(self.dialog_window, text="Northing Tolerance: ").grid(row=2, column=0, padx=5, pady=5, sticky='w')
+        self.entry_northing = tk.Entry(self.dialog_window)
         self.entry_northing.insert(tkinter.END, survey_config.northing_tolerance)
-        self.entry_northing.grid(row=2, column=1, padx=5, pady=5)
+        self.entry_northing.grid(row=2, column=1, padx=5, pady=5, sticky='w')
 
-        tk.Label(self.dialog_window, text="Height Tolerance: ").grid(row=3, column=0, padx=5, pady=5)
-        self.entry_height = tk.Entry(self.dialog_window, width=13)
+        tk.Label(self.dialog_window, text="Height Tolerance: ").grid(row=3, column=0, padx=5, pady=5, sticky='w')
+        self.entry_height = tk.Entry(self.dialog_window)
         self.entry_height.insert(tkinter.END, survey_config.height_tolerance)
-        self.entry_height.grid(row=3, column=1, padx=5, pady=5)
+        self.entry_height.grid(row=3, column=1, padx=5, pady=5, sticky='w')
+
+        self.sorted_station_file_lbl = tk.Label(self.dialog_window, text="Sorted station file: ").grid(row=4, column=0,
+                                                                                                       padx=5, pady=5)
+        sorted_station_file_btn_txt = os.path.basename(survey_config.sorted_station_config)
+        self.sorted_station_file_btn = tk.Button(self.dialog_window, text=sorted_station_file_btn_txt,
+                                                 command=self.select_sorted_stn_file)
+        self.sorted_station_file_btn.grid(row=4, column=1, padx=5, pady=10, sticky='w')
 
         save_b = tk.Button(self.dialog_window, text="Save", width=10, command=self.save)
-        save_b.grid(row=4, column=0, pady=10)
+        save_b.grid(row=5, column=0, padx=5, pady=10, sticky='nesw')
 
         cancel_b = tk.Button(self.dialog_window, text="Cancel", width=10, command=self.cancel)
-        cancel_b.grid(row=4, column=1, pady=10)
+        cancel_b.grid(row=5, column=1, padx=5, pady=10, sticky='nesw')
+
+    def select_sorted_stn_file(self):
+        pass
 
     def save(self):
 
@@ -569,11 +579,13 @@ class ConfigDialog:
 
         precision_dictionary = {}
         survey_tolerance_dictionary = {}
+        configuration_dictionary = {}
 
         precision_dictionary['instrument_precision'] = self.precision_entry.get()
         survey_tolerance_dictionary['eastings'] = self.entry_easting.get()
         survey_tolerance_dictionary['northings'] = self.entry_northing.get()
         survey_tolerance_dictionary['height'] = self.entry_height.get()
+        # configuration_dictionary['sorted_station_config'] = self.edf aadd entry here
 
         input_error = False
 
@@ -600,7 +612,8 @@ class ConfigDialog:
         else:
 
             self.dialog_window.destroy()
-            survey_config.create_config_file(precision_dictionary, survey_tolerance_dictionary)
+            survey_config.create_config_file(precision_dictionary, survey_tolerance_dictionary,
+                                             configuration_dictionary)
 
             survey_config = SurveyConfiguration()
 
@@ -1212,16 +1225,16 @@ class CombineGSIFilesWindow:
         self.radio_sort_config = tk.Radiobutton(self.dialog_window, text="Sort based on config file", value="3",
                                                 var=self.radio_option, command=self.enable_config_button)
         self.sorted_file_btn = tk.Button(self.dialog_window, text='Change sorted config file', state="disabled",
-                                   command=self.open_config_file)
+                                         command=self.open_config_file)
         self.current_config_label = tk.Label(self.dialog_window, text='place holder', state="disabled")
         self.files_btn = tk.Button(self.dialog_window, text='Choose GSI files to combine',
                                    command=self.select_and_combine_gsi_files)
 
         self.radio_no_sort.grid(row=1, column=1, sticky='w', columnspan=3, padx=60, pady=(20, 2))
         self.radio_sort_auto.grid(row=2, column=1, sticky='w', columnspan=3, padx=60, pady=2)
-        self.radio_sort_config.grid(row=3, column=1, sticky='w', columnspan=3, padx=60, pady=(2,10))
-        self.sorted_file_btn.grid(row=4, column=1, sticky='w', columnspan=3, padx=60, pady=(10,2))
-        self.current_config_label.grid(row=5, column=1, sticky='w', columnspan=3, padx=60, pady=(1,2))
+        self.radio_sort_config.grid(row=3, column=1, sticky='w', columnspan=3, padx=60, pady=(2, 10))
+        self.sorted_file_btn.grid(row=4, column=1, sticky='w', columnspan=3, padx=60, pady=(10, 2))
+        self.current_config_label.grid(row=5, column=1, sticky='w', columnspan=3, padx=60, pady=(1, 2))
         self.files_btn.grid(row=6, column=1, sticky='nesw', columnspan=3, padx=60, pady=(20, 20))
 
         self.dialog_window.geometry(MainWindow.position_popup(master, 280,
@@ -1242,10 +1255,10 @@ class CombineGSIFilesWindow:
 
     def open_config_file(self):
 
-        # enable button and label
+        MenuBar.configure_survey(self)
 
-        self.sorted_station_list_filepath = tk.filedialog.askopenfilename(parent=self.master, filetypes=[("TXT Files",
-                                                                                            ".txt")])
+        # self.sorted_station_list_filepath = tk.filedialog.askopenfilename(parent=self.master, filetypes=[("TXT Files",
+        #                                                                                     ".txt")])
 
     def select_and_combine_gsi_files(self):
 
@@ -1256,7 +1269,6 @@ class CombineGSIFilesWindow:
         gsi_contents = ""
         file_path = ""
 
-
         try:
             gsi_filenames = list(tk.filedialog.askopenfilenames(parent=self.master, filetypes=[("GSI Files", ".gsi")]))
             combined_gsi_directory = os.path.dirname(gsi_filenames[0])
@@ -1265,7 +1277,6 @@ class CombineGSIFilesWindow:
             for filename in gsi_filenames:
                 gsi_file = GSIFile(filename)
                 gsi_contents += gsi_file.get_filecontents()
-
 
             # no sorting
             if radio_button_selection == "1":
