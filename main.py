@@ -520,18 +520,20 @@ class MenuBar(tk.Frame):
 
 
 class ConfigDialog:
-    dialog_w = 300
-    dialog_h = 240
+    # dialog_w = 300
+    # dialog_h = 240
 
     def __init__(self, master):
 
         self.master = master
 
+        self.sorted_stn_file_path = survey_config.sorted_station_config
+
         #  Lets build the dialog box
         self.dialog_window = tk.Toplevel(master)
         self.dialog_window.title("Survey Configuration")
 
-        self.dialog_window.geometry(MainWindow.position_popup(master, ConfigDialog.dialog_w, ConfigDialog.dialog_h))
+        # self.dialog_window.geometry(MainWindow.position_popup(master, ConfigDialog.dialog_w, ConfigDialog.dialog_h))
 
         tk.Label(self.dialog_window, text="Precision:").grid(row=0, column=0, padx=5, pady=(15, 5), sticky='w')
         self.precision = tk.StringVar()
@@ -558,20 +560,26 @@ class ConfigDialog:
         self.entry_height.grid(row=3, column=1, padx=5, pady=5, sticky='w')
 
         self.sorted_station_file_lbl = tk.Label(self.dialog_window, text="Sorted station file: ").grid(row=4, column=0,
-                                                                                                       padx=5, pady=5)
-        sorted_station_file_btn_txt = os.path.basename(survey_config.sorted_station_config)
-        self.sorted_station_file_btn = tk.Button(self.dialog_window, text=sorted_station_file_btn_txt,
+                                                                                                       padx=5,
+                                                                                                       pady=10,
+                                                                                                       sticky='w')
+        self.sorted_station_file_btn = tk.Button(self.dialog_window, text=os.path.basename(self.sorted_stn_file_path),
                                                  command=self.select_sorted_stn_file)
         self.sorted_station_file_btn.grid(row=4, column=1, padx=5, pady=10, sticky='w')
 
         save_b = tk.Button(self.dialog_window, text="Save", width=10, command=self.save)
-        save_b.grid(row=5, column=0, padx=5, pady=10, sticky='nesw')
+        save_b.grid(row=5, column=0, padx=5, pady=20, sticky='nesw')
 
         cancel_b = tk.Button(self.dialog_window, text="Cancel", width=10, command=self.cancel)
-        cancel_b.grid(row=5, column=1, padx=5, pady=10, sticky='nesw')
+        cancel_b.grid(row=5, column=1, padx=5, pady=20, sticky='nesw')
 
     def select_sorted_stn_file(self):
-        pass
+
+        self.sorted_stn_file_path = tk.filedialog.askopenfilename(parent=self.master, filetypes=[("Text Files",
+                                                                                                  ".TXT")])
+        if self.sorted_stn_file_path != "":
+            self.sorted_station_file_btn.config(text=os.path.basename(self.sorted_stn_file_path))
+        self.dialog_window.lift()  # bring window to the front again
 
     def save(self):
 
@@ -585,7 +593,7 @@ class ConfigDialog:
         survey_tolerance_dictionary['eastings'] = self.entry_easting.get()
         survey_tolerance_dictionary['northings'] = self.entry_northing.get()
         survey_tolerance_dictionary['height'] = self.entry_height.get()
-        # configuration_dictionary['sorted_station_config'] = self.edf aadd entry here
+        configuration_dictionary['sorted_station_config'] = self.sorted_stn_file_path
 
         input_error = False
 
@@ -1220,13 +1228,14 @@ class CombineGSIFilesWindow:
         self.radio_option.set("1")
         self.radio_no_sort = tk.Radiobutton(self.dialog_window, text="Don't Sort", value="1",
                                             var=self.radio_option, command=self.disable_config_button)
-        self.radio_sort_auto = tk.Radiobutton(self.dialog_window, text="Sort Automatically", value="2",
+        self.radio_sort_auto = tk.Radiobutton(self.dialog_window, text="Sort alphabetically", value="2",
                                               var=self.radio_option, command=self.disable_config_button)
         self.radio_sort_config = tk.Radiobutton(self.dialog_window, text="Sort based on config file", value="3",
                                                 var=self.radio_option, command=self.enable_config_button)
         self.sorted_file_btn = tk.Button(self.dialog_window, text='Change sorted config file', state="disabled",
                                          command=self.open_config_file)
-        self.current_config_label = tk.Label(self.dialog_window, text='place holder', state="disabled")
+        current_config_label_txt = os.path.basename(survey_config.sorted_station_config)
+        self.current_config_label = tk.Label(self.dialog_window, text=current_config_label_txt, state="disabled")
         self.files_btn = tk.Button(self.dialog_window, text='Choose GSI files to combine',
                                    command=self.select_and_combine_gsi_files)
 
@@ -1255,10 +1264,13 @@ class CombineGSIFilesWindow:
 
     def open_config_file(self):
 
-        MenuBar.configure_survey(self)
+        self.sorted_station_list_filepath = tk.filedialog.askopenfilename(parent=self.master, filetypes=[("TXT Files",
+                                                                                            ".txt")])
+        if self.sorted_station_list_filepath != "":
+            survey_config.update(SurveyConfiguration.section_config_files, 'sorted_station_config', self.sorted_station_list_filepath)
+            self.current_config_label.config(text=os.path.basename(self.sorted_station_list_filepath))
 
-        # self.sorted_station_list_filepath = tk.filedialog.askopenfilename(parent=self.master, filetypes=[("TXT Files",
-        #                                                                                     ".txt")])
+        self.dialog_window.lift()  # bring window to the front again
 
     def select_and_combine_gsi_files(self):
 
@@ -1548,7 +1560,7 @@ def main():
     # Create main window
     root = tk.Tk()
     root.geometry("1600x1000")
-    root.title("Survey Assist")
+    root.title("SURVEY ASSIST - Written by Richard Walter")
     root.wm_iconbitmap(r'icons\analyser.ico')
 
     gsi = GSI(logger)
