@@ -3,11 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="ca2bf562-6ed1-41b9-8b6b-e72a3ab9e82c" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/GSI Files/A9_ARTC_902_2 - Copy.GSI" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/GSI Files/A9_ARTC_902_2.GSI" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/GSI Files/ARTC_903_compnet 240220_CONTROL_ONLY.gsi" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/GSI Files/GSI_database.db" beforeDir="false" afterPath="$PROJECT_DIR$/GSI Files/GSI_database.db" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/GSI.py" beforeDir="false" afterPath="$PROJECT_DIR$/GSI.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/GSIQuery.log" beforeDir="false" afterPath="$PROJECT_DIR$/GSIQuery.log" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
     </list>
@@ -22,8 +18,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/main.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="297">
-              <caret line="1356" column="53" lean-forward="true" selection-start-line="1356" selection-start-column="53" selection-end-line="1356" selection-end-column="53" />
+            <state relative-caret-position="226">
+              <caret line="1368" column="37" selection-start-line="1368" selection-start-column="37" selection-end-line="1368" selection-end-column="37" />
               <folding>
                 <element signature="e#518#538#0" expanded="true" />
               </folding>
@@ -34,8 +30,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/GSI.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="195">
-              <caret line="237" column="8" selection-start-line="237" selection-start-column="8" selection-end-line="237" selection-end-column="8" />
+            <state relative-caret-position="209">
+              <caret line="113" selection-start-line="113" selection-end-line="113" />
               <folding>
                 <element signature="e#25#52#0" expanded="true" />
               </folding>
@@ -113,10 +109,10 @@
     </option>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="595" />
-    <option name="y" value="73" />
-    <option name="width" value="1391" />
-    <option name="height" value="1271" />
+    <option name="x" value="99" />
+    <option name="y" value="64" />
+    <option name="width" value="1910" />
+    <option name="height" value="1343" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectView">
@@ -572,7 +568,14 @@
       <option name="project" value="LOCAL" />
       <updated>1584759254132</updated>
     </task>
-    <option name="localTasksCounter" value="41" />
+    <task id="LOCAL-00041" summary="add sort alphabetically functionality">
+      <created>1584853347653</created>
+      <option name="number" value="00041" />
+      <option name="presentableId" value="LOCAL-00041" />
+      <option name="project" value="LOCAL" />
+      <updated>1584853347653</updated>
+    </task>
+    <option name="localTasksCounter" value="42" />
     <servers />
   </component>
   <component name="TodoView">
@@ -585,16 +588,16 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="595" y="73" width="1391" height="1271" extended-state="0" />
+    <frame x="99" y="64" width="1910" height="1343" extended-state="0" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.45776567" visible="true" weight="0.22172949" />
-      <window_info id="Structure" order="1" sideWeight="0.54223436" side_tool="true" visible="true" weight="0.22172949" />
+      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.4564254" visible="true" weight="0.16025642" />
+      <window_info id="Structure" order="1" sideWeight="0.5435746" side_tool="true" visible="true" weight="0.16025642" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.32825112" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" sideWeight="0.4951345" visible="true" weight="0.34170404" />
-      <window_info anchor="bottom" id="Debug" order="3" sideWeight="0.4991414" weight="0.43049327" />
+      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.4951345" weight="0.32097724" />
+      <window_info active="true" anchor="bottom" id="Debug" order="3" sideWeight="0.4991414" visible="true" weight="0.4296546" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" weight="0.3282918" />
@@ -630,7 +633,6 @@
     <ignored-roots>
       <path value="$PROJECT_DIR$" />
     </ignored-roots>
-    <MESSAGE value="add SurveyConfig class to store survey settings" />
     <MESSAGE value="add Config dialog box" />
     <MESSAGE value="config dialog box saves values to settings.ini" />
     <MESSAGE value="bug fix - changing tolerances usable whilst remaining in app" />
@@ -655,31 +657,28 @@
     <MESSAGE value="add gui component to sort combining GSI files" />
     <MESSAGE value="updated config GUI to include sorted station file" />
     <MESSAGE value="Survey Confiuration allows you to update a field" />
-    <option name="LAST_COMMIT_MESSAGE" value="Survey Confiuration allows you to update a field" />
+    <MESSAGE value="add sort alphabetically functionality" />
+    <option name="LAST_COMMIT_MESSAGE" value="add sort alphabetically functionality" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/GSI.py</url>
-          <line>200</line>
-          <option name="timeStamp" value="33" />
+          <line>113</line>
+          <option name="timeStamp" value="43" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/main.py</url>
-          <line>1351</line>
-          <option name="timeStamp" value="35" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/GSI.py</url>
-          <line>237</line>
-          <option name="timeStamp" value="36" />
+          <line>1367</line>
+          <option name="timeStamp" value="53" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
     <watches-manager>
       <configuration name="PythonConfigurationType">
         <watch expression="self.dialog_window" />
+        <watch expression="line_numbers[3]" />
       </configuration>
     </watches-manager>
   </component>
@@ -775,8 +774,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/GSI.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="195">
-          <caret line="237" column="8" selection-start-line="237" selection-start-column="8" selection-end-line="237" selection-end-column="8" />
+        <state relative-caret-position="209">
+          <caret line="113" selection-start-line="113" selection-end-line="113" />
           <folding>
             <element signature="e#25#52#0" expanded="true" />
           </folding>
@@ -785,8 +784,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/main.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="297">
-          <caret line="1356" column="53" lean-forward="true" selection-start-line="1356" selection-start-column="53" selection-end-line="1356" selection-end-column="53" />
+        <state relative-caret-position="226">
+          <caret line="1368" column="37" selection-start-line="1368" selection-start-column="37" selection-end-line="1368" selection-end-column="37" />
           <folding>
             <element signature="e#518#538#0" expanded="true" />
           </folding>

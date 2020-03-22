@@ -1343,10 +1343,12 @@ class CombineGSIFilesWindow:
 
         unsorted_combined_gsi = GSI(logger)
         unsorted_combined_gsi.format_gsi(self.combined_gsi_file_path)
-        # stations_line_number_list = unsorted_combined_gsi.get_control_points().keys()
-        # sorted_stations_line_numbers = sorted(stations_line_number_list)
 
+        # lets check and provide a warning to the user i
         stations_names_dict = unsorted_combined_gsi.get_list_of_control_points()
+        station_set = unsorted_combined_gsi.get_set_of_control_points()
+        if len(stations_names_dict) != len(station_set):
+            tk.messagebox.showwarning("WARNING", 'Warning - Duplicate station names detected!')
 
         # need to sort this by station name
         stations_sorted_by_value = OrderedDict(sorted(stations_names_dict.items(), key=lambda x: x[1]))
@@ -1361,8 +1363,17 @@ class CombineGSIFilesWindow:
 
             for line in sorted(line_numbers):
                 text_line = unsorted_combined_gsi_txt[line]
-                sorted_filecontents += unsorted_combined_gsi_txt[line]
 
+                # could do test if text line has no '\' at start then add one
+                if not text_line.endswith('\n'):
+                    text_line += '\n'
+
+                sorted_filecontents += text_line
+
+        # stations_line_number_list = unsorted_combined_gsi.get_set_of_control_points()
+        # sorted_stations_line_numbers = sorted(stations_line_number_list)
+
+        # # old way but does not allow for duplicate stations which in theory shouldn't exist
         # for index, station_line_number in enumerate(sorted_stations_line_numbers):
         #
         #     line_number = int(station_line_number)
@@ -1371,8 +1382,8 @@ class CombineGSIFilesWindow:
         #
         #         for number in range(sorted_stations_line_numbers[index+1]-line_number):
         #
-        #             sorted_filecontents += txt_lines_temp_combined_gsi[line_number+int(number)
-
+        #             sorted_filecontents += unsorted_combined_gsi_txt[line_number+int(number)]
+        #
         print(sorted_filecontents)
 
         return sorted_filecontents
