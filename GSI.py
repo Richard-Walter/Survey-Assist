@@ -194,7 +194,7 @@ class GSI:
 
         return column_values
 
-    def get_control_points(self):
+    def get_set_of_control_points(self):
 
         control_points = set()
 
@@ -205,6 +205,21 @@ class GSI:
                 control_points.add(formatted_line['Point_ID'])
 
         return sorted(control_points)
+
+    # returns dictionary of control points along with their line number
+    def get_list_of_control_points(self):
+
+        control_points = OrderedDict()
+        control_points_list = []
+
+        for line_number, formatted_line in enumerate(self.formatted_lines):
+
+            # check to see if point id is a control point by see if STN_Easting exists
+            if formatted_line['STN_Easting']:
+                control_points[line_number] = formatted_line['Point_ID']
+                control_points_list.append(control_points)
+
+        return control_points
 
     # returns gsi lines containing all shots except setups from GSI
     def get_all_lines_except_setup(self):
@@ -218,6 +233,36 @@ class GSI:
                 shot_points.append(formatted_line)
 
         return shot_points
+
+    # returns a dict containing formatted lines and their line number
+    def get_all_shots_from_a_station_including_setup(self, station_name, line_number=None):
+
+        single_station_formatted_lines = {}
+        station_found = False
+
+        if line_number is None:
+            line_number = 0
+
+        for index, formatted_line in enumerate(self.formatted_lines[line_number:]):
+
+            if station_found:
+
+                # still in the named station setup
+                if not formatted_line['STN_Easting']:
+                    single_station_formatted_lines[line_number+index] = formatted_line
+
+                # exit as we have come to the next station setup
+                else:
+                    break
+
+            # find the line that contains the station
+            if formatted_line['STN_Easting'] and formatted_line['Point_ID'] == station_name:
+                single_station_formatted_lines[line_number] = formatted_line
+                station_found = True
+
+        print(single_station_formatted_lines)
+
+        return single_station_formatted_lines
 
     @staticmethod
     def is_control_point(formatted_line):
@@ -252,7 +297,7 @@ class GSI:
 
         control_only_gsi_file_contents = ''
         control_only_filename = self.filename[:-4] + '_CONTROL_ONLY.gsi'
-        control_points = self.get_control_points()
+        control_points = self.get_set_of_control_points()
 
         with open(self.filename, "r") as f_orig:
 

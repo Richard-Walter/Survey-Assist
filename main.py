@@ -1218,7 +1218,10 @@ class CombineGSIFilesWindow:
 
         self.master = master
 
+        self.gsi_contents = ""
         self.sorted_station_list_filepath = ""
+        self.combined_gsi_file_path = ""
+
         #  Lets build the dialog box
 
         self.dialog_window = tk.Toplevel(master)
@@ -1265,9 +1268,10 @@ class CombineGSIFilesWindow:
     def open_config_file(self):
 
         self.sorted_station_list_filepath = tk.filedialog.askopenfilename(parent=self.master, filetypes=[("TXT Files",
-                                                                                            ".txt")])
+                                                                                                          ".txt")])
         if self.sorted_station_list_filepath != "":
-            survey_config.update(SurveyConfiguration.section_config_files, 'sorted_station_config', self.sorted_station_list_filepath)
+            survey_config.update(SurveyConfiguration.section_config_files, 'sorted_station_config',
+                                 self.sorted_station_list_filepath)
             self.current_config_label.config(text=os.path.basename(self.sorted_station_list_filepath))
 
         self.dialog_window.lift()  # bring window to the front again
@@ -1278,42 +1282,106 @@ class CombineGSIFilesWindow:
         radio_button_selection = self.radio_option.get()
 
         combined_gsi_filename = "COMPNET_COMBINED.gsi"
-        gsi_contents = ""
+
         file_path = ""
 
         try:
             gsi_filenames = list(tk.filedialog.askopenfilenames(parent=self.master, filetypes=[("GSI Files", ".gsi")]))
-            combined_gsi_directory = os.path.dirname(gsi_filenames[0])
-            file_path = os.path.join(combined_gsi_directory, combined_gsi_filename)
+            if gsi_filenames:
+                self.combined_gsi_directory = os.path.dirname(gsi_filenames[0])
+                self.combined_gsi_file_path = os.path.join(self.combined_gsi_directory, combined_gsi_filename)
 
-            for filename in gsi_filenames:
-                gsi_file = GSIFile(filename)
-                gsi_contents += gsi_file.get_filecontents()
+                for filename in gsi_filenames:
+                    gsi_file = GSIFile(filename)
+                    self.gsi_contents += gsi_file.get_filecontents()
 
-            # no sorting
-            if radio_button_selection == "1":
-                self.write_out_combined_gsi(gsi_contents, file_path)
+                self.write_out_combined_gsi(self.gsi_contents, self.combined_gsi_file_path)
+
+                # no sorting
+                if radio_button_selection == "1":
+                    # file is already written out as it is used for options 2 and 3
+                    pass
+                elif radio_button_selection == "2":
+                    sorted_filecontents = self.sort_alphabetically()
+                    self.write_out_combined_gsi(sorted_filecontents, self.combined_gsi_file_path)
+                elif radio_button_selection == "3":
+                    sorted_filecontents = self.sort_by_config()
+                    self.write_out_combined_gsi(sorted_filecontents, self.combined_gsi_file_path)
+                else:
+                    tk.messagebox.showerror("Error", "no radio button option choosed")
 
         except Exception as ex:
 
             print(ex)
-            tk.messagebox.showerror("Error", "Please select at least one GSI file.\n\nIf problem persists see "
+            tk.messagebox.showerror("Error", "Error combining files.\n\nIf problem persists see "
                                              "Richard")
 
         else:
 
             if gsi_filenames:
                 tk.messagebox.showinfo("Success",
-                                       "The gsi files have been combined:\n\n" + file_path)
+                                       "The gsi files have been combined:\n\n" + self.combined_gsi_file_path)
                 # display results to the user
-                MenuBar.filename_path = file_path
+                MenuBar.filename_path = self.combined_gsi_file_path
                 MenuBar.format_gsi_file()
                 MenuBar.create_and_populate_database()
                 MenuBar.update_gui()
                 gui_app.menu_bar.enable_menus()
 
+                # close window
+                self.dialog_window.destroy()
+
             else:
-                tk.messagebox.showinfo("Error", "Please select GSI files.")
+                pass
+
+    def sort_alphabetically(self):
+
+        sorted_filecontents = ""
+        unsorted_combined_gsi_txt = ""
+
+        # create a temporary gsi
+
+        unsorted_combined_gsi = GSI(logger)
+        unsorted_combined_gsi.format_gsi(self.combined_gsi_file_path)
+        # stations_line_number_list = unsorted_combined_gsi.get_control_points().keys()
+        # sorted_stations_line_numbers = sorted(stations_line_number_list)
+
+        stations_names_dict = unsorted_combined_gsi.get_list_of_control_points()
+
+        # need to sort this by station name
+        stations_sorted_by_value = OrderedDict(sorted(stations_names_dict.items(), key=lambda x: x[1]))
+
+        with open(self.combined_gsi_file_path, 'r') as f_temp_combined_gsi:
+            unsorted_combined_gsi_txt = f_temp_combined_gsi.readlines()
+
+        # create the sorted filecontents to write out
+        for line_number, station_name in stations_sorted_by_value.items():
+
+            line_numbers = unsorted_combined_gsi.get_all_shots_from_a_station_including_setup(station_name, line_number)
+
+            for line in sorted(line_numbers):
+                text_line = unsorted_combined_gsi_txt[line]
+                sorted_filecontents += unsorted_combined_gsi_txt[line]
+
+        # for index, station_line_number in enumerate(sorted_stations_line_numbers):
+        #
+        #     line_number = int(station_line_number)
+        #
+        #     if index < (len(sorted_stations_line_numbers)-1):
+        #
+        #         for number in range(sorted_stations_line_numbers[index+1]-line_number):
+        #
+        #             sorted_filecontents += txt_lines_temp_combined_gsi[line_number+int(number)
+
+        print(sorted_filecontents)
+
+        return sorted_filecontents
+
+    def sort_by_config(self):
+
+        # create a temporary gsi
+
+        temp_gsi = GSI(logger).format_gsi(os.path.join(self.combined_gsi_directory, "TEMP_COMBINED.gsi"))
 
     def write_out_combined_gsi(self, gsi_contents, file_path):
 
