@@ -26,6 +26,8 @@ from SurveyConfiguration import SurveyConfiguration
 from GSIDatabase import GSIDatabase
 from GSIExceptions import *
 
+import datetime
+
 logger = logging.getLogger('Survey Assist')
 
 gsi = None
@@ -83,7 +85,7 @@ class MenuBar(tk.Frame):
         self.compnet_sub_menu.add_command(label="Update Fixed File...", command=self.update_fixed_file)
         self.compnet_sub_menu.add_command(label="Compare CRD Files...", command=self.compare_crd_files)
         self.compnet_sub_menu.add_command(label="Strip Non-control Shots", command=self.strip_non_control_shots)
-        self.compnet_sub_menu.add_command(label="Combine GSI Files", command=self.combine_gsi_files)
+        self.compnet_sub_menu.add_command(label="Combine/Re-order GSI Files", command=self.combine_gsi_files)
 
         self.menu_bar.add_cascade(label="Compnet", menu=self.compnet_sub_menu)
 
@@ -1239,7 +1241,7 @@ class CombineGSIFilesWindow:
                                          command=self.open_config_file)
         current_config_label_txt = os.path.basename(survey_config.sorted_station_config)
         self.current_config_label = tk.Label(self.dialog_window, text=current_config_label_txt, state="disabled")
-        self.files_btn = tk.Button(self.dialog_window, text='Choose GSI files to combine',
+        self.files_btn = tk.Button(self.dialog_window, text='Choose GSI files to combine/re-order',
                                    command=self.select_and_combine_gsi_files)
 
         self.radio_no_sort.grid(row=1, column=1, sticky='w', columnspan=3, padx=60, pady=(20, 2))
@@ -1281,7 +1283,11 @@ class CombineGSIFilesWindow:
         # determine sorting method
         radio_button_selection = self.radio_option.get()
 
-        combined_gsi_filename = "COMPNET_COMBINED.gsi"
+        current_date = datetime.date.today().strftime('%d%m%y')
+
+        combined_gsi_filename = "COMBINED_" + current_date + ".gsi"
+
+        print(combined_gsi_filename)
 
         file_path = ""
 
@@ -1337,7 +1343,6 @@ class CombineGSIFilesWindow:
     def sort_alphabetically(self):
 
         sorted_filecontents = ""
-        unsorted_combined_gsi_txt = ""
 
         # create a temporary gsi
 
@@ -1351,20 +1356,21 @@ class CombineGSIFilesWindow:
             tk.messagebox.showwarning("WARNING", 'Warning - Duplicate station names detected!')
 
         # need to sort this by station name
-        stations_sorted_by_value = OrderedDict(sorted(stations_names_dict.items(), key=lambda x: x[1]))
+        stations_sorted_by_name = OrderedDict(sorted(stations_names_dict.items(), key=lambda x: x[1]))
 
+        # create a temporary unsorted and unformatted gsi file to work with
         with open(self.combined_gsi_file_path, 'r') as f_temp_combined_gsi:
             unsorted_combined_gsi_txt = f_temp_combined_gsi.readlines()
 
         # create the sorted filecontents to write out
-        for line_number, station_name in stations_sorted_by_value.items():
+        for line_number, station_name in stations_sorted_by_name.items():
 
             line_numbers = unsorted_combined_gsi.get_all_shots_from_a_station_including_setup(station_name, line_number)
 
             for line in sorted(line_numbers):
                 text_line = unsorted_combined_gsi_txt[line]
 
-                # could do test if text line has no '\' at start then add one
+                # test if text line has no '\' at start then add one
                 if not text_line.endswith('\n'):
                     text_line += '\n'
 
@@ -1383,16 +1389,92 @@ class CombineGSIFilesWindow:
         #         for number in range(sorted_stations_line_numbers[index+1]-line_number):
         #
         #             sorted_filecontents += unsorted_combined_gsi_txt[line_number+int(number)]
-        #
-        print(sorted_filecontents)
 
         return sorted_filecontents
 
     def sort_by_config(self):
 
-        # create a temporary gsi
+        sorted_filecontents = ""
+        config_station_list = []
+        stations_not_found_from_config_list = []
 
-        temp_gsi = GSI(logger).format_gsi(os.path.join(self.combined_gsi_directory, "TEMP_COMBINED.gsi"))
+        # create a temporary gsi
+        unsorted_combined_gsi = GSI(logger)
+        unsorted_combined_gsi.format_gsi(self.combined_gsi_file_path)
+
+        # lets check and provide a error to the user if station names in combine GSI contain a duplicate
+        stations_names_dict = unsorted_combined_gsi.get_list_of_control_points()
+        station_set = unsorted_combined_gsi.get_set_of_control_points()
+
+        # todo turn this into an error??
+        if len(stations_names_dict) != len(station_set):
+            tk.messagebox.showwarning("WARNING", 'Warning - Duplicate station names detected!')
+
+        # need to sort this by station name
+        stations_sorted_by_name_dict = OrderedDict(sorted(stations_names_dict.items(), key=lambda x: x[1]))
+        stations_sorted_by_name = stations_sorted_by_name_dict.values()
+
+        # create a temporary unsorted and unformatted gsi file to work with
+        with open(self.combined_gsi_file_path, 'r') as f_temp_combined_gsi:
+            unsorted_combined_gsi_txt = f_temp_combined_gsi.readlines()
+
+        # open up file and read in lines.  store each line removing any whitespace as station. Ignore blanks lines '\n'
+        with open(survey_config.sorted_station_config, 'r') as f_config_station_list:
+            for line in f_config_station_list:
+                config_station_list.append(line.rstrip())
+
+        # check that station is in the unordered combined gsi
+        for config_station in config_station_list:
+
+            if config_station in stations_sorted_by_name:
+
+                # add this line to sorted filecontents
+
+
+                # create new dic so that that stations sorted by name so key is station and not line number
+                line_key_stations_sorted_by_name_dict = dict(map(reversed, stations_sorted_by_name_dict.items()))
+                line_number = line_key_stations_sorted_by_name_dict[config_station]
+                station_name = config_station
+
+                # create the sorted filecontents to write out
+                line_numbers = unsorted_combined_gsi.get_all_shots_from_a_station_including_setup(station_name,
+                                                                                                  line_number)
+
+                for line in sorted(line_numbers):
+                    text_line = unsorted_combined_gsi_txt[line]
+
+                    # test if text line has no '\' at start then add one
+                    if not text_line.endswith('\n'):
+                        text_line += '\n'
+
+                    sorted_filecontents += text_line
+
+                # remove station from stations_sorted by name so that only the remaining ones not found are added
+                del stations_sorted_by_name_dict[line_number]
+
+            else:
+
+                stations_not_found_from_config_list.append(config_station)
+
+        print(stations_not_found_from_config_list)
+
+        # TODO refactor this method as it is repeated three times
+        # add stations not found to the end of the contents file
+        for line_number, station_name in stations_sorted_by_name_dict.items():
+
+            line_numbers = unsorted_combined_gsi.get_all_shots_from_a_station_including_setup(station_name,
+                                                                                              line_number)
+
+            for line in sorted(line_numbers):
+                text_line = unsorted_combined_gsi_txt[line]
+
+                # test if text line has no '\' at start then add one
+                if not text_line.endswith('\n'):
+                    text_line += '\n'
+
+                sorted_filecontents += text_line
+
+        return sorted_filecontents
 
     def write_out_combined_gsi(self, gsi_contents, file_path):
 

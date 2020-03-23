@@ -18,8 +18,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/main.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="226">
-              <caret line="1368" column="37" selection-start-line="1368" selection-start-column="37" selection-end-line="1368" selection-end-column="37" />
+            <state relative-caret-position="273">
+              <caret line="1243" column="97" selection-start-line="1243" selection-start-column="97" selection-end-line="1243" selection-end-column="97" />
               <folding>
                 <element signature="e#518#538#0" expanded="true" />
               </folding>
@@ -30,8 +30,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/GSI.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="209">
-              <caret line="113" selection-start-line="113" selection-end-line="113" />
+            <state relative-caret-position="3468">
+              <caret line="209" column="8" selection-start-line="209" selection-start-column="8" selection-end-line="209" selection-end-column="8" />
               <folding>
                 <element signature="e#25#52#0" expanded="true" />
               </folding>
@@ -50,7 +50,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>enable_query_menu</find>
       <find>disable_3d_survey_menu</find>
       <find>disable</find>
       <find>pass</find>
@@ -60,7 +59,6 @@
       <find>gui_app</find>
       <find>survey</find>
       <find>SurveyConfiguration</find>
-      <find>survey_config</find>
       <find>config</find>
       <find>3D Survey</find>
       <find>3D</find>
@@ -80,6 +78,8 @@
       <find>showinfo</find>
       <find>OrderedDict</find>
       <find>Ordered</find>
+      <find>survey_config</find>
+      <find>Choose GSI files to combine</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -98,21 +98,21 @@
         <option value="$PROJECT_DIR$/settings.ini" />
         <option value="$PROJECT_DIR$/main.pyw" />
         <option value="$PROJECT_DIR$/settings.ini" />
-        <option value="$APPLICATION_CONFIG_DIR$/scratches/scratch.py" />
         <option value="$PROJECT_DIR$/.gitignore" />
         <option value="$PROJECT_DIR$/GSIQuery.log" />
         <option value="$PROJECT_DIR$/SurveyConfiguration.py" />
         <option value="$PROJECT_DIR$/GSI.py" />
         <option value="$PROJECT_DIR$/GSI.py" />
+        <option value="$APPLICATION_CONFIG_DIR$/scratches/scratch.py" />
         <option value="$PROJECT_DIR$/main.py" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="99" />
-    <option name="y" value="64" />
-    <option name="width" value="1910" />
-    <option name="height" value="1343" />
+    <option name="x" value="161" />
+    <option name="y" value="47" />
+    <option name="width" value="1367" />
+    <option name="height" value="1309" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectView">
@@ -120,7 +120,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -128,10 +127,20 @@
               <item name="Survey Assist" type="b2602c69:ProjectViewProjectNode" />
               <item name="Survey Assist" type="462c0819:PsiDirectoryNode" />
             </path>
+            <path>
+              <item name="Survey Assist" type="b2602c69:ProjectViewProjectNode" />
+              <item name="Scratches and Consoles" type="1a2a3e82:ScratchProjectViewPane$MyProjectNode" />
+            </path>
+            <path>
+              <item name="Survey Assist" type="b2602c69:ProjectViewProjectNode" />
+              <item name="Scratches and Consoles" type="1a2a3e82:ScratchProjectViewPane$MyProjectNode" />
+              <item name="Scratches" type="d62648e6:ScratchProjectViewPane$MyRootNode" />
+            </path>
           </expand>
           <select />
         </subPane>
       </pane>
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -575,7 +584,14 @@
       <option name="project" value="LOCAL" />
       <updated>1584853347653</updated>
     </task>
-    <option name="localTasksCounter" value="42" />
+    <task id="LOCAL-00042" summary="bug fix when GSI had no blank line at the end of file">
+      <created>1584863829542</created>
+      <option name="number" value="00042" />
+      <option name="presentableId" value="LOCAL-00042" />
+      <option name="project" value="LOCAL" />
+      <updated>1584863829542</updated>
+    </task>
+    <option name="localTasksCounter" value="43" />
     <servers />
   </component>
   <component name="TodoView">
@@ -588,16 +604,16 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="99" y="64" width="1910" height="1343" extended-state="0" />
+    <frame x="85" y="252" width="1910" height="1343" extended-state="0" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.4564254" visible="true" weight="0.16025642" />
-      <window_info id="Structure" order="1" sideWeight="0.5435746" side_tool="true" visible="true" weight="0.16025642" />
+      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.455335" visible="true" weight="0.16025642" />
+      <window_info id="Structure" order="1" sideWeight="0.54466504" side_tool="true" visible="true" weight="0.16025642" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.32825112" />
-      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.4951345" weight="0.32097724" />
-      <window_info active="true" anchor="bottom" id="Debug" order="3" sideWeight="0.4991414" visible="true" weight="0.4296546" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" sideWeight="0.4951345" visible="true" weight="0.32097724" />
+      <window_info anchor="bottom" id="Debug" order="3" sideWeight="0.4991414" weight="0.37742206" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" weight="0.3282918" />
@@ -633,7 +649,6 @@
     <ignored-roots>
       <path value="$PROJECT_DIR$" />
     </ignored-roots>
-    <MESSAGE value="add Config dialog box" />
     <MESSAGE value="config dialog box saves values to settings.ini" />
     <MESSAGE value="bug fix - changing tolerances usable whilst remaining in app" />
     <MESSAGE value="given GSI the config file during initilization" />
@@ -658,7 +673,8 @@
     <MESSAGE value="updated config GUI to include sorted station file" />
     <MESSAGE value="Survey Confiuration allows you to update a field" />
     <MESSAGE value="add sort alphabetically functionality" />
-    <option name="LAST_COMMIT_MESSAGE" value="add sort alphabetically functionality" />
+    <MESSAGE value="bug fix when GSI had no blank line at the end of file" />
+    <option name="LAST_COMMIT_MESSAGE" value="bug fix when GSI had no blank line at the end of file" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -668,19 +684,29 @@
           <line>113</line>
           <option name="timeStamp" value="43" />
         </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/main.py</url>
-          <line>1367</line>
-          <option name="timeStamp" value="53" />
-        </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
     <watches-manager>
       <configuration name="PythonConfigurationType">
-        <watch expression="self.dialog_window" />
-        <watch expression="line_numbers[3]" />
+        <watch expression="text_line" language="Python" />
       </configuration>
     </watches-manager>
+  </component>
+  <component name="debuggerHistoryManager">
+    <expressions id="watch">
+      <expression>
+        <expression-string>text_line</expression-string>
+        <language-id>Python</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+    </expressions>
+    <expressions id="evaluateExpression">
+      <expression>
+        <expression-string>text_line</expression-string>
+        <language-id>Python</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+    </expressions>
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/GSI Files/ERROR.GSI">
@@ -731,23 +757,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$APPLICATION_CONFIG_DIR$/scratches/scratch.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="374">
-          <caret line="22" lean-forward="true" selection-start-line="22" selection-end-line="22" />
-          <folding>
-            <element signature="e#0#20#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$APPLICATION_HOME_DIR$/helpers/pydev/_pydev_imps/_pydev_execfile.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="289">
-          <caret line="17" selection-start-line="17" selection-end-line="17" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/GSIQuery.log">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
@@ -765,6 +774,30 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/GSI.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="3468">
+          <caret line="209" column="8" selection-start-line="209" selection-start-column="8" selection-end-line="209" selection-end-column="8" />
+          <folding>
+            <element signature="e#25#52#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$APPLICATION_CONFIG_DIR$/scratches/scratch.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="34">
+          <caret line="2" column="8" lean-forward="true" selection-start-line="2" selection-start-column="8" selection-end-line="2" selection-end-column="48" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$APPLICATION_HOME_DIR$/helpers/pydev/_pydev_imps/_pydev_execfile.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="289">
+          <caret line="17" selection-start-line="17" selection-end-line="17" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://C:/Python34/Lib/tkinter/__init__.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="229">
@@ -772,20 +805,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/GSI.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="209">
-          <caret line="113" selection-start-line="113" selection-end-line="113" />
-          <folding>
-            <element signature="e#25#52#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/main.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="226">
-          <caret line="1368" column="37" selection-start-line="1368" selection-start-column="37" selection-end-line="1368" selection-end-column="37" />
+        <state relative-caret-position="273">
+          <caret line="1243" column="97" selection-start-line="1243" selection-start-column="97" selection-end-line="1243" selection-end-column="97" />
           <folding>
             <element signature="e#518#538#0" expanded="true" />
           </folding>
