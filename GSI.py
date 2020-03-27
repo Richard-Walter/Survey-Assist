@@ -260,8 +260,6 @@ class GSI:
                 single_station_formatted_lines[line_number] = formatted_line
                 station_found = True
 
-        print(single_station_formatted_lines)
-
         return single_station_formatted_lines
 
     @staticmethod

@@ -9,7 +9,6 @@ NOTE: For 3.4 compatibility
     ii) had to use an ordered dictionary"""
 
 # TODO add right functionality (change target height)
-# TODO sort combine GSI files
 
 import tkinter as tk
 import re
@@ -1362,6 +1361,7 @@ class CombineGSIFilesWindow:
         with open(self.combined_gsi_file_path, 'r') as f_temp_combined_gsi:
             unsorted_combined_gsi_txt = f_temp_combined_gsi.readlines()
 
+        # Todo refactor this method passing stations sorted by name and unsorted_combined_gsi
         # create the sorted filecontents to write out
         for line_number, station_name in stations_sorted_by_name.items():
 
@@ -1406,9 +1406,8 @@ class CombineGSIFilesWindow:
         stations_names_dict = unsorted_combined_gsi.get_list_of_control_points()
         station_set = unsorted_combined_gsi.get_set_of_control_points()
 
-        # todo turn this into an error??
         if len(stations_names_dict) != len(station_set):
-            tk.messagebox.showwarning("WARNING", 'Warning - Duplicate station names detected!')
+            tk.messagebox.showwarning("WARNING", 'Warning - Duplicate station names detected in gsi!')
 
         # need to sort this by station name
         stations_sorted_by_name_dict = OrderedDict(sorted(stations_names_dict.items(), key=lambda x: x[1]))
@@ -1422,14 +1421,13 @@ class CombineGSIFilesWindow:
         with open(survey_config.sorted_station_config, 'r') as f_config_station_list:
             for line in f_config_station_list:
                 config_station_list.append(line.rstrip())
+            if len(config_station_list) != len(set(config_station_list)):
+                tk.messagebox.showwarning("WARNING", 'Warning - Duplicate station names detected in configuration file!')
 
         # check that station is in the unordered combined gsi
         for config_station in config_station_list:
 
             if config_station in stations_sorted_by_name:
-
-                # add this line to sorted filecontents
-
 
                 # create new dic so that that stations sorted by name so key is station and not line number
                 line_key_stations_sorted_by_name_dict = dict(map(reversed, stations_sorted_by_name_dict.items()))
@@ -1458,7 +1456,6 @@ class CombineGSIFilesWindow:
 
         print(stations_not_found_from_config_list)
 
-        # TODO refactor this method as it is repeated three times
         # add stations not found to the end of the contents file
         for line_number, station_name in stations_sorted_by_name_dict.items():
 
