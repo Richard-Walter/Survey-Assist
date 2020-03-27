@@ -153,7 +153,7 @@ class MenuBar(tk.Frame):
 
     def check_3d_survey(self):
 
-        control_points = gsi.get_control_points()
+        control_points = gsi.get_set_of_control_points()
         change_points = gsi.get_change_points()
         points = change_points + control_points
 
@@ -268,7 +268,7 @@ class MenuBar(tk.Frame):
 
     def check_control_naming(self):
 
-        station_setups = gsi.get_control_points()
+        station_setups = gsi.get_set_of_control_points()
 
         print('STATION SETUP LIST: ' + str(station_setups))
 
