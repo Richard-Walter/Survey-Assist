@@ -8,7 +8,8 @@ NOTE: For 3.4 compatibility
     i) Replaced f-strings with.format method.
     ii) had to use an ordered dictionary"""
 
-# TODO add right functionality (change target height)
+# TODO add change target height
+# TODO improve the display output when checking survey
 
 import tkinter as tk
 import re
