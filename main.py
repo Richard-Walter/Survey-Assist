@@ -9,7 +9,7 @@ NOTE: For 3.4 compatibility
     ii) had to use an ordered dictionary"""
 
 # TODO add change target height
-# TODO improve the display output when checking survey
+# TODO test case when sort config file is smaller than stations in survey
 
 import tkinter as tk
 import re
@@ -71,7 +71,7 @@ class MenuBar(tk.Frame):
         self.check_sub_menu.add_command(label="Check All (3D only)",
                                         command=self.check_3d_all)
         self.check_sub_menu.add_separator()
-        self.check_sub_menu.add_command(label="Compare Prism Constants to another survey ... ",
+        self.check_sub_menu.add_command(label="Compare Prism Constants to a similar survey...",
                                         command=self.compare_survey)
         self.menu_bar.add_cascade(label="Check Survey", menu=self.check_sub_menu, state="disabled")
 
@@ -168,7 +168,7 @@ class MenuBar(tk.Frame):
         sql_query_text = ""
 
         error_text = ""
-        error_subject = "Error found in Survey"
+        error_subject = "Out of Tolerance Error in Survey"
 
         try:
             with database.conn:
@@ -200,8 +200,7 @@ class MenuBar(tk.Frame):
                         # create a list of eastings, northings and height and check min max value of each
 
                         if row[1] == '':
-                            print(
-                                'This line for point : ' + point + ' is probably a station setup.  Do not check tolerances for this point')
+                            pass    # should be a station setup
 
                         else:
 
@@ -213,11 +212,12 @@ class MenuBar(tk.Frame):
                         #       min(elevation))
 
                     try:
+
                         # Check Eastings
                         east_diff = float(max(eastings)) - float(min(eastings))
 
                         if east_diff > float(survey_config.easting_tolerance):
-                            error_text = 'Point ' + point_id + ' is out of tolerance: E ' + str(round(
+                            error_text = point_id + ' is out of tolerance in Easting: ' + str(round(
                                 east_diff,
                                 3)) + 'm\n'
                             errors.append(error_text)
@@ -227,7 +227,7 @@ class MenuBar(tk.Frame):
                         north_diff = float(max(northings)) - float(min(northings))
 
                         if north_diff > float(survey_config.northing_tolerance):
-                            error_text = 'Point ' + point_id + ' is out of tolerance: N ' + str(round(
+                            error_text = point_id + ' is out of tolerance Northing: ' + str(round(
                                 north_diff,
                                 3)) + 'm\n'
                             errors.append(error_text)
@@ -237,7 +237,7 @@ class MenuBar(tk.Frame):
                         height_diff = float(max(elevation)) - float(min(elevation))
 
                         if height_diff > float(survey_config.height_tolerance):
-                            error_text = 'Point ' + point_id + ' is out of tolerance in height: ' + \
+                            error_text = point_id + ' is out of tolerance in height: ' + \
                                          str(round(
                                              height_diff,
                                              3)) + 'm \n'
@@ -257,7 +257,7 @@ class MenuBar(tk.Frame):
 
                 if not errors:
                     error_text = "Survey is within the specified tolerance.  Well done!"
-                    error_subject = "CHECKING SURVEY IS WITHIN TOLERANCE"
+                    error_subject = "Checking Survey within tolerance"
 
                 # display error dialog box
                 tkinter.messagebox.showinfo(error_subject, error_text)
@@ -282,7 +282,7 @@ class MenuBar(tk.Frame):
         line_number_errors = []
         error_text = ""
         error_subject = "POTENTIAL SURVEY ERROR"
-        all_good_subject = "CHECKING FOR CONTROL NAMING MISTAKES"
+        all_good_subject = "Checking Control Naming"
 
         shots_to_stations_message = "The number of times each station was shot is shown below.\nIn most cases they " \
                                     "should be all even numbers:\n\n"
