@@ -4,10 +4,8 @@
     <list default="true" id="ca2bf562-6ed1-41b9-8b6b-e72a3ab9e82c" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/GSI Files/GSI_database.db" beforeDir="false" afterPath="$PROJECT_DIR$/GSI Files/GSI_database.db" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/GSI.py" beforeDir="false" afterPath="$PROJECT_DIR$/GSI.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/GSIQuery.log" beforeDir="false" afterPath="$PROJECT_DIR$/GSIQuery.log" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/settings.ini" beforeDir="false" afterPath="$PROJECT_DIR$/settings.ini" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -20,8 +18,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/main.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="391">
-              <caret line="38" column="12" selection-start-line="38" selection-start-column="12" selection-end-line="38" selection-end-column="12" />
+            <state relative-caret-position="273">
+              <caret line="945" lean-forward="true" selection-start-line="945" selection-end-line="945" />
             </state>
           </provider>
         </entry>
@@ -29,8 +27,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/GSI.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="4352">
-              <caret line="261" selection-start-line="261" selection-end-line="261" />
+            <state relative-caret-position="3247">
+              <caret line="196" column="33" selection-start-line="196" selection-start-column="8" selection-end-line="196" selection-end-column="33" />
               <folding>
                 <element signature="e#25#52#0" expanded="true" />
               </folding>
@@ -49,7 +47,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>disable</find>
       <find>pass</find>
       <find>enable</find>
       <find>choose</find>
@@ -79,9 +76,11 @@
       <find>survey_config</find>
       <find>Choose GSI files to combine</find>
       <find>unsorted_combined_gsi_txt</find>
+      <find>get_control_points</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
+    <option name="UPDATE_TYPE" value="MERGE" />
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
@@ -94,23 +93,23 @@
       <list>
         <option value="$PROJECT_DIR$/GSIDatabase.py" />
         <option value="$PROJECT_DIR$/../The Escort/TheEscort_TKINTER_INTERFACE_p3.pyw" />
-        <option value="$PROJECT_DIR$/settings.ini" />
         <option value="$PROJECT_DIR$/main.pyw" />
-        <option value="$PROJECT_DIR$/settings.ini" />
         <option value="$PROJECT_DIR$/.gitignore" />
         <option value="$PROJECT_DIR$/GSIQuery.log" />
         <option value="$PROJECT_DIR$/SurveyConfiguration.py" />
         <option value="$APPLICATION_CONFIG_DIR$/scratches/scratch.py" />
         <option value="$PROJECT_DIR$/GSI.py" />
         <option value="$PROJECT_DIR$/GSI.py" />
+        <option value="$PROJECT_DIR$/settings.ini" />
+        <option value="$PROJECT_DIR$/settings.ini" />
         <option value="$PROJECT_DIR$/main.py" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="135" />
-    <option name="y" value="22" />
-    <option name="width" value="1474" />
+    <option name="x" value="-13" />
+    <option name="y" value="26" />
+    <option name="width" value="1446" />
     <option name="height" value="1354" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
@@ -143,7 +142,7 @@
     </panes>
   </component>
   <component name="PropertiesComponent">
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/main.py" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../The Escort/TheEscort_TKINTER_INTERFACE_p3.pyw" />
     <property name="restartRequiresConfirmation" value="false" />
     <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
   </component>
@@ -597,7 +596,42 @@
       <option name="project" value="LOCAL" />
       <updated>1584947414245</updated>
     </task>
-    <option name="localTasksCounter" value="44" />
+    <task id="LOCAL-00044" summary="typos">
+      <created>1585271978561</created>
+      <option name="number" value="00044" />
+      <option name="presentableId" value="LOCAL-00044" />
+      <option name="project" value="LOCAL" />
+      <updated>1585271978561</updated>
+    </task>
+    <task id="LOCAL-00045" summary="bug get_set_control points">
+      <created>1585272086749</created>
+      <option name="number" value="00045" />
+      <option name="presentableId" value="LOCAL-00045" />
+      <option name="project" value="LOCAL" />
+      <updated>1585272086749</updated>
+    </task>
+    <task id="LOCAL-00046" summary="improved user display when checking survey">
+      <created>1585368631122</created>
+      <option name="number" value="00046" />
+      <option name="presentableId" value="LOCAL-00046" />
+      <option name="project" value="LOCAL" />
+      <updated>1585368631122</updated>
+    </task>
+    <task id="LOCAL-00047" summary="updated combined GSI GUI">
+      <created>1585441006466</created>
+      <option name="number" value="00047" />
+      <option name="presentableId" value="LOCAL-00047" />
+      <option name="project" value="LOCAL" />
+      <updated>1585441006466</updated>
+    </task>
+    <task id="LOCAL-00048" summary="updated settings.ini">
+      <created>1585441145786</created>
+      <option name="number" value="00048" />
+      <option name="presentableId" value="LOCAL-00048" />
+      <option name="project" value="LOCAL" />
+      <updated>1585441145786</updated>
+    </task>
+    <option name="localTasksCounter" value="49" />
     <servers />
   </component>
   <component name="TodoView">
@@ -610,20 +644,20 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="135" y="22" width="1474" height="1354" extended-state="0" />
+    <frame x="-13" y="26" width="1446" height="1354" extended-state="0" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.45331696" visible="true" weight="0.20891365" />
-      <window_info id="Structure" order="1" sideWeight="0.5466831" side_tool="true" visible="true" weight="0.20891365" />
+      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.50733495" visible="true" weight="0.2450284" />
+      <window_info id="Structure" order="1" sideWeight="0.49266502" side_tool="true" visible="true" weight="0.2450284" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.32825112" />
-      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.4951345" weight="0.31803006" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" sideWeight="0.4951345" visible="true" weight="0.31719533" />
       <window_info anchor="bottom" id="Debug" order="3" sideWeight="0.4991414" weight="0.37702128" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" weight="0.3282918" />
-      <window_info active="true" anchor="bottom" id="Version Control" order="7" visible="true" weight="0.32053423" />
+      <window_info anchor="bottom" id="Version Control" order="7" weight="0.22621036" />
       <window_info anchor="bottom" id="Terminal" order="8" weight="0.32760364" />
       <window_info anchor="bottom" id="Event Log" order="9" sideWeight="0.50486547" side_tool="true" weight="0.44188035" />
       <window_info anchor="bottom" id="Python Console" order="10" weight="0.32651246" />
@@ -665,11 +699,6 @@
     <ignored-roots>
       <path value="$PROJECT_DIR$" />
     </ignored-roots>
-    <MESSAGE value="bug fix - changing tolerances usable whilst remaining in app" />
-    <MESSAGE value="given GSI the config file during initilization" />
-    <MESSAGE value="now displays correctly 4dp surveys" />
-    <MESSAGE value="removed TODO" />
-    <MESSAGE value="added compare functionality" />
     <MESSAGE value="highlight PC comparison mismatches" />
     <MESSAGE value="added test files" />
     <MESSAGE value="add compnet to menu bar" />
@@ -690,7 +719,12 @@
     <MESSAGE value="add sort alphabetically functionality" />
     <MESSAGE value="bug fix when GSI had no blank line at the end of file" />
     <MESSAGE value="add function to sort based on config file" />
-    <option name="LAST_COMMIT_MESSAGE" value="add function to sort based on config file" />
+    <MESSAGE value="typos" />
+    <MESSAGE value="bug get_set_control points" />
+    <MESSAGE value="improved user display when checking survey" />
+    <MESSAGE value="updated combined GSI GUI" />
+    <MESSAGE value="updated settings.ini" />
+    <option name="LAST_COMMIT_MESSAGE" value="updated settings.ini" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -750,13 +784,6 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/../The Escort/TheEscort_TKINTER_INTERFACE_p3.py" />
-    <entry file="file://$PROJECT_DIR$/../The Escort/TheEscort_TKINTER_INTERFACE_p3.pyw">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="151">
-          <caret line="14" selection-start-line="14" selection-end-line="14" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$USER_HOME$/AppData/Local/Programs/Python/Python37-32/Lib/tkinter/__init__.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="215">
@@ -767,40 +794,9 @@
     <entry file="file://$PROJECT_DIR$/GSIExceptions.py">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/GSIDatabase.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="510">
-          <caret line="31" selection-start-line="31" selection-end-line="31" />
-          <folding>
-            <element signature="e#0#14#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/main.pyw" />
-    <entry file="file://$PROJECT_DIR$/settings.ini">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="119">
-          <caret line="7" lean-forward="true" selection-start-line="7" selection-end-line="7" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/GSIQuery.log">
       <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/.gitignore">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="68">
-          <caret line="4" column="12" lean-forward="true" selection-start-line="4" selection-start-column="12" selection-end-line="4" selection-end-column="12" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/SurveyConfiguration.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="561">
-          <caret line="33" column="124" selection-start-line="33" selection-start-column="103" selection-end-line="33" selection-end-column="124" />
-        </state>
-      </provider>
     </entry>
     <entry file="file://$APPLICATION_CONFIG_DIR$/scratches/scratch.py">
       <provider selected="true" editor-type-id="text-editor">
@@ -823,20 +819,65 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/main.py">
+    <entry file="file://$PROJECT_DIR$/.gitignore">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="391">
-          <caret line="38" column="12" selection-start-line="38" selection-start-column="12" selection-end-line="38" selection-end-column="12" />
+        <state relative-caret-position="68">
+          <caret line="4" column="12" selection-start-line="4" selection-start-column="12" selection-end-line="4" selection-end-column="12" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/SurveyConfiguration.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="561">
+          <caret line="33" column="124" selection-start-line="33" selection-start-column="103" selection-end-line="33" selection-end-column="124" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/GSIDatabase.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="510">
+          <caret line="31" selection-start-line="31" selection-end-line="31" />
+          <folding>
+            <element signature="e#0#14#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/GSI Files/A9 sorted station listing.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="323">
+          <caret line="19" column="5" lean-forward="true" selection-start-line="19" selection-start-column="5" selection-end-line="19" selection-end-column="5" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/settings.ini">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="187">
+          <caret line="11" lean-forward="true" selection-start-line="11" selection-end-line="11" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/GSI.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="4352">
-          <caret line="261" selection-start-line="261" selection-end-line="261" />
+        <state relative-caret-position="3247">
+          <caret line="196" column="33" selection-start-line="196" selection-start-column="8" selection-end-line="196" selection-end-column="33" />
           <folding>
             <element signature="e#25#52#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../The Escort/TheEscort_TKINTER_INTERFACE_p3.pyw">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="238">
+          <caret line="14" selection-start-line="14" selection-end-line="14" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/main.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="273">
+          <caret line="945" lean-forward="true" selection-start-line="945" selection-end-line="945" />
         </state>
       </provider>
     </entry>

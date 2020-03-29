@@ -75,6 +75,11 @@ class MenuBar(tk.Frame):
                                         command=self.compare_survey)
         self.menu_bar.add_cascade(label="Check Survey", menu=self.check_sub_menu, state="disabled")
 
+        # Edit menu
+        self.edit_sub_menu = tk.Menu(self.menu_bar, tearoff=0)
+        self.edit_sub_menu.add_command(label="Change target height", command=self.change_target_height)
+        self.menu_bar.add_cascade(label="Edit Survey", menu=self.edit_sub_menu, state="disabled")
+
         # Delete menu
         self.delete_sub_menu = tk.Menu(self.menu_bar, tearoff=0)
         self.delete_sub_menu.add_command(label="All 2D Orientation Shots", command=self.delete_orientation_shots)
@@ -200,7 +205,7 @@ class MenuBar(tk.Frame):
                         # create a list of eastings, northings and height and check min max value of each
 
                         if row[1] == '':
-                            pass    # should be a station setup
+                            pass  # should be a station setup
 
                         else:
 
@@ -350,6 +355,9 @@ class MenuBar(tk.Frame):
         self.check_3d_survey()
         self.check_control_naming()
 
+    def change_target_height(self):
+        TargetHeightWindow(self.master)
+
     def compare_survey(self):
 
         points_diff_PC_dict = {}
@@ -435,13 +443,16 @@ class MenuBar(tk.Frame):
 
         self.menu_bar.entryconfig("Query", state="normal")
         self.menu_bar.entryconfig("Check Survey", state="normal")
+        self.menu_bar.entryconfig("Edit Survey", state="normal")
         self.menu_bar.entryconfig("Delete...", state="normal")
+
         # self.menu_bar.entryconfig("Compnet", state="normal")
 
     def disable_menus(self):
 
         self.menu_bar.entryconfig("Query", state="disabled")
         self.menu_bar.entryconfig("Check Survey", state="disabled")
+        self.menu_bar.entryconfig("Edit Survey", state="disabled")
         self.menu_bar.entryconfig("Delete...", state="disabled")
 
     @staticmethod
@@ -929,6 +940,27 @@ class ListBox(tk.Frame):
         MenuBar.update_gui()
 
 
+class TargetHeightWindow:
+
+    def __init__(self, master):
+
+        self.master = master
+
+        # create target height input dialog box
+        dialog_window = tk.Toplevel(self.master)
+
+        lbl = tk.Label(dialog_window, text="Enter new target height for this shot (3 dp):  ")
+        new_target_height_entry = tk.Entry(dialog_window)
+        btn1 = tk.Button(dialog_window, text="UPDATE")
+        # btn1 = tk.Button(self.dialog_window, text="UPDATE", command=self.set_new_target_height)
+
+        lbl.grid(row=0, column=1, padx=(20, 2), pady=20)
+        new_target_height_entry.grid(row=0, column=2, padx=(2, 2), pady=20)
+        btn1.grid(row=0, column=3, padx=(10, 20), pady=20)
+
+        self.master.wait_window(dialog_window)
+
+
 class CompnetUpdateFixedFileWindow:
     coordinate_file_path = ""
     fixed_file_path = ""
@@ -1243,7 +1275,7 @@ class CombineGSIFilesWindow:
                                          command=self.open_config_file)
         current_config_label_txt = os.path.basename(survey_config.sorted_station_config)
         self.current_config_label = tk.Label(self.dialog_window, text=current_config_label_txt, state="disabled")
-        self.files_btn = tk.Button(self.dialog_window, text="2)  CHOOSE GSI'S TO COMBINE       " ,
+        self.files_btn = tk.Button(self.dialog_window, text="2)  CHOOSE GSI'S TO COMBINE       ",
                                    command=self.select_and_combine_gsi_files)
 
         self.sorting_lbl.grid(row=0, column=1, sticky='w', columnspan=3, padx=60, pady=(20, 2))
@@ -1425,7 +1457,8 @@ class CombineGSIFilesWindow:
             for line in f_config_station_list:
                 config_station_list.append(line.rstrip())
             if len(config_station_list) != len(set(config_station_list)):
-                tk.messagebox.showwarning("WARNING", 'Warning - Duplicate station names detected in configuration file!')
+                tk.messagebox.showwarning("WARNING",
+                                          'Warning - Duplicate station names detected in configuration file!')
 
         # check that station is in the unordered combined gsi
         for config_station in config_station_list:
