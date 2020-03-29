@@ -1227,7 +1227,9 @@ class CombineGSIFilesWindow:
         #  Lets build the dialog box
 
         self.dialog_window = tk.Toplevel(master)
-        self.dialog_window.title("COMBINE GSI FILES")
+        self.dialog_window.title("Combine and reorder GSI files")
+
+        self.sorting_lbl = tk.Label(self.dialog_window, text="1)  SORTING OPTIONS:")
 
         self.radio_option = tk.StringVar()
         self.radio_option.set("1")
@@ -1237,22 +1239,22 @@ class CombineGSIFilesWindow:
                                               var=self.radio_option, command=self.disable_config_button)
         self.radio_sort_config = tk.Radiobutton(self.dialog_window, text="Sort based on config file", value="3",
                                                 var=self.radio_option, command=self.enable_config_button)
-        self.sorted_file_btn = tk.Button(self.dialog_window, text='Change sorted config file', state="disabled",
+        self.sorted_file_btn = tk.Button(self.dialog_window, text='CHANGE SORTING CONFIG FILE', state="disabled",
                                          command=self.open_config_file)
         current_config_label_txt = os.path.basename(survey_config.sorted_station_config)
         self.current_config_label = tk.Label(self.dialog_window, text=current_config_label_txt, state="disabled")
-        self.files_btn = tk.Button(self.dialog_window, text='Choose GSI files to combine/re-order',
+        self.files_btn = tk.Button(self.dialog_window, text="2)  CHOOSE GSI'S TO COMBINE       " ,
                                    command=self.select_and_combine_gsi_files)
 
-        self.radio_no_sort.grid(row=1, column=1, sticky='w', columnspan=3, padx=60, pady=(20, 2))
-        self.radio_sort_auto.grid(row=2, column=1, sticky='w', columnspan=3, padx=60, pady=2)
-        self.radio_sort_config.grid(row=3, column=1, sticky='w', columnspan=3, padx=60, pady=(2, 10))
-        self.sorted_file_btn.grid(row=4, column=1, sticky='w', columnspan=3, padx=60, pady=(10, 2))
-        self.current_config_label.grid(row=5, column=1, sticky='w', columnspan=3, padx=60, pady=(1, 2))
-        self.files_btn.grid(row=6, column=1, sticky='nesw', columnspan=3, padx=60, pady=(20, 20))
+        self.sorting_lbl.grid(row=0, column=1, sticky='w', columnspan=3, padx=60, pady=(20, 2))
+        self.radio_no_sort.grid(row=1, column=1, sticky='w', columnspan=3, padx=70, pady=2)
+        self.radio_sort_auto.grid(row=2, column=1, sticky='w', columnspan=3, padx=70, pady=2)
+        self.radio_sort_config.grid(row=3, column=1, sticky='w', columnspan=3, padx=70, pady=(2, 1))
+        self.sorted_file_btn.grid(row=4, column=1, sticky='w', columnspan=3, padx=70, pady=(2, 2))
+        self.current_config_label.grid(row=5, column=1, sticky='w', columnspan=3, padx=70, pady=(1, 2))
+        self.files_btn.grid(row=6, column=1, sticky='w', columnspan=3, padx=60, pady=(20, 20))
 
-        self.dialog_window.geometry(MainWindow.position_popup(master, 280,
-                                                              240))
+        self.dialog_window.geometry(MainWindow.position_popup(master, 320, 280))
         # self.dialog_window.attributes('-topmost', 'true')
 
     def enable_config_button(self):
