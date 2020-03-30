@@ -5,7 +5,7 @@ from collections import OrderedDict
 from collections import Counter
 from SurveyConfiguration import SurveyConfiguration
 
-import logging.config
+import re
 
 
 class GSI:
@@ -16,6 +16,14 @@ class GSI:
                                     ('85', 'STN_Northing'), ('86', 'STN_Elevation'), ('87', 'Target_Height'),
                                     ('88', 'STN_Height')])
 
+    # REGULAR EXPRESSION LOOKUP
+    REGULAR_EXPRESSION_LOOKUP = OrderedDict([('11', r'\*11\d*\+\w+'), ('19', r''), ('21', r''),
+                                             ('22', r''), ('31', r''), ('32', r''),
+                                             ('33', r''), ('51', r''), ('81', r''),
+                                             ('82', r''), ('83', r'83\.{2}\d{2}\+\d+'), ('84', r''),
+                                             ('85', r''), ('86', r''), ('87', r'87\.{2}\d{2}\+\d+'),
+                                             ('88', r'')])
+
     def __init__(self, logger):
 
         self.logger = logger
@@ -24,6 +32,58 @@ class GSI:
         self.column_names = list(GSI.GSI_WORD_ID_DICT.values())
         self.column_ids = list(GSI.GSI_WORD_ID_DICT.keys())
         self.survey_config = SurveyConfiguration()
+        self.formatted_lines = []
+        self.unformatted_lines = []
+
+    def update_target_height(self, line_number, corrections):
+
+        # corrections takes the form of a dictionary e.g. {'83': new_height, '87': new_target_height}
+
+        # Elevation
+        # 83..00+000000000189321.7   4dp
+        # 83..00+0000000000200001   3dp
+        #        0000000000001234
+
+        # New target height
+        # 87..10+0000000000000000   4dp
+        # 87..10+0000000000001543   3dp
+
+        unformatted_line = self.get_unformatted_line(line_number)
+
+        for field_id, new_value in corrections.items():
+            # todo and a try statement in case match.group fails
+            # todo 4dp
+
+            re_pattern = re.compile(GSI.REGULAR_EXPRESSION_LOOKUP[field_id])
+            match = re_pattern.search(unformatted_line)
+
+            org_field_value = match.group()
+
+            # Lets build the new field value.First lets build the prefix e.g.87..10+  or 83
+            re_pattern = re.compile(r'\d{2}..\d{2}\+')
+            prefix = re_pattern.search(org_field_value).group()
+
+            # remove the decimal from the new value
+            new_value = new_value.replace(".","")
+            # There are 16 chars in the suffix so we need to fill the new value with leading zeros
+            new_field_value_suffix = new_value.zfill(16)
+
+            # lets combine the prefix with the suffix to create the new field value to replace the old one
+            new_field_value = prefix + new_field_value_suffix
+
+            # now replace the old value with the new one
+            unformatted_line = unformatted_line.replace(org_field_value, new_field_value)
+
+        # update the raw gsi lines
+        self.unformatted_lines[line_number - 1] = unformatted_line
+
+    def get_unformatted_line(self, line_number):
+
+        return self.unformatted_lines[line_number - 1]
+
+    def get_formatted_line(self, line_number):
+
+        return self.formatted_lines[line_number - 1]
 
     def format_gsi(self, filename):
 
@@ -33,13 +93,16 @@ class GSI:
 
             self.filename = filename
 
-            # Create new list of formatted GSI lines each time this function is called
+            # Create new list of formatted & unformatted GSI lines each time this function is called
             self.formatted_lines = []
+            self.unformatted_lines = []
 
             try:
                 for line in f:
 
-                    """ Need to create dictionary of ID's and value's e.g. {'Point_ID': 'A', 'STN_Easting': '2858012',
+                    self.unformatted_lines.append(line)
+
+                    """ Need to create dictionary of ID's & value's e.g. {'Point_ID': 'A', 'STN_Easting': '2858012', 
                     .. """
 
                     # First - create default empty string if no field
@@ -249,7 +312,7 @@ class GSI:
 
                 # still in the named station setup
                 if not formatted_line['STN_Easting']:
-                    single_station_formatted_lines[line_number+index] = formatted_line
+                    single_station_formatted_lines[line_number + index] = formatted_line
 
                 # exit as we have come to the next station setup
                 else:

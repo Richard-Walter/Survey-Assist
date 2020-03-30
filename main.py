@@ -9,7 +9,8 @@ NOTE: For 3.4 compatibility
     ii) had to use an ordered dictionary"""
 
 # TODO add change target height
-# TODO test case when sort config file is smaller than stations in survey
+# TODO store last used directory into a temp file.
+
 
 import tkinter as tk
 import re
@@ -25,6 +26,7 @@ from GSI import GSI
 from SurveyConfiguration import SurveyConfiguration
 from GSIDatabase import GSIDatabase
 from GSIExceptions import *
+from decimal import *
 
 import datetime
 
@@ -946,19 +948,108 @@ class TargetHeightWindow:
 
         self.master = master
 
+        self.precision = survey_config.precision_value
+
         # create target height input dialog box
-        dialog_window = tk.Toplevel(self.master)
+        self.dialog_window = tk.Toplevel(self.master)
 
-        lbl = tk.Label(dialog_window, text="Enter new target height for this shot (3 dp):  ")
-        new_target_height_entry = tk.Entry(dialog_window)
-        btn1 = tk.Button(dialog_window, text="UPDATE")
-        # btn1 = tk.Button(self.dialog_window, text="UPDATE", command=self.set_new_target_height)
+        self.lbl = tk.Label(self.dialog_window, text="Enter new target height for this shot(3 dp):  ")
+        self.new_target_height_entry = tk.Entry(self.dialog_window)
+        self.btn1 = tk.Button(self.dialog_window, text="UPDATE", command=self.fix_target_height)
 
-        lbl.grid(row=0, column=1, padx=(20, 2), pady=20)
-        new_target_height_entry.grid(row=0, column=2, padx=(2, 2), pady=20)
-        btn1.grid(row=0, column=3, padx=(10, 20), pady=20)
+        self.lbl.grid(row=0, column=1, padx=(20, 2), pady=20)
+        self.new_target_height_entry.grid(row=0, column=2, padx=(2, 2), pady=20)
+        self.btn1.grid(row=0, column=3, padx=(10, 20), pady=20)
 
-        self.master.wait_window(dialog_window)
+        self.new_target_height_entry.focus()
+
+        self.master.wait_window(self.dialog_window)
+
+    def fix_target_height(self):
+
+        # set the new target height hte user has entered
+        new_target_height = self.get_entered_target_height()
+
+        if new_target_height:
+
+            line_numbers_to_ammend = []
+
+            # build list of line numbers to ammend
+            # selected_items = gui_app.list_box_view.selection()
+            selected_items = gui_app.list_box.list_box_view.selection()
+
+            for selected_item in selected_items:
+                line_numbers_to_ammend.append(gui_app.list_box.list_box_view.item(selected_item)['values'][0])
+
+            # update each line to amend with new target height and coordinates
+            for line_number in line_numbers_to_ammend:
+                corrections = self.get_corrections(line_number, new_target_height)
+                gsi.update_target_height(line_number, corrections)
+
+            if "TgtUpdated" not in MenuBar.filename_path:
+                ammended_filepath = MenuBar.filename_path + "_TgtUpdated.gsi"
+            else:
+                ammended_filepath = MenuBar.filename_path
+
+            # create a new ammended gsi file
+            with open(ammended_filepath, "w") as gsi_file:
+                for line in gsi.unformatted_lines:
+                    gsi_file.write(line)
+
+            # rebuild database and GUI
+            MenuBar.filename_path = ammended_filepath
+            MenuBar.format_gsi_file()
+            MenuBar.update_database()
+            MenuBar.update_gui()
+
+    def get_corrections(self, line_number, new_target_height):
+
+        # correction_list = []
+
+        # update target height and Z coordinate for this line
+        formatted_line = gsi.get_formatted_line(line_number)
+
+        new_target_height = float(new_target_height)
+        old_tgt_height = formatted_line['Target_Height']
+        old_height = float(formatted_line['Elevation'])
+
+        if old_tgt_height == '':
+            old_tgt_height = 0.000
+        elif old_tgt_height == '0':
+            old_tgt_height = float(0.000)
+        else:
+            old_tgt_height = float(old_tgt_height)
+
+        new_height = old_height - (new_target_height - old_tgt_height)
+
+        old_height = str(Decimalize(old_height, self.precision))
+        new_height = str(Decimalize(new_height, self.precision))
+        old_tgt_height = str(Decimalize(old_tgt_height, self.precision))
+        new_target_height = str(Decimalize(new_target_height, self.precision))
+
+        # correction_list.append({'83': new_height, '87': new_target_height})
+
+        return {'83': new_height, '87': new_target_height}
+
+    def get_entered_target_height(self):
+
+        # Check to see if number was entered correctly
+        entered_target_height = ""
+
+        try:
+            entered_target_height = round(float(self.new_target_height_entry.get()), 3)
+
+        except ValueError:
+
+            # Ask user to re-enter a a numerical target height
+            tk.messagebox.showerror("INPUT ERROR", "Please enter a valid number to 3 decimal places")
+
+        else:
+            print(entered_target_height)
+
+        self.dialog_window.destroy()
+
+        return entered_target_height
 
 
 class CompnetUpdateFixedFileWindow:
@@ -1741,6 +1832,13 @@ def configure_logger():
     logger.addHandler(file_handler)
     logger.addHandler(stream_handler)
     logger.info('Started Application')
+
+
+def Decimalize(in_value, precision):
+    if precision == '4dp':
+        return Decimal(in_value).quantize(Decimal('1.0000'))
+    else:
+        return Decimal(in_value).quantize(Decimal('1.000'))
 
 
 def main():
