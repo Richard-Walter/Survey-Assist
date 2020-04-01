@@ -8,8 +8,15 @@ NOTE: For 3.4 compatibility
     i) Replaced f-strings with.format method.
     ii) had to use an ordered dictionary"""
 
-# TODO add change target height
+# TODO TEST change target height
+# TODO add 4dp change of height functionality
 # TODO store last used directory into a temp file.
+# TODO strip out coordinates from an asc file and open up in .csv ready to copy and paste
+# TODO change CoorindateFile so that it searches for @# and not @%Projection set in case user strips this data out
+# TODO COMPNET - added one-click update weighted-control file
+# TODO Compnet choose fixed file:  default location c:\LS\Data\2020\, Choose coordinate file: Surv_SD\Survey Data\2020\MONITORING
+# TODO add  label that station names in asc must be same as those in GSI
+# TODO UPdate fix file must have the ability to transfer height when required
 
 
 import tkinter as tk
@@ -1027,7 +1034,6 @@ class TargetHeightWindow:
         old_tgt_height = str(Decimalize(old_tgt_height, self.precision))
         new_target_height = str(Decimalize(new_target_height, self.precision))
 
-        # correction_list.append({'83': new_height, '87': new_target_height})
 
         return {'83': new_height, '87': new_target_height}
 
