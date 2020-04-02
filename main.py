@@ -17,6 +17,7 @@ NOTE: For 3.4 compatibility
 # TODO Compnet choose fixed file:  default location c:\LS\Data\2020\, Choose coordinate file: Surv_SD\Survey Data\2020\MONITORING
 # TODO add  label that station names in asc must be same as those in GSI
 # TODO UPdate fix file must have the ability to transfer height when required
+# TODO test
 
 
 import tkinter as tk
