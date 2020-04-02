@@ -8,11 +8,9 @@ NOTE: For 3.4 compatibility
     i) Replaced f-strings with.format method.
     ii) had to use an ordered dictionary"""
 
-# TODO store last used directory into a temp file.
 # TODO strip out coordinates from an asc file and open up in .csv ready to copy and paste
 # TODO change CoorindateFile so that it searches for @# and not @%Projection set in case user strips this data out
 # TODO COMPNET - added one-click update weighted-control file
-# TODO Compnet choose fixed file:  default location c:\LS\Data\2020\, Choose coordinate file: Surv_SD\Survey Data\2020\MONITORING
 # TODO add  label that station names in asc must be same as those in GSI
 # TODO UPdate fix file must have the ability to transfer height when required
 # TODO refactor classes in main into there own class. Create a package??/
@@ -114,7 +112,7 @@ class MenuBar(tk.Frame):
     def choose_gsi_file(self):
 
         # global filename_path
-        last_used_directory = survey_config.last_used_file_path
+        last_used_directory = survey_config.last_used_file_dir
 
         MenuBar.filename_path = tk.filedialog.askopenfilename(initialdir=last_used_directory, title="Select file",
                                                               filetypes=[("GSI Files", ".gsi")])
@@ -1079,6 +1077,7 @@ class CompnetUpdateFixedFileWindow:
     def __init__(self, master):
 
         self.master = master
+        self.survey_config = SurveyConfiguration()
         self.outliers_dict = {}
 
         #  Lets build the dialog box
@@ -1143,14 +1142,18 @@ class CompnetUpdateFixedFileWindow:
             tkinter.messagebox.showinfo("Update Fixed File", msg_body)
 
     def get_fixed_file_path(self):
-        self.fixed_file_path = tk.filedialog.askopenfilename(parent=self.master, filetypes=[("FIX Files", ".FIX")])
+        print(self.survey_config.fixed_file_dir)
+        self.fixed_file_path = tk.filedialog.askopenfilename(parent=self.master,
+                                                             initialdir=self.survey_config.fixed_file_dir,
+                                                             title="Select file", filetypes=[("FIX Files", ".FIX")])
         if self.fixed_file_path != "":
             self.fixed_btn.config(text=os.path.basename(self.fixed_file_path))
         self.dialog_window.lift()  # bring window to the front again
 
     def get_coordinate_file_path(self):
-        self.coordinate_file_path = tk.filedialog.askopenfilename(parent=self.master, filetypes=[("Coordinate Files",
-                                                                                                  ".asc .CRD .STD")])
+        self.coordinate_file_path = tk.filedialog.askopenfilename(parent=self.master,
+                                                                  initialdir=os.path.dirname(self.survey_config.last_used_file_dir),
+                                                                  title="Select file", filetypes=[("Coordinate Files",".asc .CRD .STD")])
         if self.coordinate_file_path != "":
             self.coord_btn.config(text=os.path.basename(self.coordinate_file_path))
         self.dialog_window.lift()  # bring window to the front again

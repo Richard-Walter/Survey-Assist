@@ -19,7 +19,8 @@ class SurveyConfiguration:
     }
 
     default_file_directories_values = {
-        'last_used': 'GSIFiles/'
+        'last_used': 'GSIFiles/',
+        'fixed_file_dir': 'c:/LS/Data/'
     }
 
     def __init__(self):
@@ -30,15 +31,20 @@ class SurveyConfiguration:
 
         # read in config file
         self.config_parser.read(self.config_file_path)
-        self.precision_value = self.config_parser.get(SurveyConfiguration.section_instrument,
-                                                      'instrument_precision')
+
+        # INSTRUMENT PRECISION
+        self.precision_value = self.config_parser.get(SurveyConfiguration.section_instrument,'instrument_precision')
+
+        # SURVEY TOLERANCES
         self.easting_tolerance = self.config_parser.get(SurveyConfiguration.section_survey_tolerances, 'eastings')
         self.northing_tolerance = self.config_parser.get(SurveyConfiguration.section_survey_tolerances, 'northings')
         self.height_tolerance = self.config_parser.get(SurveyConfiguration.section_survey_tolerances, 'height')
 
         self.sorted_station_config = self.config_parser.get(SurveyConfiguration.section_config_files, 'sorted_station_config')
 
-        self.last_used_file_path = self.config_parser.get(SurveyConfiguration.section_file_directories, 'last_used')
+        # FILE DIRECTORIES
+        self.last_used_file_dir = self.config_parser.get(SurveyConfiguration.section_file_directories, 'last_used')
+        self.fixed_file_dir = self.config_parser.get(SurveyConfiguration.section_file_directories, 'fixed_file_dir')
 
     def update(self, section, key, value):
 
