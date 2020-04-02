@@ -44,7 +44,6 @@ class GSI:
         unformatted_line = self.get_unformatted_line(line_number)
 
         for field_id, new_value in corrections.items():
-            # todo and a try statement in case match.group fails
 
             re_pattern = re.compile(GSI.REGULAR_EXPRESSION_LOOKUP[field_id])
             match = re_pattern.search(unformatted_line)

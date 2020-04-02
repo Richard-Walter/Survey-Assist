@@ -9,11 +9,13 @@ NOTE: For 3.4 compatibility
     ii) had to use an ordered dictionary"""
 
 # TODO strip out coordinates from an asc file and open up in .csv ready to copy and paste
-# TODO change CoorindateFile so that it searches for @# and not @%Projection set in case user strips this data out
 # TODO COMPNET - added one-click update weighted-control file
-# TODO add  label that station names in asc must be same as those in GSI
+# TODO add label that station names in asc must be same as those in GSI
 # TODO UPdate fix file must have the ability to transfer height when required
-# TODO refactor classes in main into there own class. Create a package??/
+
+# TODO refactor classes in main into there own class. Create a package??
+
+# TODO change CoorindateFile so that it searches for @# and not @%Projection set in case user strips this data out
 
 
 import tkinter as tk
@@ -1082,31 +1084,24 @@ class CompnetUpdateFixedFileWindow:
 
         #  Lets build the dialog box
         self.dialog_window = tk.Toplevel(master)
-        self.dialog_window.title("Compnet Assist")
+        self.dialog_window.title("UPDATE FIXED FILE")
 
-        container = tk.Frame(self.dialog_window, width=100, height=100)
+        container = tk.Frame(self.dialog_window, width=200, height=120)
 
         # Update Fixed File GUI
-        self.update_fixed_file_lbl = tk.Label(container, text='\nUPDATE FIXED FILE\n', font=('Helvetica',
-                                                                                             14, 'bold'))
         self.fixed_btn = tk.Button(container, text='(1) Choose Fixed File: ', command=self.get_fixed_file_path)
         self.coord_btn = tk.Button(container, text='(2) Choose Coordinate File: ',
                                    command=self.get_coordinate_file_path)
-        self.update_btn = tk.Button(container, text='(3) UPDATE FIXED FILE ', command=self.update_fixed_file)
-        # self.fixed_result_lbl = tk.Label(container, text=' ', font=('Helvetica',
-        #                                                             12, 'bold'))
-        # self.blank_lbl = tk.Label(self.dialog_window, text='')
+        self.update_btn = tk.Button(container, text='(4) UPDATE FIXED FILE ', command=self.update_fixed_file)
 
-        self.update_fixed_file_lbl.grid(row=0, column=1, padx=50, pady=2)
-        self.fixed_btn.grid(row=1, column=1, sticky='nesw', padx=25, pady=3)
-        self.coord_btn.grid(row=2, column=1, sticky='nesw', padx=25, pady=3)
-        self.update_btn.grid(row=3, column=1, sticky='nesw', padx=25, pady=3)
-        # self.fixed_result_lbl.grid(row=4, sticky='nesw', column=1, padx=25, pady=15)
+        self.fixed_btn.grid(row=2, column=1, sticky='nesw', padx=25, pady=(20, 3))
+        self.coord_btn.grid(row=3, column=1, sticky='nesw', padx=25, pady=3)
+        self.update_btn.grid(row=4, column=1, sticky='nesw', padx=25, pady=(3, 20))
 
         container.pack(fill="both", expand=True)
 
-        self.dialog_window.geometry(MainWindow.position_popup(master, 300,
-                                                              220))
+        self.dialog_window.geometry(MainWindow.position_popup(master, 200,
+                                                              140))
 
     def update_fixed_file(self):
 
@@ -1767,8 +1762,7 @@ class CoordinateFile:
                 # build coordinate dictionary
                 self.build_coordinate_dictionary('STD')
 
-            # remove first 12 lines which contain header text if it is a CRD file
-            # remove the first 10 to check '@%Projection set' exists in the header
+            # remove the first 3 and then check '@%Projection set' exists in the header
             elif coordinate_file_path[-3:] == 'asc':
                 del self.file_contents[0: 3]
                 if '@%Projection set' in self.file_contents[0]:
