@@ -8,14 +8,15 @@ NOTE: For 3.4 compatibility
     i) Replaced f-strings with.format method.
     ii) had to use an ordered dictionary"""
 
+# TODO Update fix file must have the ability to transfer height when required
 # TODO strip out coordinates from an asc file and open up in .csv ready to copy and paste
 # TODO COMPNET - added one-click update weighted-control file
-# TODO add label that station names in asc must be same as those in GSI
-# TODO UPdate fix file must have the ability to transfer height when required
 
 # TODO refactor classes in main into there own class. Create a package??
-
 # TODO change CoorindateFile so that it searches for @# and not @%Projection set in case user strips this data out
+# TODO integrate Job diary/dated directory functionality
+# TODO Highlight errors when checking survey
+# TODO analysis FL and FR shots when checking survey - highlight
 
 
 import tkinter as tk
@@ -85,13 +86,10 @@ class MenuBar(tk.Frame):
 
         # Edit menu
         self.edit_sub_menu = tk.Menu(self.menu_bar, tearoff=0)
-        self.edit_sub_menu.add_command(label="Change target height", command=self.change_target_height)
-        self.menu_bar.add_cascade(label="Edit Survey", menu=self.edit_sub_menu, state="disabled")
+        self.edit_sub_menu.add_command(label="Delete all 2D Orientation Shots", command=self.delete_orientation_shots)
+        self.edit_sub_menu.add_command(label="Change target height...", command=self.change_target_height)
 
-        # Delete menu
-        self.delete_sub_menu = tk.Menu(self.menu_bar, tearoff=0)
-        self.delete_sub_menu.add_command(label="All 2D Orientation Shots", command=self.delete_orientation_shots)
-        self.menu_bar.add_cascade(label="Delete...", menu=self.delete_sub_menu, state="disabled")
+        self.menu_bar.add_cascade(label="Edit Survey", menu=self.edit_sub_menu, state="disabled")
 
         # Compnet menu
         self.compnet_sub_menu = tk.Menu(self.menu_bar, tearoff=0)
@@ -458,7 +456,6 @@ class MenuBar(tk.Frame):
         self.menu_bar.entryconfig("Query", state="normal")
         self.menu_bar.entryconfig("Check Survey", state="normal")
         self.menu_bar.entryconfig("Edit Survey", state="normal")
-        self.menu_bar.entryconfig("Delete...", state="normal")
 
         # self.menu_bar.entryconfig("Compnet", state="normal")
 
@@ -467,7 +464,6 @@ class MenuBar(tk.Frame):
         self.menu_bar.entryconfig("Query", state="disabled")
         self.menu_bar.entryconfig("Check Survey", state="disabled")
         self.menu_bar.entryconfig("Edit Survey", state="disabled")
-        self.menu_bar.entryconfig("Delete...", state="disabled")
 
     @staticmethod
     def display_about_dialog_box():
