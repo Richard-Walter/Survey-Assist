@@ -17,7 +17,7 @@ NOTE: For 3.4 compatibility
 # TODO Compnet choose fixed file:  default location c:\LS\Data\2020\, Choose coordinate file: Surv_SD\Survey Data\2020\MONITORING
 # TODO add  label that station names in asc must be same as those in GSI
 # TODO UPdate fix file must have the ability to transfer height when required
-# TODO test
+# TODO refactor classes in main into there own class. Create a package??/
 
 
 import tkinter as tk
@@ -961,7 +961,7 @@ class TargetHeightWindow:
         # create target height input dialog box
         self.dialog_window = tk.Toplevel(self.master)
 
-        self.lbl = tk.Label(self.dialog_window, text="Enter new target height for this shot(3 dp):  ")
+        self.lbl = tk.Label(self.dialog_window, text="Enter new target height for this shot:  ")
         self.new_target_height_entry = tk.Entry(self.dialog_window)
         self.btn1 = tk.Button(self.dialog_window, text="UPDATE", command=self.fix_target_height)
 
@@ -978,37 +978,42 @@ class TargetHeightWindow:
         # set the new target height hte user has entered
         new_target_height = self.get_entered_target_height()
 
-        if new_target_height:
+        if new_target_height is not 'ERROR':
 
             line_numbers_to_ammend = []
 
-            # build list of line numbers to ammend
+            # build list of line numbers to amend
             # selected_items = gui_app.list_box_view.selection()
             selected_items = gui_app.list_box.list_box_view.selection()
 
-            for selected_item in selected_items:
-                line_numbers_to_ammend.append(gui_app.list_box.list_box_view.item(selected_item)['values'][0])
+            if selected_items:
+                for selected_item in selected_items:
+                    line_numbers_to_ammend.append(gui_app.list_box.list_box_view.item(selected_item)['values'][0])
 
-            # update each line to amend with new target height and coordinates
-            for line_number in line_numbers_to_ammend:
-                corrections = self.get_corrections(line_number, new_target_height)
-                gsi.update_target_height(line_number, corrections)
+                # update each line to amend with new target height and coordinates
+                for line_number in line_numbers_to_ammend:
+                    corrections = self.get_corrections(line_number, new_target_height)
+                    gsi.update_target_height(line_number, corrections)
 
-            if "TgtUpdated" not in MenuBar.filename_path:
-                ammended_filepath = MenuBar.filename_path + "_TgtUpdated.gsi"
+                if "TgtUpdated" not in MenuBar.filename_path:
+                    amended_filepath = MenuBar.filename_path + "_TgtUpdated.gsi"
+                else:
+                    amended_filepath = MenuBar.filename_path
+
+                # create a new ammended gsi file
+                with open(amended_filepath, "w") as gsi_file:
+                    for line in gsi.unformatted_lines:
+                        gsi_file.write(line)
+
+                # rebuild database and GUI
+                MenuBar.filename_path = amended_filepath
+                MenuBar.format_gsi_file()
+                MenuBar.update_database()
+                MenuBar.update_gui()
             else:
-                ammended_filepath = MenuBar.filename_path
-
-            # create a new ammended gsi file
-            with open(ammended_filepath, "w") as gsi_file:
-                for line in gsi.unformatted_lines:
-                    gsi_file.write(line)
-
-            # rebuild database and GUI
-            MenuBar.filename_path = ammended_filepath
-            MenuBar.format_gsi_file()
-            MenuBar.update_database()
-            MenuBar.update_gui()
+                # notify user that no lines were selected
+                tk.messagebox.showinfo("INPUT ERROR", "Please select a line first that you want to change target "
+                                                      "height")
 
     def get_corrections(self, line_number, new_target_height):
 
@@ -1041,7 +1046,7 @@ class TargetHeightWindow:
     def get_entered_target_height(self):
 
         # Check to see if number was entered correctly
-        entered_target_height = ""
+        entered_target_height = "ERROR"
 
         try:
             entered_target_height = round(float(self.new_target_height_entry.get()), 3)
