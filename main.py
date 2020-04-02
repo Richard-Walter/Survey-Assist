@@ -993,7 +993,7 @@ class TargetHeightWindow:
                 # update each line to amend with new target height and coordinates
                 for line_number in line_numbers_to_ammend:
                     corrections = self.get_corrections(line_number, new_target_height)
-                    gsi.update_target_height(line_number, corrections)
+                    gsi.update_target_height(line_number, corrections, self.precision)
 
                 if "TgtUpdated" not in MenuBar.filename_path:
                     amended_filepath = MenuBar.filename_path + "_TgtUpdated.gsi"
@@ -1037,9 +1037,8 @@ class TargetHeightWindow:
 
         old_height = str(Decimalize(old_height, self.precision))
         new_height = str(Decimalize(new_height, self.precision))
-        old_tgt_height = str(Decimalize(old_tgt_height, self.precision))
-        new_target_height = str(Decimalize(new_target_height, self.precision))
-
+        old_tgt_height = str(Decimalize(old_tgt_height, '3dp'))     # target height is always 3dp
+        new_target_height = str(Decimalize(new_target_height, '3dp'))
 
         return {'83': new_height, '87': new_target_height}
 

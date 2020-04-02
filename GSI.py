@@ -20,7 +20,7 @@ class GSI:
     REGULAR_EXPRESSION_LOOKUP = OrderedDict([('11', r'\*11\d*\+\w+'), ('19', r''), ('21', r''),
                                              ('22', r''), ('31', r''), ('32', r''),
                                              ('33', r''), ('51', r''), ('81', r''),
-                                             ('82', r''), ('83', r'83\.{2}\d{2}\+\d+'), ('84', r''),
+                                             ('82', r''), ('83', r'83\.{2}\d{2}\+(\d*\.)?\d+'), ('84', r''),
                                              ('85', r''), ('86', r''), ('87', r'87\.{2}\d{2}\+\d+'),
                                              ('88', r'')])
 
@@ -35,24 +35,14 @@ class GSI:
         self.formatted_lines = []
         self.unformatted_lines = []
 
-    def update_target_height(self, line_number, corrections):
+    def update_target_height(self, line_number, corrections, precision='3dp'):
 
         # corrections takes the form of a dictionary e.g. {'83': new_height, '87': new_target_height}
-
-        # Elevation
-        # 83..00+000000000189321.7   4dp
-        # 83..00+0000000000200001   3dp
-        #        0000000000001234
-
-        # New target height
-        # 87..10+0000000000000000   4dp
-        # 87..10+0000000000001543   3dp
 
         unformatted_line = self.get_unformatted_line(line_number)
 
         for field_id, new_value in corrections.items():
             # todo and a try statement in case match.group fails
-            # todo 4dp
 
             re_pattern = re.compile(GSI.REGULAR_EXPRESSION_LOOKUP[field_id])
             match = re_pattern.search(unformatted_line)
@@ -63,8 +53,13 @@ class GSI:
             re_pattern = re.compile(r'\d{2}..\d{2}\+')
             prefix = re_pattern.search(org_field_value).group()
 
-            # remove the decimal from the new value
-            new_value = new_value.replace(".","")
+            # remove the decimal from the new value  e.g. 1.543 -> 1543
+            new_value = new_value.replace(".", "")
+
+            # 4dp precision &elevation only - add decimal at second last digit e.g 2013493 ->201349.3
+            if precision == '4dp' and prefix[:2] == '83':
+                new_value = new_value[:-1] + '.' + new_value[-1:]
+
             # There are 16 chars in the suffix so we need to fill the new value with leading zeros
             new_field_value_suffix = new_value.zfill(16)
 
