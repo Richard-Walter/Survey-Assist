@@ -35,9 +35,11 @@ class GSI:
         self.formatted_lines = []
         self.unformatted_lines = []
 
-    def update_target_height(self, line_number, corrections, precision='3dp'):
+    def update_target_height(self, line_number, corrections):
 
         # corrections takes the form of a dictionary e.g. {'83': new_height, '87': new_target_height}
+
+        self.survey_config = SurveyConfiguration()
 
         unformatted_line = self.get_unformatted_line(line_number)
 
@@ -57,11 +59,13 @@ class GSI:
             new_value = new_value.replace(".", "")
 
             # 4dp precision &elevation only - add decimal at second last digit e.g 2013493 ->201349.3
-            if precision == '4dp' and prefix[:2] == '83':
+            if self.survey_config.precision_value == '4dp' and prefix[:2] == '83':
                 new_value = new_value[:-1] + '.' + new_value[-1:]
-
-            # There are 16 chars in the suffix so we need to fill the new value with leading zeros
-            new_field_value_suffix = new_value.zfill(16)
+                # There are 18 chars in the suffix so we need to fill the new value with leading zeros
+                new_field_value_suffix = new_value.zfill(18)
+            else:
+                # There are 16 chars in the suffix so we need to fill the new value with leading zeros
+                new_field_value_suffix = new_value.zfill(16)
 
             # lets combine the prefix with the suffix to create the new field value to replace the old one
             new_field_value = prefix + new_field_value_suffix

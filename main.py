@@ -8,8 +8,6 @@ NOTE: For 3.4 compatibility
     i) Replaced f-strings with.format method.
     ii) had to use an ordered dictionary"""
 
-# TODO TEST change target height
-# TODO add 4dp change of height functionality
 # TODO store last used directory into a temp file.
 # TODO strip out coordinates from an asc file and open up in .csv ready to copy and paste
 # TODO change CoorindateFile so that it searches for @# and not @%Projection set in case user strips this data out
@@ -116,7 +114,13 @@ class MenuBar(tk.Frame):
     def choose_gsi_file(self):
 
         # global filename_path
-        MenuBar.filename_path = tk.filedialog.askopenfilename(filetypes=[("GSI Files", ".gsi")])
+        last_used_directory = survey_config.last_used_file_path
+
+        MenuBar.filename_path = tk.filedialog.askopenfilename(initialdir=last_used_directory, title="Select file",
+                                                              filetypes=[("GSI Files", ".gsi")])
+        survey_config.update(SurveyConfiguration.section_file_directories, 'last_used', os.path.dirname(
+            MenuBar.filename_path))
+
         MenuBar.format_gsi_file()
         MenuBar.create_and_populate_database()
         MenuBar.update_gui()
@@ -993,7 +997,7 @@ class TargetHeightWindow:
                 # update each line to amend with new target height and coordinates
                 for line_number in line_numbers_to_ammend:
                     corrections = self.get_corrections(line_number, new_target_height)
-                    gsi.update_target_height(line_number, corrections, self.precision)
+                    gsi.update_target_height(line_number, corrections)
 
                 if "TgtUpdated" not in MenuBar.filename_path:
                     amended_filepath = MenuBar.filename_path + "_TgtUpdated.gsi"
@@ -1024,7 +1028,12 @@ class TargetHeightWindow:
 
         new_target_height = float(new_target_height)
         old_tgt_height = formatted_line['Target_Height']
-        old_height = float(formatted_line['Elevation'])
+        try:
+            old_height = float(formatted_line['Elevation'])
+        except ValueError:
+            tk.messagebox.showinfo("TARGET HEIGHT SELECTION ERROR", "Please select a line that contains a target "
+                                                                    "height. "
+                                                                    "If problem persists, please see Richard")
 
         if old_tgt_height == '':
             old_tgt_height = 0.000
@@ -1037,7 +1046,7 @@ class TargetHeightWindow:
 
         old_height = str(Decimalize(old_height, self.precision))
         new_height = str(Decimalize(new_height, self.precision))
-        old_tgt_height = str(Decimalize(old_tgt_height, '3dp'))     # target height is always 3dp
+        old_tgt_height = str(Decimalize(old_tgt_height, '3dp'))  # target height is always 3dp
         new_target_height = str(Decimalize(new_target_height, '3dp'))
 
         return {'83': new_height, '87': new_target_height}

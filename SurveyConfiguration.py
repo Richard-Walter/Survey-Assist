@@ -6,6 +6,7 @@ class SurveyConfiguration:
     section_instrument = 'INSTRUMENT'
     section_survey_tolerances = 'SURVEY_TOLERANCES'
     section_config_files = 'CONFIGURATION'
+    section_file_directories = 'FILE DIRECTORIES'
     precision_value_list = ['3dp', '4dp']
     default_instrument_values = {
         'instrument_precision': '3dp'
@@ -15,6 +16,10 @@ class SurveyConfiguration:
         'eastings': '0.010',
         'northings': '0.010',
         'height': '0.015',
+    }
+
+    default_file_directories_values = {
+        'last_used': 'GSIFiles/'
     }
 
     def __init__(self):
@@ -33,6 +38,8 @@ class SurveyConfiguration:
 
         self.sorted_station_config = self.config_parser.get(SurveyConfiguration.section_config_files, 'sorted_station_config')
 
+        self.last_used_file_path = self.config_parser.get(SurveyConfiguration.section_file_directories, 'last_used')
+
     def update(self, section, key, value):
 
         self.config_parser.set(section, key, value)
@@ -41,12 +48,15 @@ class SurveyConfiguration:
             self.config_parser.write(f)
 
 
-    def create_config_file(self, instrument_values, survey_tolerance_values, configuration_values):
+    def create_config_file(self, instrument_values, survey_tolerance_values, configuration_values,
+                           file_directory_values):
         self.config_parser[SurveyConfiguration.section_instrument] = instrument_values
 
         self.config_parser[SurveyConfiguration.section_survey_tolerances] = survey_tolerance_values
 
         self.config_parser[SurveyConfiguration.section_config_files] = configuration_values
+
+        self.config_parser[SurveyConfiguration.section_file_directories] = file_directory_values
 
         with open(self.config_file_path, 'w') as f:
             self.config_parser.write(f)
