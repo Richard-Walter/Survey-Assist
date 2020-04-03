@@ -605,13 +605,13 @@ class ConfigDialog:
                                                                                                        sticky='w')
         self.sorted_station_file_btn = tk.Button(self.dialog_window, text=os.path.basename(self.sorted_stn_file_path),
                                                  command=self.select_sorted_stn_file)
-        self.sorted_station_file_btn.grid(row=4, column=1, padx=5, pady=10, sticky='w')
+        self.sorted_station_file_btn.grid(row=4, column=1, padx=20, pady=10, sticky='w')
 
         save_b = tk.Button(self.dialog_window, text="Save", width=10, command=self.save)
         save_b.grid(row=5, column=0, padx=5, pady=20, sticky='nesw')
 
         cancel_b = tk.Button(self.dialog_window, text="Cancel", width=10, command=self.cancel)
-        cancel_b.grid(row=5, column=1, padx=5, pady=20, sticky='nesw')
+        cancel_b.grid(row=5, column=1, padx=20, pady=20, sticky='nesw')
 
     def select_sorted_stn_file(self):
 
@@ -1325,8 +1325,10 @@ class UtilityCreateCSVFromASCWindow:
         workbook.save(filename="temp_create_csv.xlsx")
 
         self.dialog_window.destroy()
+
         #Launch excel
-        os.system("start EXCEL.EXE temp_create_csv.xlsx")
+        if asc_file_path:
+            os.system("start EXCEL.EXE temp_create_csv.xlsx")
 
 
 class CompnetCompareCRDFWindow:
