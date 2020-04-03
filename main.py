@@ -8,7 +8,7 @@ NOTE: For 3.4 compatibility
     i) Replaced f-strings with.format method.
     ii) had to use an ordered dictionary"""
 
-# TODO Fix bug where elevation is now found for asc that contains Mena
+# TODO Fix bug where elevation is now found for asc that contains Mena.
 # TODO Highlight errors when checking survey
 
 # TODO refactor classes in main into there own class. Create a package??
@@ -1306,7 +1306,7 @@ class UtilityCreateCSVFromASCWindow:
         coordinate_file = ASCCoordinateFile(asc_file_path)
         coordinate_dict = coordinate_file.coordinate_dictionary
 
-        for index, (point, coordinates) in enumerate(coordinate_dict.items(), start=2):
+        for index, (point, coordinates) in enumerate(sorted(coordinate_dict.items()), start=2):
             easting = coordinates['Eastings']
             northing = coordinates['Northings']
             elevation = ""
