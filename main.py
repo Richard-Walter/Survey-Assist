@@ -1167,6 +1167,7 @@ class CompnetWeightSTDFileWindow:
         self.survey_config = SurveyConfiguration()
 
         self.compnet_working_directory = gui_app.menu_bar.compnet_working_dir
+        self.std_file_path = ""
 
         #  Lets build the dialog box
         self.dialog_window = tk.Toplevel(master)
@@ -1174,25 +1175,27 @@ class CompnetWeightSTDFileWindow:
 
         container = tk.Frame(self.dialog_window, width=200, height=120)
 
-        self.defualt_weight_sv = tk.StringVar(container, value='0.01')
+        self.defualt_weight_sve = tk.StringVar(container, value='0.01')
+        self.defualt_weight_svn = tk.StringVar(container, value='0.01')
+        self.defualt_weight_svel = tk.StringVar(container, value='0.01')
 
         self.choose_btn = tk.Button(container, text="(1) Choose STD (weighted) File", command=self.get_STD_file_path)
         self.set_weighting_lbl = tk.Label(container, text="(2) Set Weighting:")
-        self.entry_east = tk.Entry(container, width=5, textvariable=self.defualt_weight_sv)
+        self.entry_east = tk.Entry(container, width=5, textvariable=self.defualt_weight_sve)
         self.entry_east_lbl = tk.Label(container, text="Easting")
-        self.entry_north = tk.Entry(container, width=5, textvariable=self.defualt_weight_sv)
+        self.entry_north = tk.Entry(container, width=5, textvariable=self.defualt_weight_svn)
         self.entry_north_lbl = tk.Label(container, text="Northing")
-        self.entry_elevation = tk.Entry(container, width=5, textvariable=self.defualt_weight_sv)
+        self.entry_elevation = tk.Entry(container, width=5, textvariable=self.defualt_weight_svel)
         self.entry_elevation_lbl = tk.Label(container, text="Elevation")
         self.update_btn = tk.Button(container, text="(3) UPDATE", command=self.update_STD_file, anchor='w')
 
         self.choose_btn.grid(row=1, column=1, columnspan=3, sticky='nesw', padx=40, pady=(20, 3))
         self.set_weighting_lbl.grid(row=2, column=1, columnspan=3, sticky='nsw', padx=40, pady=(10, 3))
-        self.entry_east.grid(row=3, column=1, sticky='nesw', padx=(45, 2), pady=3)
+        self.entry_east.grid(row=3, column=1, sticky='nesw', padx=(60, 2), pady=3)
         self.entry_east_lbl.grid(row=3, column=2, sticky='nesw', padx=(2, 40), pady=3)
-        self.entry_north.grid(row=4, column=1, sticky='nesw', padx=(45, 2), pady=3)
+        self.entry_north.grid(row=4, column=1, sticky='nesw', padx=(60, 2), pady=3)
         self.entry_north_lbl.grid(row=4, column=2, sticky='nesw', padx=(2, 40), pady=3)
-        self.entry_elevation.grid(row=5, column=1, sticky='nesw', padx=(45, 2), pady=3)
+        self.entry_elevation.grid(row=5, column=1, sticky='nesw', padx=(60, 2), pady=3)
         self.entry_elevation_lbl.grid(row=5, column=2, sticky='nesw', padx=(2, 40), pady=3)
         self.update_btn.grid(row=6, column=1, columnspan=3, sticky='nesw', padx=40, pady=(10, 3))
 
@@ -1202,18 +1205,49 @@ class CompnetWeightSTDFileWindow:
                                                               220))
 
     def get_STD_file_path(self):
-        pass
-        # print(self.survey_config.fixed_file_dir)
-        # self.fixed_file_path = tk.filedialog.askopenfilename(parent=self.master,
-        #                                                      initialdir=self.survey_config.fixed_file_dir,
-        #                                                      title="Select file", filetypes=[("FIX Files", ".FIX")])
-        # if self.fixed_file_path != "":
-        #     self.fixed_btn.config(text=os.path.basename(self.fixed_file_path))
-        #     gui_app.menu_bar.compnet_working_dir = self.fixed_file_path
-        # self.dialog_window.lift()  # bring window to the front again
+        current_compnet_dir = gui_app.menu_bar.compnet_working_dir
+
+        self.std_file_path = tk.filedialog.askopenfilename(parent=self.master,
+                                                           initialdir=current_compnet_dir,
+                                                           title="Select file", filetypes=[("STD Files", ".STD")])
+        if self.std_file_path != "":
+            self.choose_btn.config(text=os.path.basename(self.std_file_path))
+
+            gui_app.menu_bar.compnet_working_dir = os.path.dirname(self.std_file_path)
+
+        self.dialog_window.lift()  # bring window to the front again
 
     def update_STD_file(self):
-        pass
+
+        if self.std_file_path != "":
+            updated_std_contents = []
+            weight_dict = {}
+
+            # build the weighted dictionary
+            weight_dict['Easting'] = self.entry_east.get()
+            weight_dict['Northing'] = self.entry_north.get()
+            weight_dict['Elevation'] = self.entry_elevation.get()
+
+            std_file = STDCoordinateFile(self.std_file_path)
+
+            try:
+                updated_std_contents = std_file.update_weighting(weight_dict)
+            except InvalidOperation:
+                tkinter.messagebox.showinfo("Update STD File", "Please double check all weightings are a number")
+                self.dialog_window.lift()
+            else:
+                # write out file
+                with open(self.std_file_path, "w") as std_file:
+                    for line in updated_std_contents:
+                        std_file.write(line)
+                tkinter.messagebox.showinfo("Update STD File", "STD file has been updated")
+                self.dialog_window.destroy()
+        else:
+            # user hasn't choosen a file
+            tkinter.messagebox.showinfo("Update STD File", "Please choose an STD file")
+            self.dialog_window.lift()
+
+
 
 class CompnetCompareCRDFWindow:
     crd_file_path_1 = ""
@@ -1909,6 +1943,45 @@ class CoordinateFile:
                 pass
             except Exception as ex:
                 print(ex)
+
+
+class STDCoordinateFile(CoordinateFile):
+
+    def __init__(self, coordinate_file_path):
+        super().__init__(coordinate_file_path)
+        self.easting = '0'
+        self.northing = '0'
+        self.elevation = '0'
+
+        self.updated_std_contents = ""
+
+    def update_weighting(self, weight_dict):
+
+        self.easting = Decimal(weight_dict['Easting'])
+        self.northing = Decimal(weight_dict['Northing'])
+        self.elevation = Decimal(weight_dict['Elevation'])
+
+        for line in self.file_contents:
+            line_sections = line.split()
+
+            if len(line_sections) == 6:  # no elevation data
+                line_sections[3] = str(self.easting)
+                line_sections[4] = str(self.northing)
+
+            elif len(line_sections) == 8:  # elevation data
+                line_sections[4] = str(self.easting)
+                line_sections[5] = str(self.northing)
+                line_sections[6] = str(self.elevation)
+            else:
+                raise Exception("It appears that the coordinate file is no formatted propery")
+
+            self.updated_std_contents += " ".join(line_sections) + '\n'
+
+        print(self.updated_std_contents)
+
+        return self.updated_std_contents
+
+
 
 
 class GSIFile:
