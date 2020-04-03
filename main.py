@@ -8,9 +8,8 @@ NOTE: For 3.4 compatibility
     i) Replaced f-strings with.format method.
     ii) had to use an ordered dictionary"""
 
-# TODO Update fix file must have the ability to transfer height when required
-# TODO strip out coordinates from an asc file and open up in .csv ready to copy and paste
 # TODO COMPNET - added one-click update weighted-control file
+# TODO strip out coordinates from an asc file and open up in .csv ready to copy and paste
 
 # TODO refactor classes in main into there own class. Create a package??
 # TODO change CoorindateFile so that it searches for @# and not @%Projection set in case user strips this data out
@@ -56,6 +55,7 @@ class MenuBar(tk.Frame):
 
         self.query_dialog_box = None
         self.filename_path = ""
+        self.compnet_working_dir = ""
 
         self.menu_bar = tk.Menu(self.master)
         self.master.config(menu=self.menu_bar)
@@ -94,6 +94,7 @@ class MenuBar(tk.Frame):
         # Compnet menu
         self.compnet_sub_menu = tk.Menu(self.menu_bar, tearoff=0)
         self.compnet_sub_menu.add_command(label="Update Fixed File...", command=self.update_fixed_file)
+        self.compnet_sub_menu.add_command(label="Weight STD File ...", command=self.weight_STD_file)
         self.compnet_sub_menu.add_command(label="Compare CRD Files...", command=self.compare_crd_files)
         self.compnet_sub_menu.add_command(label="Strip Non-control Shots", command=self.strip_non_control_shots)
         self.compnet_sub_menu.add_command(label="Combine/Re-order GSI Files", command=self.combine_gsi_files)
@@ -425,6 +426,10 @@ class MenuBar(tk.Frame):
     def update_fixed_file(self):
 
         CompnetUpdateFixedFileWindow(self.master)
+
+    def weight_STD_file(self):
+
+        CompnetWeightSTDFileWindow(self.master)
 
     def compare_crd_files(self):
 
@@ -1069,7 +1074,6 @@ class TargetHeightWindow:
 
 
 class CompnetUpdateFixedFileWindow:
-
     coordinate_file_path = ""
     fixed_file_path = ""
 
@@ -1142,16 +1146,74 @@ class CompnetUpdateFixedFileWindow:
                                                              title="Select file", filetypes=[("FIX Files", ".FIX")])
         if self.fixed_file_path != "":
             self.fixed_btn.config(text=os.path.basename(self.fixed_file_path))
+            gui_app.menu_bar.compnet_working_dir = self.fixed_file_path
         self.dialog_window.lift()  # bring window to the front again
 
     def get_coordinate_file_path(self):
         self.coordinate_file_path = tk.filedialog.askopenfilename(parent=self.master,
-                                                                  initialdir=os.path.dirname(self.survey_config.last_used_file_dir),
-                                                                  title="Select file", filetypes=[("Coordinate Files",".asc .CRD .STD")])
+                                                                  initialdir=os.path.dirname(
+                                                                      self.survey_config.last_used_file_dir),
+                                                                  title="Select file",
+                                                                  filetypes=[("Coordinate Files", ".asc .CRD .STD")])
         if self.coordinate_file_path != "":
             self.coord_btn.config(text=os.path.basename(self.coordinate_file_path))
         self.dialog_window.lift()  # bring window to the front again
 
+
+class CompnetWeightSTDFileWindow:
+
+    def __init__(self, master):
+        self.master = master
+        self.survey_config = SurveyConfiguration()
+
+        self.compnet_working_directory = gui_app.menu_bar.compnet_working_dir
+
+        #  Lets build the dialog box
+        self.dialog_window = tk.Toplevel(master)
+        self.dialog_window.title("WEIGHT STD FILE")
+
+        container = tk.Frame(self.dialog_window, width=200, height=120)
+
+        self.defualt_weight_sv = tk.StringVar(container, value='0.01')
+
+        self.choose_btn = tk.Button(container, text="(1) Choose STD (weighted) File", command=self.get_STD_file_path)
+        self.set_weighting_lbl = tk.Label(container, text="(2) Set Weighting:")
+        self.entry_east = tk.Entry(container, width=5, textvariable=self.defualt_weight_sv)
+        self.entry_east_lbl = tk.Label(container, text="Easting")
+        self.entry_north = tk.Entry(container, width=5, textvariable=self.defualt_weight_sv)
+        self.entry_north_lbl = tk.Label(container, text="Northing")
+        self.entry_elevation = tk.Entry(container, width=5, textvariable=self.defualt_weight_sv)
+        self.entry_elevation_lbl = tk.Label(container, text="Elevation")
+        self.update_btn = tk.Button(container, text="(3) UPDATE", command=self.update_STD_file, anchor='w')
+
+        self.choose_btn.grid(row=1, column=1, columnspan=3, sticky='nesw', padx=40, pady=(20, 3))
+        self.set_weighting_lbl.grid(row=2, column=1, columnspan=3, sticky='nsw', padx=40, pady=(10, 3))
+        self.entry_east.grid(row=3, column=1, sticky='nesw', padx=(45, 2), pady=3)
+        self.entry_east_lbl.grid(row=3, column=2, sticky='nesw', padx=(2, 40), pady=3)
+        self.entry_north.grid(row=4, column=1, sticky='nesw', padx=(45, 2), pady=3)
+        self.entry_north_lbl.grid(row=4, column=2, sticky='nesw', padx=(2, 40), pady=3)
+        self.entry_elevation.grid(row=5, column=1, sticky='nesw', padx=(45, 2), pady=3)
+        self.entry_elevation_lbl.grid(row=5, column=2, sticky='nesw', padx=(2, 40), pady=3)
+        self.update_btn.grid(row=6, column=1, columnspan=3, sticky='nesw', padx=40, pady=(10, 3))
+
+        container.pack(fill="both", expand=True)
+
+        self.dialog_window.geometry(MainWindow.position_popup(master, 260,
+                                                              220))
+
+    def get_STD_file_path(self):
+        pass
+        # print(self.survey_config.fixed_file_dir)
+        # self.fixed_file_path = tk.filedialog.askopenfilename(parent=self.master,
+        #                                                      initialdir=self.survey_config.fixed_file_dir,
+        #                                                      title="Select file", filetypes=[("FIX Files", ".FIX")])
+        # if self.fixed_file_path != "":
+        #     self.fixed_btn.config(text=os.path.basename(self.fixed_file_path))
+        #     gui_app.menu_bar.compnet_working_dir = self.fixed_file_path
+        # self.dialog_window.lift()  # bring window to the front again
+
+    def update_STD_file(self):
+        pass
 
 class CompnetCompareCRDFWindow:
     crd_file_path_1 = ""
@@ -1294,15 +1356,19 @@ class CompnetCompareCRDFWindow:
 
     def get_crd_file_path(self, file_path_number):
 
+        last_used_directory = survey_config.last_used_file_dir
+
         if file_path_number is 1:
-            self.crd_file_path_1 = tk.filedialog.askopenfilename(parent=self.master, filetypes=[("CRD Files", ".CRD")])
+            self.crd_file_path_1 = tk.filedialog.askopenfilename(parent=self.master, initialdir=last_used_directory,
+                                                                 filetypes=[("CRD Files", ".CRD")])
 
             if self.crd_file_path_1 != "":
                 self.crd_file_1_btn.config(text=os.path.basename(self.crd_file_path_1))
             self.dialog_window.lift()  # bring window to the front again
 
         elif file_path_number is 2:
-            self.crd_file_path_2 = tk.filedialog.askopenfilename(parent=self.master, filetypes=[("CRD Files", ".CRD")])
+            self.crd_file_path_2 = tk.filedialog.askopenfilename(parent=self.master, initialdir=last_used_directory,
+                                                                 filetypes=[("CRD Files", ".CRD")])
 
             if self.crd_file_path_2 != "":
                 self.crd_file_2_btn.config(text=os.path.basename(self.crd_file_path_2))
@@ -1658,7 +1724,7 @@ class FixedFile:
                 self.station_list.append(station)
         return self.station_list
 
-    #2D or 3D adjustment
+    # 2D or 3D adjustment
     def get_dimension(self):
 
         line_list = self.fixed_file_contents[0].split()
@@ -1705,7 +1771,7 @@ class FixedFile:
     def update(self, coordinate_file):
 
         stations_updated = []
-        elevation =""
+        elevation = ""
 
         for line in self.fixed_file_contents:
 
@@ -1721,9 +1787,9 @@ class FixedFile:
                 try:
                     elevation = coordinate_dict['Elevation']
                 except Exception:
-                    pass    # elevation may not exist in some coordinate files
+                    pass  # elevation may not exist in some coordinate files
 
-                updated_line = self.get_line_number(line) + ' ' + easting + '  ' + northing + '  ' + elevation + ' "' +\
+                updated_line = self.get_line_number(line) + ' ' + easting + '  ' + northing + '  ' + elevation + ' "' + \
                                station + '"\n'
                 self.updated_file_contents += updated_line
                 stations_updated.append(station)
