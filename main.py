@@ -1069,6 +1069,7 @@ class TargetHeightWindow:
 
 
 class CompnetUpdateFixedFileWindow:
+
     coordinate_file_path = ""
     fixed_file_path = ""
 
@@ -1088,15 +1089,15 @@ class CompnetUpdateFixedFileWindow:
         self.fixed_btn = tk.Button(container, text='(1) Choose Fixed File: ', command=self.get_fixed_file_path)
         self.coord_btn = tk.Button(container, text='(2) Choose Coordinate File: ',
                                    command=self.get_coordinate_file_path)
-        self.update_btn = tk.Button(container, text='(4) UPDATE FIXED FILE ', command=self.update_fixed_file)
+        self.update_btn = tk.Button(container, text='(3) UPDATE FIXED FILE ', command=self.update_fixed_file)
 
-        self.fixed_btn.grid(row=2, column=1, sticky='nesw', padx=25, pady=(20, 3))
-        self.coord_btn.grid(row=3, column=1, sticky='nesw', padx=25, pady=3)
-        self.update_btn.grid(row=4, column=1, sticky='nesw', padx=25, pady=(3, 20))
+        self.fixed_btn.grid(row=2, column=1, sticky='nesw', padx=60, pady=(20, 3))
+        self.coord_btn.grid(row=3, column=1, sticky='nesw', padx=60, pady=3)
+        self.update_btn.grid(row=4, column=1, sticky='nesw', padx=60, pady=(3, 20))
 
         container.pack(fill="both", expand=True)
 
-        self.dialog_window.geometry(MainWindow.position_popup(master, 200,
+        self.dialog_window.geometry(MainWindow.position_popup(master, 270,
                                                               140))
 
     def update_fixed_file(self):
@@ -1120,17 +1121,19 @@ class CompnetUpdateFixedFileWindow:
 
             if stations_updated:  # display to user
 
-                for station in stations_updated:
+                for station in sorted(stations_updated):
                     msg_body += station + '\n'
 
             if stations_not_updated:  # display to user
 
                 msg_body += '\nWARNING: The following fixed file stations were not found in the coordintate file:\n\n'
 
-                for station in stations_not_updated:
+                for station in sorted(stations_not_updated):
                     msg_body += station + '\n'
 
             tkinter.messagebox.showinfo("Update Fixed File", msg_body)
+
+            self.dialog_window.destroy()
 
     def get_fixed_file_path(self):
         print(self.survey_config.fixed_file_dir)
@@ -1655,6 +1658,19 @@ class FixedFile:
                 self.station_list.append(station)
         return self.station_list
 
+    #2D or 3D adjustment
+    def get_dimension(self):
+
+        line_list = self.fixed_file_contents[0].split()
+        dimension = '2D'
+
+        return '2D' if len(line_list) == 4 else '3D'
+
+        # if len(line_list) == 4:
+        #     dimension = '3D'
+        #
+        # return dimension
+
     @staticmethod
     def get_station(line):
 
@@ -1689,6 +1705,7 @@ class FixedFile:
     def update(self, coordinate_file):
 
         stations_updated = []
+        elevation =""
 
         for line in self.fixed_file_contents:
 
@@ -1701,8 +1718,13 @@ class FixedFile:
             if coordinate_dict:
                 easting = coordinate_dict['Eastings']
                 northing = coordinate_dict['Northings']
+                try:
+                    elevation = coordinate_dict['Elevation']
+                except Exception:
+                    pass    # elevation may not exist in some coordinate files
 
-                updated_line = self.get_line_number(line) + ' ' + easting + '  ' + northing + ' "' + station + '"\n'
+                updated_line = self.get_line_number(line) + ' ' + easting + '  ' + northing + '  ' + elevation + ' "' +\
+                               station + '"\n'
                 self.updated_file_contents += updated_line
                 stations_updated.append(station)
 
@@ -1719,6 +1741,7 @@ class FixedFile:
 class CoordinateFile:
     re_pattern_easting = re.compile(r'\b\d{6}\.\d{4}')
     re_pattern_northing = re.compile(r'\b\d{7}\.\d{4}')
+    re_pattern_elevation = re.compile(r'\b\d{3}\.\d{3,4}')
     re_pattern_point_crd = re.compile(r'\b\S+\b')
     re_pattern_point_std = re.compile(r'"\S+"')
     re_pattern_point_asc = re.compile(r'@#\S+')
@@ -1785,6 +1808,7 @@ class CoordinateFile:
                 # grab easting and northing for this station
                 easting_match = self.re_pattern_easting.search(coordinate_contents_line)
                 northing_match = self.re_pattern_northing.search(coordinate_contents_line)
+                elevation_match = self.re_pattern_elevation.search(coordinate_contents_line)
 
                 if file_type == 'CRD':
 
@@ -1805,7 +1829,14 @@ class CoordinateFile:
                 point_coordinate_dict['Eastings'] = easting_match.group()
                 point_coordinate_dict['Northings'] = northing_match.group()
 
-                self.coordinate_dictionary[point_name] = point_coordinate_dict
+                # grab the elevation coordinate if required by the fixed file
+                try:
+                    point_coordinate_dict['Elevation'] = elevation_match.group()
+                except ValueError:
+                    # elevation doesnt exist in this coordinate file
+                    pass
+                finally:
+                    self.coordinate_dictionary[point_name] = point_coordinate_dict
 
             except ValueError:
                 # probabaly a blank line
