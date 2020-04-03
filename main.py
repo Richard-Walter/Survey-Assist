@@ -9,7 +9,7 @@ NOTE: For 3.4 compatibility
     ii) had to use an ordered dictionary"""
 
 # TODO Fix bug where elevation is now found for asc that contains Mena.
-# TODO Highlight errors when checking survey
+# TODO Highlight errors when checking survey - sort output as well
 
 # TODO refactor classes in main into there own class. Create a package??
 
@@ -2093,7 +2093,7 @@ def configure_logger():
     formatter = logging.Formatter('%(asctime)s:%(name)s:%(message)s')
 
     # Writes debug messages to the log
-    file_handler = logging.FileHandler('GSIQuery.log')
+    file_handler = logging.FileHandler('Survey Assist.log')
     file_handler.setLevel(logging.ERROR)
     file_handler.setFormatter(formatter)
 
