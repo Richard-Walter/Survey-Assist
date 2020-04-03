@@ -8,7 +8,7 @@ NOTE: For 3.4 compatibility
     i) Replaced f-strings with.format method.
     ii) had to use an ordered dictionary"""
 
-# TODO strip out coordinates from an asc file and open up in .csv ready to copy and paste
+# TODO Fix bug where elevation is now found for asc that contains Mena
 # TODO Highlight errors when checking survey
 
 # TODO refactor classes in main into there own class. Create a package??
@@ -34,6 +34,9 @@ from GSIExceptions import *
 from decimal import *
 
 import datetime
+
+from openpyxl import Workbook
+from openpyxl.styles import Font
 
 logger = logging.getLogger('Survey Assist')
 
@@ -1278,12 +1281,53 @@ class UtilityCreateCSVFromASCWindow:
         self.dialog_window.geometry(MainWindow.position_popup(master, 150, 70))
 
     def create_csv_file(self):
+
         asc_file_path = tk.filedialog.askopenfilename(parent=self.master,
                                                       initialdir=self.last_used_directory,
                                                       title="Select file", filetypes=[("ASC Files", ".ASC")])
+        # Create the excel spreadsheet
+        workbook = Workbook()
+        sheet = workbook.active
+        sheet.title = "temp"
+        sheet.column_dimensions['A'].width = 15
+        sheet.column_dimensions['B'].width = 15
+        sheet.column_dimensions['C'].width = 15
+        sheet.column_dimensions['D'].width = 15
+        sheet["A1"] = 'POINT'
+        sheet['A1'].font = Font(bold=True)
+        sheet["B1"] = 'EASTING'
+        sheet['B1'].font = Font(bold=True)
+        sheet["C1"] = 'NORTHING'
+        sheet['C1'].font = Font(bold=True)
+        sheet["D1"] = 'ELEVATION'
+        sheet['D1'].font = Font(bold=True)
 
-        # TODO create a popup scv that you can copy and pste into calcs sheet
+        # Get the coordinates from the ASC
+        coordinate_file = ASCCoordinateFile(asc_file_path)
+        coordinate_dict = coordinate_file.coordinate_dictionary
+
+        for index, (point, coordinates) in enumerate(coordinate_dict.items(), start=2):
+            easting = coordinates['Eastings']
+            northing = coordinates['Northings']
+            elevation = ""
+            try:
+                elevation = coordinates['Elevation']
+            except Exception:
+                pass  # elevation may not exist in some coordinate
+            finally:
+
+                # add coordinates to the spreadsheet
+                sheet.cell(row=index, column=1).value = point
+                sheet.cell(row=index, column=2).value = easting
+                sheet.cell(row=index, column=3).value = northing
+                sheet.cell(row=index, column=4).value = elevation
+
+        workbook.save(filename="temp_create_csv.xlsx")
+
         self.dialog_window.destroy()
+        #Launch excel
+        os.system("start EXCEL.EXE temp_create_csv.xlsx")
+
 
 class CompnetCompareCRDFWindow:
     crd_file_path_1 = ""
@@ -2016,6 +2060,16 @@ class STDCoordinateFile(CoordinateFile):
         print(self.updated_std_contents)
 
         return self.updated_std_contents
+
+
+class ASCCoordinateFile(CoordinateFile):
+
+    def __init__(self, coordinate_file_path):
+        super().__init__(coordinate_file_path)
+
+        self.easting = '0'
+        self.northing = '0'
+        self.elevation = '0'
 
 
 class GSIFile:
