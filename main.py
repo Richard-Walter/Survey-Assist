@@ -8,13 +8,12 @@ NOTE: For 3.4 compatibility
     i) Replaced f-strings with.format method.
     ii) had to use an ordered dictionary"""
 
-# TODO COMPNET - added one-click update weighted-control file
 # TODO strip out coordinates from an asc file and open up in .csv ready to copy and paste
+# TODO Highlight errors when checking survey
 
 # TODO refactor classes in main into there own class. Create a package??
-# TODO change CoorindateFile so that it searches for @# and not @%Projection set in case user strips this data out
+
 # TODO integrate Job diary/dated directory functionality
-# TODO Highlight errors when checking survey
 # TODO analysis FL and FR shots when checking survey - highlight
 
 
@@ -100,6 +99,12 @@ class MenuBar(tk.Frame):
         self.compnet_sub_menu.add_command(label="Combine/Re-order GSI Files", command=self.combine_gsi_files)
 
         self.menu_bar.add_cascade(label="Compnet", menu=self.compnet_sub_menu)
+
+        # Utilities menu
+        self.utility_sub_menu = tk.Menu(self.menu_bar, tearoff=0)
+        self.utility_sub_menu.add_command(label="Create temporary CSV from .ASC file",
+                                          command=self.create_CSV_from_ASC)
+        self.menu_bar.add_cascade(label="Utilities", menu=self.utility_sub_menu)
 
         # Config menu
         self.menu_bar.add_command(label="Config", command=self.configure_survey)
@@ -442,6 +447,10 @@ class MenuBar(tk.Frame):
     def combine_gsi_files(self):
 
         CombineGSIFilesWindow(self)
+
+    def create_CSV_from_ASC(self):
+
+        UtilityCreateCSVFromASCWindow(self)
 
     def configure_survey(self):
 
@@ -1248,6 +1257,33 @@ class CompnetWeightSTDFileWindow:
             self.dialog_window.lift()
 
 
+class UtilityCreateCSVFromASCWindow:
+
+    def __init__(self, master):
+        self.master = master
+        self.survey_config = SurveyConfiguration()
+
+        self.last_used_directory = self.survey_config.last_used_file_dir
+
+        #  Lets build the dialog box
+        self.dialog_window = tk.Toplevel(master)
+        self.dialog_window.title("CREATE TEMP CSV")
+
+        container = tk.Frame(self.dialog_window, width=200, height=120)
+
+        self.choose_btn = tk.Button(container, text="Choose *ASC File", command=self.create_csv_file)
+        self.choose_btn.grid(row=1, column=1, sticky='nesw', padx=20, pady=20)
+        container.pack(fill="both", expand=True)
+
+        self.dialog_window.geometry(MainWindow.position_popup(master, 150, 70))
+
+    def create_csv_file(self):
+        asc_file_path = tk.filedialog.askopenfilename(parent=self.master,
+                                                      initialdir=self.last_used_directory,
+                                                      title="Select file", filetypes=[("ASC Files", ".ASC")])
+
+        # TODO create a popup scv that you can copy and pste into calcs sheet
+        self.dialog_window.destroy()
 
 class CompnetCompareCRDFWindow:
     crd_file_path_1 = ""
@@ -1980,8 +2016,6 @@ class STDCoordinateFile(CoordinateFile):
         print(self.updated_std_contents)
 
         return self.updated_std_contents
-
-
 
 
 class GSIFile:
