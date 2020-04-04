@@ -25,6 +25,7 @@ from collections import OrderedDict
 
 import tkinter.messagebox
 from GSI import GSI
+from GSIFile import GSIFile
 from SurveyConfiguration import SurveyConfiguration
 from GSIDatabase import GSIDatabase
 from GSIExceptions import *
@@ -2106,39 +2107,6 @@ class CRDCoordinateFile(CoordinateFile):
             raise Exception('CRD file Header should contain only 12 rows')
 
 
-class GSIFile:
-
-    def __init__(self, gsi_file_path):
-        self.fixed_file_path = gsi_file_path
-        self.gsi_file_contents = None
-
-        with open(gsi_file_path, 'r') as f_orig:
-            self.gsi_file_contents = f_orig.read()
-            print(self.gsi_file_contents)
-
-    def get_filecontents(self):
-        return self.gsi_file_contents
-
-
-def configure_logger():
-    logger.setLevel(logging.ERROR)
-    formatter = logging.Formatter('%(asctime)s:%(name)s:%(message)s')
-
-    # Writes debug messages to the log
-    file_handler = logging.FileHandler('Survey Assist.log')
-    file_handler.setLevel(logging.ERROR)
-    file_handler.setFormatter(formatter)
-
-    # Display debug messages to the console
-    stream_handler = logging.StreamHandler()
-    stream_handler.setLevel(logging.ERROR)
-    stream_handler.setFormatter(formatter)
-
-    logger.addHandler(file_handler)
-    logger.addHandler(stream_handler)
-    logger.info('Started Application')
-
-
 def Decimalize(in_value, precision):
     if precision == '4dp':
         return Decimal(in_value).quantize(Decimal('1.0000'))
@@ -2167,6 +2135,25 @@ def main():
 
     # Setup default survey configuration
     root.mainloop()
+
+
+def configure_logger():
+    logger.setLevel(logging.ERROR)
+    formatter = logging.Formatter('%(asctime)s:%(name)s:%(message)s')
+
+    # Writes debug messages to the log
+    file_handler = logging.FileHandler('Survey Assist.log')
+    file_handler.setLevel(logging.ERROR)
+    file_handler.setFormatter(formatter)
+
+    # Display debug messages to the console
+    stream_handler = logging.StreamHandler()
+    stream_handler.setLevel(logging.ERROR)
+    stream_handler.setFormatter(formatter)
+
+    logger.addHandler(file_handler)
+    logger.addHandler(stream_handler)
+    logger.info('Started Application')
 
 
 if __name__ == "__main__":
