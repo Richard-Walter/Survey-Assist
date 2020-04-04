@@ -29,14 +29,6 @@ import datetime
 from openpyxl import Workbook
 from openpyxl.styles import Font
 
-logger = logging.getLogger('Survey Assist')
-
-gsi = None
-database = GSIDatabase(GSI.GSI_WORD_ID_DICT, logger)
-
-# This is the main GUI object that allows access to all the GUI's components
-gui_app = None
-
 
 class MenuBar(tk.Frame):
     filename_path = ""
@@ -2111,9 +2103,8 @@ def main():
     global gui_app
     global gsi
     global survey_config
-
-    # Setup logger
-    configure_logger()
+    global database
+    global logger
 
     # Create main window
     root = tk.Tk()
@@ -2121,10 +2112,14 @@ def main():
     root.title("SURVEY ASSIST - Written by Richard Walter")
     root.wm_iconbitmap(r'icons\analyser.ico')
 
+    logger = logging.getLogger('Survey Assist')
     gsi = GSI(logger)
     gui_app = GUIApplication(root)
+    database = GSIDatabase(GSI.GSI_WORD_ID_DICT, logger)
 
     survey_config = SurveyConfiguration()
+    # Setup logger
+    configure_logger()
 
     # Setup default survey configuration
     root.mainloop()
