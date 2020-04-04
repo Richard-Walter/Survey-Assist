@@ -20,7 +20,7 @@ from tkinter import filedialog
 
 import tkinter.messagebox
 from GSI import *
-from SurveyConfiguration import SurveyConfiguration
+from SurveyConfigurationWindow import SurveyConfigurationWindow
 from GSI import GSIDatabase, CorruptedGSIFileError, GSIFile
 from decimal import *
 
@@ -108,7 +108,7 @@ class MenuBar(tk.Frame):
 
         MenuBar.filename_path = tk.filedialog.askopenfilename(initialdir=last_used_directory, title="Select file",
                                                               filetypes=[("GSI Files", ".gsi")])
-        survey_config.update(SurveyConfiguration.section_file_directories, 'last_used', os.path.dirname(
+        survey_config.update(SurveyConfigurationWindow.section_file_directories, 'last_used', os.path.dirname(
             MenuBar.filename_path))
 
         MenuBar.format_gsi_file()
@@ -454,7 +454,7 @@ class MenuBar(tk.Frame):
 
         global survey_config
 
-        survey_config = SurveyConfiguration()
+        survey_config = SurveyConfigurationWindow()
 
         ConfigDialog(self.master)
 
@@ -573,9 +573,9 @@ class ConfigDialog:
         tk.Label(self.dialog_window, text="Precision:").grid(row=0, column=0, padx=5, pady=(15, 5), sticky='w')
         self.precision = tk.StringVar()
         self.precision_entry = ttk.Combobox(self.dialog_window, textvariable=self.precision, state='readonly')
-        self.precision_entry['values'] = SurveyConfiguration.precision_value_list
+        self.precision_entry['values'] = SurveyConfigurationWindow.precision_value_list
 
-        self.precision_entry.current(SurveyConfiguration.precision_value_list.index(survey_config.precision_value))
+        self.precision_entry.current(SurveyConfigurationWindow.precision_value_list.index(survey_config.precision_value))
         self.precision_entry.bind("<<ComboboxSelected>>")
         self.precision_entry.grid(row=0, column=1, padx=5, pady=(15, 5), sticky='w')
 
@@ -658,7 +658,7 @@ class ConfigDialog:
             survey_config.create_config_file(precision_dictionary, survey_tolerance_dictionary,
                                              configuration_dictionary)
 
-            survey_config = SurveyConfiguration()
+            survey_config = SurveyConfigurationWindow()
 
     def cancel(self):
 
@@ -1087,7 +1087,7 @@ class CompnetUpdateFixedFileWindow:
     def __init__(self, master):
 
         self.master = master
-        self.survey_config = SurveyConfiguration()
+        self.survey_config = SurveyConfigurationWindow()
         self.outliers_dict = {}
 
         #  Lets build the dialog box
@@ -1172,7 +1172,7 @@ class CompnetWeightSTDFileWindow:
 
     def __init__(self, master):
         self.master = master
-        self.survey_config = SurveyConfiguration()
+        self.survey_config = SurveyConfigurationWindow()
 
         self.compnet_working_directory = gui_app.menu_bar.compnet_working_dir
         self.std_file_path = ""
@@ -1260,7 +1260,7 @@ class UtilityCreateCSVFromASCWindow:
 
     def __init__(self, master):
         self.master = master
-        self.survey_config = SurveyConfiguration()
+        self.survey_config = SurveyConfigurationWindow()
 
         self.last_used_directory = self.survey_config.last_used_file_dir
 
@@ -1592,7 +1592,7 @@ class CombineGSIFilesWindow:
         self.sorted_station_list_filepath = tk.filedialog.askopenfilename(parent=self.master, filetypes=[("TXT Files",
                                                                                                           ".txt")])
         if self.sorted_station_list_filepath != "":
-            survey_config.update(SurveyConfiguration.section_config_files, 'sorted_station_config',
+            survey_config.update(SurveyConfigurationWindow.section_config_files, 'sorted_station_config',
                                  self.sorted_station_list_filepath)
             self.current_config_label.config(text=os.path.basename(self.sorted_station_list_filepath))
 
@@ -2112,14 +2112,15 @@ def main():
     root.title("SURVEY ASSIST - Written by Richard Walter")
     root.wm_iconbitmap(r'icons\analyser.ico')
 
+    # Setup logger
     logger = logging.getLogger('Survey Assist')
+    configure_logger()
+
     gsi = GSI(logger)
     gui_app = GUIApplication(root)
-    database = GSIDatabase(GSI.GSI_WORD_ID_DICT, logger)
+    database = GSIDatabase()
 
-    survey_config = SurveyConfiguration()
-    # Setup logger
-    configure_logger()
+    survey_config = SurveyConfigurationWindow()
 
     # Setup default survey configuration
     root.mainloop()

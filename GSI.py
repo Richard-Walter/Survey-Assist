@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
 import os
 import sqlite3
-
+import logging.config
 from collections import OrderedDict
 from collections import Counter
-from SurveyConfiguration import SurveyConfiguration
+from SurveyConfigurationWindow import SurveyConfigurationWindow
 
 import re
 
@@ -31,7 +31,7 @@ class GSI:
         self.filename = None
         self.column_names = list(GSI.GSI_WORD_ID_DICT.values())
         self.column_ids = list(GSI.GSI_WORD_ID_DICT.keys())
-        self.survey_config = SurveyConfiguration()
+        self.survey_config = SurveyConfigurationWindow()
         self.formatted_lines = []
         self.unformatted_lines = []
 
@@ -39,7 +39,7 @@ class GSI:
 
         # corrections takes the form of a dictionary e.g. {'83': new_height, '87': new_target_height}
 
-        self.survey_config = SurveyConfiguration()
+        self.survey_config = SurveyConfigurationWindow()
 
         unformatted_line = self.get_unformatted_line(line_number)
 
@@ -85,7 +85,7 @@ class GSI:
 
     def format_gsi(self, filename):
 
-        self.survey_config = SurveyConfiguration()
+        self.survey_config = SurveyConfigurationWindow()
 
         with open(filename, "r") as f:
 
@@ -392,10 +392,10 @@ class GSIDatabase:
     DATABASE_PATH = 'GSI Files\\GSI_database.db'
     TABLE_NAME = 'GSI'
 
-    def __init__(self, gsi_word_id_dict, logger):
+    def __init__(self, ):
 
-        self.gsi_word_id_dict = gsi_word_id_dict
-        self.logger = logger
+        self.gsi_word_id_dict = GSI.GSI_WORD_ID_DICT
+        self.logger = logging.getLogger('Survey Assist')
         self.conn = None
 
         self.logger.debug(os.getcwd())
