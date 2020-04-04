@@ -8,26 +8,20 @@ NOTE: For 3.4 compatibility
     i) Replaced f-strings with.format method.
     ii) had to use an ordered dictionary"""
 
-# TODO refactor classes in main into there own class. Create a package??
+# TODO refactor classes in main into there own class.
 
 # TODO analysis FL and FR shots when checking survey - highlight
 # TODO integrate Job diary/dated directory functionality
 
 import tkinter as tk
-import re
-import os
 from tkinter import ttk
 import logging.config
 from tkinter import filedialog
-from collections import Counter
-from collections import OrderedDict
 
 import tkinter.messagebox
-from GSI import GSI
-from GSIFile import GSIFile
+from GSI import *
 from SurveyConfiguration import SurveyConfiguration
-from GSIDatabase import GSIDatabase
-from GSIExceptions import *
+from GSI import GSIDatabase, CorruptedGSIFileError, GSIFile
 from decimal import *
 
 import datetime
