@@ -1651,8 +1651,9 @@ class GUIApplication(tk.Frame):
     @staticmethod
     def refresh():
         MenuBar.format_gsi_file()
-        MenuBar.update_gui()
         MenuBar.create_and_populate_database()
+        MenuBar.update_gui()
+
 
 def main():
     global gui_app
