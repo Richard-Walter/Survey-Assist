@@ -38,3 +38,18 @@ Traceback (most recent call last):
   File "C:\Users\rjwal_000\PycharmProjects\Survey Assist\GSI.py", line 481, in create_db
     os.remove(GSIDatabase.DATABASE_PATH)
 PermissionError: [WinError 32] The process cannot access the file because it is being used by another process: 'GSI Files\\GSI_database.db'
+2020-04-04 22:40:15,206:Survey Assist:Error creating executing SQL query
+Traceback (most recent call last):
+  File "C:/Users/rjwal_000/PycharmProjects/Survey Assist/main.py", line 170, in check_3d_survey
+    errors, error_points, error_line_numbers = gsi.check_3D_survey(database.conn)
+TypeError: 'NoneType' object is not iterable
+2020-04-04 22:48:00,678:Survey Assist:Database in use.  Unable to delete until it is closed
+Traceback (most recent call last):
+  File "C:\Users\rjwal_000\PycharmProjects\Survey Assist\GSI.py", line 577, in create_db
+    os.remove(GSIDatabase.DATABASE_PATH)
+PermissionError: [WinError 32] The process cannot access the file because it is being used by another process: 'GSI Files\\GSI_database.db'
+2020-04-04 22:49:36,059:Survey Assist:Database in use.  Unable to delete until it is closed
+Traceback (most recent call last):
+  File "C:\Users\rjwal_000\PycharmProjects\Survey Assist\GSI.py", line 577, in create_db
+    os.remove(GSIDatabase.DATABASE_PATH)
+PermissionError: [WinError 32] The process cannot access the file because it is being used by another process: 'GSI Files\\GSI_database.db'

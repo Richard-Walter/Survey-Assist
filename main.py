@@ -164,122 +164,28 @@ class MenuBar(tk.Frame):
 
     def check_3d_survey(self):
 
-        control_points = gsi.get_set_of_control_points()
-        change_points = gsi.get_change_points()
-        points = change_points + control_points
-
-        print('CONTROL POINTS: ' + str(control_points))
-        print('CHANGE POINTS: ' + str(change_points))
-        print('POINTS: ' + str(points))
-
-        sql_query_columns = 'Point_ID, Easting, Northing, Elevation'
-        sql_where_column = 'Point_ID'
-
-        sql_query_text = ""
-
-        error_points = []
+        errors, error_points, subject, = "", "", ""
         error_line_numbers = []
-        error_subject = "Out of Tolerance Error in Survey"
+        subject = "Checking Tolerances"
 
         try:
-            with database.conn:
+            errors, error_points = gsi.check_3D_survey(database.conn)
+            error_text = ""
 
-                sql_query_text = "SELECT {} FROM GSI WHERE {}=?".format(sql_query_columns, sql_where_column)
+            for error in errors:
+                error_text += error
 
-                cur = database.conn.cursor()
+            if not errors:
+                error_text = "Survey is within the specified tolerance.  Well done!"
 
-                # Check if points are outisde of tolerance e.g. 10mm
-                errors = []
-
-                for point in points:
-
-                    # create a list of eastings, northings and height and check min max value of each
-                    eastings = []
-                    northings = []
-                    elevation = []
-                    point_id = ""
-                    error_text = ""
-
-                    print('Survey mark is: ' + point)
-                    cur.execute(sql_query_text, (point,))
-                    rows = cur.fetchall()
-
-                    for row in rows:
-                        print(row)
-                        point_id = row[0]
-
-                        # create a list of eastings, northings and height and check min max value of each
-
-                        if row[1] == '':
-                            pass  # should be a station setup
-
-                        else:
-
-                            eastings.append(row[1])
-                            northings.append(row[2])
-                            elevation.append(row[3])
-
-                        # print(point_id, max(eastings), min(eastings), max(northings), min(northings), max(elevation),
-                        #       min(elevation))
-
-                    try:
-
-                        # Check Eastings
-                        east_diff = float(max(eastings)) - float(min(eastings))
-
-                        if east_diff > float(survey_config.easting_tolerance):
-                            error_text = point_id + ' is out of tolerance in Easting: ' + str(round(
-                                east_diff,
-                                3)) + 'm\n'
-                            errors.append(error_text)
-                            error_points.append(point)
-                            print(error_text)
-
-                        # Check Northings
-                        north_diff = float(max(northings)) - float(min(northings))
-
-                        if north_diff > float(survey_config.northing_tolerance):
-                            error_text = point_id + ' is out of tolerance Northing: ' + str(round(
-                                north_diff,
-                                3)) + 'm\n'
-                            errors.append(error_text)
-                            error_points.append(point)
-                            print(error_text)
-
-                        # Check Elevation
-                        height_diff = float(max(elevation)) - float(min(elevation))
-
-                        if height_diff > float(survey_config.height_tolerance):
-                            error_text = point_id + ' is out of tolerance in height: ' + \
-                                         str(round(
-                                             height_diff,
-                                             3)) + 'm \n'
-                            errors.append(error_text)
-                            error_points.append(point)
-                            print(error_text)
-
-                    except ValueError:
-                        print('Value error at point : ' + point)
-                        pass
-
-                # display any error messages in pop up dialog
-
-                error_text = ""
-
-                for error in errors:
-                    error_text += error
-
-                if not errors:
-                    error_text = "Survey is within the specified tolerance.  Well done!"
-                    error_subject = "Checking Survey within tolerance"
-
-                # display error dialog box
-                tkinter.messagebox.showinfo(error_subject, error_text)
+            # display error dialog box
+            tkinter.messagebox.showinfo(subject, error_text)
 
         except Exception:
-            logger.exception('Error creating executing SQL query:  {}'.format(sql_query_text))
+            logger.exception('Error creating executing SQL query')
             tk.messagebox.showerror("Error", 'Error executing this query:\nPlease contact the developer of this '
                                              'program or see log file for further information')
+
         # highlight any error points
         error_point_set = set(error_points)
 
@@ -292,10 +198,10 @@ class MenuBar(tk.Frame):
     def check_control_naming(self):
 
         try:
-            subject, error_text, error_line_numbers = gsi.check_control_naming()
+            error_text, error_line_numbers = gsi.check_control_naming()
 
             # display error dialog box
-            tkinter.messagebox.showinfo(subject, error_text)
+            tkinter.messagebox.showinfo("Checking Naming", error_text)
             gui_app.list_box.populate(gsi.formatted_lines, error_line_numbers)
 
         except Exception:
