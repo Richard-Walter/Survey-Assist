@@ -8,7 +8,6 @@ NOTE: For 3.4 compatibility
     i) Replaced f-strings with.format method.
     ii) had to use an ordered dictionary"""
 
-# TODO Fix bug where elevation is now found for asc that contains Mena.
 # TODO Highlight errors when checking survey - sort output as well
 
 # TODO refactor classes in main into there own class. Create a package??
@@ -1122,7 +1121,8 @@ class CompnetUpdateFixedFileWindow:
 
             # open up fixed file & update the fixed file's easting/northings from the coordinate file
             fixed_file = FixedFile(self.fixed_file_path)
-            coordinate_file = CoordinateFile(self.coordinate_file_path)
+            coordinate_type = self.coordinate_file_path.split(".")[-1].upper()
+            coordinate_file = CoordinateFile.getCordinateFile(self.coordinate_file_path, coordinate_type)
             stations_updated = fixed_file.update(coordinate_file)
             stations_not_updated = set(fixed_file.get_stations()).difference(stations_updated)
 
@@ -1303,8 +1303,8 @@ class UtilityCreateCSVFromASCWindow:
         sheet['D1'].font = Font(bold=True)
 
         # Get the coordinates from the ASC
-        coordinate_file = ASCCoordinateFile(asc_file_path)
-        coordinate_dict = coordinate_file.coordinate_dictionary
+        asc_coordinate_file = ASCCoordinateFile(asc_file_path)
+        coordinate_dict = asc_coordinate_file.coordinate_dictionary
 
         for index, (point, coordinates) in enumerate(sorted(coordinate_dict.items()), start=2):
             easting = coordinates['Eastings']
@@ -1326,7 +1326,7 @@ class UtilityCreateCSVFromASCWindow:
 
         self.dialog_window.destroy()
 
-        #Launch excel
+        # Launch excel
         if asc_file_path:
             os.system("start EXCEL.EXE temp_create_csv.xlsx")
 
@@ -1409,8 +1409,8 @@ class CompnetCompareCRDFWindow:
         try:
 
             # open up the two CRD files and compare common values for outliers
-            coordinate_file1 = CoordinateFile(self.crd_file_path_1)
-            coordinate_file2 = CoordinateFile(self.crd_file_path_2)
+            coordinate_file1 = CRDCoordinateFile(self.crd_file_path_1)
+            coordinate_file2 = CRDCoordinateFile(self.crd_file_path_2)
 
             # find common points between files
             for key in coordinate_file1.coordinate_dictionary.keys():
@@ -1686,7 +1686,6 @@ class CombineGSIFilesWindow:
         with open(self.combined_gsi_file_path, 'r') as f_temp_combined_gsi:
             unsorted_combined_gsi_txt = f_temp_combined_gsi.readlines()
 
-        # Todo refactor this method passing stations sorted by name and unsorted_combined_gsi
         # create the sorted filecontents to write out
         for line_number, station_name in stations_sorted_by_name.items():
 
@@ -1848,11 +1847,6 @@ class FixedFile:
 
         return '2D' if len(line_list) == 4 else '3D'
 
-        # if len(line_list) == 4:
-        #     dimension = '3D'
-        #
-        # return dimension
-
     @staticmethod
     def get_station(line):
 
@@ -1923,14 +1917,15 @@ class FixedFile:
 class CoordinateFile:
     re_pattern_easting = re.compile(r'\b\d{6}\.\d{4}')
     re_pattern_northing = re.compile(r'\b\d{7}\.\d{4}')
-    re_pattern_elevation = re.compile(r'\b\d{3}\.\d{3,4}')
+    re_pattern_elevation = re.compile(r'\b\d{1,3}\.\d{3,4}')
     re_pattern_point_crd = re.compile(r'\b\S+\b')
     re_pattern_point_std = re.compile(r'"\S+"')
     re_pattern_point_asc = re.compile(r'@#\S+')
 
-    def __init__(self, coordinate_file_path):
+    def __init__(self, coordinate_file_path, file_type):
 
         self.file_contents = None
+        self.file_type = file_type
         self.coordinate_dictionary = {}
 
         try:
@@ -1942,37 +1937,23 @@ class CoordinateFile:
             print(ex, type(ex))
 
         else:
+            self.format_coordinate_file()
+            self.build_coordinate_dictionary(file_type)
 
-            # remove first 12 lines which contain header text if it is a CRD file
-            # remove the first 10 to check 'DESCRIPTION' exists in the header
-            if coordinate_file_path[-3:] == 'CRD':
-                del self.file_contents[0: 10]
-                if 'DESCRIPTION' in self.file_contents[0]:
+    @staticmethod
+    def getCordinateFile(filepath, filetype):
+        if filetype.upper() =='ASC':
+            return ASCCoordinateFile(filepath)
+        elif filetype.upper() =='CRD':
+            return CRDCoordinateFile(filepath)
+        elif filetype.upper() =='STD':
+            return STDCoordinateFile(filepath)
+        else:
+            return CoordinateFile(filepath)
 
-                    # remove 'description' line plus following blank space'
-                    del self.file_contents[0:2]
-
-                else:
-                    raise Exception('CRD file Header should contain only 12 rows')
-
-                # build coordinate dictionary
-                self.build_coordinate_dictionary('CRD')
-
-            elif coordinate_file_path[-3:] == 'STD':
-
-                # build coordinate dictionary
-                self.build_coordinate_dictionary('STD')
-
-            # remove the first 3 and then check '@%Projection set' exists in the header
-            elif coordinate_file_path[-3:] == 'asc':
-                del self.file_contents[0: 3]
-                if '@%Projection set' in self.file_contents[0]:
-                    del self.file_contents[0]
-                # build coordinate dictionary
-                else:
-                    raise Exception('Unsupported file type')
-
-                self.build_coordinate_dictionary('ASC')
+    # Override if the coordinate file needs to be formatted before searching for coordinates
+    def format_coordinate_file(self):
+        pass
 
     def get_point_coordinates(self, point):
 
@@ -1984,7 +1965,7 @@ class CoordinateFile:
         for coordinate_contents_line in self.file_contents:
 
             point_coordinate_dict = {}
-            point_match = None
+            point_name = ""
 
             try:
                 # grab easting and northing for this station
@@ -1995,18 +1976,21 @@ class CoordinateFile:
                 if file_type == 'CRD':
 
                     point_match = self.re_pattern_point_crd.search(coordinate_contents_line)
+                    point_name = point_match.group()
 
                 elif file_type == 'STD':
 
                     point_match = self.re_pattern_point_std.search(coordinate_contents_line)
+                    point_name = point_match.group().replace('"', '')
 
                 elif file_type == 'ASC':
 
                     point_match = self.re_pattern_point_asc.search(coordinate_contents_line)
+                    point_name = point_match.group().replace('@#', '')
 
-                point_name = point_match.group()
-                point_name = point_name.replace('"', '')  # for *STD files
-                point_name = point_name.replace('@#', '')  # for *asc files
+                # point_name = point_match.group()
+                # point_name = point_name.replace('"', '')  # for STD files
+                # point_name = point_name.replace('@#', '')  # for asc files
 
                 point_coordinate_dict['Eastings'] = easting_match.group()
                 point_coordinate_dict['Northings'] = northing_match.group()
@@ -2030,30 +2014,27 @@ class CoordinateFile:
 class STDCoordinateFile(CoordinateFile):
 
     def __init__(self, coordinate_file_path):
-        super().__init__(coordinate_file_path)
-        self.easting = '0'
-        self.northing = '0'
-        self.elevation = '0'
+        super().__init__(coordinate_file_path, 'STD')
 
         self.updated_std_contents = ""
 
     def update_weighting(self, weight_dict):
 
-        self.easting = Decimal(weight_dict['Easting'])
-        self.northing = Decimal(weight_dict['Northing'])
-        self.elevation = Decimal(weight_dict['Elevation'])
+        easting = Decimal(weight_dict['Easting'])
+        northing = Decimal(weight_dict['Northing'])
+        elevation = Decimal(weight_dict['Elevation'])
 
         for line in self.file_contents:
             line_sections = line.split()
 
             if len(line_sections) == 6:  # no elevation data
-                line_sections[3] = str(self.easting)
-                line_sections[4] = str(self.northing)
+                line_sections[3] = str(easting)
+                line_sections[4] = str(northing)
 
             elif len(line_sections) == 8:  # elevation data
-                line_sections[4] = str(self.easting)
-                line_sections[5] = str(self.northing)
-                line_sections[6] = str(self.elevation)
+                line_sections[4] = str(easting)
+                line_sections[5] = str(northing)
+                line_sections[6] = str(elevation)
             else:
                 raise Exception("It appears that the coordinate file is no formatted propery")
 
@@ -2067,11 +2048,54 @@ class STDCoordinateFile(CoordinateFile):
 class ASCCoordinateFile(CoordinateFile):
 
     def __init__(self, coordinate_file_path):
-        super().__init__(coordinate_file_path)
+        super().__init__(coordinate_file_path,  'ASC')
 
-        self.easting = '0'
-        self.northing = '0'
-        self.elevation = '0'
+    def format_coordinate_file(self):
+
+        updated_asc_file = []
+
+        for line in self.file_contents:
+            # need to remove  the 22.3### REF 34 info so the coorindate file can find the elevation properly
+            # problem is sometimes RED isnt in the file
+            if '@%' not in line:
+
+                line_list = line.split()
+                stripped_line_list = line_list[0:self.getIndexElevation(line)+1]
+                updated_asc_file.append('   '.join(stripped_line_list))
+
+        self.file_contents = updated_asc_file
+
+        # del self.file_contents[0: 3]
+        # if '@%Projection set' in self.file_contents[0]:
+        #     del self.file_contents[0]
+        # else:
+        #     raise Exception('Unsupported file type')
+
+    def getIndexElevation(self, line):
+
+        northing_value = CoordinateFile.re_pattern_northing.search(line).group()
+
+        for index, data in enumerate(line.split()):
+            if northing_value == data:
+                # the next index must be elevation
+                return index+1
+
+
+
+class CRDCoordinateFile(CoordinateFile):
+
+    def __init__(self, coordinate_file_path):
+        super().__init__(coordinate_file_path, 'CRD')
+
+    def format_coordinate_file(self):
+
+        del self.file_contents[0: 10]
+        if 'DESCRIPTION' in self.file_contents[0]:
+            # remove 'description' line plus following blank space'
+            del self.file_contents[0:2]
+
+        else:
+            raise Exception('CRD file Header should contain only 12 rows')
 
 
 class GSIFile:
