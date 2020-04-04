@@ -113,9 +113,7 @@ class MenuBar(tk.Frame):
         survey_config.update(SurveyConfigurationWindow.section_file_directories, 'last_used', os.path.dirname(
             MenuBar.filename_path))
 
-        MenuBar.format_gsi_file()
-        MenuBar.create_and_populate_database()
-        MenuBar.update_gui()
+        GUIApplication.refresh()
         self.enable_menus()
 
     @staticmethod
@@ -525,9 +523,7 @@ class MenuBar(tk.Frame):
             print("deleted lines are: \n\n" + str(deleted_lines))
 
             # rebuild database and GUI
-            MenuBar.format_gsi_file()
-            MenuBar.update_database()
-            MenuBar.update_gui()
+            GUIApplication.refresh()
 
             msg_deleted_lines = str(len(deleted_lines)) + " 2D orientation shots have been deleted"
 
@@ -959,9 +955,7 @@ class ListBoxFrame(tk.Frame):
                                              'by another program.  If problem continues please contact Richard Walter')
             #
             # # rebuild database and GUI
-        MenuBar.format_gsi_file()
-        MenuBar.update_database()
-        MenuBar.update_gui()
+        GUIApplication.refresh()
 
 
 class TargetHeightWindow:
@@ -1020,10 +1014,7 @@ class TargetHeightWindow:
                         gsi_file.write(line)
 
                 # rebuild database and GUI
-                MenuBar.filename_path = amended_filepath
-                MenuBar.format_gsi_file()
-                MenuBar.update_database()
-                MenuBar.update_gui()
+                GUIApplication.refresh()
             else:
                 # notify user that no lines were selected
                 tk.messagebox.showinfo("INPUT ERROR", "Please select a line first that you want to change target "
@@ -1515,9 +1506,7 @@ class CompnetStripNonControlShots:
 
             # Update GUI
             MenuBar.filename_path = control_only_filename
-            MenuBar.format_gsi_file()
-            MenuBar.create_and_populate_database()
-            MenuBar.update_gui()
+            GUIApplication.refresh()
             gui_app.menu_bar.enable_menus()
 
         except FileNotFoundError as ex:
@@ -1651,9 +1640,7 @@ class CombineGSIFilesWindow:
                                        "The gsi files have been combined:\n\n" + self.combined_gsi_file_path)
                 # display results to the user
                 MenuBar.filename_path = self.combined_gsi_file_path
-                MenuBar.format_gsi_file()
-                MenuBar.create_and_populate_database()
-                MenuBar.update_gui()
+                GUIApplication.refresh()
                 gui_app.menu_bar.enable_menus()
 
                 # close window
@@ -1816,6 +1803,13 @@ class GUIApplication(tk.Frame):
         self.menu_bar.pack(side="top", fill="x")
 
         self.main_window.pack(fill="both", expand=True)
+
+    @staticmethod
+    def refresh():
+
+        MenuBar.format_gsi_file()
+        MenuBar.create_and_populate_database()
+        MenuBar.update_gui()
 
 
 def decimalize_value(in_value, precision):
