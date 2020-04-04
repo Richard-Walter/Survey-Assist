@@ -8,8 +8,6 @@ NOTE: For 3.4 compatibility
     i) Replaced f-strings with.format method.
     ii) had to use an ordered dictionary"""
 
-# TODO Highlight errors when checking survey - sort output as well
-
 # TODO refactor classes in main into there own class. Create a package??
 
 # TODO integrate Job diary/dated directory functionality
@@ -192,7 +190,8 @@ class MenuBar(tk.Frame):
 
         sql_query_text = ""
 
-        error_text = ""
+        error_points = []
+        error_line_numbers = []
         error_subject = "Out of Tolerance Error in Survey"
 
         try:
@@ -246,6 +245,7 @@ class MenuBar(tk.Frame):
                                 east_diff,
                                 3)) + 'm\n'
                             errors.append(error_text)
+                            error_points.append(point)
                             print(error_text)
 
                         # Check Northings
@@ -256,6 +256,7 @@ class MenuBar(tk.Frame):
                                 north_diff,
                                 3)) + 'm\n'
                             errors.append(error_text)
+                            error_points.append(point)
                             print(error_text)
 
                         # Check Elevation
@@ -267,6 +268,7 @@ class MenuBar(tk.Frame):
                                              height_diff,
                                              3)) + 'm \n'
                             errors.append(error_text)
+                            error_points.append(point)
                             print(error_text)
 
                     except ValueError:
@@ -291,6 +293,14 @@ class MenuBar(tk.Frame):
             logger.exception('Error creating executing SQL query:  {}'.format(sql_query_text))
             tk.messagebox.showerror("Error", 'Error executing this query:\nPlease contact the developer of this '
                                              'program or see log file for further information')
+        # highlight any error points
+        error_point_set = set(error_points)
+
+        for line_number, current_gsi_line in enumerate(gsi.formatted_lines, start=1):
+            if current_gsi_line['Point_ID'] in error_point_set:
+                error_line_numbers.append(line_number)
+
+        gui_app.list_box.populate(gsi.formatted_lines, error_line_numbers)
 
     def check_control_naming(self):
 
@@ -372,8 +382,8 @@ class MenuBar(tk.Frame):
 
     def check_3d_all(self):
 
-        self.check_3d_survey()
         self.check_control_naming()
+        self.check_3d_survey()
 
     def change_target_height(self):
         TargetHeightWindow(self.master)
@@ -1942,11 +1952,11 @@ class CoordinateFile:
 
     @staticmethod
     def getCordinateFile(filepath, filetype):
-        if filetype.upper() =='ASC':
+        if filetype.upper() == 'ASC':
             return ASCCoordinateFile(filepath)
-        elif filetype.upper() =='CRD':
+        elif filetype.upper() == 'CRD':
             return CRDCoordinateFile(filepath)
-        elif filetype.upper() =='STD':
+        elif filetype.upper() == 'STD':
             return STDCoordinateFile(filepath)
         else:
             return CoordinateFile(filepath)
@@ -2048,7 +2058,7 @@ class STDCoordinateFile(CoordinateFile):
 class ASCCoordinateFile(CoordinateFile):
 
     def __init__(self, coordinate_file_path):
-        super().__init__(coordinate_file_path,  'ASC')
+        super().__init__(coordinate_file_path, 'ASC')
 
     def format_coordinate_file(self):
 
@@ -2058,9 +2068,8 @@ class ASCCoordinateFile(CoordinateFile):
             # need to remove  the 22.3### REF 34 info so the coorindate file can find the elevation properly
             # problem is sometimes RED isnt in the file
             if '@%' not in line:
-
                 line_list = line.split()
-                stripped_line_list = line_list[0:self.getIndexElevation(line)+1]
+                stripped_line_list = line_list[0:self.getIndexElevation(line) + 1]
                 updated_asc_file.append('   '.join(stripped_line_list))
 
         self.file_contents = updated_asc_file
@@ -2078,8 +2087,7 @@ class ASCCoordinateFile(CoordinateFile):
         for index, data in enumerate(line.split()):
             if northing_value == data:
                 # the next index must be elevation
-                return index+1
-
+                return index + 1
 
 
 class CRDCoordinateFile(CoordinateFile):
