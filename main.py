@@ -8,7 +8,6 @@ NOTE: For 3.4 compatibility
     i) Replaced f-strings with.format method.
     ii) had to use an ordered dictionary"""
 
-# TODO refactor classes in main into there own class.
 
 # TODO analysis FL and FR shots when checking survey - highlight
 # TODO integrate Job diary/dated directory functionality
@@ -858,6 +857,7 @@ class TargetHeightWindow:
                         gsi_file.write(line)
 
                 # rebuild database and GUI
+                MenuBar.filename_path = amended_filepath
                 GUIApplication.refresh()
             else:
                 # notify user that no lines were selected
@@ -1651,9 +1651,8 @@ class GUIApplication(tk.Frame):
     @staticmethod
     def refresh():
         MenuBar.format_gsi_file()
-        MenuBar.create_and_populate_database()
         MenuBar.update_gui()
-
+        MenuBar.create_and_populate_database()
 
 def main():
     global gui_app
