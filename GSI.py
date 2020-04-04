@@ -28,7 +28,6 @@ class GSI:
 
         self.logger = logger
         self.filename = None
-        # self.formatted_lines = None
         self.column_names = list(GSI.GSI_WORD_ID_DICT.values())
         self.column_ids = list(GSI.GSI_WORD_ID_DICT.keys())
         self.survey_config = SurveyConfiguration()

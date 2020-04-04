@@ -10,9 +10,8 @@ NOTE: For 3.4 compatibility
 
 # TODO refactor classes in main into there own class. Create a package??
 
-# TODO integrate Job diary/dated directory functionality
 # TODO analysis FL and FR shots when checking survey - highlight
-
+# TODO integrate Job diary/dated directory functionality
 
 import tkinter as tk
 import re
