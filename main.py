@@ -30,6 +30,7 @@ from openpyxl import Workbook
 from openpyxl.styles import Font
 
 from compnet import CRDCoordinateFile, ASCCoordinateFile, STDCoordinateFile, CoordinateFile, FixedFile
+from utilities import decimalize_value
 
 
 class MenuBar(tk.Frame):
@@ -290,76 +291,12 @@ class MenuBar(tk.Frame):
 
     def check_control_naming(self):
 
-        station_setups = gsi.get_set_of_control_points()
-
-        print('STATION SETUP LIST: ' + str(station_setups))
-
-        # sql_query_columns = 'Point_ID'
-        # sql_where_column = 'Point_ID'
-
-        stn_shots_not_in_setup = []
-        shots_to_stations = []
-
-        line_number_errors = []
-        error_text = ""
-        error_subject = "POTENTIAL SURVEY ERROR"
-        all_good_subject = "Checking Control Naming"
-
-        shots_to_stations_message = "The number of times each station was shot is shown below.\nIn most cases they " \
-                                    "should be all even numbers:\n\n"
-
-        line_number = 0
-
         try:
-            # First, lets check all shots that are labelled 'STN' and make sure that it in the station setup list.
-            for formatted_line in gsi.formatted_lines:
-
-                line_number += 1
-                point_id = formatted_line['Point_ID']
-
-                # Check to see if this point is a shot to a STN
-                if 'STN' in point_id:
-
-                    # Check to see if this shot is in the list of station setups.
-                    if point_id not in station_setups:
-                        stn_shots_not_in_setup.append(point_id)
-                        line_number_errors.append(line_number)
-
-                    # Also want to track of how many times each station is shot so this info can be displayed to user
-                    # check to see if point id is a station setup
-                    if not formatted_line['STN_Easting']:
-                        shots_to_stations.append(formatted_line['Point_ID'])
-
-            print("STATION SHOTS THAT ARE NOT IN SETUP:")
-            print(stn_shots_not_in_setup)
-
-            print("COUNT OF SHOTS TO STATIONS:")
-            print(Counter(shots_to_stations))
-
-            # Display message to user of the station shots not found in station setups.
-            if stn_shots_not_in_setup:
-
-                error_text = "Possible point labelling error with the following control shots: \n\n"
-
-                for shot in stn_shots_not_in_setup:
-                    error_text += shot + "\n"
-
-            print(error_text)
-
-            if not error_text:
-                error_text = "Control naming looks good!\n"
-                error_subject = all_good_subject
-
-            # Create and display no. of times each station was shot;'
-            counter = Counter(shots_to_stations)
-            for key, value in sorted(counter.items()):
-                shots_to_stations_message += str(key) + '  ' + str(value) + '\n'
-
-            error_text += '\n\n' + shots_to_stations_message
+            subject, error_text, error_line_numbers = gsi.check_control_naming()
 
             # display error dialog box
-            tkinter.messagebox.showinfo(error_subject, error_text)
-            gui_app.list_box.populate(gsi.formatted_lines, line_number_errors)
+            tkinter.messagebox.showinfo(subject, error_text)
+            gui_app.list_box.populate(gsi.formatted_lines, error_line_numbers)
 
         except Exception:
             logger.exception('Error checking station naming')
@@ -573,7 +510,8 @@ class ConfigDialogWindow:
         self.precision_entry = ttk.Combobox(self.dialog_window, textvariable=self.precision, state='readonly')
         self.precision_entry['values'] = SurveyConfigurationWindow.precision_value_list
 
-        self.precision_entry.current(SurveyConfigurationWindow.precision_value_list.index(survey_config.precision_value))
+        self.precision_entry.current(
+            SurveyConfigurationWindow.precision_value_list.index(survey_config.precision_value))
         self.precision_entry.bind("<<ComboboxSelected>>")
         self.precision_entry.grid(row=0, column=1, padx=5, pady=(15, 5), sticky='w')
 
@@ -1806,17 +1744,9 @@ class GUIApplication(tk.Frame):
 
     @staticmethod
     def refresh():
-
         MenuBar.format_gsi_file()
         MenuBar.create_and_populate_database()
         MenuBar.update_gui()
-
-
-def decimalize_value(in_value, precision):
-    if precision == '4dp':
-        return Decimal(in_value).quantize(Decimal('1.0000'))
-    else:
-        return Decimal(in_value).quantize(Decimal('1.000'))
 
 
 def main():
