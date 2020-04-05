@@ -64,6 +64,7 @@ class MenuBar(tk.Frame):
         self.check_sub_menu.add_command(label="Check Tolerances (3D only)",
                                         command=self.check_3d_survey)
         self.check_sub_menu.add_command(label="Check Control Naming (3D only) ", command=self.check_control_naming)
+        self.check_sub_menu.add_command(label="Check FL-FR ", command=self.check_FLFR)
         self.check_sub_menu.add_command(label="Check All (3D only)",
                                         command=self.check_3d_all)
         self.check_sub_menu.add_separator()
@@ -208,10 +209,15 @@ class MenuBar(tk.Frame):
             tk.messagebox.showerror("Error", 'Error executing this query:\nPlease contact the developer of this '
                                              'program or see log file for further information')
 
+    def check_FLFR(selfself):
+
+        pass
+
     def check_3d_all(self):
 
         self.check_control_naming()
         self.check_3d_survey()
+        self.check_FLFR()
 
     def change_target_height(self):
         TargetHeightWindow(self.master)
