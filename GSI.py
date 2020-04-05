@@ -297,21 +297,21 @@ class GSI:
         return shot_points
 
     # returns a dict containing formatted lines and their line number
-    def get_all_shots_from_a_station_including_setup(self, station_name, line_number=None):
+    def get_all_shots_from_a_station_including_setup(self, station_name, gsi_line_number=None):
 
         single_station_formatted_lines = {}
         station_found = False
 
-        if line_number is None:
-            line_number = 0
+        if gsi_line_number is None:
+            gsi_line_number = 0
 
-        for index, formatted_line in enumerate(self.formatted_lines[line_number:]):
+        for index, formatted_line in enumerate(self.formatted_lines[gsi_line_number:]):
 
             if station_found:
 
                 # still in the named station setup
                 if not formatted_line['STN_Easting']:
-                    single_station_formatted_lines[line_number + index] = formatted_line
+                    single_station_formatted_lines[gsi_line_number + index] = formatted_line
 
                 # exit as we have come to the next station setup
                 else:
@@ -319,7 +319,7 @@ class GSI:
 
             # find the line that contains the station
             if formatted_line['STN_Easting'] and formatted_line['Point_ID'] == station_name:
-                single_station_formatted_lines[line_number] = formatted_line
+                single_station_formatted_lines[gsi_line_number] = formatted_line
                 station_found = True
 
         return single_station_formatted_lines

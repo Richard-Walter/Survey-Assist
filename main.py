@@ -209,15 +209,78 @@ class MenuBar(tk.Frame):
             tk.messagebox.showerror("Error", 'Error executing this query:\nPlease contact the developer of this '
                                              'program or see log file for further information')
 
-    def check_FLFR(selfself):
+    def check_FLFR(self, display='YES'):
 
-        pass
+        # self.txtCanvas.delete(1.0, END)
+        #
+        # OUTPUT = []
+        # HeaderList = []
+        # ANALYSED = []
+        #
+        # HeaderList.append('<<<< Station ID >>>>')
+        # HeaderList.append('<<<< Point ID >>>>')
+        # for Code in ObAnalysisCodes:
+        #     HeaderList.append('<<<< ' + CODE_LIST[Code] + ' >>>>')
+        # OUTPUT.append(HeaderList)
+        #
+        # for Key in self.Obs_Dict:
+        #     KeyList = Key.split('::')
+        #     STNID = KeyList[0]
+        #     PID = KeyList[1]
+        #     OBID = KeyList[2]
+        #     ObDictA = self.Obs_Dict[Key]
+        #     ANALYSED.append(Key)
+        #     for sKey in self.Obs_Dict:
+        #         sKeyList = sKey.split('::')
+        #         sSTNID = sKeyList[0]
+        #         sPID = sKeyList[1]
+        #         sOBID = sKeyList[2]
+        #         ID_DIFF = abs(int(OBID) - int(sOBID))
+        #         if STNID == sSTNID and PID == sPID and OBID != sOBID and sKey not in ANALYSED and ID_DIFF == 1:
+        #             ObDictB = self.Obs_Dict[sKey]
+        #             dictDiff = self.AnalyseObservations(ObDictA, ObDictB)
+        #             preList = []
+        #             preList.append(STNID)
+        #             preList.append(PID)
+        #             for item in dictDiff:
+        #                 preList.append(dictDiff[item])
+        #             ANALYSED.append(sKey)
+        #             OUTPUT.append(preList)
+        #
+        # self.Printer_Data = OUTPUT
+        # self.Print()
+
+        error_line_number_list = []
+        formatted_gsi_lines_analysis = []
+
+        for gsi_line_number, line in enumerate(gsi.formatted_lines, start=0):
+            if GSI.is_control_point(line):
+                station_name = line['Point_ID']
+                obs_from_staton_dict = gsi.get_all_shots_from_a_station_including_setup(station_name, gsi_line_number)
+                analysed_lines, errors_by_line_number = self.anaylseFLFR(obs_from_staton_dict)
+
+        if display == 'NO':     # dont display results to user - just a popup dialog to let them know there is an issue
+            pass
+        else:
+            gui_app.list_box.populate(formatted_gsi_lines_analysis)
+
+    def anaylseFLFR(self, obs_from_staton_dict):
+
+        analysed_lines = []
+        errors_by_line_number = []
+
+        for line_number, lines in sorted(obs_from_staton_dict.items()):
+            print("test")
+
+
+        return analysed_lines, errors_by_line_number
 
     def check_3d_all(self):
 
+        self.check_FLFR('NO')
         self.check_control_naming()
         self.check_3d_survey()
-        self.check_FLFR()
+
 
     def change_target_height(self):
         TargetHeightWindow(self.master)
