@@ -9,7 +9,6 @@ NOTE: For 3.4 compatibility
     ii) had to use an ordered dictionary"""
 
 
-# TODO create csv rather than excel and get rid of openpyxl
 # TODO COmpare CRD files that have elevation as well
 # TODO analysis FL and FR shots when checking survey - highlight
 # TODO integrate Job diary/dated directory functionality
@@ -26,9 +25,6 @@ from GSI import GSIDatabase, CorruptedGSIFileError, GSIFile
 from decimal import *
 
 import datetime
-
-from openpyxl import Workbook
-from openpyxl.styles import Font
 
 from compnet import CRDCoordinateFile, ASCCoordinateFile, STDCoordinateFile, CoordinateFile, FixedFile
 from utilities import decimalize_value
@@ -1191,28 +1187,16 @@ class UtilityCreateCSVFromASCWindow:
         asc_file_path = tk.filedialog.askopenfilename(parent=self.master,
                                                       initialdir=self.last_used_directory,
                                                       title="Select file", filetypes=[("ASC Files", ".ASC")])
-        # Create the excel spreadsheet
-        workbook = Workbook()
-        sheet = workbook.active
-        sheet.title = "temp"
-        sheet.column_dimensions['A'].width = 15
-        sheet.column_dimensions['B'].width = 15
-        sheet.column_dimensions['C'].width = 15
-        sheet.column_dimensions['D'].width = 15
-        sheet["A1"] = 'POINT'
-        sheet['A1'].font = Font(bold=True)
-        sheet["B1"] = 'EASTING'
-        sheet['B1'].font = Font(bold=True)
-        sheet["C1"] = 'NORTHING'
-        sheet['C1'].font = Font(bold=True)
-        sheet["D1"] = 'ELEVATION'
-        sheet['D1'].font = Font(bold=True)
+        # Create the CSV
+        csv_file = []
+        csv_file.append("POINT,EASTING,NORTHING,ELEVATION\n")
+        comma = ','
 
         # Get the coordinates from the ASC
         asc_coordinate_file = ASCCoordinateFile(asc_file_path)
         coordinate_dict = asc_coordinate_file.coordinate_dictionary
 
-        for index, (point, coordinates) in enumerate(sorted(coordinate_dict.items()), start=2):
+        for point, coordinates in sorted(coordinate_dict.items()):
             easting = coordinates['Eastings']
             northing = coordinates['Northings']
             elevation = ""
@@ -1222,19 +1206,27 @@ class UtilityCreateCSVFromASCWindow:
                 pass  # elevation may not exist in some coordinate
             finally:
 
-                # add coordinates to the spreadsheet
-                sheet.cell(row=index, column=1).value = point
-                sheet.cell(row=index, column=2).value = easting
-                sheet.cell(row=index, column=3).value = northing
-                sheet.cell(row=index, column=4).value = elevation
+                csv_line = ""
 
-        workbook.save(filename="temp_create_csv.xlsx")
+                # add coordinates to the CSV
+
+                csv_line += point+comma
+                csv_line += easting+comma
+                csv_line += northing+comma
+                csv_line += elevation+'\n'
+
+                csv_file += csv_line
+
+        # Write out file
+        with open("temp_create_csv.csv", "w") as f:
+            for line in csv_file:
+                f.write(line)
 
         self.dialog_window.destroy()
 
         # Launch excel
         if asc_file_path:
-            os.system("start EXCEL.EXE temp_create_csv.xlsx")
+            os.system("start EXCEL.EXE temp_create_csv.csv")
 
 
 class CompnetCompareCRDFWindow:
