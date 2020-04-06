@@ -54,15 +54,12 @@ class SurveyConfigurationWindow:
             self.config_parser.write(f)
 
 
-    def create_config_file(self, instrument_values, survey_tolerance_values, configuration_values,
-                           file_directory_values):
+    def create_config_file(self, instrument_values, survey_tolerance_values, configuration_values):
         self.config_parser[SurveyConfigurationWindow.section_instrument] = instrument_values
 
         self.config_parser[SurveyConfigurationWindow.section_survey_tolerances] = survey_tolerance_values
 
         self.config_parser[SurveyConfigurationWindow.section_config_files] = configuration_values
-
-        self.config_parser[SurveyConfigurationWindow.section_file_directories] = file_directory_values
 
         with open(self.config_file_path, 'w') as f:
             self.config_parser.write(f)

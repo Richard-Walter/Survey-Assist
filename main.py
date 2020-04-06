@@ -9,6 +9,8 @@ NOTE: For 3.4 compatibility
     ii) had to use an ordered dictionary"""
 
 
+# TODO create csv rather than excel and get rid of openpyxl
+# TODO COmpare CRD files that have elevation as well
 # TODO analysis FL and FR shots when checking survey - highlight
 # TODO integrate Job diary/dated directory functionality
 
@@ -259,7 +261,7 @@ class MenuBar(tk.Frame):
                 obs_from_staton_dict = gsi.get_all_shots_from_a_station_including_setup(station_name, gsi_line_number)
                 analysed_lines, errors_by_line_number = self.anaylseFLFR(obs_from_staton_dict)
 
-        if display == 'NO':     # dont display results to user - just a popup dialog to let them know there is an issue
+        if display == 'NO':  # dont display results to user - just a popup dialog to let them know there is an issue
             pass
         else:
             gui_app.list_box.populate(formatted_gsi_lines_analysis)
@@ -272,7 +274,6 @@ class MenuBar(tk.Frame):
         for line_number, lines in sorted(obs_from_staton_dict.items()):
             print("test")
 
-
         return analysed_lines, errors_by_line_number
 
     def check_3d_all(self):
@@ -281,15 +282,17 @@ class MenuBar(tk.Frame):
         self.check_control_naming()
         self.check_3d_survey()
 
-
     def change_target_height(self):
         TargetHeightWindow(self.master)
 
     def compare_survey(self):
 
+        last_used_directory = survey_config.last_used_file_dir
+
         points_diff_PC_dict = {}
 
-        old_survey_filepath = tk.filedialog.askopenfilename()
+        old_survey_filepath = tk.filedialog.askopenfilename(parent=self.master, initialdir=last_used_directory,
+                                                            filetypes=[("GSI Files", ".GSI")])
         old_survey_gsi = GSI(logger)
         old_survey_gsi.format_gsi(old_survey_filepath)
         old_survey_formatted_lines_except_setups = old_survey_gsi.get_all_lines_except_setup()
@@ -533,6 +536,7 @@ class ConfigDialogWindow:
         precision_dictionary = {}
         survey_tolerance_dictionary = {}
         configuration_dictionary = {}
+        file_directory_dictionary = {}
 
         precision_dictionary['instrument_precision'] = self.precision_entry.get()
         survey_tolerance_dictionary['eastings'] = self.entry_easting.get()
@@ -1253,11 +1257,11 @@ class CompnetCompareCRDFWindow:
                                                                                                       14, 'bold'))
         self.tolE_lbl = tk.Label(self.dialog_window, text='Tolerance E: ')
         self.entry_tolE = tk.Entry(self.dialog_window)
-        self.entry_tolE.insert(tk.END, '0.005')
+        self.entry_tolE.insert(tk.END, '0.001')
 
         self.tolN_lbl = tk.Label(self.dialog_window, text='Tolerance N: ')
         self.entry_tolN = tk.Entry(self.dialog_window)
-        self.entry_tolN.insert(tk.END, '0.005')
+        self.entry_tolN.insert(tk.END, '0.001')
 
         self.crd_file_1_btn = tk.Button(self.dialog_window, text='(1) Choose CRD File 1: ',
                                         command=lambda: self.get_crd_file_path(1))
