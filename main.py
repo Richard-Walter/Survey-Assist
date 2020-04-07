@@ -11,6 +11,8 @@ NOTE: For 3.4 compatibility
 
 # TODO COmpare CRD files that have elevation as well
 # TODO analysis FL and FR shots when checking survey - highlight
+# TODO automate the transfer of files of SD card to the job folder (know location based on created dated directory
+# TODO Job Board integrated so it can directly open up the correspponding app/ add from job board straight to diary
 # TODO integrate Job diary/dated directory functionality
 
 import tkinter as tk
