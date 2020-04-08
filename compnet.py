@@ -1,5 +1,6 @@
 import re
 from decimal import Decimal
+from collections import OrderedDict
 
 
 class CoordinateFile:
@@ -14,7 +15,7 @@ class CoordinateFile:
 
         self.file_contents = None
         self.file_type = file_type
-        self.coordinate_dictionary = {}
+        self.coordinate_dictionary = OrderedDict()
 
         try:
             with open(coordinate_file_path, 'r') as f_orig:

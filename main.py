@@ -9,12 +9,10 @@ NOTE: For 3.4 compatibility
     ii) had to use an ordered dictionary"""
 
 
-# TODO COmpare CRD files that have elevation as well
 # TODO analysis FL and FR shots when checking survey - highlight
 # TODO automate the transfer of files of SD card to the job folder (know location based on created dated directory
-# TODO Job Board integrated so it can directly open up the correspponding app/ add from job board straight to diary
 # TODO integrate Job diary/dated directory functionality
-# TODO you can tell if a file is 4dp beacuse all the data values have an extra digit 24 instaed of 23 characters
+# TODO NOTE: you can tell if a file is 4dp beacuse all the data values have an extra digit 24 instaed of 23 characters
 
 import tkinter as tk
 from tkinter import ttk
@@ -54,11 +52,13 @@ class MenuBar(tk.Frame):
         # file_sub_menu.add_command(label="Exit", command=self.client_exit)
         self.menu_bar.add_cascade(label="File", menu=file_sub_menu)
 
-        # Query menu
-        self.query_sub_menu = tk.Menu(self.menu_bar, tearoff=0)
-        self.query_sub_menu.add_command(label="Query GSI...", command=self.display_query_input_box)
-        self.query_sub_menu.add_command(label="Clear Query", command=self.clear_query)
-        self.menu_bar.add_cascade(label="Query", menu=self.query_sub_menu, state="disabled")
+        # Edit menu
+        self.edit_sub_menu = tk.Menu(self.menu_bar, tearoff=0)
+        self.edit_sub_menu.add_command(label="Delete all 2D Orientation Shots", command=self.delete_orientation_shots)
+        self.edit_sub_menu.add_command(label="Change target height...", command=self.change_target_height)
+
+        self.menu_bar.add_cascade(label="Edit Survey", menu=self.edit_sub_menu, state="disabled")
+
 
         # Check menu
         self.check_sub_menu = tk.Menu(self.menu_bar, tearoff=0)
@@ -73,12 +73,11 @@ class MenuBar(tk.Frame):
                                         command=self.compare_survey)
         self.menu_bar.add_cascade(label="Check Survey", menu=self.check_sub_menu, state="disabled")
 
-        # Edit menu
-        self.edit_sub_menu = tk.Menu(self.menu_bar, tearoff=0)
-        self.edit_sub_menu.add_command(label="Delete all 2D Orientation Shots", command=self.delete_orientation_shots)
-        self.edit_sub_menu.add_command(label="Change target height...", command=self.change_target_height)
-
-        self.menu_bar.add_cascade(label="Edit Survey", menu=self.edit_sub_menu, state="disabled")
+        # Query menu
+        self.query_sub_menu = tk.Menu(self.menu_bar, tearoff=0)
+        self.query_sub_menu.add_command(label="Query GSI...", command=self.display_query_input_box)
+        self.query_sub_menu.add_command(label="Clear Query", command=self.clear_query)
+        self.menu_bar.add_cascade(label="Query", menu=self.query_sub_menu, state="disabled")
 
         # Compnet menu
         self.compnet_sub_menu = tk.Menu(self.menu_bar, tearoff=0)
@@ -1258,6 +1257,10 @@ class CompnetCompareCRDFWindow:
         self.entry_tolN = tk.Entry(self.dialog_window)
         self.entry_tolN.insert(tk.END, '0.001')
 
+        self.tolH_lbl = tk.Label(self.dialog_window, text='Tolerance H: ')
+        self.entry_tolH = tk.Entry(self.dialog_window)
+        self.entry_tolH.insert(tk.END, '0.001')
+
         self.crd_file_1_btn = tk.Button(self.dialog_window, text='(1) Choose CRD File 1: ',
                                         command=lambda: self.get_crd_file_path(1))
         self.crd_file_2_btn = tk.Button(self.dialog_window, text='(2) Choose CRD File 2: ',
@@ -1272,6 +1275,8 @@ class CompnetCompareCRDFWindow:
         self.entry_tolE.grid(row=1, column=2, sticky='nesw', padx=(5, 25), pady=2)
         self.tolN_lbl.grid(row=2, column=1, sticky='nesw', padx=(25, 5), pady=3)
         self.entry_tolN.grid(row=2, column=2, sticky='nesw', padx=(5, 25), pady=3)
+        self.tolH_lbl.grid(row=3, column=1, sticky='nesw', padx=(25, 5), pady=3)
+        self.entry_tolH.grid(row=3, column=2, sticky='nesw', padx=(5, 25), pady=3)
 
         self.crd_file_1_btn.grid(row=5, column=1, columnspan=2, sticky='nesw', padx=25, pady=(25, 3))
         self.crd_file_2_btn.grid(row=6, column=1, columnspan=2, sticky='nesw', padx=25, pady=3)
@@ -1301,8 +1306,10 @@ class CompnetCompareCRDFWindow:
 
         tol_E = float(self.entry_tolE.get())
         tol_N = float(self.entry_tolN.get())
+        tol_H = float(self.entry_tolH.get())
 
-        print(tol_E, tol_N)
+
+        print(tol_E, tol_N, tol_H)
 
         common_points = []
         uncommon_points = []
@@ -1321,6 +1328,7 @@ class CompnetCompareCRDFWindow:
                     uncommon_points.append(key)
 
             # Lets check for outliers for common points
+
             for point in common_points:
                 cf1_E = float(coordinate_file1.coordinate_dictionary[point]['Eastings'])
                 cf1_N = float(coordinate_file1.coordinate_dictionary[point]['Northings'])
@@ -1329,25 +1337,32 @@ class CompnetCompareCRDFWindow:
 
                 diff_E = cf1_E - cf2_E
                 diff_N = cf1_N - cf2_N
-
                 if abs(diff_E) > tol_E:
-                    self.outliers_dict[point] = "  Easting: " + '{0:.3f}'.format(round(diff_E, 3))
+                    self.outliers_dict[point + ' - Easting'] = '{0:.3f}'.format(round(diff_E, 3))
                 if abs(diff_N) > tol_N:
-                    self.outliers_dict[point] = "  Northing: " + '{0:.3f}'.format(round(diff_N, 3))
+                    self.outliers_dict[point + ' - Northing'] = '{0:.3f}'.format(round(diff_N, 3))
+
+                try:
+                    # check and see if elevation data exists
+                    cf1_H = float(coordinate_file1.coordinate_dictionary[point]['Elevation'])
+                    cf2_H = float(coordinate_file2.coordinate_dictionary[point]['Elevation'])
+                    diff_H = cf1_H - cf2_H
+
+                    if abs(diff_H) > tol_H:
+                        self.outliers_dict[point + ' - Elevation'] = '{0:.3f}'.format(round(diff_H, 3))
+                except (ValueError, KeyError) as ex:
+                    # elevation probably doesnt exist in this coordinate file
+                    print(ex)
+                    pass
 
         except Exception as ex:
             print(ex, type(ex))
             # self.compare_result_lbl.config(text='ERROR - See Richard\n')
-            tk.messagebox.showerror("Error", ex)
+            tk.messagebox.showerror("Error", ex + '\n\n Please see RIchard if problem persists')
 
         else:
 
-            # self.compare_result_lbl.config(text='SUCCESS')
-
-            # display results to user
-            # msg_header = "EASTING TOLERANCE = " + str(tol_E) + "\nNORTHING TOLERANCE = " + str(tol_N) +"\n\n"
-
-            msg_body = 'POINTS THAT EXCEED TOLERANCE:\n\n'
+            msg_body = 'Points that exceed tolerance are:\n\n'
 
             if self.outliers_dict:
                 for point in sorted(self.outliers_dict, key=lambda k: k):
@@ -1358,7 +1373,7 @@ class CompnetCompareCRDFWindow:
             # Display to the user points that are uncommon
             if uncommon_points:
 
-                msg = '\n\nTHE FOLLOWING POINTS WERE NOT FOUND IN THE 2ND FILE\n\n'
+                msg = '\n\nThe following points were not found in the 2nd file:\n\n'
                 for point in uncommon_points:
                     msg += point + '\n'
 
@@ -1369,7 +1384,9 @@ class CompnetCompareCRDFWindow:
             # top.geometry('400x600')
 
             msg = tk.Message(top, text=msg_body)
-            msg.grid(row=1, column=1, padx=30, pady=10)
+            msg.grid(row=1, column=1, padx=50, pady=10)
+
+
 
     def get_crd_file_path(self, file_path_number):
 
