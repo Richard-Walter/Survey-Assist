@@ -8,10 +8,9 @@ NOTE: For 3.4 compatibility
     i) Replaced f-strings with.format method.
     ii) had to use an ordered dictionary"""
 
-
+# TODO integrate Job diary/dated directory functionality
 # TODO analysis FL and FR shots when checking survey - highlight
 # TODO automate the transfer of files of SD card to the job folder (know location based on created dated directory
-# TODO integrate Job diary/dated directory functionality
 
 
 import tkinter as tk
@@ -58,7 +57,6 @@ class MenuBar(tk.Frame):
         self.edit_sub_menu.add_command(label="Change target height...", command=self.change_target_height)
 
         self.menu_bar.add_cascade(label="Edit Survey", menu=self.edit_sub_menu, state="disabled")
-
 
         # Check menu
         self.check_sub_menu = tk.Menu(self.menu_bar, tearoff=0)
@@ -1212,10 +1210,10 @@ class UtilityCreateCSVFromASCWindow:
 
                 # add coordinates to the CSV
 
-                csv_line += point+comma
-                csv_line += easting+comma
-                csv_line += northing+comma
-                csv_line += elevation+'\n'
+                csv_line += point + comma
+                csv_line += easting + comma
+                csv_line += northing + comma
+                csv_line += elevation + '\n'
 
                 csv_file += csv_line
 
@@ -1308,7 +1306,6 @@ class CompnetCompareCRDFWindow:
         tol_N = float(self.entry_tolN.get())
         tol_H = float(self.entry_tolH.get())
 
-
         print(tol_E, tol_N, tol_H)
 
         common_points = []
@@ -1385,8 +1382,6 @@ class CompnetCompareCRDFWindow:
 
             msg = tk.Message(top, text=msg_body)
             msg.grid(row=1, column=1, padx=50, pady=10)
-
-
 
     def get_crd_file_path(self, file_path_number):
 

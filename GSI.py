@@ -136,7 +136,7 @@ class GSI:
                             if len(field) == 24:
                                 self.survey_config.update(SurveyConfigurationWindow.section_instrument,
                                                           'instrument_precision', '4dp')
-                                self.survey_config.precision_value= '4dp'
+                                self.survey_config.precision_value = '4dp'
                             else:
                                 self.survey_config.update(SurveyConfigurationWindow.section_instrument,
                                                           'instrument_precision', '3dp')
@@ -157,7 +157,12 @@ class GSI:
 
                         # distance and coordinates
                         elif two_digit_id in ('31', '32', '33', '81', '82', '83', '84', '85', '86', '87', '88'):
-                            field_value = self.format_number(field_value)
+
+                            if two_digit_id == '87':
+                                # always format target height to e decimal places, even for 4dp precision
+                                field_value = self.format_number(field_value, '3dp')
+                            else:
+                                field_value = self.format_number(field_value, self.survey_config.precision_value)
 
                             # Check to see if this line is a station setup
                             if two_digit_id == "84":
@@ -240,10 +245,10 @@ class GSI:
             return "0"
         return constant
 
-    def format_number(self, number):
+    def format_number(self, number, precision):
 
         try:
-            if self.survey_config.precision_value == '3dp':
+            if precision == '3dp':
                 return '{:.3f}'.format(float(number) * 0.001)
 
             else:  # survey is 4 dp
@@ -468,7 +473,6 @@ class GSI:
 
         error_points = []
 
-
         with conn:
 
             sql_query_text = "SELECT {} FROM GSI WHERE {}=?".format(sql_query_columns, sql_where_column)
@@ -549,6 +553,7 @@ class GSI:
                     print('Value error at point : ' + point)
 
         return errors, error_points
+
 
 # def main():
 #
