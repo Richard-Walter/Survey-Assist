@@ -12,7 +12,7 @@ NOTE: For 3.4 compatibility
 # TODO analysis FL and FR shots when checking survey - highlight
 # TODO automate the transfer of files of SD card to the job folder (know location based on created dated directory
 # TODO integrate Job diary/dated directory functionality
-# TODO NOTE: you can tell if a file is 4dp beacuse all the data values have an extra digit 24 instaed of 23 characters
+
 
 import tkinter as tk
 from tkinter import ttk

@@ -58,7 +58,7 @@ class GSI:
             # remove the decimal from the new value  e.g. 1.543 -> 1543
             new_value = new_value.replace(".", "")
 
-            # 4dp precision &elevation only - add decimal at second last digit e.g 2013493 ->201349.3
+            # 4dp precision & elevation only - add decimal at second last digit e.g 2013493 ->201349.3
             if self.survey_config.precision_value == '4dp' and prefix[:2] == '83':
                 new_value = new_value[:-1] + '.' + new_value[-1:]
                 # There are 18 chars in the suffix so we need to fill the new value with leading zeros
@@ -130,6 +130,17 @@ class GSI:
                     for field in field_list:
 
                         two_digit_id = field[0:2]
+
+                        # Check if the field is '21' so that we can determine precision (3 or 4dp) based on field length
+                        if two_digit_id == '21':
+                            if len(field) == 24:
+                                self.survey_config.update(SurveyConfigurationWindow.section_instrument,
+                                                          'instrument_precision', '4dp')
+                                self.survey_config.precision_value= '4dp'
+                            else:
+                                self.survey_config.update(SurveyConfigurationWindow.section_instrument,
+                                                          'instrument_precision', '3dp')
+                                self.survey_config.precision_value = '3dp'
 
                         # Strip off unnecessary digits and spaces to make the number readable
                         field_value = field[7:].rstrip().lstrip('0')
