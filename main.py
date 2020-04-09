@@ -9,8 +9,7 @@ NOTE: For 3.4 compatibility
     ii) had to use an ordered dictionary"""
 
 # TODO FL-FR -check all needs a message pop up of errors found
-# TODO FL-FR highlight and tag errors based on tolerances,
-# TODO FLFR need to sort points per station otherwise rail and HCCL doesn display properly
+# TODO FLFR need to sort points per station otherwise rail and HCCL doesn't display properly
 # TODO integrate Job diary/dated directory functionality
 # TODO Create an extra gui bar: survey config, redisplay obs???  or can we let user seelct config if updating PC
 # TODO automate the transfer of files of SD card to the job folder (know location based on created dated directory
@@ -213,7 +212,7 @@ class MenuBar(tk.Frame):
 
     def check_FLFR(self, display='YES'):
 
-        error_line_number_list = []
+        error_line_number_list = set()
         formatted_gsi_lines_analysis = []
 
         for gsi_line_number, line in enumerate(gsi.formatted_lines, start=0):
@@ -226,11 +225,13 @@ class MenuBar(tk.Frame):
                 # add the analysis lines for this station
                 for aline in analysed_lines:
                     formatted_gsi_lines_analysis.append(aline)
+                for line_no in errors_by_line_number:
+                    error_line_number_list.add(line_no)
 
         if display == 'NO':  # don't display results to user - just a popup dialog to let them know there is an issue
             pass
         else:
-            gui_app.list_box.populate(formatted_gsi_lines_analysis, error_line_number_list)
+            gui_app.list_box.populate(formatted_gsi_lines_analysis, list(error_line_number_list))
 
     def anaylseFLFR(self, obs_from_station_dict):
 
@@ -243,6 +244,7 @@ class MenuBar(tk.Frame):
                                            'Easting': ' ', 'Northing': ' ', 'Elevation': ' ', 'STN_Easting': '',
                                            'STN_Northing': '', 'STN_Elevation': '', 'Target_Height': ' ',
                                            'STN_Height': ' '}
+
         errors_by_line_number = []
         line_already_compared = -1
 
@@ -301,11 +303,18 @@ class MenuBar(tk.Frame):
 
                             obs_line_2_field_value = get_numerical_value_from_string(obs_line_2_field_value_str,
                                                                                      field_type, precision)
-                            if (obs_line_1_field_value!= "") and (obs_line_2_field_value!= ""):
-
+                            if (obs_line_1_field_value != "") and (obs_line_2_field_value != ""):
                                 float_diff_str = str(decimalize_value(obs_line_1_field_value - obs_line_2_field_value,
                                                                       precision))
+                                float_diff_str = self.check_diff_exceed_tolerance(key, float_diff_str)
                                 obs_line_2_dict[key] = float_diff_str
+
+                                # check for tag to indicate tolerance exceeded
+                                if '*' in float_diff_str:
+                                    # add both lines to be highlighted (note: this is the display linenumber)
+                                    errors_by_line_number.append(line_number+1)
+                                    errors_by_line_number.append(line_number+2)
+
 
                 else:
                     analysed_lines.append(formatted_line_dict)
@@ -323,6 +332,30 @@ class MenuBar(tk.Frame):
                 pass
 
         return analysed_lines, errors_by_line_number
+
+    def check_diff_exceed_tolerance(self, key, float_diff_str):
+
+        float_diff = float(float_diff_str)
+
+        # get flfr tolerances from config
+        flfr_height_tolerance = float(self.survey_config.flfr_height_tolerance)
+        flfr_northings_tolerance = float(self.survey_config.flfr_northing_tolerance)
+        flfr_eastings_tolerance = float(self.survey_config.flfr_easting_tolerance)
+
+        if key == 'Elevation':
+            if float_diff > flfr_height_tolerance:
+                # add a tag
+                float_diff_str = '*' + float_diff_str
+        elif key == 'Easting':
+            if float_diff > flfr_eastings_tolerance:
+                # add a tag
+                float_diff_str = '*' + float_diff_str
+        elif key == 'Northing':
+            if float_diff > flfr_height_tolerance:
+                # add a tag
+                float_diff_str = '*' + float_diff_str
+
+        return float_diff_str
 
     def check_3d_all(self):
 

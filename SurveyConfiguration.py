@@ -7,6 +7,7 @@ class SurveyConfiguration:
     section_survey_tolerances = 'SURVEY_TOLERANCES'
     section_config_files = 'CONFIGURATION'
     section_file_directories = 'FILE DIRECTORIES'
+
     precision_value_list = ['3dp', '4dp']
     default_instrument_values = {
         'instrument_precision': '3dp'
@@ -16,6 +17,12 @@ class SurveyConfiguration:
         'eastings': '0.010',
         'northings': '0.010',
         'height': '0.015',
+    }
+
+    default_flfr_survey_tolerance_values = {
+        'flfr_eastings': '0.005',
+        'flfr_northings': '0.005',
+        'flfr_height': '0.005',
     }
 
     default_file_directories_values = {
@@ -39,6 +46,9 @@ class SurveyConfiguration:
         self.easting_tolerance = self.config_parser.get(SurveyConfiguration.section_survey_tolerances, 'eastings')
         self.northing_tolerance = self.config_parser.get(SurveyConfiguration.section_survey_tolerances, 'northings')
         self.height_tolerance = self.config_parser.get(SurveyConfiguration.section_survey_tolerances, 'height')
+        self.flfr_easting_tolerance = self.config_parser.get(SurveyConfiguration.section_survey_tolerances, 'flfr_eastings')
+        self.flfr_northing_tolerance = self.config_parser.get(SurveyConfiguration.section_survey_tolerances, 'flfr_northings')
+        self.flfr_height_tolerance = self.config_parser.get(SurveyConfiguration.section_survey_tolerances, 'flfr_height')
 
         self.sorted_station_config = self.config_parser.get(SurveyConfiguration.section_config_files, 'sorted_station_config')
 
