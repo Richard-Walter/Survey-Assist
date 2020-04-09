@@ -201,7 +201,7 @@ class MenuBar(tk.Frame):
 
             # display error dialog box
             tkinter.messagebox.showinfo("Checking Naming", error_text)
-            gui_app.list_box.populate(gsi.formatted_lines, error_line_numbers)
+
 
         except Exception:
             logger.exception('Error checking station naming')
@@ -209,45 +209,6 @@ class MenuBar(tk.Frame):
                                              'program or see log file for further information')
 
     def check_FLFR(self, display='YES'):
-
-        # self.txtCanvas.delete(1.0, END)
-        #
-        # OUTPUT = []
-        # HeaderList = []
-        # ANALYSED = []
-        #
-        # HeaderList.append('<<<< Station ID >>>>')
-        # HeaderList.append('<<<< Point ID >>>>')
-        # for Code in ObAnalysisCodes:
-        #     HeaderList.append('<<<< ' + CODE_LIST[Code] + ' >>>>')
-        # OUTPUT.append(HeaderList)
-        #
-        # for Key in self.Obs_Dict:
-        #     KeyList = Key.split('::')
-        #     STNID = KeyList[0]
-        #     PID = KeyList[1]
-        #     OBID = KeyList[2]
-        #     ObDictA = self.Obs_Dict[Key]
-        #     ANALYSED.append(Key)
-        #     for sKey in self.Obs_Dict:
-        #         sKeyList = sKey.split('::')
-        #         sSTNID = sKeyList[0]
-        #         sPID = sKeyList[1]
-        #         sOBID = sKeyList[2]
-        #         ID_DIFF = abs(int(OBID) - int(sOBID))
-        #         if STNID == sSTNID and PID == sPID and OBID != sOBID and sKey not in ANALYSED and ID_DIFF == 1:
-        #             ObDictB = self.Obs_Dict[sKey]
-        #             dictDiff = self.AnalyseObservations(ObDictA, ObDictB)
-        #             preList = []
-        #             preList.append(STNID)
-        #             preList.append(PID)
-        #             for item in dictDiff:
-        #                 preList.append(dictDiff[item])
-        #             ANALYSED.append(sKey)
-        #             OUTPUT.append(preList)
-        #
-        # self.Printer_Data = OUTPUT
-        # self.Print()
 
         error_line_number_list = []
         formatted_gsi_lines_analysis = []
@@ -258,18 +219,90 @@ class MenuBar(tk.Frame):
                 obs_from_staton_dict = gsi.get_all_shots_from_a_station_including_setup(station_name, gsi_line_number)
                 analysed_lines, errors_by_line_number = self.anaylseFLFR(obs_from_staton_dict)
 
-        if display == 'NO':  # dont display results to user - just a popup dialog to let them know there is an issue
+                # add the anaysis lines for this station
+                for line in analysed_lines:
+                    formatted_gsi_lines_analysis.append(line)
+
+        if display == 'NO':  # don't display results to user - just a popup dialog to let them know there is an issue
             pass
         else:
-            gui_app.list_box.populate(formatted_gsi_lines_analysis)
+            gui_app.list_box.populate(formatted_gsi_lines_analysis, error_line_number_list)
 
-    def anaylseFLFR(self, obs_from_staton_dict):
+    def anaylseFLFR(self, obs_from_station_dict):
+
+        # def AnalyseObservations(self, ObsDictA, ObsDictB):
+        #     ResultList = collections.OrderedDict()
+        #     for Code in ObAnalysisCodes:
+        #         if not ObsDictA[Code] == '' and not ObsDictB[Code] == '':
+        #             ValA = float(ObsDictA[Code])
+        #             ValB = float(ObsDictB[Code])
+        #             if Code == '21':
+        #                 Result = AngularDifference(ValA, ValB, 180)
+        #                 Result = self.ValueFormatter(str(Deci2DMS(Result, self.UnitType)), '22', True)
+        #             elif Code == '22':
+        #                 Result = AngularDifference(ValA, ValB, 360)
+        #                 Result = self.ValueFormatter(str(Deci2DMS(Result, self.UnitType)), '22', True)
+        #             else:
+        #                 if self.UnitType in ['TDA', 'TS60']:
+        #                     Result = round(max([ValA, ValB]) - min([ValA, ValB]), 4)
+        #                 else:
+        #                     Result = round(max([ValA, ValB]) - min([ValA, ValB]), 3)
+        #                 if self.Limit_FLFR < Result: Result = '*' + str(Result)
+        #         else:
+        #             Result = ''
+        #         ResultList[CODE_LIST[Code]] = Result
+        #     return ResultList
 
         analysed_lines = []
+        analysed_line_blank_values_dict = {'Point_ID': ' ', 'Timestamp': ' ', 'Horizontal_Angle': ' ',
+                                           'Vertical_Angle': ' ', 'Slope_Distance': ' ',
+                                           'Horizontal_Dist': ' ', 'Height_Diff': ' ', 'Prism_Constant': ' ',
+                                           'Easting': ' ', 'Northing': ' ', 'Elevation': ' ', 'STN_Easting': '',
+                                           'STN_Northing': '', 'STN_Elevation': '', 'Target_Height': ' ',
+                                           'STN_Height': ' '}
         errors_by_line_number = []
+        line_already_compared = -1
 
-        for line_number, lines in sorted(obs_from_staton_dict.items()):
-            print("test")
+        for index, (line_number, formatted_line_dict) in enumerate(obs_from_station_dict.items(), start=1):
+
+            obs_line_1_dict = formatted_line_dict
+            obs_line_2_dict = None
+
+            if GSI.is_control_point(formatted_line_dict):
+
+                # dont analyse stn setup
+                analysed_lines.append(formatted_line_dict)
+                continue
+
+            # check to see if line has already compared
+            if line_number == line_already_compared:
+                continue
+
+            # if not at the end of the dictionary ( could use try except IndexError )
+            length = len(obs_from_station_dict)
+            if index < len(obs_from_station_dict):
+                obs_line_2_dict = obs_from_station_dict[line_number + 1]
+
+                # points match - lets analyse
+                if obs_line_1_dict['Point_ID'] == obs_line_2_dict['Point_ID']:
+
+                    for key, obs_line_1_field_value in obs_line_1_dict.items():
+                        obs_line_2_field_value = obs_line_1_dict[key]
+
+                else:
+                    analysed_lines.append(formatted_line_dict)
+                    continue
+
+                blank_line_dict = analysed_line_blank_values_dict.copy()
+                blank_line_dict['Point_ID'] = obs_line_1_dict['Point_ID']
+                analysed_lines.append(blank_line_dict)
+                analysed_lines.append(obs_line_2_dict)
+                line_already_compared = line_number + 1
+
+            else:
+                # end of the dictionary reached - do not analyse but add as it hasnt been compared
+                analysed_lines.append(obs_line_1_dict)
+                pass
 
         return analysed_lines, errors_by_line_number
 
