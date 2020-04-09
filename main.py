@@ -8,7 +8,8 @@ NOTE: For 3.4 compatibility
     i) Replaced f-strings with.format method.
     ii) had to use an ordered dictionary"""
 
-# TODO check angles over 60 should go into muinutes/degrees, FL-FR highlight and tag errors based on tolerances
+# TODO check angles over 60 should go into muinutes/degrees, FL-FR highlight and tag errors based on tolerances,
+# TODO FLFR need to sort points per station otherwise rail and HCCL doesn display properly
 # TODO integrate Job diary/dated directory functionality
 # TODO Create an extra gui bar: survey config, redisplay obs???  or can we let user seelct config if updating PC
 # TODO automate the transfer of files of SD card to the job folder (know location based on created dated directory
@@ -18,6 +19,7 @@ import tkinter as tk
 from tkinter import ttk
 import logging.config
 from tkinter import filedialog
+import copy
 
 import tkinter.messagebox
 from GSI import *
@@ -214,14 +216,15 @@ class MenuBar(tk.Frame):
         formatted_gsi_lines_analysis = []
 
         for gsi_line_number, line in enumerate(gsi.formatted_lines, start=0):
+
             if GSI.is_control_point(line):
                 station_name = line['Point_ID']
-                obs_from_staton_dict = gsi.get_all_shots_from_a_station_including_setup(station_name, gsi_line_number)
-                analysed_lines, errors_by_line_number = self.anaylseFLFR(obs_from_staton_dict)
+                obs_from_station_dict = gsi.get_all_shots_from_a_station_including_setup(station_name, gsi_line_number)
+                analysed_lines, errors_by_line_number = self.anaylseFLFR(copy.deepcopy(obs_from_station_dict))
 
-                # add the anaysis lines for this station
-                for line in analysed_lines:
-                    formatted_gsi_lines_analysis.append(line)
+                # add the analysis lines for this station
+                for aline in analysed_lines:
+                    formatted_gsi_lines_analysis.append(aline)
 
         if display == 'NO':  # don't display results to user - just a popup dialog to let them know there is an issue
             pass
@@ -231,29 +234,6 @@ class MenuBar(tk.Frame):
     def anaylseFLFR(self, obs_from_station_dict):
 
         precision = survey_config.precision_value
-
-        # def AnalyseObservations(self, ObsDictA, ObsDictB):
-        #     ResultList = collections.OrderedDict()
-        #     for Code in ObAnalysisCodes:
-        #         if not ObsDictA[Code] == '' and not ObsDictB[Code] == '':
-        #             ValA = float(ObsDictA[Code])
-        #             ValB = float(ObsDictB[Code])
-        #             if Code == '21':
-        #                 Result = AngularDifference(ValA, ValB, 180)
-        #                 Result = self.ValueFormatter(str(Deci2DMS(Result, self.UnitType)), '22', True)
-        #             elif Code == '22':
-        #                 Result = AngularDifference(ValA, ValB, 360)
-        #                 Result = self.ValueFormatter(str(Deci2DMS(Result, self.UnitType)), '22', True)
-        #             else:
-        #                 if self.UnitType in ['TDA', 'TS60']:
-        #                     Result = round(max([ValA, ValB]) - min([ValA, ValB]), 4)
-        #                 else:
-        #                     Result = round(max([ValA, ValB]) - min([ValA, ValB]), 3)
-        #                 if self.Limit_FLFR < Result: Result = '*' + str(Result)
-        #         else:
-        #             Result = ''
-        #         ResultList[CODE_LIST[Code]] = Result
-        #     return ResultList
 
         analysed_lines = []
         analysed_line_blank_values_dict = {'Point_ID': ' ', 'Timestamp': ' ', 'Horizontal_Angle': ' ',
@@ -306,7 +286,8 @@ class MenuBar(tk.Frame):
                                                                                      field_type, precision)
                             angular_diff = decimalize_value(angular_difference(obs_line_1_field_value,
                                                                                obs_line_2_field_value, 180), precision)
-                            obs_line_2_dict[key] = GSI.format_angles(angle_decimal2DMS(angular_diff), precision)
+                            angle_dms = angle_decimal2DMS(angular_diff)
+                            obs_line_2_dict[key] = GSI.format_angles(angle_dms, precision)
 
                         elif key == 'Prism_Constant':
                             obs_line_2_dict[key] = str(int(obs_line_1_dict[key]) - int(obs_line_1_dict[key]))

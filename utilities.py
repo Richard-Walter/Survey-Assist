@@ -24,10 +24,11 @@ def deg2rad(degrees):
 
 
 def angle_decimal2DMS(in_deg):
+
     min, sec = divmod(in_deg * 3600, 60)
     deg, min = divmod(min, 60)
 
-    return str(int(deg)) + str(int(min)) + str(int(sec)) + ('0')
+    return '{0:02d}'.format(int(deg)) + '{0:02d}'.format(int(min)) + '{0:03d}'.format(int(sec))
 
 def angle_DMS_2_decimal(angle_deg, angle_min, angle_sec):
     # str_value = str(angle_deg) + '.' + '{:.3f}'.format(float(angle_min)/60) + '{:.3f}'.format(float(angle_sec)/3600)
