@@ -10,6 +10,7 @@ NOTE: For 3.4 compatibility
 
 # TODO integrate Job diary/dated directory functionality
 # TODO analysis FL and FR shots when checking survey - highlight
+# TODO Create an extra gui bar: survey config, redisplay obs???  or can we let user seelct config if updating PC
 # TODO automate the transfer of files of SD card to the job folder (know location based on created dated directory
 
 
