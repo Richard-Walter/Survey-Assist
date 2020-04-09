@@ -4,7 +4,7 @@ import sqlite3
 import logging.config
 from collections import OrderedDict
 from collections import Counter
-from SurveyConfigurationWindow import SurveyConfigurationWindow
+from SurveyConfiguration import SurveyConfiguration
 
 import re
 
@@ -31,16 +31,15 @@ class GSI:
         self.filename = None
         self.column_names = list(GSI.GSI_WORD_ID_DICT.values())
         self.column_ids = list(GSI.GSI_WORD_ID_DICT.keys())
-        self.survey_config = SurveyConfigurationWindow()
         self.formatted_lines = []
         self.unformatted_lines = []
-        self.survey_config = SurveyConfigurationWindow()
+        self.survey_config = SurveyConfiguration()
 
     def update_target_height(self, line_number, corrections):
 
         # corrections takes the form of a dictionary e.g. {'83': new_height, '87': new_target_height}
 
-        self.survey_config = SurveyConfigurationWindow()
+        self.survey_config = SurveyConfiguration()
 
         unformatted_line = self.get_unformatted_line(line_number)
 
@@ -86,7 +85,7 @@ class GSI:
 
     def format_gsi(self, filename):
 
-        self.survey_config = SurveyConfigurationWindow()
+        self.survey_config = SurveyConfiguration()
 
         with open(filename, "r") as f:
 
@@ -134,11 +133,11 @@ class GSI:
                         # Check if the field is '21' so that we can determine precision (3 or 4dp) based on field length
                         if two_digit_id == '21':
                             if len(field) == 24:
-                                self.survey_config.update(SurveyConfigurationWindow.section_instrument,
+                                self.survey_config.update(SurveyConfiguration.section_instrument,
                                                           'instrument_precision', '4dp')
                                 self.survey_config.precision_value = '4dp'
                             else:
-                                self.survey_config.update(SurveyConfigurationWindow.section_instrument,
+                                self.survey_config.update(SurveyConfiguration.section_instrument,
                                                           'instrument_precision', '3dp')
                                 self.survey_config.precision_value = '3dp'
 

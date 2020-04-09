@@ -1,7 +1,7 @@
 from configparser import ConfigParser
 
 
-class SurveyConfigurationWindow:
+class SurveyConfiguration:
 
     section_instrument = 'INSTRUMENT'
     section_survey_tolerances = 'SURVEY_TOLERANCES'
@@ -33,18 +33,18 @@ class SurveyConfigurationWindow:
         self.config_parser.read(self.config_file_path)
 
         # INSTRUMENT PRECISION
-        self.precision_value = self.config_parser.get(SurveyConfigurationWindow.section_instrument, 'instrument_precision')
+        self.precision_value = self.config_parser.get(SurveyConfiguration.section_instrument, 'instrument_precision')
 
         # SURVEY TOLERANCES
-        self.easting_tolerance = self.config_parser.get(SurveyConfigurationWindow.section_survey_tolerances, 'eastings')
-        self.northing_tolerance = self.config_parser.get(SurveyConfigurationWindow.section_survey_tolerances, 'northings')
-        self.height_tolerance = self.config_parser.get(SurveyConfigurationWindow.section_survey_tolerances, 'height')
+        self.easting_tolerance = self.config_parser.get(SurveyConfiguration.section_survey_tolerances, 'eastings')
+        self.northing_tolerance = self.config_parser.get(SurveyConfiguration.section_survey_tolerances, 'northings')
+        self.height_tolerance = self.config_parser.get(SurveyConfiguration.section_survey_tolerances, 'height')
 
-        self.sorted_station_config = self.config_parser.get(SurveyConfigurationWindow.section_config_files, 'sorted_station_config')
+        self.sorted_station_config = self.config_parser.get(SurveyConfiguration.section_config_files, 'sorted_station_config')
 
         # FILE DIRECTORIES
-        self.last_used_file_dir = self.config_parser.get(SurveyConfigurationWindow.section_file_directories, 'last_used')
-        self.fixed_file_dir = self.config_parser.get(SurveyConfigurationWindow.section_file_directories, 'fixed_file_dir')
+        self.last_used_file_dir = self.config_parser.get(SurveyConfiguration.section_file_directories, 'last_used')
+        self.fixed_file_dir = self.config_parser.get(SurveyConfiguration.section_file_directories, 'fixed_file_dir')
 
     def update(self, section, key, value):
 
@@ -55,11 +55,11 @@ class SurveyConfigurationWindow:
 
 
     def create_config_file(self, instrument_values, survey_tolerance_values, configuration_values):
-        self.config_parser[SurveyConfigurationWindow.section_instrument] = instrument_values
+        self.config_parser[SurveyConfiguration.section_instrument] = instrument_values
 
-        self.config_parser[SurveyConfigurationWindow.section_survey_tolerances] = survey_tolerance_values
+        self.config_parser[SurveyConfiguration.section_survey_tolerances] = survey_tolerance_values
 
-        self.config_parser[SurveyConfigurationWindow.section_config_files] = configuration_values
+        self.config_parser[SurveyConfiguration.section_config_files] = configuration_values
 
         with open(self.config_file_path, 'w') as f:
             self.config_parser.write(f)
