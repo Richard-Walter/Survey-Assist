@@ -8,7 +8,8 @@ NOTE: For 3.4 compatibility
     i) Replaced f-strings with.format method.
     ii) had to use an ordered dictionary"""
 
-# TODO check angles over 60 should go into muinutes/degrees, FL-FR highlight and tag errors based on tolerances,
+# TODO FL-FR -check all needs a message pop up of errors found
+# TODO FL-FR highlight and tag errors based on tolerances,
 # TODO FLFR need to sort points per station otherwise rail and HCCL doesn display properly
 # TODO integrate Job diary/dated directory functionality
 # TODO Create an extra gui bar: survey config, redisplay obs???  or can we let user seelct config if updating PC
