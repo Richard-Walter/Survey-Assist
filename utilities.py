@@ -56,8 +56,8 @@ def get_time_differance(time1, time2):
     hrs2 = int(time2_list[0])
     min2 = int(time2_list[1])
 
-    time_diff_hr = '{:.2f}'.format(hrs2 - hrs1)
-    time_diff_mins = '{:.2f}'.format(min2 - min1)
+    time_diff_hr = '{0:02d}'.format(hrs2 - hrs1)
+    time_diff_mins = '{0:02d}'.format(min2 - min1)
 
     return time_diff_hr + ':' + time_diff_mins
 

@@ -8,8 +8,8 @@ NOTE: For 3.4 compatibility
     i) Replaced f-strings with.format method.
     ii) had to use an ordered dictionary"""
 
+# TODO check angles over 60 should go into muinutes/degrees, FL-FR highlight and tag errors based on tolerances
 # TODO integrate Job diary/dated directory functionality
-# TODO analysis FL and FR shots when checking survey - highlight
 # TODO Create an extra gui bar: survey config, redisplay obs???  or can we let user seelct config if updating PC
 # TODO automate the transfer of files of SD card to the job folder (know location based on created dated directory
 
@@ -230,6 +230,8 @@ class MenuBar(tk.Frame):
 
     def anaylseFLFR(self, obs_from_station_dict):
 
+        precision = survey_config.precision_value
+
         # def AnalyseObservations(self, ObsDictA, ObsDictB):
         #     ResultList = collections.OrderedDict()
         #     for Code in ObAnalysisCodes:
@@ -287,7 +289,7 @@ class MenuBar(tk.Frame):
 
                     for key, obs_line_1_field_value_str in obs_line_1_dict.items():
 
-                        obs_line_2_field_value_str = obs_line_1_dict[key]
+                        obs_line_2_field_value_str = obs_line_2_dict[key]
 
                         # default type
                         field_type = FIELD_TYPE_FLOAT
@@ -298,15 +300,13 @@ class MenuBar(tk.Frame):
                         elif key in ('Horizontal_Angle', 'Vertical_Angle'):
                             field_type = FIELD_TYPE_ANGLE
                             obs_line_1_field_value = get_numerical_value_from_string(obs_line_1_field_value_str,
-                                                                                     field_type,
-                                                                                     self.survey_config.precision_value)
+                                                                                     field_type, precision)
 
                             obs_line_2_field_value = get_numerical_value_from_string(obs_line_2_field_value_str,
-                                                                                     field_type,
-                                                                                     self.survey_config.precision_value)
-                            angular_diff_str = str(angular_difference(obs_line_1_field_value, obs_line_2_field_value,
-                                                                      180,))
-                            obs_line_2_dict[key] = angular_diff_str
+                                                                                     field_type, precision)
+                            angular_diff = decimalize_value(angular_difference(obs_line_1_field_value,
+                                                                               obs_line_2_field_value, 180), precision)
+                            obs_line_2_dict[key] = GSI.format_angles(angle_decimal2DMS(angular_diff), precision)
 
                         elif key == 'Prism_Constant':
                             obs_line_2_dict[key] = str(int(obs_line_1_dict[key]) - int(obs_line_1_dict[key]))
@@ -315,16 +315,14 @@ class MenuBar(tk.Frame):
                         else:  # field should be a float
                             field_type = FIELD_TYPE_FLOAT
                             obs_line_1_field_value = get_numerical_value_from_string(obs_line_1_field_value_str,
-                                                                                     field_type,
-                                                                                     self.survey_config.precision_value)
+                                                                                     field_type, precision)
 
                             obs_line_2_field_value = get_numerical_value_from_string(obs_line_2_field_value_str,
-                                                                                     field_type,
-                                                                                     self.survey_config.precision_value)
+                                                                                     field_type, precision)
                             if (obs_line_1_field_value!= "") and (obs_line_2_field_value!= ""):
 
                                 float_diff_str = str(decimalize_value(obs_line_1_field_value - obs_line_2_field_value,
-                                                                      self.survey_config.precision_value))
+                                                                      precision))
                                 obs_line_2_dict[key] = float_diff_str
 
                 else:

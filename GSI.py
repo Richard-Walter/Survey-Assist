@@ -149,7 +149,7 @@ class GSI:
                             field_value = self.format_timestamp(field_value)
 
                         elif two_digit_id in ('21', '22'):  # horizontal or vertical angles
-                            field_value = self.format_angles(field_value)
+                            field_value = self.format_angles(field_value, self.survey_config.precision_value)
 
                         elif two_digit_id == '51':
                             field_value = self.format_prism_constant(field_value)
@@ -212,14 +212,14 @@ class GSI:
             timestamp = '{}:{}'.format(hour, minute)
 
         return timestamp
-
-    def format_angles(self, angle):
+    @staticmethod
+    def format_angles(angle, precision):
 
         degrees = '000'
         minutes = '00'
         seconds = '00'
 
-        if self.survey_config.precision_value == '3dp':
+        if precision == '3dp':
 
             if len(angle) != 0:
                 seconds = angle[-3:-1]
