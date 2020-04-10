@@ -8,7 +8,6 @@ NOTE: For 3.4 compatibility
     i) Replaced f-strings with.format method.
     ii) had to use an ordered dictionary"""
 
-# TODO add new menu options from CHris
 # TODO integrate Job diary/dated directory functionality
 # TODO automate the transfer of files of SD card to the job folder (know location based on created dated directory
 
@@ -47,15 +46,31 @@ class MenuBar(tk.Frame):
         self.master.config(menu=self.menu_bar)
 
         # File Menu
-        file_sub_menu = tk.Menu(self.menu_bar, tearoff=0)
-        file_sub_menu.add_command(label="Open...", command=self.choose_gsi_file)
-        # file_sub_menu.add_command(label="Exit", command=self.client_exit)
-        self.menu_bar.add_cascade(label="File", menu=file_sub_menu)
+        self.file_sub_menu = tk.Menu(self.menu_bar, tearoff=0)
+        self.file_sub_menu.add_command(label="Open...", command=self.choose_gsi_file)
+        self.file_sub_menu.add_command(label="Create Dated Directory...", command=self.new_dated_directoy)
+        self.file_sub_menu.add_command(label="Create Job Directory...", command=self.new_job_directoy)
+        self.file_sub_menu.add_separator()
+        self.file_sub_menu.add_command(label="Monitoring - Create", command=self.monitoring_create, state="disabled")
+        self.file_sub_menu.add_command(label="Monitoring - Update Coords", command=self.monitoring_update_coords,
+                                       state="disabled")
+        self.file_sub_menu.add_command(label="Monitoring - Update Labels", command=self.monitoring_update_labels,
+                                       state="disabled")
+        self.file_sub_menu.add_command(label="Monitoring - Rename Updated Files",
+                                       command=self.monitoring_rename_updated_files,
+                                       state="disabled")
+
+        self.menu_bar.add_cascade(label="File", menu=self.file_sub_menu)
 
         # Edit menu
         self.edit_sub_menu = tk.Menu(self.menu_bar, tearoff=0)
         self.edit_sub_menu.add_command(label="Delete all 2D Orientation Shots", command=self.delete_orientation_shots)
         self.edit_sub_menu.add_command(label="Change target height...", command=self.change_target_height)
+        self.edit_sub_menu.add_separator()
+        self.edit_sub_menu.add_command(label="Prism Constant - Fix single...", command=self.prism_constant_fix_single,
+                                       state="disabled")
+        self.edit_sub_menu.add_command(label="Prism Constant - Fix batch ...", command=self.prism_constant_fix_batch,
+                                       state="disabled")
 
         self.menu_bar.add_cascade(label="Edit Survey", menu=self.edit_sub_menu, state="disabled")
 
@@ -68,15 +83,13 @@ class MenuBar(tk.Frame):
         self.check_sub_menu.add_command(label="Check All (3D only)",
                                         command=self.check_3d_all)
         self.check_sub_menu.add_separator()
-        self.check_sub_menu.add_command(label="Compare Prism Constants to a similar survey...",
+        self.check_sub_menu.add_command(label="Compare Prism Constants to similar survey...",
                                         command=self.compare_survey)
+        self.check_sub_menu.add_command(label="Query GSI...", command=self.display_query_input_box)
         self.menu_bar.add_cascade(label="Check Survey", menu=self.check_sub_menu, state="disabled")
 
-        # Query menu
-        self.query_sub_menu = tk.Menu(self.menu_bar, tearoff=0)
-        self.query_sub_menu.add_command(label="Query GSI...", command=self.display_query_input_box)
-        self.query_sub_menu.add_command(label="Clear Query", command=self.clear_query)
-        self.menu_bar.add_cascade(label="Query", menu=self.query_sub_menu, state="disabled")
+        # Export CSV
+        self.menu_bar.add_command(label="Export CSV", command=self.export_csv, state="disabled")
 
         # Compnet menu
         self.compnet_sub_menu = tk.Menu(self.menu_bar, tearoff=0)
@@ -94,11 +107,21 @@ class MenuBar(tk.Frame):
                                           command=self.create_CSV_from_ASC)
         self.menu_bar.add_cascade(label="Utilities", menu=self.utility_sub_menu)
 
+        # Job Diary
+        self.menu_bar.add_command(label="Job diary", command=self.job_diary)
+
         # Config menu
         self.menu_bar.add_command(label="Config", command=self.configure_survey)
 
-        # About menu
-        self.menu_bar.add_command(label="About", command=self.display_about_dialog_box)
+        # Re-display GSI
+        self.menu_bar.add_command(label="Re-display GSI", command=self.re_display_gsi, state="disabled")
+
+        # Help menu
+        self.help_sub_menu = tk.Menu(self.menu_bar, tearoff=0)
+        self.help_sub_menu.add_command(label="Manual",
+                                       command=self.open_manual)
+        self.help_sub_menu.add_command(label="About", command=self.display_about_dialog_box)
+        self.menu_bar.add_cascade(label="Help", menu=self.help_sub_menu)
 
         # Exit menu
         self.menu_bar.add_command(label="Exit", command=self.client_exit)
@@ -115,6 +138,24 @@ class MenuBar(tk.Frame):
 
         GUIApplication.refresh()
         self.enable_menus()
+
+    def new_dated_directoy(self):
+        folder_selected = filedialog.askdirectory()
+
+    def new_job_directoy(self):
+        folder_selected = filedialog.askdirectory()
+
+    def monitoring_create(self):
+        pass
+
+    def monitoring_update_coords(self):
+        pass
+
+    def monitoring_update_labels(self):
+        pass
+
+    def monitoring_rename_updated_files(self):
+        pass
 
     @staticmethod
     def format_gsi_file():
@@ -217,7 +258,6 @@ class MenuBar(tk.Frame):
 
         for gsi_line_number, line in enumerate(gsi.formatted_lines, start=0):
 
-
             if GSI.is_control_point(line):
                 station_name = line['Point_ID']
                 obs_from_station_dict = gsi.get_all_shots_from_a_station_including_setup(station_name, gsi_line_number)
@@ -236,8 +276,6 @@ class MenuBar(tk.Frame):
                             error_line_number_list.append(index + 1)
                             dialog_text_set.add(point_name + ": FL-FR out of tolerance" + '\n')
                             break
-
-
 
         if dialog_text_set:
             for line in sorted(dialog_text_set):
@@ -384,6 +422,12 @@ class MenuBar(tk.Frame):
     def change_target_height(self):
         TargetHeightWindow(self.master)
 
+    def prism_constant_fix_single(self):
+        pass
+
+    def prism_constant_fix_batch(self):
+        pass
+
     def compare_survey(self):
 
         last_used_directory = survey_config.last_used_file_dir
@@ -435,6 +479,9 @@ class MenuBar(tk.Frame):
 
         print(points_diff_PC_dict)
 
+    def export_csv(self):
+        pass
+
     def display_query_input_box(self):
 
         QueryDialogWindow(self.master)
@@ -463,6 +510,10 @@ class MenuBar(tk.Frame):
 
         UtilityCreateCSVFromASCWindow(self)
 
+    def job_diary(self):
+
+        pass
+
     def configure_survey(self):
 
         global survey_config
@@ -471,6 +522,12 @@ class MenuBar(tk.Frame):
 
         ConfigDialogWindow(self.master)
 
+    def re_display_gsi(self):
+        gui_app.refresh()
+
+    def open_manual(self):
+        pass
+
     @staticmethod
     def clear_query():
 
@@ -478,17 +535,17 @@ class MenuBar(tk.Frame):
 
     def enable_menus(self):
 
-        self.menu_bar.entryconfig("Query", state="normal")
         self.menu_bar.entryconfig("Check Survey", state="normal")
         self.menu_bar.entryconfig("Edit Survey", state="normal")
-
-        # self.menu_bar.entryconfig("Compnet", state="normal")
+        self.menu_bar.entryconfig("Re-display GSI", state="normal")
+        self.menu_bar.entryconfig("Export GSI as CSV", state="normal")
 
     def disable_menus(self):
 
-        self.menu_bar.entryconfig("Query", state="disabled")
         self.menu_bar.entryconfig("Check Survey", state="disabled")
         self.menu_bar.entryconfig("Edit Survey", state="disabled")
+        self.menu_bar.entryconfig("Re-display GSI", state="disabled")
+        self.menu_bar.entryconfig("Export GSI as CSV", state="disabled")
 
     @staticmethod
     def display_about_dialog_box():
