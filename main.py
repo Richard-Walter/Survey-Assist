@@ -9,8 +9,6 @@ NOTE: For 3.4 compatibility
     ii) had to use an ordered dictionary"""
 
 # TODO REDISPLAY OBS BAR
-# TODO FL-FR -check all needs a message pop up of errors found
-# TODO FL-FR bug if point doesnt not have a double
 # TODO integrate Job diary/dated directory functionality
 # TODO Create an extra gui bar: survey config, redisplay obs???  or can we let user seelct config if updating PC
 # TODO automate the transfer of files of SD card to the job folder (know location based on created dated directory
@@ -213,10 +211,13 @@ class MenuBar(tk.Frame):
 
     def check_FLFR(self, display='YES'):
 
-        error_line_number_list = set()
+        error_line_number_list = []
+        dialog_text_set = set()
+        dialog_text = "\n"
         formatted_gsi_lines_analysis = []
 
         for gsi_line_number, line in enumerate(gsi.formatted_lines, start=0):
+
 
             if GSI.is_control_point(line):
                 station_name = line['Point_ID']
@@ -229,14 +230,29 @@ class MenuBar(tk.Frame):
 
                 # check for tagged values so line error can be determined
                 for index, line_dict in enumerate(formatted_gsi_lines_analysis):
-                    for field_value in line_dict.values():
+
+                    point_name = line_dict['Point_ID']
+                    for key, field_value in line_dict.items():
                         if '*' in field_value:
-                            error_line_number_list.add(index + 1)
+                            error_line_number_list.append(index + 1)
+                            dialog_text_set.add(point_name + ": FL-FR out of tolerance" + '\n')
+                            break
+
+
+
+        if dialog_text_set:
+            for line in sorted(dialog_text_set):
+                dialog_text += line
+        else:
+            dialog_text = " FL-FR shots are within specified tolerance"
+
+        # display dialog box
+        tkinter.messagebox.showinfo("Checking FL-FR", dialog_text)
 
         if display == 'NO':  # don't display results to user - just a popup dialog to let them know there is an issue
             pass
         else:
-            gui_app.list_box.populate(formatted_gsi_lines_analysis, list(error_line_number_list))
+            gui_app.list_box.populate(formatted_gsi_lines_analysis, error_line_number_list)
 
     def anaylseFLFR(self, obs_from_station_dict):
 
@@ -283,7 +299,6 @@ class MenuBar(tk.Frame):
                         obs_line_2_field_value_str = obs_line_2_dict[key]
 
                         # default type
-                        field_type = FIELD_TYPE_FLOAT
                         if key == 'Timestamp':
                             # time_difference = get_time_differance(obs_line_1_field_value_str,
                             #                                       obs_line_2_field_value_str)
@@ -318,7 +333,10 @@ class MenuBar(tk.Frame):
                                 obs_line_2_dict[key] = float_diff_str
 
                 else:
-                    analysed_lines.append(formatted_line_dict)
+                    # probably an orientation shot, or a shot that doesn't have a double - make blank
+                    blank_line_dict = analysed_line_blank_values_dict.copy()
+                    blank_line_dict['Point_ID'] = obs_line_1_dict['Point_ID']
+                    analysed_lines.append(blank_line_dict)
                     continue
 
                 blank_line_dict = analysed_line_blank_values_dict.copy()
