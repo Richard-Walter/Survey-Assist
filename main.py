@@ -8,10 +8,8 @@ NOTE: For 3.4 compatibility
     i) Replaced f-strings with.format method.
     ii) had to use an ordered dictionary"""
 
-# TODO FL-FR -check all needs a message pop up of errors found
-# TODO FLFR need to sort points per station otherwise rail and HCCL doesn't display properly
+# TODO add new menu options from CHris
 # TODO integrate Job diary/dated directory functionality
-# TODO Create an extra gui bar: survey config, redisplay obs???  or can we let user seelct config if updating PC
 # TODO automate the transfer of files of SD card to the job folder (know location based on created dated directory
 
 
@@ -212,26 +210,48 @@ class MenuBar(tk.Frame):
 
     def check_FLFR(self, display='YES'):
 
-        error_line_number_list = set()
+        error_line_number_list = []
+        dialog_text_set = set()
+        dialog_text = "\n"
         formatted_gsi_lines_analysis = []
 
         for gsi_line_number, line in enumerate(gsi.formatted_lines, start=0):
 
+
             if GSI.is_control_point(line):
                 station_name = line['Point_ID']
                 obs_from_station_dict = gsi.get_all_shots_from_a_station_including_setup(station_name, gsi_line_number)
-                analysed_lines, errors_by_line_number = self.anaylseFLFR(copy.deepcopy(obs_from_station_dict))
+                analysed_lines = self.anaylseFLFR(copy.deepcopy(obs_from_station_dict))
 
                 # add the analysis lines for this station
                 for aline in analysed_lines:
                     formatted_gsi_lines_analysis.append(aline)
-                for line_no in errors_by_line_number:
-                    error_line_number_list.add(line_no)
+
+                # check for tagged values so line error can be determined
+                for index, line_dict in enumerate(formatted_gsi_lines_analysis):
+
+                    point_name = line_dict['Point_ID']
+                    for key, field_value in line_dict.items():
+                        if '*' in field_value:
+                            error_line_number_list.append(index + 1)
+                            dialog_text_set.add(point_name + ": FL-FR out of tolerance" + '\n')
+                            break
+
+
+
+        if dialog_text_set:
+            for line in sorted(dialog_text_set):
+                dialog_text += line
+        else:
+            dialog_text = " FL-FR shots are within specified tolerance"
+
+        # display dialog box
+        tkinter.messagebox.showinfo("Checking FL-FR", dialog_text)
 
         if display == 'NO':  # don't display results to user - just a popup dialog to let them know there is an issue
             pass
         else:
-            gui_app.list_box.populate(formatted_gsi_lines_analysis, list(error_line_number_list))
+            gui_app.list_box.populate(formatted_gsi_lines_analysis, error_line_number_list)
 
     def anaylseFLFR(self, obs_from_station_dict):
 
@@ -245,27 +265,30 @@ class MenuBar(tk.Frame):
                                            'STN_Northing': '', 'STN_Elevation': '', 'Target_Height': ' ',
                                            'STN_Height': ' '}
 
-        errors_by_line_number = []
         line_already_compared = -1
 
-        for index, (line_number, formatted_line_dict) in enumerate(obs_from_station_dict.items(), start=1):
+        # create an ordered list of obs
+        obs_from_station_list = []
+        for dict in obs_from_station_dict.values():
+            obs_from_station_list.append(dict)
+        sorted_obs_from_station_list = sorted(obs_from_station_list, key=lambda i: i['Point_ID'])
+
+        for index, formatted_line_dict in enumerate(sorted_obs_from_station_list):
 
             obs_line_1_dict = formatted_line_dict
-            obs_line_2_dict = None
 
             if GSI.is_control_point(formatted_line_dict):
-                # dont analyse stn setup
-                analysed_lines.append(formatted_line_dict)
+                # dont analyse stn setup - append to start of list
+                analysed_lines.insert(0, formatted_line_dict)
                 continue
 
             # check to see if line has already compared
-            if line_number == line_already_compared:
+            if index == line_already_compared:
                 continue
 
             # if not at the end of the dictionary ( could use try except IndexError )
-            length = len(obs_from_station_dict)
-            if index < len(obs_from_station_dict):
-                obs_line_2_dict = obs_from_station_dict[line_number + 1]
+            if index < len(sorted_obs_from_station_list):
+                obs_line_2_dict = sorted_obs_from_station_list[index + 1]
 
                 # points match - lets analyse
                 if obs_line_1_dict['Point_ID'] == obs_line_2_dict['Point_ID']:
@@ -275,11 +298,10 @@ class MenuBar(tk.Frame):
                         obs_line_2_field_value_str = obs_line_2_dict[key]
 
                         # default type
-                        field_type = FIELD_TYPE_FLOAT
                         if key == 'Timestamp':
-                            time_difference = get_time_differance(obs_line_1_field_value_str,
-                                                                  obs_line_2_field_value_str)
-                            obs_line_2_dict[key] = time_difference
+                            # time_difference = get_time_differance(obs_line_1_field_value_str,
+                            #                                       obs_line_2_field_value_str)
+                            obs_line_2_dict[key] = ' '
                         elif key in ('Horizontal_Angle', 'Vertical_Angle'):
                             field_type = FIELD_TYPE_ANGLE
                             obs_line_1_field_value = get_numerical_value_from_string(obs_line_1_field_value_str,
@@ -309,29 +331,25 @@ class MenuBar(tk.Frame):
                                 float_diff_str = self.check_diff_exceed_tolerance(key, float_diff_str)
                                 obs_line_2_dict[key] = float_diff_str
 
-                                # check for tag to indicate tolerance exceeded
-                                if '*' in float_diff_str:
-                                    # add both lines to be highlighted (note: this is the display linenumber)
-                                    errors_by_line_number.append(line_number+1)
-                                    errors_by_line_number.append(line_number+2)
-
-
                 else:
-                    analysed_lines.append(formatted_line_dict)
+                    # probably an orientation shot, or a shot that doesn't have a double - make blank
+                    blank_line_dict = analysed_line_blank_values_dict.copy()
+                    blank_line_dict['Point_ID'] = obs_line_1_dict['Point_ID']
+                    analysed_lines.append(blank_line_dict)
                     continue
 
                 blank_line_dict = analysed_line_blank_values_dict.copy()
                 blank_line_dict['Point_ID'] = obs_line_1_dict['Point_ID']
                 analysed_lines.append(blank_line_dict)
                 analysed_lines.append(obs_line_2_dict)
-                line_already_compared = line_number + 1
+                line_already_compared = index + 1
 
             else:
                 # end of the dictionary reached - do not analyse but add as it hasnt been compared
                 analysed_lines.append(obs_line_1_dict)
                 pass
 
-        return analysed_lines, errors_by_line_number
+        return analysed_lines
 
     def check_diff_exceed_tolerance(self, key, float_diff_str):
 
