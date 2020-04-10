@@ -8,9 +8,8 @@ NOTE: For 3.4 compatibility
     i) Replaced f-strings with.format method.
     ii) had to use an ordered dictionary"""
 
-# TODO REDISPLAY OBS BAR
+# TODO add new menu options from CHris
 # TODO integrate Job diary/dated directory functionality
-# TODO Create an extra gui bar: survey config, redisplay obs???  or can we let user seelct config if updating PC
 # TODO automate the transfer of files of SD card to the job folder (know location based on created dated directory
 
 
