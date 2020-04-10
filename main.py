@@ -361,15 +361,15 @@ class MenuBar(tk.Frame):
         flfr_eastings_tolerance = float(self.survey_config.flfr_easting_tolerance)
 
         if key == 'Elevation':
-            if float_diff > flfr_height_tolerance:
+            if abs(float_diff) > flfr_height_tolerance:
                 # add a tag
                 float_diff_str = '*' + float_diff_str
         elif key == 'Easting':
-            if float_diff > flfr_eastings_tolerance:
+            if abs(float_diff) > flfr_eastings_tolerance:
                 # add a tag
                 float_diff_str = '*' + float_diff_str
         elif key == 'Northing':
-            if float_diff > flfr_height_tolerance:
+            if abs(float_diff) > flfr_height_tolerance:
                 # add a tag
                 float_diff_str = '*' + float_diff_str
 
