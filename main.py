@@ -143,7 +143,10 @@ class MenuBar(tk.Frame):
         folder_selected = filedialog.askdirectory()
 
     def new_job_directoy(self):
-        folder_selected = filedialog.askdirectory()
+
+        # TODO add inital directory in the settings.ini
+
+        filedialog.askdirectory(initialdir=r"Survey Data\2020\MONITORING")
 
     def monitoring_create(self):
         pass
