@@ -1886,6 +1886,7 @@ class CombineGSIFilesWindow:
             f_update.write(gsi_contents)
 
 
+#  Job Diary and its dependencies was written by Chris Kelly
 class JobDiaryWindow:
 
 
