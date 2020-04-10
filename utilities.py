@@ -77,3 +77,5 @@ def get_numerical_value_from_string(str_value, field_type, precision='3dp'):
 
     elif field_type == FIELD_TYPE_FLOAT:
         return decimalize_value(float(str_value), precision) if str_value != "" else ""
+
+

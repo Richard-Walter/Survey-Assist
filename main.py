@@ -8,23 +8,32 @@ NOTE: For 3.4 compatibility
     i) Replaced f-strings with.format method.
     ii) had to use an ordered dictionary"""
 
-# TODO integrate Job diary/dated directory functionality
+# TODO create dated directory functionality
 # TODO automate the transfer of files of SD card to the job folder (know location based on created dated directory
 
+# TODO put this into the settings file
+defaultJobDir = r"Survey Data"
+defaultDiaryDir = r"Survey Data\2019\Job_Diary_2019.csv"
+defaultDiaryBackup = r"Survey Data\2019\DIARY BACKUPS"
 
+defaultYear = '2020'
+defaultType = 'MONITORING'
+
+import copy
+import shutil
+import csv
+import calendar
+import tkinter.messagebox
 import tkinter as tk
+import datetime
 from tkinter import ttk
 import logging.config
 from tkinter import filedialog
-import copy
 
-import tkinter.messagebox
 from GSI import *
 from SurveyConfiguration import SurveyConfiguration
 from GSI import GSIDatabase, CorruptedGSIFileError, GSIFile
 from decimal import *
-
-import datetime
 
 from compnet import CRDCoordinateFile, ASCCoordinateFile, STDCoordinateFile, CoordinateFile, FixedFile
 from utilities import *
@@ -515,7 +524,8 @@ class MenuBar(tk.Frame):
 
     def job_diary(self):
 
-        pass
+        root = tk.Toplevel()
+        JobDiaryWindow(root)
 
     def configure_survey(self):
 
@@ -1874,6 +1884,453 @@ class CombineGSIFilesWindow:
 
         with open(file_path, 'w') as f_update:
             f_update.write(gsi_contents)
+
+
+class JobDiaryWindow:
+
+
+    def __init__(self, parent):
+
+        self.master = parent
+
+        # TODO get his info from the settings
+        self.type_path = os.path.join(defaultJobDir, defaultYear)
+        self.job_path = os.path.join(defaultJobDir, defaultYear, defaultType)
+
+        self.types = sorted([f for f in os.listdir(self.type_path) if os.path.isdir(os.path.join(self.type_path, f))])
+        self.jobs = sorted([f for f in os.listdir(self.job_path) if os.path.isdir(os.path.join(self.job_path, f))])
+
+        self.job_type = tk.StringVar()
+        self.job_name = tk.StringVar()
+        self.job_date = tk.StringVar()
+        self.job_description = tk.StringVar()
+        self.ID = tk.StringVar()
+
+        self.active_date = []
+
+        self.TS15 = tk.IntVar()
+        self.TS60 = tk.IntVar()
+        self.MS60 = tk.IntVar()
+        self.TDA = tk.IntVar()
+        self.other_instrument = tk.IntVar()
+
+        self.RTK = tk.IntVar()
+        self.static = tk.IntVar()
+
+        self.manual = tk.IntVar()
+        self.photos = tk.IntVar()
+
+        self.menu_bar = tk.Menu(self.master)
+
+        self.menu_bar.add_command(label='New Record', command=self.new_record)
+        self.menu_bar.add_command(label='Edit Record', command=self.edit_record)
+        self.menu_bar.add_command(label='Save Record', command=self.save_record)
+        self.menu_bar.add_command(label='Delete Record', command=self.delete_record)
+        self.menu_bar.add_command(label='Exit', command=self.master.destroy)
+
+        self.master.config(menu=self.menu_bar)
+
+        self.top_frame = tk.Frame(self.master)
+        self.top_frame.pack(side=tk.TOP, fill=tk.X)
+
+        self.ID_label = tk.Label(self.top_frame, width=10, textvariable=self.ID)
+        self.ID_label.pack(side=tk.LEFT)
+        self.ID.set('--')
+
+        self.job_type_box = ttk.Combobox(self.top_frame, textvariable=self.job_type, width=25)
+        self.job_type_box.pack(side=tk.LEFT)
+        self.job_type_box.bind('<<ComboboxSelected>>', self.refresh_jobs)
+
+        self.job_name_box = ttk.Combobox(self.top_frame, textvariable=self.job_name, width=25)
+        self.job_name_box.pack(side=tk.LEFT)
+
+        self.job_date_btn = ttk.Button(self.top_frame, textvariable=self.job_date, comman=self.open_calender)
+        self.job_date_btn.pack(side=tk.LEFT)
+        self.job_date.set(datetime.datetime.now().strftime('%d/%m/%Y'))
+        self.active_date.append(datetime.datetime.now().strftime('%d/%m/%Y'))
+
+        self.chk_RTK = tk.Checkbutton(self.top_frame, text='RTK', variable=self.RTK)
+        self.chk_static = tk.Checkbutton(self.top_frame, text='STATIC', variable=self.static)
+
+        self.chk_TS15 = tk.Checkbutton(self.top_frame, text='TS 15', variable=self.TS15)
+        self.chk_TS60 = tk.Checkbutton(self.top_frame, text='TS 60', variable=self.TS60)
+        self.chk_MS60 = tk.Checkbutton(self.top_frame, text='MS 60', variable=self.MS60)
+        self.chk_TDA = tk.Checkbutton(self.top_frame, text='TDA', variable=self.TDA)
+
+        self.chk_other = tk.Checkbutton(self.top_frame, text='OTHER', variable=self.other_instrument)
+        self.chk_manual = tk.Checkbutton(self.top_frame, text='MANUAL', variable=self.manual)
+        self.chk_photos = tk.Checkbutton(self.top_frame, text='PHOTOS', variable=self.photos)
+
+        self.chk_static.pack(side=tk.LEFT)
+        self.chk_RTK.pack(side=tk.LEFT)
+        self.chk_TS15.pack(side=tk.LEFT)
+        self.chk_TS60.pack(side=tk.LEFT)
+        self.chk_MS60.pack(side=tk.LEFT)
+        self.chk_TDA.pack(side=tk.LEFT)
+        self.chk_other.pack(side=tk.LEFT)
+        self.chk_manual.pack(side=tk.LEFT)
+        self.chk_photos.pack(side=tk.LEFT)
+
+        self.EntryFrame = tk.Frame(self.master)
+        self.EntryFrame.pack(side=tk.TOP, fill=tk.X)
+
+        ent_lbl = tk.Label(self.EntryFrame, text='Job Description...', width=25)
+        ent_lbl.pack(side=tk.LEFT)
+
+        self.Entry = tk.Entry(self.EntryFrame, textvariable=self.job_description)
+        self.Entry.pack(side=tk.TOP, fill=tk.X)
+
+        self.bottom_frame = tk.Frame(self.master)
+        self.bottom_frame.pack(side=tk.TOP, fill=tk.Y, expand=True)
+
+        self.diary_entries = ttk.Treeview(self.bottom_frame,
+                                          columns=('ID', 'Date', 'Job Name', 'Description', 'Job Type'),
+                                          displaycolumns=('Date', 'Job Name', 'Description', 'Job Type'),
+                                          selectmode='browse')
+        self.diary_entries.heading('ID', text='ID')
+        self.diary_entries.heading('Date', text='Date')
+        self.diary_entries.heading('Job Name', text='Job Name')
+        self.diary_entries.heading('Description', text='Description')
+        self.diary_entries.heading('Job Type', text='Job Type')
+        self.diary_entries.pack(side=tk.LEFT, expand=True, fill='both')
+
+        self.yscrollbar = ttk.Scrollbar(self.bottom_frame, orient='vertical', command=self.diary_entries.yview)
+        self.diary_entries.configure(yscrollcommand=self.yscrollbar.set)
+        self.yscrollbar.pack(side=tk.LEFT, expand=True, fill='both', anchor='w')
+        self.yscrollbar.configure(command=self.diary_entries.yview)
+
+        self.diary_entries.bind("<<TreeviewSelect>>", self.activate_record)
+
+        self.master.geometry(MainWindow.position_popup(self.master, 1100, 900))
+
+        self.backup_diary()
+
+        self.read_diary()
+        self.populate_diary()
+        self.populate_type()
+        self.populate_jobs()
+
+        self.disable_checks()
+
+        self.new_or_edited = 'Edited'
+
+    def backup_diary(self):
+        if os.path.exists(defaultDiaryBackup) == False:
+            os.mkdir(defaultDiaryBackup)
+        date_string = datetime.datetime.now().strftime('%Y%m%d_%H%M%S')
+        save_name = os.path.join(defaultDiaryBackup,
+                                 os.path.basename(defaultDiaryDir).split('.')[0] + '_' + date_string + '.csv')
+        print(save_name)
+        shutil.copyfile(defaultDiaryDir, save_name)
+
+    def read_diary(self):
+        with open(defaultDiaryDir) as csvfile:
+            reader = csv.DictReader(csvfile)
+            keys = reader.fieldnames
+            r = csv.reader(csvfile)
+            self.diary_data = ([OrderedDict(zip(keys, row)) for row in r])
+
+        for i, item in enumerate(self.diary_data):
+            item['RECID'] = i
+
+    def populate_diary(self):
+        self.diary_entries.delete(*self.diary_entries.get_children())
+        for item in self.diary_data:
+            try:
+                self.diary_entries.insert('', 'end', iid=item['RECID'], text=item['RECID'], values=list(item.values()))
+            except:
+                pass
+
+    def refresh_jobs(self, event):
+        path = os.path.join(defaultJobDir, defaultYear, self.job_type.get())
+        self.jobs = sorted([f for f in os.listdir(path) if os.path.isdir(os.path.join(path, f))])
+        self.populate_jobs()
+
+    def populate_type(self):
+        self.job_type_box['values'] = self.types
+        self.job_type_box.current(0)
+        if self.job_type.get() in self.job_type_box['values']:
+            self.job_type_box.set(self.job_type.get())
+
+    def populate_jobs(self):
+        self.job_name_box['values'] = self.jobs
+        try:
+            self.job_name_box.current(0)
+            if self.job_name.get() in self.job_name_box['values']:
+                self.job_name_box.set(self.job_name.get())
+        except:
+            pass
+
+    def open_calender(self):
+        cal_root = tk.Toplevel()
+        Cal = Calendar(cal_root, self.active_date, format='%d/%m/%Y')
+        self.master.wait_window(cal_root)
+        self.job_date.set(self.active_date[0])
+
+    def activate_record(self, event):
+        selected_record = self.diary_entries.item(self.diary_entries.focus())['values']
+
+        self.clear_records()
+
+        self.ID.set(selected_record[0])
+        self.job_date.set(selected_record[1])
+        self.job_description.set(selected_record[3])
+
+        if selected_record[2] in self.job_name_box['values']:
+            self.job_name_box.set(selected_record[2])
+        else:
+            self.job_name_box.set('')
+
+        if selected_record[4] in self.job_type_box['values']:
+            self.job_type_box.set(selected_record[4])
+        else:
+            self.job_type_box.set('')
+
+        if selected_record[5] == 1: self.chk_static.select()
+        if selected_record[6] == 1: self.chk_RTK.select()
+        if selected_record[7] == 1: self.chk_TS15.select()
+        if selected_record[8] == 1: self.chk_TS60.select()
+        if selected_record[9] == 1: self.chk_MS60.select()
+        if selected_record[10] == 1: self.chk_TDA.select()
+        if selected_record[11] == 1: self.chk_other.select()
+        if selected_record[12] == 1: self.chk_manual.select()
+        if selected_record[13] == 1: self.chk_photos.select()
+
+        self.disable_checks()
+
+    def disable_checks(self):
+
+        self.job_name_box.configure(state=tk.DISABLED)
+        self.job_type_box.configure(state=tk.DISABLED)
+        self.Entry.configure(state=tk.DISABLED)
+        self.job_date_btn.configure(state=tk.DISABLED)
+
+        self.chk_TS15.configure(state=tk.DISABLED)
+        self.chk_TS60.configure(state=tk.DISABLED)
+        self.chk_MS60.configure(state=tk.DISABLED)
+        self.chk_TDA.configure(state=tk.DISABLED)
+
+        self.chk_RTK.configure(state=tk.DISABLED)
+        self.chk_static.configure(state=tk.DISABLED)
+        self.chk_manual.configure(state=tk.DISABLED)
+        self.chk_photos.configure(state=tk.DISABLED)
+        self.chk_other.configure(state=tk.DISABLED)
+
+    def enable_checks(self):
+
+        self.job_name_box.configure(state=tk.NORMAL)
+        self.job_type_box.configure(state=tk.NORMAL)
+        self.Entry.configure(state=tk.NORMAL)
+        self.job_date_btn.configure(state=tk.NORMAL)
+
+        self.chk_TS15.configure(state=tk.NORMAL)
+        self.chk_TS60.configure(state=tk.NORMAL)
+        self.chk_MS60.configure(state=tk.NORMAL)
+        self.chk_TDA.configure(state=tk.NORMAL)
+
+        self.chk_RTK.configure(state=tk.NORMAL)
+        self.chk_static.configure(state=tk.NORMAL)
+        self.chk_manual.configure(state=tk.NORMAL)
+        self.chk_photos.configure(state=tk.NORMAL)
+        self.chk_other.configure(state=tk.NORMAL)
+
+    def clear_records(self):
+
+        self.job_date.set('')
+        self.job_description.set('')
+        self.job_name_box.set('')
+        self.job_type_box.set('')
+
+        self.chk_TS15.deselect()
+        self.chk_TS60.deselect()
+        self.chk_MS60.deselect()
+        self.chk_TDA.deselect()
+
+        self.chk_RTK.deselect()
+        self.chk_static.deselect()
+        self.chk_manual.deselect()
+        self.chk_photos.deselect()
+        self.chk_other.deselect()
+
+        self.enable_checks()
+
+    def edit_record(self):
+        self.new_or_edited = 'Edited'
+        self.enable_checks()
+
+    def new_record(self):
+        self.clear_records()
+        self.job_date.set(datetime.datetime.today().strftime('%d/%m/%Y'))
+        if len(self.diary_data) < 1:
+            id = 1
+        else:
+            id = max([int(i['RECID']) for i in self.diary_data]) + 1
+        self.ID.set(str(id))
+        self.new_or_edited = 'New'
+
+    def save_record(self):
+
+        if self.new_or_edited == 'New':
+            self.diary_data.append(OrderedDict((('RECID', int(self.ID.get())), ('Date', self.job_date.get()),
+                                                ('Job', self.job_name.get()),
+                                                ('Description', self.job_description.get()),
+                                                ('Job Type', self.job_type.get()),
+                                                ('Static', self.static.get()), ('RTK', self.RTK.get()),
+                                                ('TCRA A', self.TS15.get()),
+                                                ('TCRA B', self.TS60.get()), ('TCRA JH', self.MS60.get()),
+                                                ('TDA', self.TDA.get()), ('Other', self.other_instrument.get()),
+                                                ('Manual', self.manual.get()),
+                                                ('Photos', self.photos.get()))))
+
+        elif self.new_or_edited == 'Edited':
+            for i, Item in enumerate(self.diary_data):
+                if Item['RECID'] == int(self.ID.get()):
+                    self.diary_data[i] = OrderedDict((('RECID', self.ID.get()), ('Date', self.job_date.get()),
+                                                      ('Job', self.job_name.get()),
+                                                      ('Description', self.job_description.get()),
+                                                      ('Job Type', self.job_type.get()),
+                                                      ('Static', self.static.get()), ('RTK', self.RTK.get()),
+                                                      ('TCRA A', self.TS15.get()),
+                                                      ('TCRA B', self.TS60.get()),
+                                                      ('TCRA JH', self.MS60.get()), ('TDA', self.TDA.get()),
+                                                      ('Other', self.other_instrument.get()),
+                                                      ('Manual', self.manual.get()),
+                                                      ('Photos', self.photos.get())))
+                    break
+
+        self.populate_diary()
+        self.disable_checks()
+        self.write_csv()
+
+    def delete_record(self):
+        for i, Item in enumerate(self.diary_data):
+            if Item['RECID'] == int(self.ID.get()):
+                del self.diary_data[i]
+        self.populate_diary()
+        self.disable_checks()
+        self.write_csv()
+
+    def write_csv(self):
+        try:
+            if os.path.exists(defaultDiaryDir):
+                with open(defaultDiaryDir) as csvfile:
+                    reader = csv.DictReader(csvfile)
+                    Header = reader.fieldnames
+                os.remove(defaultDiaryDir)
+            else:
+
+                tk.messagebox.showwarning("NO DATA DIARY CSV FOUND",
+                                          "No csv data diary could be found @ [" + defaultDiaryDir + "]")
+                return
+            with open(defaultDiaryDir, 'w') as csvfile:
+                writer = csv.DictWriter(csvfile, fieldnames=Header, delimiter=",", lineterminator="\n")
+                writer.writeheader()
+                for Item in self.diary_data:
+                    writer.writerow(Item)
+        except:
+            today = datetime.datetime.today()
+            dt = today.strftime('%d%m%Y')
+            tk.messagebox.showwarning("ERROR WRITING CSV FILE",
+                                      "Error trying to save diary data. A backup was made @ [" + os.path.join(
+                                          os.path.split(defaultDiaryDir)[0], 'DiaryErr_bkup_' + dt + '.csv') + "]")
+
+
+class Calendar:
+    def __init__(self, parent, date_holder, format='%y%m%d'):
+        self.date_holder = date_holder
+        self.format = format
+        self.parent = parent
+        self.cal = calendar.TextCalendar(calendar.SUNDAY)
+        self.year = datetime.datetime.today().year
+        self.month = datetime.datetime.today().month
+        self.wid = []
+        self.day_selected = datetime.datetime.today().day
+        self.month_selected = self.month
+        self.year_selected = self.year
+        self.day_name = calendar.day_name[datetime.datetime.today().weekday()]
+
+        self.setup(self.year, self.month)
+
+    def clear(self):
+        for w in self.wid[:]:
+            w.grid_forget()
+            self.wid.remove(w)
+
+    def go_prev(self):
+        if self.month > 1:
+            self.month -= 1
+        else:
+            self.month = 12
+            self.year -= 1
+        self.clear()
+        self.setup(self.year, self.month)
+
+    def go_next(self):
+        if self.month < 12:
+            self.month += 1
+        else:
+            self.month = 1
+            self.year += 1
+
+        self.clear()
+        self.setup(self.year, self.month)
+
+    def selection(self, day, name):
+        self.day_selected = day
+        self.month_selected = self.month
+        self.year_selected = self.year
+        self.day_name = name
+
+        self.date_holder[0] = datetime.datetime.strptime(
+            str(self.day_selected) + '/' + str(self.month) + '/' + str(self.year), '%d/%m/%Y').strftime(self.Format)
+
+        self.clear()
+        self.setup(self.year, self.month)
+
+    def setup(self, y, m):
+        left = tk.Button(self.parent, text='<', command=self.go_prev)
+        self.wid.append(left)
+        left.grid(row=0, column=1)
+
+        header = tk.Label(self.parent, height=2, text='{}   {}'.format(calendar.month_abbr[m], str(y)))
+        self.wid.append(header)
+        header.grid(row=0, column=2, columnspan=3)
+
+        right = tk.Button(self.parent, text='>', command=self.go_next)
+        self.wid.append(right)
+        right.grid(row=0, column=5)
+
+        days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
+        for num, name in enumerate(days):
+            t = tk.Label(self.parent, text=name[:3])
+            self.wid.append(t)
+            t.grid(row=1, column=num)
+
+        for w, week in enumerate(self.cal.monthdayscalendar(y, m), 2):
+            for d, day in enumerate(week):
+                if day:
+                    dn = calendar.day_name[
+                        datetime.datetime.strptime(str(day) + '/' + str(m) + '/' + str(y), '%d/%m/%Y').weekday()]
+
+                    b = tk.Button(self.parent, width=2, height=1, text=day,
+                                  command=lambda day=day, dn=dn: self.selection(day, dn))
+                    self.wid.append(b)
+                    b.grid(row=w, column=d, sticky='nsew')
+
+        sel = tk.Label(self.parent, height=2,
+                       text='{} {} {} {}'.format(self.day_name, calendar.month_name[self.month_selected],
+                                                 self.day_selected, self.year_selected))
+        self.wid.append(sel)
+        sel.grid(row=8, column=0, columnspan=7)
+
+        ok = tk.Button(self.parent, width=5, text='OK', command=self.kill_and_save)
+
+        self.wid.append(ok)
+
+        ok.grid(row=9, column=2, columnspan=3, pady=10)
+
+    def kill_and_save(self):
+        self.parent.destroy()
 
 
 class GUIApplication(tk.Frame):
