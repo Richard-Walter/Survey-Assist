@@ -9,15 +9,9 @@ NOTE: For 3.4 compatibility
     ii) had to use an ordered dictionary"""
 
 # TODO create dated directory functionality
+# TODO create workflow bar - create dated (today) directory, job diary, import data, load gsi
 # TODO automate the transfer of files of SD card to the job folder (know location based on created dated directory
 
-# TODO put this into the settings file
-defaultJobDir = r"Survey Data"
-defaultDiaryDir = r"Survey Data\2019\Job_Diary_2019.csv"
-defaultDiaryBackup = r"Survey Data\2019\DIARY BACKUPS"
-
-defaultYear = '2020'
-defaultType = 'MONITORING'
 
 import copy
 import shutil
@@ -38,6 +32,15 @@ from decimal import *
 from compnet import CRDCoordinateFile, ASCCoordinateFile, STDCoordinateFile, CoordinateFile, FixedFile
 from utilities import *
 
+# TODO put this into the settings file
+defaultJobDir = r"Survey Data"
+defaultDiaryDir = r"Survey Data\2019\Job_Diary_2019.csv"
+defaultDiaryBackup = r"Survey Data\2019\DIARY BACKUPS"
+
+defaultYear = '2020'
+defaultType = 'MONITORING'
+todays_date = datetime.datetime.today().strftime('%y%m%d')
+
 
 class MenuBar(tk.Frame):
     filename_path = ""
@@ -57,7 +60,7 @@ class MenuBar(tk.Frame):
         # File Menu
         self.file_sub_menu = tk.Menu(self.menu_bar, tearoff=0)
         self.file_sub_menu.add_command(label="Open...", command=self.choose_gsi_file)
-        self.file_sub_menu.add_command(label="Create Dated Directory...", command=self.new_dated_directoy)
+        self.file_sub_menu.add_command(label="Create Dated Directory...", command=lambda: self.new_dated_directory(True))
         self.file_sub_menu.add_command(label="Create Job Directory...", command=self.new_job_directoy)
         self.file_sub_menu.add_separator()
         self.file_sub_menu.add_command(label="Monitoring - Create", command=self.monitoring_create, state="disabled")
@@ -65,9 +68,7 @@ class MenuBar(tk.Frame):
                                        state="disabled")
         self.file_sub_menu.add_command(label="Monitoring - Update Labels", command=self.monitoring_update_labels,
                                        state="disabled")
-        self.file_sub_menu.add_command(label="Monitoring - Rename Updated Files",
-                                       command=self.monitoring_rename_updated_files,
-                                       state="disabled")
+        self.file_sub_menu.add_command(label="Monitoring - Rename Updated Files",  command=self.monitoring_rename_updated_files,state="disabled")
 
         self.menu_bar.add_cascade(label="File", menu=self.file_sub_menu)
 
@@ -76,10 +77,8 @@ class MenuBar(tk.Frame):
         self.edit_sub_menu.add_command(label="Delete all 2D Orientation Shots", command=self.delete_orientation_shots)
         self.edit_sub_menu.add_command(label="Change target height...", command=self.change_target_height)
         self.edit_sub_menu.add_separator()
-        self.edit_sub_menu.add_command(label="Prism Constant - Fix single...", command=self.prism_constant_fix_single,
-                                       state="disabled")
-        self.edit_sub_menu.add_command(label="Prism Constant - Fix batch ...", command=self.prism_constant_fix_batch,
-                                       state="disabled")
+        self.edit_sub_menu.add_command(label="Prism Constant - Fix single...", command=self.prism_constant_fix_single, state="disabled")
+        self.edit_sub_menu.add_command(label="Prism Constant - Fix batch ...", command=self.prism_constant_fix_batch, state="disabled")
 
         self.menu_bar.add_cascade(label="Edit Survey", menu=self.edit_sub_menu, state="disabled")
 
@@ -148,8 +147,49 @@ class MenuBar(tk.Frame):
         GUIApplication.refresh()
         self.enable_menus()
 
-    def new_dated_directoy(self):
-        folder_selected = filedialog.askdirectory()
+    def new_dated_directory(self, choose_date=True):
+
+        # default path for the file dialog to open too
+        default_path = os.path.join(defaultJobDir, defaultYear, defaultType)
+
+        folder_selected = filedialog.askdirectory(parent=self.master, initialdir=default_path, title='Please select the root directory')
+
+        if os.path.exists(folder_selected):
+            if choose_date is True:     # Let user choose the date, rather than default to todays date
+                cal_root = tk.Toplevel()
+                cal = Calendar(cal_root, todays_date)
+                self.master.wait_window(cal_root)
+                d = cal.get_selected_date()
+
+            else:
+                d = todays_date
+
+            if os.path.exists(os.path.join(folder_selected, d)) == False:
+                if tk.messagebox.askyesno("CREATE DATED FOLDER?",
+                                          "Create dated folder [" + os.path.join(folder_selected) + "]"):
+                    os.makedirs(os.path.join(folder_selected, d))
+                    os.makedirs(os.path.join(os.path.join(folder_selected, d), 'OTHER'))
+                    os.makedirs(os.path.join(os.path.join(folder_selected, d), 'GPS'))
+                    os.makedirs(os.path.join(os.path.join(folder_selected, d), 'OUTPUT'))
+                    os.makedirs(os.path.join(os.path.join(folder_selected, d), 'TS'))
+                    os.makedirs(os.path.join(os.path.join(folder_selected, d), 'TS', 'TS60'))
+                    os.makedirs(os.path.join(os.path.join(folder_selected, d), 'TS', 'MS60'))
+                    os.makedirs(os.path.join(os.path.join(folder_selected, d), 'TS', 'TS15'))
+                    os.makedirs(os.path.join(os.path.join(folder_selected, d), 'TS', 'EDITING'))
+
+                else:
+                    return
+            else:
+                tk.messagebox.showwarning("DATED FOLDER EXISTS", "A dated folder for this date already exists...")
+                return
+        else:
+            tk.messagebox.showwarning("NO ACTIVE DATE", "A date has not been set using the calendar...")
+            return
+
+    def open_calender(self, parent):
+        cal_root = tk.Toplevel()
+        cal = Calendar(cal_root, todays_date)
+        parent.wait_window(cal_root)
 
     def new_job_directoy(self):
 
@@ -1889,7 +1929,6 @@ class CombineGSIFilesWindow:
 #  Job Diary and its dependencies was written by Chris Kelly
 class JobDiaryWindow:
 
-
     def __init__(self, parent):
 
         self.master = parent
@@ -2276,15 +2315,17 @@ class Calendar:
         self.clear()
         self.setup(self.year, self.month)
 
+    def get_selected_date(self):
+        return self.date_holder
+
     def selection(self, day, name):
         self.day_selected = day
         self.month_selected = self.month
         self.year_selected = self.year
         self.day_name = name
-
-        self.date_holder[0] = datetime.datetime.strptime(
-            str(self.day_selected) + '/' + str(self.month) + '/' + str(self.year), '%d/%m/%Y').strftime(self.Format)
-
+        self.date_selected = str(self.day_selected) + '/' + str(self.month) + '/' + str(self.year)
+        self.date_holder = datetime.datetime.strptime(str(self.day_selected)+'/'+str(self.month)+'/'+str(self.year),'%d/%m/%Y').strftime(self.format)
+        todays_date = datetime.datetime.today().strftime('%y%m%d')
         self.clear()
         self.setup(self.year, self.month)
 
