@@ -11,19 +11,16 @@ NOTE: For 3.4 compatibility
 # TODO create dated directory functionality
 # TODO create workflow bar - create dated (today) directory, job diary, import data, load gsi
 # TODO automate the transfer of files of SD card to the job folder (know location based on created dated directory
+# TODO use Calendar object in utilities https://stackoverflow.com/questions/27774089/python-calendar-widget-return-the-user-selected-date
 
 
 import copy
 import shutil
 import csv
-import calendar
 import tkinter.messagebox
-import tkinter as tk
 import datetime
-from tkinter import ttk
 import logging.config
 from tkinter import filedialog
-
 from GSI import *
 from SurveyConfiguration import SurveyConfiguration
 from GSI import GSIDatabase, CorruptedGSIFileError, GSIFile
@@ -40,6 +37,8 @@ defaultDiaryBackup = r"Survey Data\2019\DIARY BACKUPS"
 defaultYear = '2020'
 defaultType = 'MONITORING'
 todays_date = datetime.datetime.today().strftime('%y%m%d')
+
+gui_app = None
 
 
 class MenuBar(tk.Frame):
@@ -68,7 +67,7 @@ class MenuBar(tk.Frame):
                                        state="disabled")
         self.file_sub_menu.add_command(label="Monitoring - Update Labels", command=self.monitoring_update_labels,
                                        state="disabled")
-        self.file_sub_menu.add_command(label="Monitoring - Rename Updated Files",  command=self.monitoring_rename_updated_files,state="disabled")
+        self.file_sub_menu.add_command(label="Monitoring - Rename Updated Files", command=self.monitoring_rename_updated_files, state="disabled")
 
         self.menu_bar.add_cascade(label="File", menu=self.file_sub_menu)
 
@@ -146,6 +145,7 @@ class MenuBar(tk.Frame):
 
         GUIApplication.refresh()
         self.enable_menus()
+        gui_app.workflow_bar.hide_workflow_bar()
 
     def new_dated_directory(self, choose_date=True):
 
@@ -155,40 +155,39 @@ class MenuBar(tk.Frame):
         folder_selected = filedialog.askdirectory(parent=self.master, initialdir=default_path, title='Please select the root directory')
 
         if os.path.exists(folder_selected):
-            if choose_date is True:     # Let user choose the date, rather than default to todays date
+            if choose_date is True:
+
+                # Let user choose the date, rather than default to todays date
                 cal_root = tk.Toplevel()
-                cal = Calendar(cal_root, todays_date)
+                cal = CalendarWindow(cal_root, todays_date)
                 self.master.wait_window(cal_root)
-                d = cal.get_selected_date()
+                active_date = cal.get_selected_date()
+
 
             else:
-                d = todays_date
+                active_date = todays_date
 
-            if os.path.exists(os.path.join(folder_selected, d)) == False:
-                if tk.messagebox.askyesno("CREATE DATED FOLDER?",
-                                          "Create dated folder [" + os.path.join(folder_selected) + "]"):
-                    os.makedirs(os.path.join(folder_selected, d))
-                    os.makedirs(os.path.join(os.path.join(folder_selected, d), 'OTHER'))
-                    os.makedirs(os.path.join(os.path.join(folder_selected, d), 'GPS'))
-                    os.makedirs(os.path.join(os.path.join(folder_selected, d), 'OUTPUT'))
-                    os.makedirs(os.path.join(os.path.join(folder_selected, d), 'TS'))
-                    os.makedirs(os.path.join(os.path.join(folder_selected, d), 'TS', 'TS60'))
-                    os.makedirs(os.path.join(os.path.join(folder_selected, d), 'TS', 'MS60'))
-                    os.makedirs(os.path.join(os.path.join(folder_selected, d), 'TS', 'TS15'))
-                    os.makedirs(os.path.join(os.path.join(folder_selected, d), 'TS', 'EDITING'))
+            if os.path.exists(os.path.join(folder_selected, active_date)) == False:
+                if tk.messagebox.askyesno("CREATE DATED FOLDER?", "Create dated folder [" + os.path.join(folder_selected) + "]"):
+                    os.makedirs(os.path.join(folder_selected, active_date))
+                    os.makedirs(os.path.join(os.path.join(folder_selected, active_date), 'OTHER'))
+                    os.makedirs(os.path.join(os.path.join(folder_selected, active_date), 'GPS'))
+                    os.makedirs(os.path.join(os.path.join(folder_selected, active_date), 'OUTPUT'))
+                    os.makedirs(os.path.join(os.path.join(folder_selected, active_date), 'TS'))
+                    os.makedirs(os.path.join(os.path.join(folder_selected, active_date), 'TS', 'TS60'))
+                    os.makedirs(os.path.join(os.path.join(folder_selected, active_date), 'TS', 'MS60'))
+                    os.makedirs(os.path.join(os.path.join(folder_selected, active_date), 'TS', 'TS15'))
+                    os.makedirs(os.path.join(os.path.join(folder_selected, active_date), 'TS', 'EDITING'))
 
                 else:
                     return
             else:
                 tk.messagebox.showwarning("DATED FOLDER EXISTS", "A dated folder for this date already exists...")
                 return
-        else:
-            tk.messagebox.showwarning("NO ACTIVE DATE", "A date has not been set using the calendar...")
-            return
 
     def open_calender(self, parent):
         cal_root = tk.Toplevel()
-        cal = Calendar(cal_root, todays_date)
+        cal = CalendarWindow(cal_root, todays_date)
         parent.wait_window(cal_root)
 
     def new_job_directoy(self):
@@ -196,6 +195,9 @@ class MenuBar(tk.Frame):
         # TODO add inital directory in the settings.ini
 
         filedialog.askdirectory(initialdir=r"Survey Data\2020\MONITORING")
+
+    def import_sd_data(self):
+        pass
 
     def monitoring_create(self):
         pass
@@ -533,6 +535,13 @@ class MenuBar(tk.Frame):
 
     def export_csv(self):
         pass
+        Out_csv = os.path.join(os.path.split(self.GsiFile)[0],
+                               os.path.basename(self.GsiFile).split('.')[0] + '_Sorted.csv')
+        with open(Out_csv, 'w') as myFile:
+            wr = csv.writer(myFile, delimiter=",", lineterminator="\n")
+            for mylist in self.All_Data:
+                mylist[0] = mylist[0].replace('::', '_')
+                wr.writerow(mylist)
 
     def display_query_input_box(self):
 
@@ -562,7 +571,8 @@ class MenuBar(tk.Frame):
 
         UtilityCreateCSVFromASCWindow(self)
 
-    def job_diary(self):
+    @staticmethod
+    def job_diary():
 
         root = tk.Toplevel()
         JobDiaryWindow(root)
@@ -591,14 +601,14 @@ class MenuBar(tk.Frame):
         self.menu_bar.entryconfig("Check Survey", state="normal")
         self.menu_bar.entryconfig("Edit Survey", state="normal")
         self.menu_bar.entryconfig("Re-display GSI", state="normal")
-        self.menu_bar.entryconfig("Export GSI as CSV", state="normal")
+        self.menu_bar.entryconfig("Export CSV", state="normal")
 
     def disable_menus(self):
 
         self.menu_bar.entryconfig("Check Survey", state="disabled")
         self.menu_bar.entryconfig("Edit Survey", state="disabled")
         self.menu_bar.entryconfig("Re-display GSI", state="disabled")
-        self.menu_bar.entryconfig("Export GSI as CSV", state="disabled")
+        self.menu_bar.entryconfig("Export CSV", state="disabled")
 
     @staticmethod
     def display_about_dialog_box():
@@ -918,6 +928,40 @@ class StatusBar(tk.Frame):
         self.frame = tk.Frame(master)
         self.status = tk.Label(master, text='Welcome to Survey Assist', relief=tk.SUNKEN, anchor=tk.W)
 
+
+class WorkflowBar(tk.Frame):
+
+    def __init__(self, master):
+        super().__init__(master)
+
+        self.master = master
+        self.frame = tk.Frame(self.master)
+        self.frame.pack(side='top', anchor=tk.W, fill=tk.X)
+        self.frame.configure(background='#FFDEAC')
+
+        self.workflow_lbl = tk.Label(self.frame, text='NEW JOB WORKFLOW:')
+        self.workflow_lbl.configure(background='#FFDEAC')
+        self.btn_diary = tk.Button(self.frame, text="Job Diary", command=MenuBar.job_diary)
+        self.btn_diary.configure(background='#FCF1E1 ')
+        self.btn_create_directory_today = tk.Button(self.frame, text="Create Dated Directory",
+                                                    command=lambda: gui_app.menu_bar.new_dated_directory(False))
+        self.btn_create_directory_today.configure(background='#FCF1E1')
+        self.btn_import_sd_data = tk.Button(self.frame, text="Import SD Data", command=lambda: gui_app.menu_bar.import_sd_data)
+        self.btn_import_sd_data.configure(background='#FCF1E1')
+        self.btn_open_gsi = tk.Button(self.frame, text="Open GSI", command=lambda: gui_app.menu_bar.choose_gsi_file())
+        self.btn_open_gsi.configure(background='#FCF1E1')
+
+        self.workflow_lbl.pack(padx=2, pady=5, side='left')
+        self.btn_diary.pack(padx=5, pady=5, side='left')
+        self.btn_create_directory_today.pack(padx=5, pady=5, side='left')
+        self.btn_import_sd_data.pack(padx=5, pady=5, side='left')
+        self.btn_open_gsi.pack(padx=5, pady=5, side='left')
+
+    def show_workflow_bar(self):
+        self.frame.pack(side='top', anchor=tk.W, fill=tk.X)
+
+    def hide_workflow_bar(self):
+        self.frame.pack_forget()
 
 class MainWindow(tk.Frame):
 
@@ -2103,7 +2147,7 @@ class JobDiaryWindow:
 
     def open_calender(self):
         cal_root = tk.Toplevel()
-        Cal = Calendar(cal_root, self.active_date, format='%d/%m/%Y')
+        Cal = CalendarWindow(cal_root, self.active_date, format='%d/%m/%Y')
         self.master.wait_window(cal_root)
         self.job_date.set(self.active_date[0])
 
@@ -2275,7 +2319,7 @@ class JobDiaryWindow:
                                           os.path.split(defaultDiaryDir)[0], 'DiaryErr_bkup_' + dt + '.csv') + "]")
 
 
-class Calendar:
+class CalendarWindow:
     def __init__(self, parent, date_holder, format='%y%m%d'):
         self.date_holder = date_holder
         self.format = format
@@ -2324,7 +2368,8 @@ class Calendar:
         self.year_selected = self.year
         self.day_name = name
         self.date_selected = str(self.day_selected) + '/' + str(self.month) + '/' + str(self.year)
-        self.date_holder = datetime.datetime.strptime(str(self.day_selected)+'/'+str(self.month)+'/'+str(self.year),'%d/%m/%Y').strftime(self.format)
+        self.date_holder = datetime.datetime.strptime(str(self.day_selected) + '/' + str(self.month) + '/' + str(self.year), '%d/%m/%Y').strftime(
+            self.format)
         todays_date = datetime.datetime.today().strftime('%y%m%d')
         self.clear()
         self.setup(self.year, self.month)
@@ -2383,11 +2428,13 @@ class GUIApplication(tk.Frame):
         self.status_bar = StatusBar(master)
         self.menu_bar = MenuBar(master)
         self.main_window = MainWindow(master)
-        self.list_box = ListBoxFrame(self.main_window)
-
         self.status_bar.status.pack(side="bottom", fill="x")
         self.menu_bar.pack(side="top", fill="x")
 
+        self.workflow_bar = WorkflowBar(self.main_window)
+        self.list_box = ListBoxFrame(self.main_window)
+        self.workflow_bar.pack(fill="x")
+        self.list_box.pack(fill="both")
         self.main_window.pack(fill="both", expand=True)
 
     @staticmethod
