@@ -8,8 +8,8 @@ NOTE: For 3.4 compatibility
     i) Replaced f-strings with.format method.
     ii) had to use an ordered dictionary"""
 
-# TODO create dated directory functionality
-# TODO create workflow bar - create dated (today) directory, job diary, import data, load gsi
+# TODO finish create dated directory functionality
+# TODO put this into the settings file default job directory year etc
 # TODO automate the transfer of files of SD card to the job folder (know location based on created dated directory
 # TODO use Calendar object in utilities https://stackoverflow.com/questions/27774089/python-calendar-widget-return-the-user-selected-date
 
