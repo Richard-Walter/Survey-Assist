@@ -9,7 +9,6 @@ NOTE: For 3.4 compatibility
     ii) had to use an ordered dictionary"""
 
 # TODO new job directory - add inital directory in the settings.ini
-# TODO put this into the settings file default job directory year etc
 # TODO automate the transfer of files of SD card to the job folder (know location based on created dated directory
 # TODO use Calendar object in utilities https://stackoverflow.com/questions/27774089/python-calendar-widget-return-the-user-selected-date
 
@@ -29,15 +28,7 @@ from decimal import *
 from compnet import CRDCoordinateFile, ASCCoordinateFile, STDCoordinateFile, CoordinateFile, FixedFile
 from utilities import *
 
-# TODO put this into the settings file
-defaultJobDir = r"Survey Data"
-defaultDiaryDir = r"Survey Data\2019\Job_Diary_2019.csv"
-defaultDiaryBackup = r"Survey Data\2019\DIARY BACKUPS"
-
-defaultYear = '2020'
-defaultType = 'MONITORING'
 todays_date = datetime.datetime.today().strftime('%y%m%d')
-
 gui_app = None
 
 
@@ -114,8 +105,7 @@ class MenuBar(tk.Frame):
 
         # Utilities menu
         self.utility_sub_menu = tk.Menu(self.menu_bar, tearoff=0)
-        self.utility_sub_menu.add_command(label="Create temporary CSV from .ASC file",
-                                          command=self.create_CSV_from_ASC)
+        self.utility_sub_menu.add_command(label="Create temporary CSV from .ASC file", command=self.create_CSV_from_ASC)
         self.menu_bar.add_cascade(label="Utilities", menu=self.utility_sub_menu)
 
         # Job Diary
@@ -129,8 +119,7 @@ class MenuBar(tk.Frame):
 
         # Help menu
         self.help_sub_menu = tk.Menu(self.menu_bar, tearoff=0)
-        self.help_sub_menu.add_command(label="Manual",
-                                       command=self.open_manual)
+        self.help_sub_menu.add_command(label="Manual", command=self.open_manual)
         self.help_sub_menu.add_command(label="About", command=self.display_about_dialog_box)
         self.menu_bar.add_cascade(label="Help", menu=self.help_sub_menu)
 
@@ -154,7 +143,7 @@ class MenuBar(tk.Frame):
     def new_dated_directory(self, choose_date=True, folder_selected=None):
 
         # default path for the file dialog to open too
-        default_path = os.path.join(defaultJobDir, defaultYear, defaultType)
+        default_path = os.path.join(self.survey_config.root_job_directory, self.survey_config.current_year, self.survey_config.default_survey_type)
         if folder_selected is None:
             folder_selected = filedialog.askdirectory(parent=self.master, initialdir=default_path,
                                                       title='Please select the root directory')
@@ -180,9 +169,8 @@ class MenuBar(tk.Frame):
 
     def new_job_directoy(self):
 
-        # TODO new job directory - add inital directory in the settings.ini
-
-        filedialog.askdirectory(initialdir=r"Survey Data\2020\MONITORING")
+        initial_dir = os.path.join(self.survey_config.root_job_directory, self.survey_config.current_year, self.survey_config.default_survey_type)
+        filedialog.askdirectory(initialdir=initial_dir)
 
     def import_sd_data(self):
         pass
@@ -2022,10 +2010,10 @@ class JobDiaryWindow:
     def __init__(self, parent):
 
         self.master = parent
+        self.survey_config = SurveyConfiguration()
 
-        # TODO get his info from the settings
-        self.type_path = os.path.join(defaultJobDir, defaultYear)
-        self.job_path = os.path.join(defaultJobDir, defaultYear, defaultType)
+        self.type_path = os.path.join(self.survey_config.root_job_directory, self.survey_config.current_year)
+        self.job_path = os.path.join(self.survey_config.root_job_directory, self.survey_config.current_year, self.survey_config.default_survey_type)
 
         self.types = sorted([f for f in os.listdir(self.type_path) if os.path.isdir(os.path.join(self.type_path, f))])
         self.jobs = sorted([f for f in os.listdir(self.job_path) if os.path.isdir(os.path.join(self.job_path, f))])
@@ -2145,16 +2133,20 @@ class JobDiaryWindow:
         self.new_or_edited = 'Edited'
 
     def backup_diary(self):
-        if os.path.exists(defaultDiaryBackup) == False:
-            os.mkdir(defaultDiaryBackup)
+
+        diary_backup = self.survey_config.diary_backup
+        diary_directory =self.survey_config.diary_directory
+
+        if os.path.exists(diary_backup) == False:
+            os.mkdir(diary_backup)
         date_string = datetime.datetime.now().strftime('%Y%m%d_%H%M%S')
-        save_name = os.path.join(defaultDiaryBackup,
-                                 os.path.basename(defaultDiaryDir).split('.')[0] + '_' + date_string + '.csv')
+        save_name = os.path.join(diary_backup,
+                                 os.path.basename(diary_directory).split('.')[0] + '_' + date_string + '.csv')
         print(save_name)
-        shutil.copyfile(defaultDiaryDir, save_name)
+        shutil.copyfile(diary_directory, save_name)
 
     def read_diary(self):
-        with open(defaultDiaryDir) as csvfile:
+        with open(self.survey_config.diary_directory) as csvfile:
             reader = csv.DictReader(csvfile)
             keys = reader.fieldnames
             r = csv.reader(csvfile)
@@ -2172,7 +2164,7 @@ class JobDiaryWindow:
                 pass
 
     def refresh_jobs(self, event):
-        path = os.path.join(defaultJobDir, defaultYear, self.job_type.get())
+        path = os.path.join(self.survey_config.root_job_directory, self.survey_config.current_year, self.job_type.get())
         self.jobs = sorted([f for f in os.listdir(path) if os.path.isdir(os.path.join(path, f))])
         self.populate_jobs()
 
@@ -2341,18 +2333,21 @@ class JobDiaryWindow:
         self.write_csv()
 
     def write_csv(self):
+
+        diary_directory = self.survey_config.diary_directory
+
         try:
-            if os.path.exists(defaultDiaryDir):
-                with open(defaultDiaryDir) as csvfile:
+            if os.path.exists(diary_directory):
+                with open(diary_directory) as csvfile:
                     reader = csv.DictReader(csvfile)
                     Header = reader.fieldnames
-                os.remove(defaultDiaryDir)
+                os.remove(diary_directory)
             else:
 
                 tk.messagebox.showwarning("NO DATA DIARY CSV FOUND",
-                                          "No csv data diary could be found @ [" + defaultDiaryDir + "]")
+                                          "No csv data diary could be found @ [" + diary_directory + "]")
                 return
-            with open(defaultDiaryDir, 'w') as csvfile:
+            with open(diary_directory, 'w') as csvfile:
                 writer = csv.DictWriter(csvfile, fieldnames=Header, delimiter=",", lineterminator="\n")
                 writer.writeheader()
                 for Item in self.diary_data:
@@ -2362,7 +2357,7 @@ class JobDiaryWindow:
             dt = today.strftime('%d%m%Y')
             tk.messagebox.showwarning("ERROR WRITING CSV FILE",
                                       "Error trying to save diary data. A backup was made @ [" + os.path.join(
-                                          os.path.split(defaultDiaryDir)[0], 'DiaryErr_bkup_' + dt + '.csv') + "]")
+                                          os.path.split(diary_directory)[0], 'DiaryErr_bkup_' + dt + '.csv') + "]")
 
 
 class CalendarWindow:

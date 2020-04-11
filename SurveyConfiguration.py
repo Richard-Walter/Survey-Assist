@@ -55,6 +55,12 @@ class SurveyConfiguration:
         # FILE DIRECTORIES
         self.last_used_file_dir = self.config_parser.get(SurveyConfiguration.section_file_directories, 'last_used')
         self.fixed_file_dir = self.config_parser.get(SurveyConfiguration.section_file_directories, 'fixed_file_dir')
+        self.root_job_directory = self.config_parser.get(SurveyConfiguration.section_file_directories, 'root_job_directory')
+        self.diary_directory = self.config_parser.get(SurveyConfiguration.section_file_directories, 'diary_directory')
+        self.diary_backup = self.config_parser.get(SurveyConfiguration.section_file_directories, 'diary_backup')
+        self.current_year = self.config_parser.get(SurveyConfiguration.section_file_directories, 'current_year')
+        self.default_survey_type = self.config_parser.get(SurveyConfiguration.section_file_directories, 'default_survey_type')
+
 
     def update(self, section, key, value):
 
