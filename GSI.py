@@ -2,6 +2,7 @@
 import os
 import sqlite3
 import csv
+import copy
 import tkinter.messagebox
 import logging.config
 from collections import OrderedDict
@@ -19,7 +20,7 @@ class GSI:
                                     ('85', 'STN_Northing'), ('86', 'STN_Elevation'), ('87', 'Target_Height'),
                                     ('88', 'STN_Height')])
 
-    EXPORT_GSI_HEADER_FORMAT = ['UID', 'Point_ID', 'Easting', 'Northing', 'Elevation', 'Timestamp', 'STN_Easting', 'STN_Northing',
+    EXPORT_GSI_HEADER_FORMAT = ['Point_ID', 'Easting', 'Northing', 'Elevation', 'Timestamp', 'STN_Easting', 'STN_Northing',
                                 'STN_Height', 'STN_Elevation', 'Target_Height', 'Horizontal_Angle', 'Vertical_Angle', 'Slope_Distance',
                                 'Horizontal_Dist', 'Prism_Constant', 'Height_Diff']
 
@@ -569,21 +570,37 @@ class GSI:
         root_job_directory = os.path.dirname(ts_directory)   # this should return the job directory e.g. 200416
 
         out_csv_file_path = os.path.join(root_job_directory, os.path.basename(os.path.splitext(gsi_basename)[0] + '_Sorted.csv'))
-        csv_header_name = list(GSI.GSI_WORD_ID_DICT.values())
-        # csv_header_name = list(GSI.EXPORT_GSI_HEADER_FORMAT)
+        # csv_header_name = list(GSI.GSI_WORD_ID_DICT.values())
+        csv_header_name = list(GSI.EXPORT_GSI_HEADER_FORMAT)
+
+        export_formatted_lines = self.format_gsi_for_export()
 
         try:
             with open(out_csv_file_path, 'w', newline='') as csv_file:
                 writer = csv.DictWriter(csv_file, fieldnames = csv_header_name)
                 writer.writeheader()
-                for formatted_line in self.formatted_lines:
-                    writer.writerow(formatted_line)
+                for export_formatted_line in export_formatted_lines:
+                    writer.writerow(export_formatted_line)
 
         except Exception as ex:
             print(ex)
             tkinter.messagebox.showerror("ERROR", "Something went wrong exporting CSV.  Contact Richard")
         else:
             tkinter.messagebox.showerror("EXPORT CSV", "CSV had been created at:\n\n " + out_csv_file_path)
+
+    def format_gsi_for_export(self):
+
+        copy_formatted_lines = copy.deepcopy(self.formatted_lines)
+        export_formatted_lines = []
+
+        for formatted_line in copy_formatted_lines:
+
+            for key in GSI.EXPORT_GSI_HEADER_FORMAT:
+                formatted_line[key] = formatted_line.pop(key)
+
+            export_formatted_lines.append(formatted_line)
+
+        return export_formatted_lines
 
 # def main():
 #
