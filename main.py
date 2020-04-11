@@ -8,7 +8,7 @@ NOTE: For 3.4 compatibility
     i) Replaced f-strings with.format method.
     ii) had to use an ordered dictionary"""
 
-# TODO finish create dated directory functionality
+# TODO new job directory - add inital directory in the settings.ini
 # TODO put this into the settings file default job directory year etc
 # TODO automate the transfer of files of SD card to the job folder (know location based on created dated directory
 # TODO use Calendar object in utilities https://stackoverflow.com/questions/27774089/python-calendar-widget-return-the-user-selected-date
@@ -59,7 +59,8 @@ class MenuBar(tk.Frame):
         # File Menu
         self.file_sub_menu = tk.Menu(self.menu_bar, tearoff=0)
         self.file_sub_menu.add_command(label="Open...", command=self.choose_gsi_file)
-        self.file_sub_menu.add_command(label="Create Dated Directory...", command=lambda: self.new_dated_directory(True))
+        self.file_sub_menu.add_command(label="Create Dated Directory...",
+                                       command=lambda: self.new_dated_directory(False))
         self.file_sub_menu.add_command(label="Create Job Directory...", command=self.new_job_directoy)
         self.file_sub_menu.add_separator()
         self.file_sub_menu.add_command(label="Monitoring - Create", command=self.monitoring_create, state="disabled")
@@ -67,7 +68,8 @@ class MenuBar(tk.Frame):
                                        state="disabled")
         self.file_sub_menu.add_command(label="Monitoring - Update Labels", command=self.monitoring_update_labels,
                                        state="disabled")
-        self.file_sub_menu.add_command(label="Monitoring - Rename Updated Files", command=self.monitoring_rename_updated_files, state="disabled")
+        self.file_sub_menu.add_command(label="Monitoring - Rename Updated Files",
+                                       command=self.monitoring_rename_updated_files, state="disabled")
 
         self.menu_bar.add_cascade(label="File", menu=self.file_sub_menu)
 
@@ -76,8 +78,10 @@ class MenuBar(tk.Frame):
         self.edit_sub_menu.add_command(label="Delete all 2D Orientation Shots", command=self.delete_orientation_shots)
         self.edit_sub_menu.add_command(label="Change target height...", command=self.change_target_height)
         self.edit_sub_menu.add_separator()
-        self.edit_sub_menu.add_command(label="Prism Constant - Fix single...", command=self.prism_constant_fix_single, state="disabled")
-        self.edit_sub_menu.add_command(label="Prism Constant - Fix batch ...", command=self.prism_constant_fix_batch, state="disabled")
+        self.edit_sub_menu.add_command(label="Prism Constant - Fix single...", command=self.prism_constant_fix_single,
+                                       state="disabled")
+        self.edit_sub_menu.add_command(label="Prism Constant - Fix batch ...", command=self.prism_constant_fix_batch,
+                                       state="disabled")
 
         self.menu_bar.add_cascade(label="Edit Survey", menu=self.edit_sub_menu, state="disabled")
 
@@ -147,43 +151,27 @@ class MenuBar(tk.Frame):
         self.enable_menus()
         gui_app.workflow_bar.hide_workflow_bar()
 
-    def new_dated_directory(self, choose_date=True):
+    def new_dated_directory(self, choose_date=True, folder_selected=None):
 
         # default path for the file dialog to open too
         default_path = os.path.join(defaultJobDir, defaultYear, defaultType)
-
-        folder_selected = filedialog.askdirectory(parent=self.master, initialdir=default_path, title='Please select the root directory')
+        if folder_selected is None:
+            folder_selected = filedialog.askdirectory(parent=self.master, initialdir=default_path,
+                                                      title='Please select the root directory')
 
         if os.path.exists(folder_selected):
             if choose_date is True:
 
-                # Let user choose the date, rather than default to todays date
-                cal_root = tk.Toplevel()
-                cal = CalendarWindow(cal_root, todays_date)
-                self.master.wait_window(cal_root)
-                active_date = cal.get_selected_date()
+                self.choose_date()
 
+            CreateDatedDirectoryWindow(self, folder_selected)
 
-            else:
-                active_date = todays_date
-
-            if os.path.exists(os.path.join(folder_selected, active_date)) == False:
-                if tk.messagebox.askyesno("CREATE DATED FOLDER?", "Create dated folder [" + os.path.join(folder_selected) + "]"):
-                    os.makedirs(os.path.join(folder_selected, active_date))
-                    os.makedirs(os.path.join(os.path.join(folder_selected, active_date), 'OTHER'))
-                    os.makedirs(os.path.join(os.path.join(folder_selected, active_date), 'GPS'))
-                    os.makedirs(os.path.join(os.path.join(folder_selected, active_date), 'OUTPUT'))
-                    os.makedirs(os.path.join(os.path.join(folder_selected, active_date), 'TS'))
-                    os.makedirs(os.path.join(os.path.join(folder_selected, active_date), 'TS', 'TS60'))
-                    os.makedirs(os.path.join(os.path.join(folder_selected, active_date), 'TS', 'MS60'))
-                    os.makedirs(os.path.join(os.path.join(folder_selected, active_date), 'TS', 'TS15'))
-                    os.makedirs(os.path.join(os.path.join(folder_selected, active_date), 'TS', 'EDITING'))
-
-                else:
-                    return
-            else:
-                tk.messagebox.showwarning("DATED FOLDER EXISTS", "A dated folder for this date already exists...")
-                return
+    def choose_date(self):
+        # Let user choose the date, rather than default to todays date
+        cal_root = tk.Toplevel()
+        cal = CalendarWindow(cal_root, todays_date)
+        self.master.wait_window(cal_root)
+        active_date = cal.get_selected_date()
 
     def open_calender(self, parent):
         cal_root = tk.Toplevel()
@@ -192,7 +180,7 @@ class MenuBar(tk.Frame):
 
     def new_job_directoy(self):
 
-        # TODO add inital directory in the settings.ini
+        # TODO new job directory - add inital directory in the settings.ini
 
         filedialog.askdirectory(initialdir=r"Survey Data\2020\MONITORING")
 
@@ -942,11 +930,12 @@ class WorkflowBar(tk.Frame):
         self.workflow_lbl = tk.Label(self.frame, text='NEW JOB WORKFLOW:')
         self.workflow_lbl.configure(background='#FFDEAC')
         self.btn_diary = tk.Button(self.frame, text="Job Diary", command=MenuBar.job_diary)
-        self.btn_diary.configure(background='#FCF1E1 ')
+        self.btn_diary.configure(background='#FCF1E1')
         self.btn_create_directory_today = tk.Button(self.frame, text="Create Dated Directory",
                                                     command=lambda: gui_app.menu_bar.new_dated_directory(False))
         self.btn_create_directory_today.configure(background='#FCF1E1')
-        self.btn_import_sd_data = tk.Button(self.frame, text="Import SD Data", command=lambda: gui_app.menu_bar.import_sd_data)
+        self.btn_import_sd_data = tk.Button(self.frame, text="Import SD Data",
+                                            command=lambda: gui_app.menu_bar.import_sd_data)
         self.btn_import_sd_data.configure(background='#FCF1E1')
         self.btn_open_gsi = tk.Button(self.frame, text="Open GSI", command=lambda: gui_app.menu_bar.choose_gsi_file())
         self.btn_open_gsi.configure(background='#FCF1E1')
@@ -962,6 +951,7 @@ class WorkflowBar(tk.Frame):
 
     def hide_workflow_bar(self):
         self.frame.pack_forget()
+
 
 class MainWindow(tk.Frame):
 
@@ -1125,6 +1115,62 @@ class ListBoxFrame(tk.Frame):
             #
             # # rebuild database and GUI
         GUIApplication.refresh()
+
+
+class CreateDatedDirectoryWindow:
+
+    def __init__(self, master, selected_directory):
+        self.master = master
+        self.survey_config = SurveyConfiguration()
+        self.selected_directory = selected_directory
+        self.active_date = todays_date
+
+        #  Lets build the dialog box
+        self.dialog_window = tk.Toplevel(master)
+        self.dialog_window.title("DATED DIERCTORY")
+
+        container = tk.Frame(self.dialog_window, width=230, height=120)
+
+        question_text = "Create dated folder for the " + todays_date.upper() + "?\n\n"
+        self.question_lbl = tk.Label(container, text=question_text)
+        self.ok_btn = tk.Button(container, text='OK', command=lambda: self.create_directory(todays_date))
+        self.change_date_btn = tk.Button(container, text='Change date', command=self.change_date)
+
+        self.question_lbl.grid(row=1, column=1, columnspan=2, sticky='nesw', padx=30, pady=(20, 5))
+        self.ok_btn.grid(row=2, column=1, sticky='nesw', padx=(30, 5), pady=(0, 10))
+        self.change_date_btn.grid(row=2, column=2, sticky='nesw', padx=(5, 30), pady=(0, 10))
+
+        container.pack(fill="both", expand=True)
+
+        # self.dialog_window.geometry(MainWindow.position_popup(master, 270, 140))
+
+    def create_directory(self, active_date):
+
+        if os.path.exists(os.path.join(self.selected_directory, active_date)) == False:
+
+            self.dialog_window.destroy()
+            os.makedirs(os.path.join(self.selected_directory, active_date))
+            os.makedirs(os.path.join(os.path.join(self.selected_directory, active_date), 'OTHER'))
+            os.makedirs(os.path.join(os.path.join(self.selected_directory, active_date), 'GPS'))
+            os.makedirs(os.path.join(os.path.join(self.selected_directory, active_date), 'OUTPUT'))
+            os.makedirs(os.path.join(os.path.join(self.selected_directory, active_date), 'TS'))
+            os.makedirs(os.path.join(os.path.join(self.selected_directory, active_date), 'TS', 'TS60'))
+            os.makedirs(os.path.join(os.path.join(self.selected_directory, active_date), 'TS', 'MS60'))
+            os.makedirs(os.path.join(os.path.join(self.selected_directory, active_date), 'TS', 'TS15'))
+            os.makedirs(os.path.join(os.path.join(self.selected_directory, active_date), 'TS', 'EDITING'))
+
+            create_dated_folder = os.path.join(self.selected_directory)
+            tk.messagebox.showinfo("Create directory", "Dated directory created in:\n\n" + create_dated_folder)
+
+        else:
+            self.dialog_window.destroy()
+            tk.messagebox.showwarning("DATED FOLDER EXISTS", "A dated folder for this date already exists")
+
+    def change_date(self):
+        cal_root = tk.Toplevel()
+        cal = CalendarWindow(cal_root, todays_date)
+        self.master.wait_window(cal_root)
+        self.create_directory(cal.get_selected_date())
 
 
 class TargetHeightWindow:
@@ -2368,7 +2414,8 @@ class CalendarWindow:
         self.year_selected = self.year
         self.day_name = name
         self.date_selected = str(self.day_selected) + '/' + str(self.month) + '/' + str(self.year)
-        self.date_holder = datetime.datetime.strptime(str(self.day_selected) + '/' + str(self.month) + '/' + str(self.year), '%d/%m/%Y').strftime(
+        self.date_holder = datetime.datetime.strptime(
+            str(self.day_selected) + '/' + str(self.month) + '/' + str(self.year), '%d/%m/%Y').strftime(
             self.format)
         todays_date = datetime.datetime.today().strftime('%y%m%d')
         self.clear()
