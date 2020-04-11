@@ -15,7 +15,6 @@ NOTE: For 3.4 compatibility
 
 import copy
 import shutil
-import csv
 import tkinter.messagebox
 import datetime
 import logging.config
@@ -128,7 +127,7 @@ class MenuBar(tk.Frame):
 
     def choose_gsi_file(self):
 
-        # global filename_path
+        # TODO update this get from create directory
         last_used_directory = survey_config.last_used_file_dir
 
         MenuBar.filename_path = tk.filedialog.askopenfilename(initialdir=last_used_directory, title="Select file",
@@ -510,14 +509,8 @@ class MenuBar(tk.Frame):
         print(points_diff_PC_dict)
 
     def export_csv(self):
-        pass
-        Out_csv = os.path.join(os.path.split(self.GsiFile)[0],
-                               os.path.basename(self.GsiFile).split('.')[0] + '_Sorted.csv')
-        with open(Out_csv, 'w') as myFile:
-            wr = csv.writer(myFile, delimiter=",", lineterminator="\n")
-            for mylist in self.All_Data:
-                mylist[0] = mylist[0].replace('::', '_')
-                wr.writerow(mylist)
+
+        gsi.export_csv(MenuBar.filename_path)
 
     def display_query_input_box(self):
 

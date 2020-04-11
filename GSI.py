@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 import os
 import sqlite3
+import csv
+import tkinter.messagebox
 import logging.config
 from collections import OrderedDict
 from collections import Counter
@@ -16,6 +18,10 @@ class GSI:
                                     ('82', 'Northing'), ('83', 'Elevation'), ('84', 'STN_Easting'),
                                     ('85', 'STN_Northing'), ('86', 'STN_Elevation'), ('87', 'Target_Height'),
                                     ('88', 'STN_Height')])
+
+    EXPORT_GSI_HEADER_FORMAT = ['UID', 'Point_ID', 'Easting', 'Northing', 'Elevation', 'Timestamp', 'STN_Easting', 'STN_Northing',
+                                'STN_Height', 'STN_Elevation', 'Target_Height', 'Horizontal_Angle', 'Vertical_Angle', 'Slope_Distance',
+                                'Horizontal_Dist', 'Prism_Constant', 'Height_Diff']
 
     # REGULAR EXPRESSION LOOKUP
     REGULAR_EXPRESSION_LOOKUP = OrderedDict([('11', r'\*11\d*\+\w+'), ('19', r''), ('21', r''),
@@ -212,6 +218,7 @@ class GSI:
             timestamp = '{}:{}'.format(hour, minute)
 
         return timestamp
+
     @staticmethod
     def format_angles(angle, precision):
 
@@ -553,6 +560,30 @@ class GSI:
 
         return errors, error_points
 
+    def export_csv(self, gsi_file_path):
+
+        # TODO uncomment this once finished testing
+        gsi_basename = os.path.basename(gsi_file_path)
+        gsi_directory = os.path.dirname(gsi_file_path)  # this should return the editing directory
+        ts_directory = os.path.dirname(gsi_directory)    # this should return the TS directory
+        root_job_directory = os.path.dirname(ts_directory)   # this should return the job directory e.g. 200416
+
+        out_csv_file_path = os.path.join(root_job_directory, os.path.basename(os.path.splitext(gsi_basename)[0] + '_Sorted.csv'))
+        csv_header_name = list(GSI.GSI_WORD_ID_DICT.values())
+        # csv_header_name = list(GSI.EXPORT_GSI_HEADER_FORMAT)
+
+        try:
+            with open(out_csv_file_path, 'w', newline='') as csv_file:
+                writer = csv.DictWriter(csv_file, fieldnames = csv_header_name)
+                writer.writeheader()
+                for formatted_line in self.formatted_lines:
+                    writer.writerow(formatted_line)
+
+        except Exception as ex:
+            print(ex)
+            tkinter.messagebox.showerror("ERROR", "Something went wrong exporting CSV.  Contact Richard")
+        else:
+            tkinter.messagebox.showerror("EXPORT CSV", "CSV had been created at:\n\n " + out_csv_file_path)
 
 # def main():
 #
