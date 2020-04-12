@@ -52,6 +52,7 @@ class MenuBar(tk.Frame):
         self.file_sub_menu.add_command(label="Create Dated Directory...",
                                        command=lambda: self.new_dated_directory(False))
         self.file_sub_menu.add_command(label="Create Job Directory...", command=self.new_job_directoy)
+        self.file_sub_menu.add_command(label="Import SD Data", command=self.import_sd_data)
         self.file_sub_menu.add_separator()
         self.file_sub_menu.add_command(label="Monitoring - Create", command=self.monitoring_create, state="disabled")
         self.file_sub_menu.add_command(label="Monitoring - Update Coords", command=self.monitoring_update_coords,
@@ -175,7 +176,9 @@ class MenuBar(tk.Frame):
         filedialog.askdirectory(initialdir=initial_dir)
 
     def import_sd_data(self):
-        pass
+        survey_config = SurveyConfiguration()
+        todays_dated_directory = survey_config.todays_dated_directory
+        print(todays_dated_directory)
 
     def monitoring_create(self):
         pass
@@ -924,8 +927,7 @@ class WorkflowBar(tk.Frame):
         self.btn_create_directory_today = tk.Button(self.frame, text="Create Dated Directory",
                                                     command=lambda: gui_app.menu_bar.new_dated_directory(False))
         self.btn_create_directory_today.configure(background='#FCF1E1')
-        self.btn_import_sd_data = tk.Button(self.frame, text="Import SD Data",
-                                            command=lambda: gui_app.menu_bar.import_sd_data)
+        self.btn_import_sd_data = tk.Button(self.frame, text="Import SD Data", command=lambda: gui_app.menu_bar.import_sd_data())
         self.btn_import_sd_data.configure(background='#FCF1E1')
         self.btn_open_gsi = tk.Button(self.frame, text="Open GSI", command=lambda: gui_app.menu_bar.choose_gsi_file())
         self.btn_open_gsi.configure(background='#FCF1E1')
