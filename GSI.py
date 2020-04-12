@@ -8,7 +8,7 @@ from tkinter import filedialog
 import logging.config
 from collections import OrderedDict
 from collections import Counter
-from SurveyConfiguration import SurveyConfiguration
+from configurations import SurveyConfiguration
 
 import re
 

@@ -19,7 +19,7 @@ import datetime
 import logging.config
 from tkinter import filedialog
 from GSI import *
-from SurveyConfiguration import SurveyConfiguration
+from configurations import UserConfiguration, SurveyConfiguration
 from GSI import GSIDatabase, CorruptedGSIFileError, GSIFile
 from decimal import *
 
@@ -38,6 +38,7 @@ class MenuBar(tk.Frame):
 
         self.master = master
         self.survey_config = SurveyConfiguration()
+        self.user_config = UserConfiguration()
         self.monitoring_job_dir = os.path.join(self.survey_config.root_job_directory, self.survey_config.current_year, self.survey_config.default_survey_type)
         self.query_dialog_box = None
         self.filename_path = ""
@@ -149,8 +150,7 @@ class MenuBar(tk.Frame):
         # default path for the file dialog to open too
         default_path = os.path.join(self.survey_config.root_job_directory, self.survey_config.current_year, self.survey_config.default_survey_type)
         if folder_selected is None:
-            folder_selected = filedialog.askdirectory(parent=self.master, initialdir=default_path,
-                                                      title='Please select the job directory')
+            folder_selected = filedialog.askdirectory(parent=self.master, initialdir=default_path, title='Please select the job directory')
 
         if os.path.exists(folder_selected):
             if choose_date is True:
@@ -176,9 +176,18 @@ class MenuBar(tk.Frame):
         filedialog.askdirectory(initialdir=initial_dir)
 
     def import_sd_data(self):
-        survey_config = SurveyConfiguration()
-        todays_dated_directory = survey_config.todays_dated_directory
-        print(todays_dated_directory)
+
+        user_sd_path = self.user_config.user_sd_root
+        todays_dated_directory = self.survey_config.todays_dated_directory
+
+
+
+
+
+        if not todays_dated_directory:
+            tkinter.filedialog.askdirectory(parent=self.master, initialdir=self.monitoring_job_dir, title='PLEASE CHOOSE THE JOB DIRECRTORY WHERE '
+                                                                                                          'YOU WOULD LIKE TO IMPORT SD DATA TO')
+
 
     def monitoring_create(self):
         pass
