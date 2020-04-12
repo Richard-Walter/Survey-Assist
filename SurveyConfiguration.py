@@ -2,13 +2,13 @@ from configparser import ConfigParser
 
 
 class SurveyConfiguration:
-
     section_instrument = 'INSTRUMENT'
     section_survey_tolerances = 'SURVEY_TOLERANCES'
     section_config_files = 'CONFIGURATION'
     section_file_directories = 'FILE DIRECTORIES'
 
     precision_value_list = ['3dp', '4dp']
+
     default_instrument_values = {
         'instrument_precision': '3dp'
     }
@@ -34,13 +34,16 @@ class SurveyConfiguration:
         self.config_file_path = './settings.ini'
 
         self.config_parser = ConfigParser()
-        self.precision_value = '3dp'
+        self.precision_value = '3dp'  # default value
 
         # read in config file
         self.config_parser.read(self.config_file_path)
 
         # INSTRUMENT PRECISION
         self.precision_value = self.config_parser.get(SurveyConfiguration.section_instrument, 'instrument_precision')
+        self.ts60_id = self.config_parser.get(SurveyConfiguration.section_instrument, 'ts60_id')
+        self.ms60_id = self.config_parser.get(SurveyConfiguration.section_instrument, 'ms60_id')
+        self.ts15_id = self.config_parser.get(SurveyConfiguration.section_instrument, 'ts15_id')
 
         # SURVEY TOLERANCES
         self.easting_tolerance = self.config_parser.get(SurveyConfiguration.section_survey_tolerances, 'eastings')
@@ -62,21 +65,16 @@ class SurveyConfiguration:
         self.default_survey_type = self.config_parser.get(SurveyConfiguration.section_file_directories, 'default_survey_type')
         self.todays_dated_directory = self.config_parser.get(SurveyConfiguration.section_file_directories, 'todays_dated_directory')
 
-
-
     def update(self, section, key, value):
-
         self.config_parser.set(section, key, value)
 
         with open(self.config_file_path, 'w+') as f:
             self.config_parser.write(f)
 
-
     def create_config_file(self, instrument_values, survey_tolerance_values, configuration_values):
+
         self.config_parser[SurveyConfiguration.section_instrument] = instrument_values
-
         self.config_parser[SurveyConfiguration.section_survey_tolerances] = survey_tolerance_values
-
         self.config_parser[SurveyConfiguration.section_config_files] = configuration_values
 
         with open(self.config_file_path, 'w') as f:
