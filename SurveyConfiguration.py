@@ -60,6 +60,8 @@ class SurveyConfiguration:
         self.diary_backup = self.config_parser.get(SurveyConfiguration.section_file_directories, 'diary_backup')
         self.current_year = self.config_parser.get(SurveyConfiguration.section_file_directories, 'current_year')
         self.default_survey_type = self.config_parser.get(SurveyConfiguration.section_file_directories, 'default_survey_type')
+        self.todays_dated_directory = self.config_parser.get(SurveyConfiguration.section_file_directories, 'todays_dated_directory')
+        print(self.todays_dated_directory)
 
 
     def update(self, section, key, value):

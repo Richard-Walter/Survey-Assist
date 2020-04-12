@@ -9,6 +9,7 @@ NOTE: For 3.4 compatibility
     ii) had to use an ordered dictionary"""
 
 # TODO automate the transfer of files of SD card to the job folder (know location based on created dated directory
+# TODO FL-FR points out of tolerance add station prefix
 # TODO use Calendar object in utilities https://stackoverflow.com/questions/27774089/python-calendar-widget-return-the-user-selected-date
 
 
@@ -37,6 +38,7 @@ class MenuBar(tk.Frame):
 
         self.master = master
         self.survey_config = SurveyConfiguration()
+        self.monitoring_job_dir = os.path.join(self.survey_config.root_job_directory, self.survey_config.current_year, self.survey_config.default_survey_type)
         self.query_dialog_box = None
         self.filename_path = ""
         self.compnet_working_dir = ""
@@ -125,12 +127,16 @@ class MenuBar(tk.Frame):
 
     def choose_gsi_file(self):
 
-        # TODO update this get from create directory
-        last_used_directory = survey_config.last_used_file_dir
+        if self.survey_config.todays_dated_directory == "":
 
-        MenuBar.filename_path = tk.filedialog.askopenfilename(initialdir=last_used_directory, title="Select file",
+            intial_directory = self.monitoring_job_dir
+
+        else:
+            intial_directory = os.path.join(self.survey_config.todays_dated_directory, "TS")
+
+        MenuBar.filename_path = tk.filedialog.askopenfilename(initialdir=intial_directory, title="Select file",
                                                               filetypes=[("GSI Files", ".gsi")])
-        survey_config.update(SurveyConfiguration.section_file_directories, 'last_used', os.path.dirname(
+        self.survey_config.update(SurveyConfiguration.section_file_directories, 'last_used', os.path.dirname(
             MenuBar.filename_path))
 
         GUIApplication.refresh()
@@ -143,14 +149,13 @@ class MenuBar(tk.Frame):
         default_path = os.path.join(self.survey_config.root_job_directory, self.survey_config.current_year, self.survey_config.default_survey_type)
         if folder_selected is None:
             folder_selected = filedialog.askdirectory(parent=self.master, initialdir=default_path,
-                                                      title='Please select the root directory')
+                                                      title='Please select the job directory')
 
         if os.path.exists(folder_selected):
             if choose_date is True:
-
                 self.choose_date()
 
-            CreateDatedDirectoryWindow(self, folder_selected)
+            CreateDatedDirectoryWindow(self, folder_selected, self.survey_config)
 
     def choose_date(self):
         # Let user choose the date, rather than default to todays date
@@ -1098,9 +1103,8 @@ class ListBoxFrame(tk.Frame):
 
 class CreateDatedDirectoryWindow:
 
-    def __init__(self, master, selected_directory):
+    def __init__(self, master, selected_directory, survey_config):
         self.master = master
-        self.survey_config = SurveyConfiguration()
         self.selected_directory = selected_directory
         self.active_date = todays_date
 
@@ -1125,7 +1129,9 @@ class CreateDatedDirectoryWindow:
 
     def create_directory(self, active_date):
 
-        if os.path.exists(os.path.join(self.selected_directory, active_date)) == False:
+        new_directory_path = os.path.join(self.selected_directory, active_date)
+
+        if os.path.exists(new_directory_path) == False:
 
             self.dialog_window.destroy()
             os.makedirs(os.path.join(self.selected_directory, active_date))
@@ -1140,6 +1146,8 @@ class CreateDatedDirectoryWindow:
 
             create_dated_folder = os.path.join(self.selected_directory)
             tk.messagebox.showinfo("Create directory", "Dated directory created in:\n\n" + create_dated_folder)
+            survey_config.update(SurveyConfiguration.section_file_directories, 'todays_dated_directory', new_directory_path)
+            survey_config.todays_dated_directory = new_directory_path
 
         else:
             self.dialog_window.destroy()
@@ -2126,7 +2134,7 @@ class JobDiaryWindow:
     def backup_diary(self):
 
         diary_backup = self.survey_config.diary_backup
-        diary_directory =self.survey_config.diary_directory
+        diary_directory = self.survey_config.diary_directory
 
         if os.path.exists(diary_backup) == False:
             os.mkdir(diary_backup)

@@ -570,7 +570,7 @@ class GSI:
         root_job_directory = os.path.dirname(ts_directory)  # this should return the job directory e.g. 200416
 
         if (os.path.isdir(root_job_directory + '/TS')) & (os.path.isdir(root_job_directory + '/GPS')) & (
-        os.path.isdir(root_job_directory + '/OUTPUT')):
+                os.path.isdir(root_job_directory + '/OUTPUT')):
 
             out_csv_file_path = os.path.join(root_job_directory, os.path.basename(os.path.splitext(gsi_basename)[0] + '_Sorted.csv'))
 
@@ -603,7 +603,6 @@ class GSI:
             tkinter.messagebox.showerror("EXPORTING CSV", "CSV had been created at:\n\n " + out_csv_file_path)
             # open up the file for the user
             os.startfile(out_csv_file_path)
-
 
     def format_gsi_for_export(self):
 
