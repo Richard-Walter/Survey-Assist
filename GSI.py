@@ -612,11 +612,10 @@ class GSI:
 
         for gsi_line_number, station_name in stations_names_dict.items():
 
-            obs_with_uid = OrderedDict()
-
             obs_from_station = self.get_all_shots_from_a_station_including_setup(station_name, gsi_line_number)
             obs_from_station_list = list(obs_from_station.values())
-            # remove setup
+
+            # dont include setup in the sort by point ID - remove and add to uid_formatted_lines a
             station_setup_formatted_line = obs_from_station_list.pop(0)
             station_setup_formatted_line[uid_key] = ""
             uid_formatted_lines.append(station_setup_formatted_line)
@@ -624,10 +623,39 @@ class GSI:
             # sorted_formatted_lines = sorted(obs_from_station_list, key=lambda item: item.get("Point_ID"))
             obs_from_station_list.sort(key=lambda item: item.get("Point_ID"))
 
+            unique_point_counter = 1
+            stn_uid_formatted_lines = []
+
             for index, formatted_line_dict in enumerate(obs_from_station_list):
 
+                point_id = formatted_line_dict['Point_ID']
+                stn_point = station_name + '_' + point_id
+                uid = ''
 
-                uid_formatted_lines.append(formatted_line_dict)
+                if index == 0:
+                    uid = stn_point + '_' + str(unique_point_counter)
+                    formatted_line_dict[uid_key] = uid
+                else:
+
+                    previous_formatted_line_dict = obs_from_station_list[index - 1]
+
+                    # points match
+                    if previous_formatted_line_dict['Point_ID'] == formatted_line_dict['Point_ID']:
+                        unique_point_counter += 1
+                        uid = stn_point + '_' + str(unique_point_counter)
+                        formatted_line_dict[uid_key] = uid
+                    else:
+                        # reset counter for next double observations
+                        unique_point_counter = 1
+                        uid = stn_point + '_' + str(unique_point_counter)
+                        formatted_line_dict[uid_key] = uid
+
+
+                # formatted_line_dict[uid_key] = uid
+
+                stn_uid_formatted_lines.append(formatted_line_dict)
+
+            uid_formatted_lines.extend(stn_uid_formatted_lines)
 
         return uid_formatted_lines
 
