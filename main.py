@@ -298,18 +298,20 @@ class MenuBar(tk.Frame):
                 # add the analysis lines for this station
                 for aline in analysed_lines:
                     formatted_gsi_lines_analysis.append(aline)
-
-                # check for tagged values so line error can be determined
-                for index, line_dict in enumerate(formatted_gsi_lines_analysis):
-
-                    point_name = line_dict['Point_ID']
-                    for key, field_value in line_dict.items():
+                    for key, field_value in aline.items():
                         if '*' in field_value:
-                            error_line_number_list.append(index + 1)
-
-                            # dialog_text_set.add("         " + station_name + "  --->  " + point_name + '\n')
-                            dialog_text_set.add('  ' + point_name + '\n')
+                            dialog_text_set.add("         " + station_name + "  --->  " + aline['Point_ID'] + '\n')
+                            # dialog_text_set.add('  ' + point_name + '\n')
                             break
+
+        # check for tagged values so line error can be determined
+        for index, line_dict in enumerate(formatted_gsi_lines_analysis):
+
+            point_name = line_dict['Point_ID']
+            for key, field_value in line_dict.items():
+                if '*' in field_value:
+                    error_line_number_list.append(index + 1)
+                    break
 
         if dialog_text_set:
             dialog_text = " The following shots exceed the FL_FR tolerance:\n\n"
