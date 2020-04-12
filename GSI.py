@@ -323,7 +323,7 @@ class GSI:
     # returns a dict containing formatted lines and their line number
     def get_all_shots_from_a_station_including_setup(self, station_name, gsi_line_number=None):
 
-        single_station_formatted_lines = {}
+        single_station_formatted_lines = OrderedDict()
         station_found = False
 
         if gsi_line_number is None:
@@ -590,6 +590,10 @@ class GSI:
                 for export_formatted_line in export_formatted_lines:
                     writer.writerow(export_formatted_line)
 
+        except IOError as ex:
+            print(ex)
+            tkinter.messagebox.showerror("ERROR", "Please make sure file isnt already opened")
+
         except Exception as ex:
             print(ex)
             tkinter.messagebox.showerror("ERROR", "Something went wrong exporting CSV.  Contact Richard")
@@ -626,6 +630,7 @@ class GSI:
         for gsi_line_number, station_name in stations_names_dict.items():
 
             obs_from_station = self.get_all_shots_from_a_station_including_setup(station_name, gsi_line_number)
+
             obs_from_station_list = list(obs_from_station.values())
 
             # dont include setup in the sort by point ID - remove and add to uid_formatted_lines a
