@@ -1867,7 +1867,7 @@ class CombineGSIFilesWindow:
         unsorted_combined_gsi.format_gsi(self.combined_gsi_file_path)
 
         # lets check and provide a warning to the user i
-        stations_names_dict = unsorted_combined_gsi.get_list_of_control_points()
+        stations_names_dict = unsorted_combined_gsi.get_list_of_control_points(gsi.formatted_lines)
         station_set = unsorted_combined_gsi.get_set_of_control_points()
         if len(stations_names_dict) != len(station_set):
             tk.messagebox.showwarning("WARNING", 'Warning - Duplicate station names detected!')
@@ -1920,7 +1920,7 @@ class CombineGSIFilesWindow:
         unsorted_combined_gsi.format_gsi(self.combined_gsi_file_path)
 
         # lets check and provide a error to the user if station names in combine GSI contain a duplicate
-        stations_names_dict = unsorted_combined_gsi.get_list_of_control_points()
+        stations_names_dict = unsorted_combined_gsi.get_list_of_control_points(gsi.formatted_lines)
         station_set = unsorted_combined_gsi.get_set_of_control_points()
 
         if len(stations_names_dict) != len(station_set):

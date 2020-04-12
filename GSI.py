@@ -20,7 +20,7 @@ class GSI:
                                     ('85', 'STN_Northing'), ('86', 'STN_Elevation'), ('87', 'Target_Height'),
                                     ('88', 'STN_Height')])
 
-    EXPORT_GSI_HEADER_FORMAT = ['Point_ID', 'Easting', 'Northing', 'Elevation', 'Timestamp', 'STN_Easting', 'STN_Northing',
+    EXPORT_GSI_HEADER_FORMAT = ['UID','Point_ID', 'Easting', 'Northing', 'Elevation', 'Timestamp', 'STN_Easting', 'STN_Northing',
                                 'STN_Height', 'STN_Elevation', 'Target_Height', 'Horizontal_Angle', 'Vertical_Angle', 'Slope_Distance',
                                 'Horizontal_Dist', 'Prism_Constant', 'Height_Diff']
 
@@ -292,12 +292,12 @@ class GSI:
         return sorted(control_points)
 
     # returns dictionary of control points along with their line number
-    def get_list_of_control_points(self):
+    def get_list_of_control_points(self, formatted_lines):
 
         control_points = OrderedDict()
         control_points_list = []
 
-        for line_number, formatted_line in enumerate(self.formatted_lines):
+        for line_number, formatted_line in enumerate(formatted_lines):
 
             # check to see if point id is a control point by see if STN_Easting exists
             if formatted_line['STN_Easting']:
@@ -590,10 +590,10 @@ class GSI:
 
     def format_gsi_for_export(self):
 
-        copy_formatted_lines = copy.deepcopy(self.formatted_lines)
+        uid_formatted_lines = self.create_formatted_lines_with_UID()
         export_formatted_lines = []
 
-        for formatted_line in copy_formatted_lines:
+        for formatted_line in uid_formatted_lines:
 
             for key in GSI.EXPORT_GSI_HEADER_FORMAT:
                 formatted_line[key] = formatted_line.pop(key)
@@ -601,6 +601,37 @@ class GSI:
             export_formatted_lines.append(formatted_line)
 
         return export_formatted_lines
+
+    def create_formatted_lines_with_UID(self):
+
+        uid_key = 'UID'
+        uid_formatted_lines = []
+        copy_formatted_lines = copy.deepcopy(self.formatted_lines)
+
+        stations_names_dict = self.get_list_of_control_points(copy_formatted_lines)
+
+        for gsi_line_number, station_name in stations_names_dict.items():
+
+            obs_with_uid = OrderedDict()
+
+            obs_from_station = self.get_all_shots_from_a_station_including_setup(station_name, gsi_line_number)
+            obs_from_station_list = list(obs_from_station.values())
+            # remove setup
+            station_setup_formatted_line = obs_from_station_list.pop(0)
+            station_setup_formatted_line[uid_key] = ""
+            uid_formatted_lines.append(station_setup_formatted_line)
+
+            # sorted_formatted_lines = sorted(obs_from_station_list, key=lambda item: item.get("Point_ID"))
+            obs_from_station_list.sort(key=lambda item: item.get("Point_ID"))
+
+            for index, formatted_line_dict in enumerate(obs_from_station_list):
+
+
+                uid_formatted_lines.append(formatted_line_dict)
+
+        return uid_formatted_lines
+
+
 
 # def main():
 #
@@ -612,6 +643,8 @@ class GSI:
 # if __name__ == "__main__":
 #
 #         main()
+
+
 class GSIDatabase:
     DATABASE_NAME = 'GSI_database.db'
     DATABASE_PATH = 'GSI Files\\GSI_database.db'
