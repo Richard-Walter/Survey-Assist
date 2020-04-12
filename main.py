@@ -9,7 +9,7 @@ NOTE: For 3.4 compatibility
     ii) had to use an ordered dictionary"""
 
 # TODO automate the transfer of files of SD card to the job folder (know location based on created dated directory
-# TODO FL-FR points out of tolerance add station prefix
+# TODO FL_FR when display stn-->point it includes more points than what is highlighted
 # TODO use Calendar object in utilities https://stackoverflow.com/questions/27774089/python-calendar-widget-return-the-user-selected-date
 
 
@@ -306,10 +306,14 @@ class MenuBar(tk.Frame):
                     for key, field_value in line_dict.items():
                         if '*' in field_value:
                             error_line_number_list.append(index + 1)
-                            dialog_text_set.add(point_name + ": FL-FR out of tolerance" + '\n')
+
+                            # dialog_text_set.add("         " + station_name + "  --->  " + point_name + '\n')
+                            dialog_text_set.add('  ' + point_name + '\n')
                             break
 
         if dialog_text_set:
+            dialog_text = " The following shots exceed the FL_FR tolerance:\n\n"
+
             for line in sorted(dialog_text_set):
                 dialog_text += line
         else:
