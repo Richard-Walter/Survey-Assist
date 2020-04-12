@@ -8,12 +8,10 @@ NOTE: For 3.4 compatibility
     i) Replaced f-strings with.format method.
     ii) had to use an ordered dictionary"""
 
-# TODO new job directory - add inital directory in the settings.ini
 # TODO automate the transfer of files of SD card to the job folder (know location based on created dated directory
 # TODO use Calendar object in utilities https://stackoverflow.com/questions/27774089/python-calendar-widget-return-the-user-selected-date
 
 
-import copy
 import shutil
 import tkinter.messagebox
 import datetime

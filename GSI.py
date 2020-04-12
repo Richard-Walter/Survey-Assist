@@ -4,6 +4,7 @@ import sqlite3
 import csv
 import copy
 import tkinter.messagebox
+from tkinter import filedialog
 import logging.config
 from collections import OrderedDict
 from collections import Counter
@@ -20,7 +21,7 @@ class GSI:
                                     ('85', 'STN_Northing'), ('86', 'STN_Elevation'), ('87', 'Target_Height'),
                                     ('88', 'STN_Height')])
 
-    EXPORT_GSI_HEADER_FORMAT = ['UID','Point_ID', 'Easting', 'Northing', 'Elevation', 'Timestamp', 'STN_Easting', 'STN_Northing',
+    EXPORT_GSI_HEADER_FORMAT = ['UID', 'Point_ID', 'Easting', 'Northing', 'Elevation', 'Timestamp', 'STN_Easting', 'STN_Northing',
                                 'STN_Height', 'STN_Elevation', 'Target_Height', 'Horizontal_Angle', 'Vertical_Angle', 'Slope_Distance',
                                 'Horizontal_Dist', 'Prism_Constant', 'Height_Diff']
 
@@ -563,13 +564,20 @@ class GSI:
 
     def export_csv(self, gsi_file_path):
 
-        # TODO uncomment this once finished testing
         gsi_basename = os.path.basename(gsi_file_path)
         gsi_directory = os.path.dirname(gsi_file_path)  # this should return the editing directory
-        ts_directory = os.path.dirname(gsi_directory)    # this should return the TS directory
-        root_job_directory = os.path.dirname(ts_directory)   # this should return the job directory e.g. 200416
+        ts_directory = os.path.dirname(gsi_directory)  # this should return the TS directory
+        root_job_directory = os.path.dirname(ts_directory)  # this should return the job directory e.g. 200416
 
-        out_csv_file_path = os.path.join(root_job_directory, os.path.basename(os.path.splitext(gsi_basename)[0] + '_Sorted.csv'))
+        if (os.path.isdir(root_job_directory + '/TS')) & (os.path.isdir(root_job_directory + '/GPS')) & (
+        os.path.isdir(root_job_directory + '/OUTPUT')):
+
+            out_csv_file_path = os.path.join(root_job_directory, os.path.basename(os.path.splitext(gsi_basename)[0] + '_Sorted.csv'))
+
+        else:
+            root_job_directory = filedialog.askdirectory(initialdir=gsi_directory, title='PLEASE SELECT THE JOB DIRECTORY TO EXPORT THE CSV')
+            out_csv_file_path = os.path.join(root_job_directory, os.path.basename(os.path.splitext(gsi_basename)[0] + '_Sorted.csv'))
+
         # csv_header_name = list(GSI.GSI_WORD_ID_DICT.values())
         csv_header_name = list(GSI.EXPORT_GSI_HEADER_FORMAT)
 
@@ -577,7 +585,7 @@ class GSI:
 
         try:
             with open(out_csv_file_path, 'w', newline='') as csv_file:
-                writer = csv.DictWriter(csv_file, fieldnames = csv_header_name)
+                writer = csv.DictWriter(csv_file, fieldnames=csv_header_name)
                 writer.writeheader()
                 for export_formatted_line in export_formatted_lines:
                     writer.writerow(export_formatted_line)
@@ -585,8 +593,13 @@ class GSI:
         except Exception as ex:
             print(ex)
             tkinter.messagebox.showerror("ERROR", "Something went wrong exporting CSV.  Contact Richard")
+
+
         else:
-            tkinter.messagebox.showerror("EXPORT CSV", "CSV had been created at:\n\n " + out_csv_file_path)
+            tkinter.messagebox.showerror("EXPORTING CSV", "CSV had been created at:\n\n " + out_csv_file_path)
+            # open up the file for the user
+            os.startfile(out_csv_file_path)
+
 
     def format_gsi_for_export(self):
 
@@ -650,7 +663,6 @@ class GSI:
                         uid = stn_point + '_' + str(unique_point_counter)
                         formatted_line_dict[uid_key] = uid
 
-
                 # formatted_line_dict[uid_key] = uid
 
                 stn_uid_formatted_lines.append(formatted_line_dict)
@@ -658,7 +670,6 @@ class GSI:
             uid_formatted_lines.extend(stn_uid_formatted_lines)
 
         return uid_formatted_lines
-
 
 
 # def main():
