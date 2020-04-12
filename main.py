@@ -22,7 +22,7 @@ from GSI import *
 from configurations import UserConfiguration, SurveyConfiguration
 from GSI import GSIDatabase, CorruptedGSIFileError, GSIFile
 from decimal import *
-
+from pathlib import Path
 from compnet import CRDCoordinateFile, ASCCoordinateFile, STDCoordinateFile, CoordinateFile, FixedFile
 from utilities import *
 
@@ -38,8 +38,11 @@ class MenuBar(tk.Frame):
 
         self.master = master
         self.survey_config = SurveyConfiguration()
+        # remove todays_dated_directory value in case its old
+        self.survey_config.todays_dated_directory = ""
         self.user_config = UserConfiguration()
-        self.monitoring_job_dir = os.path.join(self.survey_config.root_job_directory, self.survey_config.current_year, self.survey_config.default_survey_type)
+        self.monitoring_job_dir = os.path.join(self.survey_config.root_job_directory, self.survey_config.current_year,
+                                               self.survey_config.default_survey_type)
         self.query_dialog_box = None
         self.filename_path = ""
         self.compnet_working_dir = ""
@@ -177,17 +180,118 @@ class MenuBar(tk.Frame):
 
     def import_sd_data(self):
 
-        user_sd_path = self.user_config.user_sd_root
+        ts60_id = self.survey_config.ts60_id
+        ts15_id = self.survey_config.ts15_id
+        ms60_id = self.survey_config.ms60_id
+
+        user_sd_directory = self.user_config.user_sd_root
         todays_dated_directory = self.survey_config.todays_dated_directory
+        import_root_directory = todays_dated_directory
+        import_edited_directory = os.path.join(import_root_directory, 'TS', 'EDITING')
+        todays_gps_filename_paths = set()
+        ts_60_filename_paths = set()
+        ts_15_filename_paths = set()
+        ms_60_filename_paths = set()
 
+        # lets search through SD card looking for TS or GPS files with todays date
+        for filename in os.listdir(user_sd_directory):
 
+            # first lets search for any files with todays date in it
+            # TODO need to split up the string to remove _ and spaces
+            if todays_date in filename:
 
+                # determine if TS or GPS file
+                if 'GPS' in filename:
+                    todays_gps_filename_paths.add(os.path.join(user_sd_directory, filename))
 
+                elif ts60_id in filename:
+                    ts_60_filename_paths.add(os.path.join(user_sd_directory, filename))
 
+                    # search for corresponding GSI file
+                    gsi_filename = self.get_gsi_file(todays_date, user_sd_directory)
+                    if gsi_filename:
+                        ts_60_filename_paths.add(os.path.join(user_sd_directory, gsi_filename))
+
+                elif ts15_id in filename:
+                    ts_15_filename_paths.add(os.path.join(user_sd_directory, filename))
+
+                    # search for corresponding GSI file
+                    gsi_filename = self.get_gsi_file(todays_date, user_sd_directory)
+                    if gsi_filename:
+                        ts_15_filename_paths.add(os.path.join(user_sd_directory, gsi_filename))
+
+                elif ms60_id in filename:
+                    ms_60_filename_paths.add(os.path.join(user_sd_directory, filename))
+
+                    # search for corresponding GSI file
+                    gsi_filename = self.get_gsi_file(todays_date, user_sd_directory)
+                    if gsi_filename:
+                        ms_60_filename_paths.add(os.path.join(user_sd_directory, gsi_filename))
+
+                else:
+
+                    tk.messagebox.showinfo("IMPORT SD DATA", "Couldn't find any survey files with todays date.\n\nPlease copy files over manually.")
+
+                    # open up explorer
+                    os.startfile('c:')
+                    return
+
+        # check if todays directory exists.  If not get user to choose.
         if not todays_dated_directory:
-            tkinter.filedialog.askdirectory(parent=self.master, initialdir=self.monitoring_job_dir, title='PLEASE CHOOSE THE JOB DIRECRTORY WHERE '
-                                                                                                          'YOU WOULD LIKE TO IMPORT SD DATA TO')
 
+            import_root_directory = tkinter.filedialog.askdirectory(parent=self.master, initialdir=self.monitoring_job_dir,
+                                                                    title='Choose the job directory where you would like to import the SD data to')
+
+        if not import_root_directory:
+            # user has closed down the ask directory so exit import sd
+            return
+
+        # lets copy files over to the dated directory but confirm with user first
+        all_todays_filename_paths = list(todays_gps_filename_paths) + list(ts_60_filename_paths) + list(ts_15_filename_paths) + \
+                                    list(ms_60_filename_paths)
+
+        filenames_txt_list = ""
+        confirm_msg = "The following files will be copied over to " + import_root_directory + ":\n\n"
+
+        for filename_path in all_todays_filename_paths:
+            filenames_txt_list += os.path.basename(filename_path) + '\n'
+
+        confirm_msg += filenames_txt_list + "\n\nHit 'Cancel' to copy file over manually"
+
+        ok = tk.messagebox.askokcancel(message=confirm_msg)
+
+        if ok:
+
+            try:
+                if all_todays_filename_paths:
+                    for file_path in todays_gps_filename_paths:
+                        shutil.copytree(file_path, import_root_directory)
+
+                        #if GSI file make a copy and place it in the edited folder
+                        if Path(file_path).suffix.upper() == 'GSI':
+                            gsi_filename =  os.path.basename(file_path)
+                            edited_filename_path = os.path.join(import_edited_directory, gsi_filename, '_EDITED.GSI')
+                            shutil.copy(file_path, edited_filename_path)
+
+            except Exception as ex:
+                print(ex)
+                tk.messagebox.showerror("COPYING SD DATA", "Problem copying files across\n\nPlease copy files over manually.")
+
+                # open up explorer
+                os.startfile('c:')
+        else:
+            # open up explorer
+            os.startfile('c:')
+
+
+    def get_gsi_file(self, date, directory):
+
+        # date is in the 201214 format
+        for filename in os.listdir(directory):
+
+            if todays_date in filename:
+                if Path(filename).suffix.upper() == 'GSI':
+                    return filename
 
     def monitoring_create(self):
         pass
@@ -311,7 +415,7 @@ class MenuBar(tk.Frame):
                 for aline in analysed_lines:
                     formatted_gsi_lines_analysis.append(aline)
 
-                    #for each station setup add 'STN->Point_ID' for each error found
+                    # for each station setup add 'STN->Point_ID' for each error found
                     for key, field_value in aline.items():
                         if '*' in field_value:
                             dialog_text_set.add("         " + station_name + "  --->  " + aline['Point_ID'] + '\n')

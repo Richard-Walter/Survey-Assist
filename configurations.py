@@ -2,7 +2,9 @@ from configparser import ConfigParser
 import os
 import shutil
 
+
 class SurveyConfiguration:
+
     section_instrument = 'INSTRUMENT'
     section_survey_tolerances = 'SURVEY_TOLERANCES'
     section_config_files = 'CONFIGURATION'
@@ -73,7 +75,6 @@ class SurveyConfiguration:
             self.config_parser.write(f)
 
     def create_config_file(self, instrument_values, survey_tolerance_values, configuration_values):
-
         self.config_parser[SurveyConfiguration.section_instrument] = instrument_values
         self.config_parser[SurveyConfiguration.section_survey_tolerances] = survey_tolerance_values
         self.config_parser[SurveyConfiguration.section_config_files] = configuration_values
