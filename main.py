@@ -298,16 +298,16 @@ class MenuBar(tk.Frame):
                 # add the analysis lines for this station
                 for aline in analysed_lines:
                     formatted_gsi_lines_analysis.append(aline)
+
+                    #for each station setup add 'STN->Point_ID' for each error found
                     for key, field_value in aline.items():
                         if '*' in field_value:
                             dialog_text_set.add("         " + station_name + "  --->  " + aline['Point_ID'] + '\n')
-                            # dialog_text_set.add('  ' + point_name + '\n')
                             break
 
         # check for tagged values so line error can be determined
         for index, line_dict in enumerate(formatted_gsi_lines_analysis):
 
-            point_name = line_dict['Point_ID']
             for key, field_value in line_dict.items():
                 if '*' in field_value:
                     error_line_number_list.append(index + 1)
