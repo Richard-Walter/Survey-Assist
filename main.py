@@ -9,7 +9,7 @@ NOTE: For 3.4 compatibility
     ii) had to use an ordered dictionary"""
 
 # TODO use Calendar object in utilities https://stackoverflow.com/questions/27774089/python-calendar-widget-return-the-user-selected-date
-
+# TODO PC changes single and batch
 
 import shutil
 import tkinter.messagebox
@@ -190,6 +190,7 @@ class MenuBar(tk.Frame):
         ts_60_filename_paths = set()
         ts_15_filename_paths = set()
         ms_60_filename_paths = set()
+        all_todays_filename_paths = []
         todays_date_reversed = todays_date[-2:] + todays_date[-4:-2] + todays_date[-6:-4]
 
         # lets first check if user SD directory exists
@@ -204,7 +205,6 @@ class MenuBar(tk.Frame):
         for filename in os.listdir(user_sd_directory):
 
             # first lets search for any files with todays date in it
-            # TODO need to split up the string to remove _ and spaces
             if todays_date_reversed in filename:
 
                 # determine if TS or GPS file
@@ -239,18 +239,17 @@ class MenuBar(tk.Frame):
                 elif Path(filename).suffix.upper() == '.GSI':
 
                     continue  # we wil get the GSI when we find the corresponding DBX file
-                else:
-                    tk.messagebox.showinfo("IMPORT SD DATA", "Couldn't find any survey files with todays date.\n\nPlease copy files over manually.")
-                    # open up explorer
-                    os.startfile('c:')
-                    return
 
-            else:
+        # create a list of all filenamepaths found having todays date
+        all_todays_filename_paths = list(todays_gps_filename_paths) + list(ts_60_filename_paths) + list(ts_15_filename_paths) + \
+                                    list(ms_60_filename_paths)
 
-                tk.messagebox.showinfo("IMPORT SD DATA", "Couldn't find any survey files with todays date.\n\nPlease copy files over manually.")
-                # open up explorer
-                os.startfile('c:')
-                return
+        if not all_todays_filename_paths:
+
+            tk.messagebox.showinfo("IMPORT SD DATA", "Couldn't find any survey files with todays date.\n\nPlease copy files over manually.")
+            # open up explorer
+            os.startfile('c:')
+            return
 
         # check if todays directory exists.  If not get user to choose.
         if not todays_dated_directory:
@@ -263,8 +262,6 @@ class MenuBar(tk.Frame):
             return
 
         # lets copy files over to the dated directory but confirm with user first
-        all_todays_filename_paths = list(todays_gps_filename_paths) + list(ts_60_filename_paths) + list(ts_15_filename_paths) + \
-                                    list(ms_60_filename_paths)
 
         filenames_txt_list = ""
         confirm_msg = "The following files will be copied over to " + import_root_directory + "\n\n"
@@ -283,14 +280,20 @@ class MenuBar(tk.Frame):
                 if all_todays_filename_paths:
                     for file_path in todays_gps_filename_paths:
                         import_path = os.path.join(import_root_directory, 'GPS', os.path.basename(file_path))
-                        shutil.copytree(file_path, import_path)
+                        if os.path.isdir(file_path):
+                            shutil.copytree(file_path, import_path)
+                        else:
+                            shutil.copy(file_path, import_path)
 
                     for file_path in ts_15_filename_paths:
                         import_path = os.path.join(import_root_directory, 'TS', 'TS15', os.path.basename(file_path))
-                        shutil.copytree(file_path, import_path)
+                        if os.path.isdir(file_path):
+                            shutil.copytree(file_path, import_path)
+                        else:
+                            shutil.copy(file_path, import_path)
 
                         # Check and copy over gsi to edited diretory if it exists
-                        self.copy_over_gsi_to_edited_directory(file_path, import_edited_directory)
+                        self.copy_over_gsi_to_edited_directory(file_path, import_path)
 
                     for file_path in ts_60_filename_paths:
                         import_path = os.path.join(import_root_directory, 'TS', 'TS60', os.path.basename(file_path))
@@ -304,14 +307,27 @@ class MenuBar(tk.Frame):
 
                     for file_path in ms_60_filename_paths:
                         import_path = os.path.join(import_root_directory, 'TS', 'MS60', os.path.basename(file_path))
-                        shutil.copytree(file_path, import_path)
+                        if os.path.isdir(file_path):
+                            shutil.copytree(file_path, import_path)
+                        else:
+                            shutil.copy(file_path, import_path)
 
                         # Check and copy over gsi to edited diretory if it exists
-                        self.copy_over_gsi_to_edited_directory(file_path, import_edited_directory)
+                        self.copy_over_gsi_to_edited_directory(file_path, import_path)
 
             except FileExistsError as ex:
                 print(ex)
                 tk.messagebox.showerror("COPYING SD DATA", "File aready exists: " + file_path + '\n\nat ' + import_path)
+
+                # open up explorer
+                os.startfile('c:')
+
+            except IOError as ex:
+                print(ex)
+                # Most likely not a dated directory
+                tk.messagebox.showerror("COPYING SD DATA", "Problem copying files across.   This is most likely because the destination folder "
+                                                           "chosen doesn't have a dated folder structure (i.e GPS, OTHER, OUTPUT, "
+                                                           "TS directories. \n\nPlease copy files over manually.")
 
                 # open up explorer
                 os.startfile('c:')
@@ -1279,7 +1295,7 @@ class CreateDatedDirectoryWindow:
         self.master = master
         self.selected_directory = selected_directory
         self.active_date = todays_date
-
+        self.survey_config = survey_config
         #  Lets build the dialog box
         self.dialog_window = tk.Toplevel(master)
         self.dialog_window.title("DATED DIERCTORY")
@@ -1318,8 +1334,8 @@ class CreateDatedDirectoryWindow:
 
             create_dated_folder = os.path.join(self.selected_directory)
             tk.messagebox.showinfo("Create directory", "Dated directory created in:\n\n" + create_dated_folder)
-            survey_config.update(SurveyConfiguration.section_file_directories, 'todays_dated_directory', new_directory_path)
-            survey_config.todays_dated_directory = new_directory_path
+            self.survey_config.update(SurveyConfiguration.section_file_directories, 'todays_dated_directory', new_directory_path)
+            self.survey_config.todays_dated_directory = new_directory_path
 
         else:
             self.dialog_window.destroy()
