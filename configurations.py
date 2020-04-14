@@ -44,9 +44,9 @@ class SurveyConfiguration:
 
         # INSTRUMENT PRECISION
         self.precision_value = self.config_parser.get(SurveyConfiguration.section_instrument, 'instrument_precision')
-        self.ts60_id = self.config_parser.get(SurveyConfiguration.section_instrument, 'ts60_id')
-        self.ms60_id = self.config_parser.get(SurveyConfiguration.section_instrument, 'ms60_id')
-        self.ts15_id = self.config_parser.get(SurveyConfiguration.section_instrument, 'ts15_id')
+        self.ts60_id_list = self.config_parser.get(SurveyConfiguration.section_instrument, 'ts60_id_list')
+        self.ms60_id_list = self.config_parser.get(SurveyConfiguration.section_instrument, 'ms60_id_list')
+        self.ts15_id_list = self.config_parser.get(SurveyConfiguration.section_instrument, 'ts15_id_list')
 
         # SURVEY TOLERANCES
         self.easting_tolerance = self.config_parser.get(SurveyConfiguration.section_survey_tolerances, 'eastings')
@@ -104,6 +104,7 @@ class UserConfiguration:
 
         # FILE DIRECTORIES
         self.user_sd_root = self.config_parser.get(UserConfiguration.section_file_directories, 'user_sd_root')
+        self.usb_root = self.config_parser.get(UserConfiguration.section_file_directories, 'usb_root')
 
     def update(self, section, key, value):
         self.config_parser.set(section, key, value)

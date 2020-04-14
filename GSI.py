@@ -366,7 +366,7 @@ class GSI:
         for formatted_line in self.formatted_lines:
             point_id_list.append(formatted_line['Point_ID'])
 
-        # if point ID occurs 8 times then it probably is a change point be a change point
+        # if point ID occurs 8 times then it probably is a change point
         point_id_frequency = Counter(point_id_list);
 
         for point_id, count in point_id_frequency.items():
@@ -501,6 +501,8 @@ class GSI:
 
                 print('Survey mark is: ' + point)
                 cur.execute(sql_query_text, (point,))
+
+                # get eastings, northings and height for each shot to this point_ID
                 rows = cur.fetchall()
 
                 for row in rows:
