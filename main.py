@@ -8,6 +8,7 @@ NOTE: For 3.4 compatibility
     i) Replaced f-strings with.format method.
     ii) had to use an ordered dictionary"""
 
+# TODO test 1200 with USB root instead of SD
 # TODO use Calendar object in utilities https://stackoverflow.com/questions/27774089/python-calendar-widget-return-the-user-selected-date
 # TODO PC changes single and batch
 
@@ -205,52 +206,71 @@ class MenuBar(tk.Frame):
             # store SD drive location for future use
             self.user_config.update(UserConfiguration.section_file_directories, 'user_sd_root', user_sd_directory)
 
-        # TODO lets search through SD card looking for TS or GPS files with todays date
-        for filename in os.listdir(user_sd_directory):
+        # First determine if SD card contains any folders and\or files
+        print(next(os.walk(user_sd_directory))[0])  # root
+        sd_folder_list = next(os.walk(user_sd_directory))[1]  # folders in root
+        sd_file_list = next(os.walk(user_sd_directory))[2]  # files in root
 
-            # first lets search for any files with todays date in it
-            if todays_date_reversed in filename:
+        dbx_directory_path = os.path.join(user_sd_directory, 'DBX')
+        gsi_directory_path = os.path.join(user_sd_directory, 'Gsi')
 
-                # if sd card contains files with GPS then copy the files across, if directory search for gps and todays
+        # check to see if SD card contains only files.
+        if not sd_folder_list:
 
-                if 'GPS' in filename:
-                    todays_gps_filename_paths.add(os.path.join(user_sd_directory, filename))
+            #  Most probably a GPSE unit which contains only files where some have no date
+            for filename in sd_file_list:
+                #GPSE for some readon incldues files that have no date.  Lets just copy them all over.
+                if 'GPSE' in filename:
+                    # add all files in directory to copy
+                    for filename in os.listdir(user_sd_directory):
+                        todays_gps_filename_paths.add(os.path.join(user_sd_directory, filename))
 
-                # check to see if any of the files are TS files.  If so,, determine their ID
-                # TODO special case is the rail.  add this in
-                elif any(x in filename for x in ts60_id_list):
-                    ts_60_filename_paths.add(os.path.join(user_sd_directory, filename))
+        # Check if DBX and GSI folders exist since tHere should be a DBX and GSI folder for VIVA and GPS 1200 SD cards
+        elif os.path.isdir(dbx_directory_path) and os.path.isdir(gsi_directory_path):
 
-                    # search for corresponding GSI file
-                    gsi_filename = self.get_gsi_file(todays_date_reversed, user_sd_directory)
-                    if gsi_filename:
-                        ts_60_filename_paths.add(os.path.join(user_sd_directory, gsi_filename))
+            # serach through all files and folders in the DBX directory
+            for filename in os.listdir(dbx_directory_path):
 
-                elif any(x in filename for x in ts15_id_list):
-                    ts_15_filename_paths.add(os.path.join(user_sd_directory, filename))
+                # we are only interest in files or folders with todays date in it
+                if todays_date_reversed in filename:
 
-                    # search for corresponding GSI file
-                    gsi_filename = self.get_gsi_file(todays_date_reversed, user_sd_directory)
-                    if gsi_filename:
-                        ts_15_filename_paths.add(os.path.join(user_sd_directory, gsi_filename))
 
-                elif any(x in filename for x in ms60_id_list):
-                    ms_60_filename_paths.add(os.path.join(user_sd_directory, filename))
+                    if 'GPS' in filename:
+                        # add file or folder to copy
+                        todays_gps_filename_paths.add(os.path.join(dbx_directory_path, filename))
 
-                    # search for corresponding GSI file
-                    gsi_filename = self.get_gsi_file(todays_date_reversed, user_sd_directory)
-                    if gsi_filename:
-                        ms_60_filename_paths.add(os.path.join(user_sd_directory, gsi_filename))
+                    # check to see if any of the files are TS files.  If so,, determine their ID
 
-                # probably a GSI file which don't include an identifier
-                elif Path(filename).suffix.upper() == '.GSI':
+                    # TODO special case is the rail.  add this in
+                    elif any(x in filename for x in ts60_id_list):
+                        # add file or folder to copy
+                        ts_60_filename_paths.add(os.path.join(dbx_directory_path, filename))
 
-                    continue  # we wil get the GSI when we find the corresponding DBX file
-            # todo probably dont need this - if sd card contains files with GPS then copy the files across, if directory search for gps and todays
-            #  date
-            # check for 1200 GSP default files that only have the daymonth suffix
-            elif 'Default' in filename and todays_date_month_day_format in filename:
-                todays_gps_filename_paths.add(os.path.join(user_sd_directory, filename))
+                        # search for corresponding GSI file
+                        gsi_filename = self.get_gsi_file(todays_date_reversed, gsi_directory_path)
+                        if gsi_filename:
+                            ts_60_filename_paths.add(os.path.join(gsi_directory_path, gsi_filename))
+
+                    elif any(x in filename for x in ts15_id_list):
+                        ts_15_filename_paths.add(os.path.join(dbx_directory_path, filename))
+
+                        # search for corresponding GSI file
+                        gsi_filename = self.get_gsi_file(todays_date_reversed, gsi_directory_path)
+                        if gsi_filename:
+                            ts_15_filename_paths.add(os.path.join(gsi_directory_path, gsi_filename))
+
+                    elif any(x in filename for x in ms60_id_list):
+                        ms_60_filename_paths.add(os.path.join(dbx_directory_path, filename))
+
+                        # search for corresponding GSI file
+                        gsi_filename = self.get_gsi_file(todays_date_reversed, gsi_directory_path)
+                        if gsi_filename:
+                            ms_60_filename_paths.add(os.path.join(gsi_directory_path, gsi_filename))
+
+                # check for 1200 GSP default files that only have the daymonth suffix
+                elif 'Default' in filename and todays_date_month_day_format in filename:
+                    todays_gps_filename_paths.add(os.path.join(dbx_directory_path, filename))
+
 
         # create a list of all filenamepaths found having todays date
         all_todays_filename_paths = list(todays_gps_filename_paths) + list(ts_60_filename_paths) + list(ts_15_filename_paths) + \
@@ -363,10 +383,10 @@ class MenuBar(tk.Frame):
             edited_filename_path = os.path.join(Path(import_path).parent.parent, 'EDITING', gsi_filename_no_ext + '_EDITED.GSI')
             shutil.copy(file_path, edited_filename_path)
 
-    def get_gsi_file(self, date, directory):
+    def get_gsi_file(self, date, gsi_directory):
 
         # date is in the 201214 format
-        for filename in os.listdir(directory):
+        for filename in os.listdir(gsi_directory):
 
             if date in filename:
                 if Path(filename).suffix.upper() == '.GSI':
