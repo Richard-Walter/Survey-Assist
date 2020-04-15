@@ -83,6 +83,33 @@ class GSI:
         # update the raw gsi lines
         self.unformatted_lines[line_number - 1] = unformatted_line
 
+    def update_point_name(self, line_number, new_point_name):
+
+
+        unformatted_line = self.get_unformatted_line(line_number)
+
+        re_pattern = re.compile(GSI.REGULAR_EXPRESSION_LOOKUP['11'])
+        match = re_pattern.search(unformatted_line)
+
+        org_point_id_value = match.group()
+
+        # Lets build the new field value.
+        # First lets build the prefix e.g.87..10+  or 83
+        re_pattern = re.compile(r'\*\d{6}\+')
+        prefix = re_pattern.search(org_point_id_value).group()
+
+        # NOw, lets build the suffix.  There are 16 chars in the suffix so we need to fill the new value with leading zeros
+        new_point_name_suffix = new_point_name.zfill(16)
+
+        # lets combine the prefix with the suffix to create the new field value to replace the old one
+        new_point_id_field_value = prefix + new_point_name_suffix
+
+        # now replace the old value with the new one
+        unformatted_line = unformatted_line.replace(org_point_id_value, new_point_id_field_value)
+
+        # update the raw gsi lines
+        self.unformatted_lines[line_number - 1] = unformatted_line
+
     def get_unformatted_line(self, line_number):
 
         return self.unformatted_lines[line_number - 1]

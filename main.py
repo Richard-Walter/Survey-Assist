@@ -11,7 +11,6 @@ NOTE: For 3.4 compatibility
 # TODO add rail monitoring files import exceptions
 # TODO test 1200 with USB root instead of SD
 # TODO Check survey naming - STN name doesnt appear in pints list fromthat station
-# TODO ability to change point name
 # TODO PC changes single and batch
 
 import shutil
@@ -72,6 +71,7 @@ class MenuBar(tk.Frame):
         # Edit menu
         self.edit_sub_menu = tk.Menu(self.menu_bar, tearoff=0)
         self.edit_sub_menu.add_command(label="Delete all 2D Orientation Shots", command=self.delete_orientation_shots)
+        self.edit_sub_menu.add_command(label="Change point name...", command=self.change_point_name)
         self.edit_sub_menu.add_command(label="Change target height...", command=self.change_target_height)
         self.edit_sub_menu.add_separator()
         self.edit_sub_menu.add_command(label="Prism Constant - Fix single...", command=self.prism_constant_fix_single,
@@ -676,6 +676,9 @@ class MenuBar(tk.Frame):
 
     def change_target_height(self):
         TargetHeightWindow(self.master)
+
+    def change_point_name(self):
+        PointNameWindow(self.master)
 
     def prism_constant_fix_single(self):
         pass
@@ -1381,6 +1384,66 @@ class CreateDatedDirectoryWindow:
         self.master.wait_window(cal_root)
         self.create_directory(cal.get_selected_date())
 
+class PointNameWindow:
+
+    def __init__(self, master):
+
+        self.master = master
+
+        # create point name input dialog box
+        self.dialog_window = tk.Toplevel(self.master)
+
+        self.lbl = tk.Label(self.dialog_window, text="Enter a new name for this point")
+        self.new_point_name_entry = tk.Entry(self.dialog_window)
+        self.btn1 = tk.Button(self.dialog_window, text="UPDATE", command=self.change_point_name)
+
+        self.lbl.grid(row=0, column=1, padx=(20, 2), pady=20)
+        self.new_point_name_entry.grid(row=0, column=2, padx=(2, 2), pady=20)
+        self.btn1.grid(row=0, column=3, padx=(10, 20), pady=20)
+
+        self.new_point_name_entry.focus()
+
+        self.master.wait_window(self.dialog_window)
+
+    def change_point_name(self):
+
+        # set the new target height hte user has entered
+        new_point_name = self.new_point_name_entry.get().strip()
+        print(new_point_name)
+
+        if len(new_point_name) < 16:
+
+            line_numbers_to_ammend = []
+
+            # build list of line numbers to amend
+            selected_items = gui_app.list_box.list_box_view.selection()
+
+            if selected_items:
+                for selected_item in selected_items:
+                    line_numbers_to_ammend.append(gui_app.list_box.list_box_view.item(selected_item)['values'][0])
+
+                # update each line to amend with new target height and coordinates
+                for line_number in line_numbers_to_ammend:
+                    gsi.update_point_name(line_number, new_point_name)
+
+                if "EDITED" not in MenuBar.filename_path:
+                    amended_filepath = MenuBar.filename_path[:-4] + "_EDITED.gsi"
+                else:
+                    amended_filepath = MenuBar.filename_path
+
+                # create a new ammended gsi file
+                with open(amended_filepath, "w") as gsi_file:
+                    for line in gsi.unformatted_lines:
+                        gsi_file.write(line)
+
+                self.dialog_window.destroy()
+
+                # rebuild database and GUI
+                MenuBar.filename_path = amended_filepath
+                GUIApplication.refresh()
+        else:
+            # notify user that no lines were selected
+            tk.messagebox.showinfo("INPUT ERROR", "Point names must be less than 15 characters in length.")
 
 class TargetHeightWindow:
 
@@ -1428,7 +1491,8 @@ class TargetHeightWindow:
                     gsi.update_target_height(line_number, corrections)
 
                 if "TgtUpdated" not in MenuBar.filename_path:
-                    amended_filepath = MenuBar.filename_path + "_TgtUpdated.gsi"
+
+                    amended_filepath = MenuBar.filename_path[:-4] + "_TgtUpdated.gsi"
                 else:
                     amended_filepath = MenuBar.filename_path
 
@@ -1436,6 +1500,8 @@ class TargetHeightWindow:
                 with open(amended_filepath, "w") as gsi_file:
                     for line in gsi.unformatted_lines:
                         gsi_file.write(line)
+
+                self.dialog_window.destroy()
 
                 # rebuild database and GUI
                 MenuBar.filename_path = amended_filepath

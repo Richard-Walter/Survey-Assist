@@ -1,7 +1,8 @@
 from configparser import ConfigParser
 import os
 import shutil
-
+import tkinter as tk
+import tkinter.messagebox
 
 class SurveyConfiguration:
 
@@ -103,8 +104,17 @@ class UserConfiguration:
         self.config_parser.read(self.config_file_path)
 
         # FILE DIRECTORIES
-        self.user_sd_root = self.config_parser.get(UserConfiguration.section_file_directories, 'user_sd_root')
-        self.usb_root = self.config_parser.get(UserConfiguration.section_file_directories, 'usb_root')
+        try:
+            self.user_sd_root = self.config_parser.get(UserConfiguration.section_file_directories, 'user_sd_root')
+            self.usb_root = self.config_parser.get(UserConfiguration.section_file_directories, 'usb_root')
+
+        except Exception:
+
+            #Copy over default copy of settings in case new settings have been added in python
+            shutil.copy(UserConfiguration.default_user_settings_path, UserConfiguration.user_settings_file_path)
+            self.user_sd_root = self.config_parser.get(UserConfiguration.section_file_directories, 'user_sd_root')
+            self.usb_root = self.config_parser.get(UserConfiguration.section_file_directories, 'usb_root')
+
 
     def update(self, section, key, value):
         self.config_parser.set(section, key, value)
