@@ -8,8 +8,10 @@ NOTE: For 3.4 compatibility
     i) Replaced f-strings with.format method.
     ii) had to use an ordered dictionary"""
 
+# TODO add rail monitoring files import exceptions
 # TODO test 1200 with USB root instead of SD
-# TODO use Calendar object in utilities https://stackoverflow.com/questions/27774089/python-calendar-widget-return-the-user-selected-date
+# TODO Check survey naming - STN name doesnt appear in pints list fromthat station
+# TODO ability to change point name
 # TODO PC changes single and batch
 
 import shutil
