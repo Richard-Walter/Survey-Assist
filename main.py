@@ -25,6 +25,12 @@ from compnet import CRDCoordinateFile, ASCCoordinateFile, STDCoordinateFile, Coo
 from utilities import *
 
 todays_date = datetime.datetime.today().strftime('%y%m%d')
+todays_day = todays_date[-2:]
+todays_month = todays_date[-4:-2]
+todays_year = todays_date[-6:-4]
+todays_date_reversed = todays_day + todays_month + todays_year
+todays_date_month_day_format = todays_month + todays_day
+
 gui_app = None
 
 
@@ -35,16 +41,15 @@ class MenuBar(tk.Frame):
         super().__init__(master)
 
         self.master = master
-        self.survey_config = SurveyConfiguration()
 
         # for importing rali survey
         self.ts_used = ""
 
         # # remove todays_dated_directory value in case its old
-        # self.survey_config.todays_dated_directory = ""
+        # survey_config.todays_dated_directory = ""
         self.user_config = UserConfiguration()
-        self.monitoring_job_dir = os.path.join(self.survey_config.root_job_directory, self.survey_config.current_year,
-                                               self.survey_config.default_survey_type)
+        self.monitoring_job_dir = os.path.join(survey_config.root_job_directory, survey_config.current_year,
+                                               survey_config.default_survey_type)
         self.query_dialog_box = None
         self.filename_path = ""
         self.compnet_working_dir = ""
@@ -135,16 +140,16 @@ class MenuBar(tk.Frame):
 
     def choose_gsi_file(self):
 
-        if self.survey_config.todays_dated_directory == "":
+        if survey_config.todays_dated_directory == "":
 
             intial_directory = self.monitoring_job_dir
 
         else:
-            intial_directory = os.path.join(self.survey_config.todays_dated_directory, "TS")
+            intial_directory = os.path.join(survey_config.todays_dated_directory, "TS")
 
         MenuBar.filename_path = tk.filedialog.askopenfilename(initialdir=intial_directory, title="Select file",
                                                               filetypes=[("GSI Files", ".gsi")])
-        self.survey_config.update(SurveyConfiguration.section_file_directories, 'last_used', os.path.dirname(
+        survey_config.update(SurveyConfiguration.section_file_directories, 'last_used', os.path.dirname(
             MenuBar.filename_path))
 
         GUIApplication.refresh()
@@ -154,7 +159,7 @@ class MenuBar(tk.Frame):
     def new_dated_directory(self, choose_date=True, folder_selected=None):
 
         # default path for the file dialog to open too
-        default_path = os.path.join(self.survey_config.root_job_directory, self.survey_config.current_year, self.survey_config.default_survey_type)
+        default_path = os.path.join(survey_config.root_job_directory, survey_config.current_year, survey_config.default_survey_type)
         if folder_selected is None:
             folder_selected = filedialog.askdirectory(parent=self.master, initialdir=default_path, title='Please select the job directory')
 
@@ -162,7 +167,7 @@ class MenuBar(tk.Frame):
             if choose_date is True:
                 self.choose_date()
 
-            CreateDatedDirectoryWindow(self, folder_selected, self.survey_config)
+            CreateDatedDirectoryWindow(self, folder_selected)
 
     def choose_date(self):
         # Let user choose the date, rather than default to todays date
@@ -178,7 +183,7 @@ class MenuBar(tk.Frame):
 
     def new_job_directoy(self):
 
-        initial_dir = os.path.join(self.survey_config.root_job_directory, self.survey_config.current_year, self.survey_config.default_survey_type)
+        initial_dir = os.path.join(survey_config.root_job_directory, survey_config.current_year, survey_config.default_survey_type)
         os.startfile(initial_dir)
 
     def import_sd_data(self):
@@ -186,25 +191,23 @@ class MenuBar(tk.Frame):
         # TODO for testing only - remove
         todays_date = '200416'
 
-        ts60_id_list = self.survey_config.ts60_id_list.split()
-        ts15_id_list = self.survey_config.ts15_id_list.split()
-        ms60_id_list = self.survey_config.ms60_id_list.split()
+        ts60_id_list = survey_config.ts60_id_list.split()
+        ts15_id_list = survey_config.ts15_id_list.split()
+        ms60_id_list = survey_config.ms60_id_list.split()
 
         user_sd_directory = self.user_config.user_sd_root
-        todays_dated_directory = self.survey_config.todays_dated_directory
+        todays_dated_directory = survey_config.todays_dated_directory
         import_root_directory = todays_dated_directory
-        current_rail_monitoring_file_name = self.survey_config.current_rail_monitoring_file_name
+        current_rail_monitoring_file_name = survey_config.current_rail_monitoring_file_name
 
         todays_gps_filename_paths = set()
         ts_60_filename_paths = set()
         ts_15_filename_paths = set()
         ms_60_filename_paths = set()
 
-        todays_day = todays_date[-2:]
-        todays_month = todays_date[-4:-2]
-        todays_year = todays_date[-6:-4]
-        todays_date_reversed = todays_day + todays_month + todays_year
-        todays_date_month_day_format = todays_month + todays_day
+
+
+        is_rail_survey = False
 
         # lets first check if user SD directory exists
         if not os.path.exists(user_sd_directory):
@@ -248,7 +251,6 @@ class MenuBar(tk.Frame):
 
                     # check to see if any of the files are TS files.  If so,, determine their ID
 
-                    # TODO special case is the rail.  add this in
                     elif any(x in filename for x in ts60_id_list):
                         # add file or folder to copy
                         ts_60_filename_paths.add(os.path.join(dbx_directory_path, filename))
@@ -283,6 +285,7 @@ class MenuBar(tk.Frame):
         all_todays_filename_paths = list(todays_gps_filename_paths) + list(ts_60_filename_paths) + list(ts_15_filename_paths) + \
                                     list(ms_60_filename_paths)
 
+        # check to see if user is trying import a rail survey - these files have no date and have to be treated differently
         if not all_todays_filename_paths:
 
             msg_box_question = tk.messagebox.askyesno("IMPORT SD DATA", "Couldn't find any survey files with todays date.  Please choose:\n\n"
@@ -311,6 +314,8 @@ class MenuBar(tk.Frame):
                                     ts_15_filename_paths.add(os.path.join(dbx_directory_path, dbx_filename))
                                     ts_15_filename_paths.add(os.path.join(gsi_directory_path, gsi_filename))
 
+                is_rail_survey = True
+
             else:
                 # copy files manually.  open up explorer
                 os.startfile('c:')
@@ -333,7 +338,7 @@ class MenuBar(tk.Frame):
         if not todays_dated_directory:
             import_root_directory = tkinter.filedialog.askdirectory(parent=self.master, initialdir=self.monitoring_job_dir,
                                                                     title='Choose the job directory where you would like to import the SD data to')
-            self.survey_config.todays_dated_directory = import_root_directory
+            survey_config.todays_dated_directory = import_root_directory
 
         if not import_root_directory:
             # user has closed down the ask directory so exit import sd
@@ -371,7 +376,7 @@ class MenuBar(tk.Frame):
                             shutil.copy(file_path, import_path)
 
                         # Check and copy over gsi to edited diretory if it exists
-                        self.copy_over_gsi_to_edited_directory(file_path, import_path)
+                        self.copy_over_gsi_to_edited_directory(file_path, import_path, is_rail_survey)
 
                     for file_path in ts_60_filename_paths:
                         import_path = os.path.join(import_root_directory, 'TS', 'TS60', os.path.basename(file_path))
@@ -381,7 +386,7 @@ class MenuBar(tk.Frame):
                             shutil.copy(file_path, import_path)
 
                         # check and copy over gsi to edited diretory if it exists
-                        self.copy_over_gsi_to_edited_directory(file_path, import_path)
+                        self.copy_over_gsi_to_edited_directory(file_path, import_path, is_rail_survey)
 
                     for file_path in ms_60_filename_paths:
                         import_path = os.path.join(import_root_directory, 'TS', 'MS60', os.path.basename(file_path))
@@ -391,7 +396,7 @@ class MenuBar(tk.Frame):
                             shutil.copy(file_path, import_path)
 
                         # Check and copy over gsi to edited diretory if it exists
-                        self.copy_over_gsi_to_edited_directory(file_path, import_path)
+                        self.copy_over_gsi_to_edited_directory(file_path, import_path, is_rail_survey)
 
             except FileExistsError as ex:
                 print(ex)
@@ -420,16 +425,23 @@ class MenuBar(tk.Frame):
             # open up explorer
             os.startfile('c:')
 
-    def copy_over_gsi_to_edited_directory(self, file_path, import_path):
+    def copy_over_gsi_to_edited_directory(self, file_path, import_path, is_rail_survey):
+
 
         # if GSI file make a copy and place it in the edited folder
         if Path(file_path).suffix.upper() == '.GSI':
+
             gsi_filename = os.path.basename(file_path)
             gsi_filename_no_ext = gsi_filename[:-4]
             ts_root_dir = str(Path(import_path).parent.parent)
             print(ts_root_dir)
-            edited_filename_path = ts_root_dir + '/EDITING/' +  gsi_filename_no_ext + '_EDITED.GSI'
+
+            if is_rail_survey:
+                edited_filename_path = ts_root_dir + '/EDITING/' + gsi_filename_no_ext + '_' + self.ts_used + '_' + todays_date_reversed + '_EDITED.GSI'
+            else:
+                edited_filename_path = ts_root_dir + '/EDITING/' + gsi_filename_no_ext + '_EDITED.GSI'
             shutil.copy(file_path, edited_filename_path)
+
 
     def get_gsi_file(self, date, gsi_directory):
 
@@ -696,9 +708,9 @@ class MenuBar(tk.Frame):
         float_diff = float(float_diff_str)
 
         # get flfr tolerances from config
-        flfr_height_tolerance = float(self.survey_config.flfr_height_tolerance)
-        flfr_northings_tolerance = float(self.survey_config.flfr_northing_tolerance)
-        flfr_eastings_tolerance = float(self.survey_config.flfr_easting_tolerance)
+        flfr_height_tolerance = float(survey_config.flfr_height_tolerance)
+        flfr_northings_tolerance = float(survey_config.flfr_northing_tolerance)
+        flfr_eastings_tolerance = float(survey_config.flfr_easting_tolerance)
 
         if key == 'Elevation':
             if abs(float_diff) > flfr_height_tolerance:
@@ -823,10 +835,6 @@ class MenuBar(tk.Frame):
         JobDiaryWindow(root)
 
     def configure_survey(self):
-
-        global survey_config
-
-        survey_config = SurveyConfiguration()
 
         ConfigDialogWindow(self.master)
 
@@ -1033,10 +1041,10 @@ class ConfigDialogWindow:
         else:
 
             self.dialog_window.destroy()
-            survey_config.create_config_file(precision_dictionary, survey_tolerance_dictionary,
+            gui_app.menu_bar.survey_config.create_config_file(precision_dictionary, survey_tolerance_dictionary,
                                              configuration_dictionary)
 
-            survey_config = SurveyConfiguration()
+            gui_app.menu_bar.survey_config = SurveyConfiguration()
 
     def cancel(self):
 
@@ -1375,7 +1383,7 @@ class ListBoxFrame(tk.Frame):
 
 class CreateDatedDirectoryWindow:
 
-    def __init__(self, master, selected_directory, survey_config):
+    def __init__(self, master, selected_directory):
         self.master = master
         self.selected_directory = selected_directory
         self.active_date = todays_date
@@ -1417,8 +1425,8 @@ class CreateDatedDirectoryWindow:
 
             create_dated_folder = os.path.join(self.selected_directory)
             tk.messagebox.showinfo("Create directory", "Dated directory created in:\n\n" + create_dated_folder)
-            survey_config.update(SurveyConfiguration.section_file_directories, 'todays_dated_directory', new_directory_path)
-            survey_config.todays_dated_directory = new_directory_path
+            gui_app.menu_bar.survey_config.update(SurveyConfiguration.section_file_directories, 'todays_dated_directory', new_directory_path)
+            gui_app.menu_bar.todays_dated_directory = new_directory_path
 
         else:
             self.dialog_window.destroy()
@@ -1655,7 +1663,6 @@ class CompnetUpdateFixedFileWindow:
     def __init__(self, master):
 
         self.master = master
-        self.survey_config = SurveyConfiguration()
         self.outliers_dict = {}
 
         #  Lets build the dialog box
@@ -1716,9 +1723,9 @@ class CompnetUpdateFixedFileWindow:
             self.dialog_window.destroy()
 
     def get_fixed_file_path(self):
-        print(self.survey_config.fixed_file_dir)
+        print(survey_config.fixed_file_dir)
         self.fixed_file_path = tk.filedialog.askopenfilename(parent=self.master,
-                                                             initialdir=self.survey_config.fixed_file_dir,
+                                                             initialdir=survey_config.fixed_file_dir,
                                                              title="Select file", filetypes=[("FIX Files", ".FIX")])
         if self.fixed_file_path != "":
             self.fixed_btn.config(text=os.path.basename(self.fixed_file_path))
@@ -1728,7 +1735,7 @@ class CompnetUpdateFixedFileWindow:
     def get_coordinate_file_path(self):
         self.coordinate_file_path = tk.filedialog.askopenfilename(parent=self.master,
                                                                   initialdir=os.path.dirname(
-                                                                      self.survey_config.last_used_file_dir),
+                                                                      survey_config.last_used_file_dir),
                                                                   title="Select file",
                                                                   filetypes=[("Coordinate Files", ".asc .CRD .STD")])
         if self.coordinate_file_path != "":
@@ -1740,7 +1747,7 @@ class CompnetWeightSTDFileWindow:
 
     def __init__(self, master):
         self.master = master
-        self.survey_config = SurveyConfiguration()
+
 
         self.compnet_working_directory = gui_app.menu_bar.compnet_working_dir
         self.std_file_path = ""
@@ -1828,9 +1835,8 @@ class UtilityCreateCSVFromASCWindow:
 
     def __init__(self, master):
         self.master = master
-        self.survey_config = SurveyConfiguration()
 
-        self.last_used_directory = self.survey_config.last_used_file_dir
+        self.last_used_directory = survey_config.last_used_file_dir
 
         #  Lets build the dialog box
         self.dialog_window = tk.Toplevel(master)
@@ -2189,7 +2195,8 @@ class CombineGSIFilesWindow:
         file_path = ""
 
         try:
-            gsi_filenames = list(tk.filedialog.askopenfilenames(parent=self.master, filetypes=[("GSI Files", ".gsi")]))
+            gsi_filenames = list(tk.filedialog.askopenfilenames(parent=self.master, initialdir = survey_config.todays_dated_directory, filetypes=[("GSI Files",
+                                                                                                                                 ".gsi")]))
             if gsi_filenames:
                 self.combined_gsi_directory = os.path.dirname(gsi_filenames[0])
                 self.combined_gsi_file_path = os.path.join(self.combined_gsi_directory, combined_gsi_filename)
@@ -2245,7 +2252,7 @@ class CombineGSIFilesWindow:
         unsorted_combined_gsi.format_gsi(self.combined_gsi_file_path)
 
         # lets check and provide a warning to the user i
-        stations_names_dict = unsorted_combined_gsi.get_list_of_control_points(gsi.formatted_lines)
+        stations_names_dict = unsorted_combined_gsi.get_list_of_control_points(unsorted_combined_gsi.formatted_lines)
         station_set = unsorted_combined_gsi.get_set_of_control_points()
         if len(stations_names_dict) != len(station_set):
             tk.messagebox.showwarning("WARNING", 'Warning - Duplicate station names detected!')
@@ -2298,11 +2305,13 @@ class CombineGSIFilesWindow:
         unsorted_combined_gsi.format_gsi(self.combined_gsi_file_path)
 
         # lets check and provide a error to the user if station names in combine GSI contain a duplicate
-        stations_names_dict = unsorted_combined_gsi.get_list_of_control_points(gsi.formatted_lines)
+        stations_names_dict = unsorted_combined_gsi.get_list_of_control_points(unsorted_combined_gsi.formatted_lines)
         station_set = unsorted_combined_gsi.get_set_of_control_points()
 
         if len(stations_names_dict) != len(station_set):
-            tk.messagebox.showwarning("WARNING", 'Warning - Duplicate station names detected in gsi!')
+            # todo uncomment below
+            pass
+            # tk.messagebox.showwarning("WARNING", 'Warning - Duplicate station names detected in gsi!')
 
         # need to sort this by station name
         stations_sorted_by_name_dict = OrderedDict(sorted(stations_names_dict.items(), key=lambda x: x[1]))
@@ -2317,8 +2326,7 @@ class CombineGSIFilesWindow:
             for line in f_config_station_list:
                 config_station_list.append(line.rstrip())
             if len(config_station_list) != len(set(config_station_list)):
-                tk.messagebox.showwarning("WARNING",
-                                          'Warning - Duplicate station names detected in configuration file!')
+                tk.messagebox.showwarning("WARNING", 'Warning - Duplicate station names detected in configuration file!')
 
         # check that station is in the unordered combined gsi
         for config_station in config_station_list:
@@ -2381,10 +2389,9 @@ class JobDiaryWindow:
     def __init__(self, parent):
 
         self.master = parent
-        self.survey_config = SurveyConfiguration()
 
-        self.type_path = os.path.join(self.survey_config.root_job_directory, self.survey_config.current_year)
-        self.job_path = os.path.join(self.survey_config.root_job_directory, self.survey_config.current_year, self.survey_config.default_survey_type)
+        self.type_path = os.path.join(survey_config.root_job_directory, survey_config.current_year)
+        self.job_path = os.path.join(survey_config.root_job_directory, survey_config.current_year, survey_config.default_survey_type)
 
         self.types = sorted([f for f in os.listdir(self.type_path) if os.path.isdir(os.path.join(self.type_path, f))])
         self.jobs = sorted([f for f in os.listdir(self.job_path) if os.path.isdir(os.path.join(self.job_path, f))])
@@ -2505,8 +2512,8 @@ class JobDiaryWindow:
 
     def backup_diary(self):
 
-        diary_backup = self.survey_config.diary_backup
-        diary_directory = self.survey_config.diary_directory
+        diary_backup = survey_config.diary_backup
+        diary_directory = survey_config.diary_directory
 
         if os.path.exists(diary_backup) == False:
             os.mkdir(diary_backup)
@@ -2517,7 +2524,7 @@ class JobDiaryWindow:
         shutil.copyfile(diary_directory, save_name)
 
     def read_diary(self):
-        with open(self.survey_config.diary_directory) as csvfile:
+        with open(survey_config.diary_directory) as csvfile:
             reader = csv.DictReader(csvfile)
             keys = reader.fieldnames
             r = csv.reader(csvfile)
@@ -2535,7 +2542,7 @@ class JobDiaryWindow:
                 pass
 
     def refresh_jobs(self, event):
-        path = os.path.join(self.survey_config.root_job_directory, self.survey_config.current_year, self.job_type.get())
+        path = os.path.join(survey_config.root_job_directory, survey_config.current_year, self.job_type.get())
         self.jobs = sorted([f for f in os.listdir(path) if os.path.isdir(os.path.join(path, f))])
         self.populate_jobs()
 
@@ -2705,7 +2712,7 @@ class JobDiaryWindow:
 
     def write_csv(self):
 
-        diary_directory = self.survey_config.diary_directory
+        diary_directory = survey_config.diary_directory
 
         try:
             if os.path.exists(diary_directory):
@@ -2860,7 +2867,7 @@ class GUIApplication(tk.Frame):
 def main():
     global gui_app
     global gsi
-    # global survey_config
+    global survey_config
     global database
     global logger
 
@@ -2870,6 +2877,8 @@ def main():
     root.title("SURVEY ASSIST - Written by Richard Walter")
     root.wm_iconbitmap(r'icons\analyser.ico')
 
+    survey_config = SurveyConfiguration()
+
     # Setup logger
     logger = logging.getLogger('Survey Assist')
     configure_logger()
@@ -2878,7 +2887,7 @@ def main():
     gui_app = GUIApplication(root)
     database = GSIDatabase()
 
-    # survey_config = SurveyConfiguration()
+
 
     root.mainloop()
 
