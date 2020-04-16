@@ -8,7 +8,6 @@ NOTE: For 3.4 compatibility
     i) Replaced f-strings with.format method.
     ii) had to use an ordered dictionary"""
 
-# todo get_gsi_file: sometimes there can be multiple gsi files on the smae day.  This method needs to return a list
 # TODO for some of the errors, open up user settings and allow use to change values
 # TODO PC changes single and batch
 
@@ -263,26 +262,29 @@ class MenuBar(tk.Frame):
                             # add file or folder to copy
                             ts_60_filename_paths.add(os.path.join(dbx_directory_path, filename))
 
-                            # search for corresponding GSI file
-                            gsi_filename = self.get_gsi_file(todays_date_reversed, gsi_directory_path)
-                            if gsi_filename:
-                                ts_60_filename_paths.add(os.path.join(gsi_directory_path, gsi_filename))
+                            # search for corresponding GSI file/s
+                            gsi_filenames = self.get_gsi_file(todays_date_reversed, gsi_directory_path)
+                            if gsi_filenames:
+                                for gsi_filename in gsi_filenames:
+                                        ts_60_filename_paths.add(os.path.join(gsi_directory_path, gsi_filename))
 
                         elif any(x in filename for x in ts15_id_list):
                             ts_15_filename_paths.add(os.path.join(dbx_directory_path, filename))
 
-                            # search for corresponding GSI file
-                            gsi_filename = self.get_gsi_file(todays_date_reversed, gsi_directory_path)
-                            if gsi_filename:
-                                ts_15_filename_paths.add(os.path.join(gsi_directory_path, gsi_filename))
+                            # search for corresponding GSI file/s
+                            gsi_filenames = self.get_gsi_file(todays_date_reversed, gsi_directory_path)
+                            if gsi_filenames:
+                                for gsi_filename in gsi_filenames:
+                                    ts_15_filename_paths.add(os.path.join(gsi_directory_path, gsi_filename))
 
                         elif any(x in filename for x in ms60_id_list):
                             ms_60_filename_paths.add(os.path.join(dbx_directory_path, filename))
 
-                            # search for corresponding GSI file
-                            gsi_filename = self.get_gsi_file(todays_date_reversed, gsi_directory_path)
-                            if gsi_filename:
-                                ms_60_filename_paths.add(os.path.join(gsi_directory_path, gsi_filename))
+                            # search for corresponding GSI file/s
+                            gsi_filenames = self.get_gsi_file(todays_date_reversed, gsi_directory_path)
+                            if gsi_filenames:
+                                for gsi_filename in gsi_filenames:
+                                    ms_60_filename_paths.add(os.path.join(gsi_directory_path, gsi_filename))
 
                     # check for 1200 GSP default files that only have the daymonth suffix
                     elif 'Default' in filename and todays_date_month_day_format in filename:
@@ -470,15 +472,16 @@ class MenuBar(tk.Frame):
                 edited_filename_path = ts_root_dir + '/EDITING/' + gsi_filename_no_ext + '_EDITED.GSI'
             shutil.copy(file_path, edited_filename_path)
 
-    # todo get_gsi_file: sometimes there can be multiple gsi files on the smae day.  This method needs to return a list
     def get_gsi_file(self, date, gsi_directory):
 
+        gsi_filenames = []
         # date is in the 201214 format
         for filename in os.listdir(gsi_directory):
 
             if date in filename:
                 if Path(filename).suffix.upper() == '.GSI':
-                    return filename
+                    gsi_filenames.append(filename)
+        return gsi_filenames
 
     def monitoring_create(self):
         pass
