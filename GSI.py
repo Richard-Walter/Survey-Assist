@@ -436,7 +436,7 @@ class GSI:
 
         print('STATION SETUP LIST: ' + str(unique_station_setups))
 
-        stn_shots_not_in_setup = []
+        stn_shots_not_in_setup = ""
         shots_to_stations = []
         shots_with_same_id_as_stn = ""
 
@@ -459,7 +459,7 @@ class GSI:
 
                 # Check to see if this shot is in the list of station setups.
                 if point_id not in unique_station_setups:
-                    stn_shots_not_in_setup.append(point_id)
+                    stn_shots_not_in_setup += "Line No. " + str(line_number) +':   ' + point_id + '\n'
                     line_number_errors.append(line_number)
 
                 # Also want to track of how many times each station is shot so this info can be displayed to user
@@ -477,26 +477,21 @@ class GSI:
                 else:
                     if stn_name in formatted_line['Point_ID']:
                         # error found in GSI
-                        shots_with_same_id_as_stn += "Line Number " + str(line_no+1) +': ' + stn_name + ' ---> ' + formatted_line['Point_ID'] + '\n'
-
-
-        # print("STATION SHOTS THAT ARE NOT IN SETUP:")
-        # print(stn_shots_not_in_setup)
-        #
-        # print("COUNT OF SHOTS TO STATIONS:")
-        # print(Counter(shots_to_stations))
+                        shots_with_same_id_as_stn += "Line No. " + str(line_no+1) +':      ' + stn_name + ' ---> ' + formatted_line['Point_ID'] + '\n'
+                        line_number_errors.append(line_no+1)
 
         # Display message to user of the station shots not found in station setups.
         if stn_shots_not_in_setup:
 
-            dialog_text = "Possible point labelling error with the following control shots: \n\n"
+            dialog_text = "Possible point labelling error.  The following shots containing a 'STN' label do not appear in any station " \
+                          "setups: \n\n"
 
-            for shot in stn_shots_not_in_setup:
-                dialog_text += shot + "\n"
+            for shot in stn_shots_not_in_setup.splitlines(True):
+                dialog_text += shot
 
         # Display message if shots from a station contain its point_id
         if shots_with_same_id_as_stn:
-            dialog_text += "\nSurvey Error:  The following point IDs have the same name as the station:\n\n"
+            dialog_text += "\nPossible point labelling error.  The following point IDs have the same name as the station:\n\n"
 
             for shot in shots_with_same_id_as_stn.splitlines(True):
                 dialog_text += shot
@@ -506,8 +501,7 @@ class GSI:
             dialog_text = "Control naming looks good!\n"
 
 
-
-        # Create and display no. of times each station was shot'
+        # Create and display no. of times each station was shot
         counter = Counter(shots_to_stations)
         for key, value in sorted(counter.items()):
             shots_to_stations_message += str(key) + '  ' + str(value) + '\n'
