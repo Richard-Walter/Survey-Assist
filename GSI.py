@@ -431,22 +431,24 @@ class GSI:
 
     def check_control_naming(self):
 
-        station_setups = self.get_set_of_control_points()
+        unique_station_setups = self.get_set_of_control_points()
+        list_station_setups = self.get_list_of_control_points(self.formatted_lines)
 
-        print('STATION SETUP LIST: ' + str(station_setups))
+        print('STATION SETUP LIST: ' + str(unique_station_setups))
 
         stn_shots_not_in_setup = []
         shots_to_stations = []
+        shots_with_same_id_as_stn = ""
 
         line_number_errors = []
-        error_text = ""
+        dialog_text = ""
 
         shots_to_stations_message = "The number of times each station was shot is shown below.\nIn most cases they " \
                                     "should be all even numbers:\n\n"
 
         line_number = 0
 
-        # First, lets check all shots that are labelled 'STN' and make sure that it in the station setup list.
+        # First, lets check all shots that are labelled 'STN' and make sure that its in the station setup list.
         for formatted_line in self.formatted_lines:
 
             line_number += 1
@@ -456,7 +458,7 @@ class GSI:
             if 'STN' in point_id:
 
                 # Check to see if this shot is in the list of station setups.
-                if point_id not in station_setups:
+                if point_id not in unique_station_setups:
                     stn_shots_not_in_setup.append(point_id)
                     line_number_errors.append(line_number)
 
@@ -465,33 +467,54 @@ class GSI:
                 if not formatted_line['STN_Easting']:
                     shots_to_stations.append(formatted_line['Point_ID'])
 
-        print("STATION SHOTS THAT ARE NOT IN SETUP:")
-        print(stn_shots_not_in_setup)
+        # Next lets check points from each setup - none of them should contain same point_id as the station name. i.e. station can't shoot to itself
+        for line_number, stn_name in list_station_setups.items():
+            all_shots_from_station = self.get_all_shots_from_a_station_including_setup(stn_name, line_number)
+            for line_no, formatted_line in all_shots_from_station.items():
+                if self.is_control_point(formatted_line):
+                    # ignore the station setup line
+                    continue
+                else:
+                    if stn_name in formatted_line['Point_ID']:
+                        # error found in GSI
+                        shots_with_same_id_as_stn += "Line Number " + str(line_no+1) +': ' + stn_name + ' ---> ' + formatted_line['Point_ID'] + '\n'
 
-        print("COUNT OF SHOTS TO STATIONS:")
-        print(Counter(shots_to_stations))
+
+        # print("STATION SHOTS THAT ARE NOT IN SETUP:")
+        # print(stn_shots_not_in_setup)
+        #
+        # print("COUNT OF SHOTS TO STATIONS:")
+        # print(Counter(shots_to_stations))
 
         # Display message to user of the station shots not found in station setups.
         if stn_shots_not_in_setup:
 
-            error_text = "Possible point labelling error with the following control shots: \n\n"
+            dialog_text = "Possible point labelling error with the following control shots: \n\n"
 
             for shot in stn_shots_not_in_setup:
-                error_text += shot + "\n"
+                dialog_text += shot + "\n"
 
-        print(error_text)
+        # Display message if shots from a station contain its point_id
+        if shots_with_same_id_as_stn:
+            dialog_text += "\nSurvey Error:  The following point IDs have the same name as the station:\n\n"
 
-        if not error_text:
-            error_text = "Control naming looks good!\n"
+            for shot in shots_with_same_id_as_stn.splitlines(True):
+                dialog_text += shot
 
-        # Create and display no. of times each station was shot;'
+        # Check if any errors found
+        if not dialog_text:
+            dialog_text = "Control naming looks good!\n"
+
+
+
+        # Create and display no. of times each station was shot'
         counter = Counter(shots_to_stations)
         for key, value in sorted(counter.items()):
             shots_to_stations_message += str(key) + '  ' + str(value) + '\n'
 
-        error_text += '\n\n' + shots_to_stations_message
+        dialog_text += '\n\n' + shots_to_stations_message
 
-        return error_text, line_number_errors
+        return dialog_text, line_number_errors
 
     def check_3D_survey(self, conn):
 

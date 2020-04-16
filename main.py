@@ -490,7 +490,7 @@ class MenuBar(tk.Frame):
             error_text, error_line_numbers = gsi.check_control_naming()
 
             # display error dialog box
-            tkinter.messagebox.showinfo("Checking Naming", error_text)
+            tkinter.messagebox.showinfo("Checking GSI Naming", error_text)
 
 
         except Exception:
