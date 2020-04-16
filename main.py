@@ -8,6 +8,7 @@ NOTE: For 3.4 compatibility
     i) Replaced f-strings with.format method.
     ii) had to use an ordered dictionary"""
 
+# todo get_gsi_file: sometimes there can be multiple gsi files on the smae day.  This method needs to return a list
 # TODO for some of the errors, open up user settings and allow use to change values
 # TODO PC changes single and batch
 
@@ -25,8 +26,10 @@ from compnet import CRDCoordinateFile, ASCCoordinateFile, STDCoordinateFile, Coo
 from utilities import *
 
 # TODO for testing only - remove
-todays_date = '200414'
+todays_date = '200121'
+# todays_date = '200414'
 # todays_date = datetime.datetime.today().strftime('%y%m%d')
+
 todays_day = todays_date[-2:]
 todays_month = todays_date[-4:-2]
 todays_year = todays_date[-6:-4]
@@ -285,9 +288,11 @@ class MenuBar(tk.Frame):
                     elif 'Default' in filename and todays_date_month_day_format in filename:
                         todays_gps_filename_paths.add(os.path.join(dbx_directory_path, filename))
 
-                    # GSPE has i25 and m25 with no date.  No choice but to copy these over even if they are not from today.
-                    elif filename[-3:] == 'i25' or filename[-3:] == 'm25':
-                        todays_gps_filename_paths.add(os.path.join(dbx_directory_path, filename))
+                        # GSPE has i25 and m25 with no date.  No choice but to copy these over even if they are not from today.
+                        for filename in os.listdir(dbx_directory_path):
+
+                            if filename[-3:] == 'i25' or filename[-3:] == 'm25':
+                                todays_gps_filename_paths.add(os.path.join(dbx_directory_path, filename))
 
             except FileNotFoundError as ex:
                 tk.messagebox.showinfo("IMPORT SD DATA", str(ex) + "\n\nPlease copy over the files over manually")
@@ -465,7 +470,7 @@ class MenuBar(tk.Frame):
                 edited_filename_path = ts_root_dir + '/EDITING/' + gsi_filename_no_ext + '_EDITED.GSI'
             shutil.copy(file_path, edited_filename_path)
 
-
+    # todo get_gsi_file: sometimes there can be multiple gsi files on the smae day.  This method needs to return a list
     def get_gsi_file(self, date, gsi_directory):
 
         # date is in the 201214 format
