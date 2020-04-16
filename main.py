@@ -38,6 +38,10 @@ class MenuBar(tk.Frame):
 
         self.master = master
         self.survey_config = SurveyConfiguration()
+
+        # for importing rali survey
+        self.ts_used = ""
+
         # remove todays_dated_directory value in case its old
         self.survey_config.todays_dated_directory = ""
         self.user_config = UserConfiguration()
@@ -181,6 +185,9 @@ class MenuBar(tk.Frame):
 
     def import_sd_data(self):
 
+        # TODO for testing only - remove
+        todays_date = '200416'
+
         ts60_id_list = self.survey_config.ts60_id_list.split()
         ts15_id_list = self.survey_config.ts15_id_list.split()
         ms60_id_list = self.survey_config.ms60_id_list.split()
@@ -188,14 +195,15 @@ class MenuBar(tk.Frame):
         user_sd_directory = self.user_config.user_sd_root
         todays_dated_directory = self.survey_config.todays_dated_directory
         import_root_directory = todays_dated_directory
-        import_edited_directory = os.path.join(import_root_directory, 'TS', 'EDITING')
+        current_rail_monitoring_file_name = self.survey_config.current_rail_monitoring_file_name
+
         todays_gps_filename_paths = set()
         ts_60_filename_paths = set()
         ts_15_filename_paths = set()
         ms_60_filename_paths = set()
-        all_todays_filename_paths = []
-        todays_day =todays_date[-2:]
-        todays_month =todays_date[-4:-2]
+
+        todays_day = todays_date[-2:]
+        todays_month = todays_date[-4:-2]
         todays_year = todays_date[-6:-4]
         todays_date_reversed = todays_day + todays_month + todays_year
         todays_date_month_day_format = todays_month + todays_day
@@ -221,13 +229,13 @@ class MenuBar(tk.Frame):
 
             #  Most probably a GPSE unit which contains only files where some have no date
             for filename in sd_file_list:
-                #GPSE for some readon incldues files that have no date.  Lets just copy them all over.
+                # GPSE for some readon incldues files that have no date.  Lets just copy them all over.
                 if 'GPSE' in filename:
                     # add all files in directory to copy
                     for filename in os.listdir(user_sd_directory):
                         todays_gps_filename_paths.add(os.path.join(user_sd_directory, filename))
 
-        # Check if DBX and GSI folders exist since tHere should be a DBX and GSI folder for VIVA and GPS 1200 SD cards
+        # Check if DBX and GSI folders exist since there should be a DBX and GSI folder for VIVA and GPS 1200 SD cards
         elif os.path.isdir(dbx_directory_path) and os.path.isdir(gsi_directory_path):
 
             # serach through all files and folders in the DBX directory
@@ -235,7 +243,6 @@ class MenuBar(tk.Frame):
 
                 # we are only interest in files or folders with todays date in it
                 if todays_date_reversed in filename:
-
 
                     if 'GPS' in filename:
                         # add file or folder to copy
@@ -280,12 +287,51 @@ class MenuBar(tk.Frame):
 
         if not all_todays_filename_paths:
 
-            tk.messagebox.showinfo("IMPORT SD DATA", "Couldn't find any survey files with todays date.\n\nPlease copy files over manually.")
+            msg_box_question = tk.messagebox.askyesno("IMPORT SD DATA", "Couldn't find any survey files with todays date.  Please choose:\n\n"
+                                                                        "YES - to import a rail monitoring file\n"
+                                                                        "NO - to copy over the files manually\n")
+
+            if msg_box_question:
+                ImportRailMonitoringFileWindow(self.master)
+                ts_used = self.ts_used
+                print(ts_used)
+
+                # copy over rail dbx and gsi
+                for gsi_filename in os.listdir(gsi_directory_path):
+                    if current_rail_monitoring_file_name in gsi_filename:
+
+                        # find the corresponding dbx file and determine the TS ID
+                        for dbx_filename in os.listdir(dbx_directory_path):
+                            if current_rail_monitoring_file_name in dbx_filename:
+                                if 'MS60' == ts_used:
+                                    ms_60_filename_paths.add(os.path.join(dbx_directory_path, dbx_filename))
+                                    ms_60_filename_paths.add(os.path.join(gsi_directory_path, gsi_filename))
+                                if 'TS60' == ts_used:
+                                    ts_60_filename_paths.add(os.path.join(dbx_directory_path, dbx_filename))
+                                    ts_60_filename_paths.add(os.path.join(gsi_directory_path, gsi_filename))
+                                if 'TS15' == ts_used:
+                                    ts_15_filename_paths.add(os.path.join(dbx_directory_path, dbx_filename))
+                                    ts_15_filename_paths.add(os.path.join(gsi_directory_path, gsi_filename))
+
+            else:
+                # copy files manually.  open up explorer
+                os.startfile('c:')
+                return
+
+        # create a list of all filenamepaths found having todays date
+        all_todays_filename_paths = list(todays_gps_filename_paths) + list(ts_60_filename_paths) + list(ts_15_filename_paths) + \
+                                    list(ms_60_filename_paths)
+
+        # check again to see if we found any rail surveys
+        if not all_todays_filename_paths:
+
+            tk.messagebox.showinfo("IMPORT SD DATA", "Couldn't find any survey files with todays date. Please copy over manually")
+
             # open up explorer
             os.startfile('c:')
             return
 
-        # check if todays directory exists.  If not get user to choose.
+        # check if todays directory exists.  If not, get user to choose.
         if not todays_dated_directory:
             import_root_directory = tkinter.filedialog.askdirectory(parent=self.master, initialdir=self.monitoring_job_dir,
                                                                     title='Choose the job directory where you would like to import the SD data to')
@@ -381,8 +427,10 @@ class MenuBar(tk.Frame):
         # if GSI file make a copy and place it in the edited folder
         if Path(file_path).suffix.upper() == '.GSI':
             gsi_filename = os.path.basename(file_path)
-            gsi_filename_no_ext = Path(gsi_filename).stem
-            edited_filename_path = os.path.join(Path(import_path).parent.parent, 'EDITING', gsi_filename_no_ext + '_EDITED.GSI')
+            gsi_filename_no_ext = gsi_filename[:-4]
+            ts_root_dir = str(Path(import_path).parent.parent)
+            print(ts_root_dir)
+            edited_filename_path = ts_root_dir + '/EDITING/' +  gsi_filename_no_ext + '_EDITED.GSI'
             shutil.copy(file_path, edited_filename_path)
 
     def get_gsi_file(self, date, gsi_directory):
@@ -1385,6 +1433,43 @@ class CreateDatedDirectoryWindow:
         self.master.wait_window(cal_root)
         self.create_directory(cal.get_selected_date())
 
+
+class ImportRailMonitoringFileWindow:
+
+    def __init__(self, master):
+        self.master = master
+
+        #  Lets build the dialog box
+        self.dialog_window = tk.Toplevel(master)
+        self.dialog_window.title("Import Rail Survey")
+
+        self.sorting_lbl = tk.Label(self.dialog_window, text="Select the total station used:")
+
+        self.ts_id = tk.StringVar()
+        self.ts_id.set("TS60")
+        self.ts_used = ""
+        self.radio_no_sort = tk.Radiobutton(self.dialog_window, text="TS60", value="TS60", var=self.ts_id)
+        self.radio_sort_auto = tk.Radiobutton(self.dialog_window, text="MS60", value="MS60", var=self.ts_id)
+        self.radio_sort_config = tk.Radiobutton(self.dialog_window, text="TS15", value="TS15", var=self.ts_id)
+        self.import_btn = tk.Button(self.dialog_window, text="IMPORT RAIL SURVEY", command=self.set_ts_id)
+
+        self.sorting_lbl.grid(row=0, column=1, sticky='w', columnspan=3, padx=50, pady=(20, 2))
+        self.radio_no_sort.grid(row=1, column=1, sticky='w', columnspan=3, padx=70, pady=2)
+        self.radio_sort_auto.grid(row=2, column=1, sticky='w', columnspan=3, padx=70, pady=2)
+        self.radio_sort_config.grid(row=3, column=1, sticky='w', columnspan=3, padx=70, pady=(2, 1))
+        self.import_btn.grid(row=4, column=1, sticky='w', columnspan=1, padx=50, pady=(20, 20))
+
+        self.dialog_window.geometry(MainWindow.position_popup(master, 260, 210))
+        # self.dialog_window.attributes('-topmost', 'true')
+        self.master.wait_window(self.dialog_window)
+
+    def set_ts_id(self):
+
+        gui_app.menu_bar.ts_used = self.ts_id.get()
+
+        self.dialog_window.destroy()
+
+
 class PointNameWindow:
 
     def __init__(self, master):
@@ -1445,6 +1530,7 @@ class PointNameWindow:
         else:
             # notify user that no lines were selected
             tk.messagebox.showinfo("INPUT ERROR", "Point names must be less than 15 characters in length.")
+
 
 class TargetHeightWindow:
 

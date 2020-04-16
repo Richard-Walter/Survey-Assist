@@ -68,6 +68,7 @@ class SurveyConfiguration:
         self.current_year = self.config_parser.get(SurveyConfiguration.section_file_directories, 'current_year')
         self.default_survey_type = self.config_parser.get(SurveyConfiguration.section_file_directories, 'default_survey_type')
         self.todays_dated_directory = self.config_parser.get(SurveyConfiguration.section_file_directories, 'todays_dated_directory')
+        self.current_rail_monitoring_file_name = self.config_parser.get(SurveyConfiguration.section_file_directories, 'current_rail_monitoring_file_name')
 
     def update(self, section, key, value):
         self.config_parser.set(section, key, value)

@@ -12,6 +12,7 @@ FIELD_TYPE_FLOAT = 'float'
 FIELD_TYPE_NUMBER = 'number'
 
 
+
 def decimalize_value(in_value, precision):
     if precision == '4dp':
         return Decimal(in_value).quantize(Decimal('1.0000'))
