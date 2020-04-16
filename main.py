@@ -193,16 +193,22 @@ class MenuBar(tk.Frame):
     def import_sd_data(self):
 
 
+
         ts60_id_list = survey_config.ts60_id_list.split()
         ts15_id_list = survey_config.ts15_id_list.split()
         ms60_id_list = survey_config.ms60_id_list.split()
 
         user_sd_directory = self.user_config.user_sd_root
         usb_root_directory = self.user_config.usb_root
-        todays_dated_directory = survey_config.todays_dated_directory
-        import_root_directory = todays_dated_directory
-        current_rail_monitoring_file_name = survey_config.current_rail_monitoring_file_name
 
+        todays_dated_directory = survey_config.todays_dated_directory
+        #reset todays dated directory if not today and let user choose
+        if todays_date not in todays_dated_directory:
+            todays_dated_directory = ""
+
+        import_root_directory = todays_dated_directory
+
+        current_rail_monitoring_file_name = survey_config.current_rail_monitoring_file_name
         todays_gps_filename_paths = set()
         ts_60_filename_paths = set()
         ts_15_filename_paths = set()
