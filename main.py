@@ -42,8 +42,8 @@ class MenuBar(tk.Frame):
         # for importing rali survey
         self.ts_used = ""
 
-        # remove todays_dated_directory value in case its old
-        self.survey_config.todays_dated_directory = ""
+        # # remove todays_dated_directory value in case its old
+        # self.survey_config.todays_dated_directory = ""
         self.user_config = UserConfiguration()
         self.monitoring_job_dir = os.path.join(self.survey_config.root_job_directory, self.survey_config.current_year,
                                                self.survey_config.default_survey_type)
@@ -1381,7 +1381,6 @@ class CreateDatedDirectoryWindow:
         self.master = master
         self.selected_directory = selected_directory
         self.active_date = todays_date
-        self.survey_config = survey_config
         #  Lets build the dialog box
         self.dialog_window = tk.Toplevel(master)
         self.dialog_window.title("DATED DIERCTORY")
@@ -1420,8 +1419,8 @@ class CreateDatedDirectoryWindow:
 
             create_dated_folder = os.path.join(self.selected_directory)
             tk.messagebox.showinfo("Create directory", "Dated directory created in:\n\n" + create_dated_folder)
-            self.survey_config.update(SurveyConfiguration.section_file_directories, 'todays_dated_directory', new_directory_path)
-            self.survey_config.todays_dated_directory = new_directory_path
+            survey_config.update(SurveyConfiguration.section_file_directories, 'todays_dated_directory', new_directory_path)
+            survey_config.todays_dated_directory = new_directory_path
 
         else:
             self.dialog_window.destroy()
@@ -2863,7 +2862,7 @@ class GUIApplication(tk.Frame):
 def main():
     global gui_app
     global gsi
-    global survey_config
+    # global survey_config
     global database
     global logger
 
@@ -2881,9 +2880,8 @@ def main():
     gui_app = GUIApplication(root)
     database = GSIDatabase()
 
-    survey_config = SurveyConfiguration()
+    # survey_config = SurveyConfiguration()
 
-    # Setup default survey configuration
     root.mainloop()
 
 
