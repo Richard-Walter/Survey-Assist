@@ -8,7 +8,7 @@ NOTE: For 3.4 compatibility
     i) Replaced f-strings with.format method.
     ii) had to use an ordered dictionary"""
 
-# TODO allow user to choose SD card and USB SD card settings in a specific window.
+# TODO allow user to choose SD card and USB SD card settings in a specific window????
 # TODO PC changes single and batch
 
 import tkinter.messagebox
@@ -82,11 +82,11 @@ class MenuBar(tk.Frame):
 
         # Check menu
         self.check_sub_menu = tk.Menu(self.menu_bar, tearoff=0)
-        self.check_sub_menu.add_command(label="Check Tolerances (3D only)",
+        self.check_sub_menu.add_command(label="Check Tolerances (3D)",
                                         command=self.check_3d_survey)
-        self.check_sub_menu.add_command(label="Check Control Naming (3D only) ", command=self.check_control_naming)
-        self.check_sub_menu.add_command(label="Check FL-FR ", command=self.check_FLFR)
-        self.check_sub_menu.add_command(label="Check All (3D only)",
+        self.check_sub_menu.add_command(label="Check Control Naming (3D) ", command=self.check_control_naming)
+        self.check_sub_menu.add_command(label="Check FL-FR (2D/3D) ", command=self.check_FLFR)
+        self.check_sub_menu.add_command(label="Check All (3D)",
                                         command=self.check_3d_all)
         self.check_sub_menu.add_separator()
         self.check_sub_menu.add_command(label="Compare Prism Constants to similar survey...",
@@ -123,7 +123,7 @@ class MenuBar(tk.Frame):
 
         # Help menu
         self.help_sub_menu = tk.Menu(self.menu_bar, tearoff=0)
-        self.help_sub_menu.add_command(label="Manual", command=self.open_manual)
+        self.help_sub_menu.add_command(label="Manual", command=self.open_manual,  state="disabled")
         self.help_sub_menu.add_command(label="About", command=self.display_about_dialog_box)
         self.menu_bar.add_cascade(label="Help", menu=self.help_sub_menu)
 
