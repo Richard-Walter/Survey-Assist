@@ -8,6 +8,7 @@ NOTE: For 3.4 compatibility
     i) Replaced f-strings with.format method.
     ii) had to use an ordered dictionary"""
 
+# TODO move out a9 station listing from GSI files
 # TODO add check settings if no surveys found
 # TODO allow user to choose SD card and USB SD card settings in a specific window.  THis can be prompted when first creating this file
 # TODO PC changes single and batch
