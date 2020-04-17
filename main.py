@@ -11,16 +11,12 @@ NOTE: For 3.4 compatibility
 # TODO allow user to choose SD card and USB SD card settings in a specific window.
 # TODO PC changes single and batch
 
-import shutil
 import tkinter.messagebox
-import datetime
 import logging.config
 from tkinter import filedialog
 from GSI import *
-from configurations import UserConfiguration, SurveyConfiguration
 from GSI import GSIDatabase, CorruptedGSIFileError, GSIFile
 from decimal import *
-from pathlib import Path
 from compnet import CRDCoordinateFile, ASCCoordinateFile, STDCoordinateFile, CoordinateFile, FixedFile
 from utilities import *
 from survey_files import *
