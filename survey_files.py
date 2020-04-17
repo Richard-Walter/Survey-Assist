@@ -12,6 +12,11 @@ ts60_id_list = survey_config.ts60_id_list.split()
 ts15_id_list = survey_config.ts15_id_list.split()
 ms60_id_list = survey_config.ms60_id_list.split()
 
+# Total station instruments
+TS60 = 'TS60'
+MS60 = 'MS60'
+TS15 = 'TS15'
+
 
 class SDCard:
 
@@ -26,6 +31,10 @@ class SDCard:
         self.dbx_files = self.get_dbx_files()
         self.gsi_files = self.get_gsi_files()
 
+        self.todays_gps_files = self.get_todays_gps_files()
+        self.todays_ts_60_files = self.get_todays_ts_60_files()
+        self.todays_ms_60_files = self.get_todays_ms_60_files()
+        self.todays_ts_15_files = self.get_todays_ts_15_files()
 
     def get_dbx_files(self):
 
@@ -36,11 +45,10 @@ class SDCard:
             for filename in os.listdir(self.dbx_directory_path):
                 if os.path.isdir(filename):
                     dbx_file_list.append(SurveyFolder.build_survey_folder(filename))
-                else:   # is a file
-                    dbx_file_list.append(File.build_survey_file(filename))
+                else:  # is a file
+                    dbx_file_list.append(SingleFile.build_survey_file(filename))
 
         return dbx_file_list
-
 
     def get_gsi_files(self):
 
@@ -49,58 +57,113 @@ class SDCard:
         if os.path.isdir(self.gsi_directory_path):
             # search through all files and folders in the DBX directory
             for filename in os.listdir(self.gsi_directory_path):
-                    gsi_file_list.append(GSIFile(filename))
+                gsi_file_list.append(GSIFile(filename))
 
         return gsi_file_list
 
+    def get_todays_gps_files(self):
+
+        todays_gps_files = set()
+
+        for file in self.dbx_files:
+            if file.file_type == File.GPS_FILE:
+                todays_gps_files.add((file))
+
+        return todays_gps_files
+
+    def get_todays_ts_60_files(self):
+
+        ts_60_files = set()
+
+        for file in self.dbx_files:
+            if file.file_type == File.TS_FILE:
+                if file.ts_instrument == TS60:
+                    ts_60_files.add((file))
+
+        return ts_60_files
+
+    def get_todays_ms_60_files(self):
+
+        ms_60_files = set()
+
+        for file in self.dbx_files:
+            if file.file_type == File.TS_FILE:
+                if file.ts_instrument == MS60:
+                    ms_60_files.add((file))
+
+        return ms_60_files
+
+    def get_todays_ts_15_files(self):
+
+        ts_15_files = set()
+
+        for file in self.dbx_files:
+            if file.file_type == File.TS_FILE:
+                if file.ts_instrument == TS15:
+                    ts_15_files.add((file))
+
+        return ts_15_files
+
+    def get_list_all_files(self):
+
+        return list(self.todays_gps_files) + list(self.todays_ts_60_files) + list(self.todays_ms_60_files) + list(self.todays_ts_15_files)
 
 
-class Folder:
+# base class for single files and folders
+class File:
+    GPS_FILE = 'GPS'
+    GSI_FILE = 'GSI'
+    TS_FILE = 'TS'
 
     def __init__(self, filepath):
         self.filepath = filepath
         self.basename = os.path.basename(self.filepath)
         self.root_dir = Path(self.filepath).parent
+        self.file_type = ""
 
 
-class File:
-
+class Folder(File):
     GPS_FILE = 'GPS'
     GSI_FILE = 'GSI'
 
     def __init__(self, filepath):
-        self.filepath = filepath
-        self.basename = os.path.basename(self.filepath)
+        super().__init__(filepath)
+
+
+class SingleFile(File):
+    GPS_FILE = 'GPS'
+    GSI_FILE = 'GSI'
+
+    def __init__(self, filepath):
+        super().__init__(filepath)
         self.basename_no_ext = self.basename[:-4]
         self.file_suffix = Path(self.filepath).suffix.upper()
-        self.root_dir = Path(self.filepath).parent
 
-        
     @staticmethod
     def build_survey_file(filepath):
 
         file_type = Path(filepath).suffix.upper()
 
-        if file_type == File.GPS_FILE:
+        if file_type == SingleFile.GPS_FILE:
             return GPSFile(filepath)
-        elif file_type == File.GSI_FILE:
+        elif file_type == SingleFile.GSI_FILE:
             return GSIFile(filepath)
 
 
-class GSIFile(File):
+class GSIFile(SingleFile):
 
     def __init__(self, filepath):
         super().__init__(filepath)
         self.filepath = filepath
-        self.file_type = 'GPS'
+        self.file_type = File.TS_FILE
 
 
-class GPSFile(File):
+class GPSFile(SingleFile):
 
     def __init__(self, filepath):
         super().__init__(filepath)
         self.filepath = filepath
-        self.file_type = 'GSI'
+        self.file_type = File.GPS_FILE
 
 
 class SurveyFolder(Folder):
@@ -141,16 +204,16 @@ class TSFolder(Folder):
         super().__init__(filepath)
         self.folder_type = SurveyFolder.TS_FOLDER
         self.ts_instrument = self.get_ts_instrument()
-
+        self.file_type = File.TS_FILE
 
     def get_ts_instrument(self):
 
         if any(x in self.basename for x in ts60_id_list):
-            self.ts_instrument = 'TS_60'
+            self.ts_instrument = TS60
         elif any(x in self.basename for x in ts15_id_list):
-            self.ts_instrument = 'TS_15'
+            self.ts_instrument = TS15
         elif any(x in self.basename for x in ms60_id_list):
-            self.ts_instrument = 'MS_60'
+            self.ts_instrument = MS60
         else:
             self.ts_instrument = ""
 
@@ -161,4 +224,4 @@ class GPSFolder(Folder):
 
     def __init__(self, filepath):
         super().__init__(filepath)
-        self.folder_type = SurveyFolder.GPS_FOLDER
+        self.file_type = File.GPS_FILE
