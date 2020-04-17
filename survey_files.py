@@ -87,7 +87,7 @@ class SDCard:
                 if file.file_type == File.GPS_FILE and Today.todays_date_reversed in file.basename:
                     todays_gps_files.add(file)
 
-                elif 'GPSE' in file.basename and Today.todays_date_month_day_format in file.basename:
+                elif 'GPS' in file.basename and Today.todays_date_month_day_format in file.basename:
 
                     todays_gps_files.add(file)
 
@@ -111,10 +111,10 @@ class SDCard:
                     if file.ts_instrument == TS60:
                         ts_60_files.add((file))
 
-                    # get corresponding GSI file
-                    for file in self.gsi_files:
-                        if Today.todays_date_reversed in file.basename:
-                            ts_60_files.add(file)
+                        # get corresponding GSI file
+                        for file in self.gsi_files:
+                            if Today.todays_date_reversed in file.basename:
+                                ts_60_files.add(file)
 
         return ts_60_files
 
@@ -129,10 +129,10 @@ class SDCard:
                     if file.ts_instrument == MS60:
                         ms_60_files.add((file))
 
-                    # get corresponding GSI file
-                    for file in self.gsi_files:
-                        if Today.todays_date_reversed in file.basename:
-                            ms_60_files.add(file)
+                        # get corresponding GSI file
+                        for file in self.gsi_files:
+                            if Today.todays_date_reversed in file.basename:
+                                ms_60_files.add(file)
 
         return ms_60_files
 
@@ -147,17 +147,17 @@ class SDCard:
                     if file.ts_instrument == TS15:
                         ts_15_files.add((file))
 
-                    # get corresponding GSI file
-                    for file in self.gsi_files:
-                        if Today.todays_date_reversed in file.basename:
-                            ts_15_files.add(file)
+                        # get corresponding GSI file
+                        for file in self.gsi_files:
+                            if Today.todays_date_reversed in file.basename:
+                                ts_15_files.add(file)
 
         return ts_15_files
 
     def get_list_all_todays_files(self):
 
         return list(self.todays_gps_files) + list(self.todays_ts_60_files) + list(self.todays_ms_60_files) + list(
-            self.todays_ts_15_files) + self.rail_monitoring_files
+            self.todays_ts_15_files) + list(self.rail_monitoring_files)
 
     @staticmethod
     def user_SD_dir_exists(user_dir):

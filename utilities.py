@@ -94,10 +94,7 @@ def get_calendar(locale, fwday):
 
 
 class Today:
-
-    # @ TODO remove below
-    todays_date = '200414'
-    # todays_date = datetime.datetime.today().strftime('%y%m%d')
+    todays_date = datetime.datetime.today().strftime('%y%m%d')
     todays_day = todays_date[-2:]
     todays_month = todays_date[-4:-2]
     todays_year = todays_date[-6:-4]

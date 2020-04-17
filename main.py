@@ -9,7 +9,6 @@ NOTE: For 3.4 compatibility
     ii) had to use an ordered dictionary"""
 
 # TODO allow user to choose SD card and USB SD card settings in a specific window.
-# TODO for some of the errors, open up user settings and allow use to change values
 # TODO PC changes single and batch
 
 import shutil
@@ -25,7 +24,6 @@ from pathlib import Path
 from compnet import CRDCoordinateFile, ASCCoordinateFile, STDCoordinateFile, CoordinateFile, FixedFile
 from utilities import *
 from survey_files import *
-
 
 todays_date = Today.todays_date
 
@@ -189,6 +187,7 @@ class MenuBar(tk.Frame):
         user_sd_directory = self.user_config.user_sd_root
         usb_root_directory = self.user_config.usb_root
         current_rail_monitoring_file_name = survey_config.current_rail_monitoring_file_name
+        rail_monitoring_files = None
         is_rail_survey = False
 
         todays_dated_directory = survey_config.todays_dated_directory
@@ -203,7 +202,7 @@ class MenuBar(tk.Frame):
             # lets check the usb drive for 1200 series GPS's
             if not SDCard.user_SD_dir_exists(usb_root_directory):
 
-                tk.messagebox.showinfo("IMPORT SD DATA", "Can't find your SD card drive.  Press OK to select your SD drive.")
+                tk.messagebox.showinfo("IMPORT SD DATA", "Can't find your SD card drive.\n\nPress OK to select your SD drive.")
 
                 user_sd_directory = tkinter.filedialog.askdirectory(parent=self.master, initialdir='C:\\', title='Please choose the SD card drive')
                 self.user_config.update(UserConfiguration.section_file_directories, 'user_sd_root', user_sd_directory)
@@ -226,24 +225,26 @@ class MenuBar(tk.Frame):
                 rail_monitoring_files = sd_card.get_rail_survey_files()
 
                 if not rail_monitoring_files:
-                    tk.messagebox.showinfo("IMPORT SD DATA", "Couldn't find any rail monitoring survey files. Please check the settings.ini file and "
-                                                             "make sure 'current_rail_monitoring_file_name' is correct and restart SurveyAssist")
+                    tk.messagebox.showinfo("IMPORT SD DATA", "Couldn't find any rail monitoring survey files.\n\nPlease check the settings.ini file "
+                                                             "and make sure 'current_rail_monitoring_file_name' is correct, then restart "
+                                                             "SurveyAssist")
 
                     # open up explorer
-                    os.startfile('\GSI Files')
+                    os.startfile("settings.ini")
                     return
+                else:
+                    is_rail_survey = True
 
             else:
                 # User wishes to copy files manually.  open up explorer
                 os.startfile('c:')
                 return
-        else:
-            is_rail_survey = True
 
         # check if todays directory exists.  If not, get user to choose.
         if not todays_dated_directory:
             import_root_directory = tkinter.filedialog.askdirectory(parent=self.master, initialdir=self.monitoring_job_dir,
-                                                                    title='Choose the job directory where you would like to import the SD data to')
+                                                                    title='Choose the job root directory where you would like to import the SD data '
+                                                                          'to')
             survey_config.todays_dated_directory = import_root_directory
 
         if not import_root_directory:
@@ -273,7 +274,7 @@ class MenuBar(tk.Frame):
                         else:
                             shutil.copy(file.filepath, import_path)
 
-                if sd_card.get_todays_ts_15_files():
+                elif sd_card.get_todays_ts_15_files():
 
                     for file in sd_card.get_todays_ts_15_files():
                         import_path = os.path.join(import_root_directory, 'TS', 'TS15', file.basename)
@@ -283,11 +284,10 @@ class MenuBar(tk.Frame):
                             shutil.copy(file.filepath, import_path)
 
                         if file.file_suffix.upper() == File.GSI_FILE_SUFFIX:
-
                             # Check and copy over gsi to edited diretory if it exists
                             self.copy_over_gsi_to_edited_directory(file, import_path, is_rail_survey)
 
-                if sd_card.get_todays_ts_60_files():
+                elif sd_card.get_todays_ts_60_files():
                     for file in sd_card.get_todays_ts_60_files():
                         import_path = os.path.join(import_root_directory, 'TS', 'TS60', file.basename)
                         if os.path.isdir(file.filepath):
@@ -296,11 +296,10 @@ class MenuBar(tk.Frame):
                             shutil.copy(file.filepath, import_path)
 
                         if file.file_suffix.upper() == File.GSI_FILE_SUFFIX:
-
                             # Check and copy over gsi to edited diretory if it exists
                             self.copy_over_gsi_to_edited_directory(file, import_path, is_rail_survey)
 
-                if sd_card.get_todays_ms_60_files():
+                elif sd_card.get_todays_ms_60_files():
                     for file in sd_card.get_todays_ms_60_files():
                         import_path = os.path.join(import_root_directory, 'TS', 'MS60', file.basename)
                         if os.path.isdir(file.filepath):
@@ -312,10 +311,25 @@ class MenuBar(tk.Frame):
                             # Check and copy over gsi to edited diretory if it exists
                             self.copy_over_gsi_to_edited_directory(file, import_path, is_rail_survey)
 
+                elif rail_monitoring_files:
+                    for file in rail_monitoring_files:
+
+                        import_path = os.path.join(import_root_directory, 'TS', ts_used, file.basename)
+                        if os.path.isdir(file.filepath):
+                            shutil.copytree(file.filepath, import_path)
+                        else:
+                            shutil.copy(file.filepath, import_path)
+
+                        if file.file_suffix.upper() == File.GSI_FILE_SUFFIX:
+                            # Check and copy over gsi to edited diretory if it exists
+                            self.copy_over_gsi_to_edited_directory(file, import_path, is_rail_survey)
+
+
+
             except FileExistsError as ex:
                 print(ex)
-                tk.messagebox.showerror("COPYING SD DATA", "File aready exists: " + file.filepath + '\n\nat ' + import_path + '.\n\n  Please copy '
-                                                                                                                              'files over manually')
+                tk.messagebox.showerror("COPYING SD DATA", "File aready exists: " + file.filepath + '\n\nat:\n\n ' + import_path + '.\n\nPlease '
+                                                                                                                                   'check and copy files over manually')
 
                 # open up explorer
                 os.startfile('c:')
@@ -341,17 +355,16 @@ class MenuBar(tk.Frame):
             # open up explorer
             os.startfile('c:')
 
-
     def copy_over_gsi_to_edited_directory(self, gsi_file, import_path, is_rail_survey):
 
-            ts_root_dir = str(Path(import_path).parent.parent)
-            print(ts_root_dir)
+        ts_root_dir = str(Path(import_path).parent.parent)
+        print(ts_root_dir)
 
-            if is_rail_survey:
-                edited_filename_path = ts_root_dir + '/EDITING/' + gsi_file.basename_no_ext + '_' + self.ts_used + '_' + Today.todays_date_reversed + '_EDITED.GSI'
-            else:
-                edited_filename_path = ts_root_dir + '/EDITING/' + gsi_file.basename_no_ext + '_EDITED.GSI'
-            shutil.copy(gsi_file.filepath, edited_filename_path)
+        if is_rail_survey:
+            edited_filename_path = ts_root_dir + '/EDITING/' + gsi_file.basename_no_ext + '_' + self.ts_used + '_' + Today.todays_date_reversed + '_EDITED.GSI'
+        else:
+            edited_filename_path = ts_root_dir + '/EDITING/' + gsi_file.basename_no_ext + '_EDITED.GSI'
+        shutil.copy(gsi_file.filepath, edited_filename_path)
 
     def get_gsi_file(self, date, gsi_directory):
 
@@ -2220,7 +2233,6 @@ class CombineGSIFilesWindow:
         station_set = unsorted_combined_gsi.get_set_of_control_points()
 
         if len(stations_names_dict) != len(station_set):
-
             pass
             tk.messagebox.showwarning("WARNING", 'Warning - Duplicate station names detected in gsi!')
 
