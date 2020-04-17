@@ -1,10 +1,6 @@
-import os
-import shutil
-import logging.config
-from collections import OrderedDict
 from utilities import Today
 from pathlib import Path
-from configurations import UserConfiguration, SurveyConfiguration
+from configurations import *
 
 survey_config = SurveyConfiguration()
 

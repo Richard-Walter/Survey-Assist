@@ -8,7 +8,8 @@ NOTE: For 3.4 compatibility
     i) Replaced f-strings with.format method.
     ii) had to use an ordered dictionary"""
 
-# TODO allow user to choose SD card and USB SD card settings in a specific window????
+# TODO add check settings if no surveys found
+# TODO allow user to choose SD card and USB SD card settings in a specific window.  THis can be prompted when first creating this file
 # TODO PC changes single and batch
 
 import tkinter.messagebox
@@ -123,7 +124,7 @@ class MenuBar(tk.Frame):
 
         # Help menu
         self.help_sub_menu = tk.Menu(self.menu_bar, tearoff=0)
-        self.help_sub_menu.add_command(label="Manual", command=self.open_manual,  state="disabled")
+        self.help_sub_menu.add_command(label="Manual", command=self.open_manual)
         self.help_sub_menu.add_command(label="About", command=self.display_about_dialog_box)
         self.menu_bar.add_cascade(label="Help", menu=self.help_sub_menu)
 
@@ -182,7 +183,6 @@ class MenuBar(tk.Frame):
 
         user_sd_directory = self.user_config.user_sd_root
         usb_root_directory = self.user_config.usb_root
-        current_rail_monitoring_file_name = survey_config.current_rail_monitoring_file_name
         rail_monitoring_files = None
         is_rail_survey = False
 
@@ -211,9 +211,11 @@ class MenuBar(tk.Frame):
         # check to see if user is trying import a rail survey - these files have no date and have to be treated differently
         if not sd_card.get_list_all_todays_files():
 
-            if tk.messagebox.askyesno("IMPORT SD DATA", "Couldn't find any survey files with todays date.  Please choose:\n\n"
-                                                        "YES - to import a rail monitoring file\n"
-                                                        "NO - to copy over the files manually\n"):
+            # TODO add check settings if no surveys found.  THis needs its own window with option to check settings
+            if tk.messagebox.askyesno("IMPORT SD DATA", "Couldn't find any survey files with todays date.\n\nPlease choose:\n\n"
+                                                        "YES             - to import a rail monitoring file\n"
+                                                        "NO              - to copy over the files manually\n"
+                                                        "SETTINGS   - check SD directory is configured properly"):
 
                 ImportRailMonitoringFileWindow(self.master)
                 ts_used = self.ts_used
@@ -222,11 +224,14 @@ class MenuBar(tk.Frame):
 
                 if not rail_monitoring_files:
                     tk.messagebox.showinfo("IMPORT SD DATA", "Couldn't find any rail monitoring survey files.\n\nPlease check the settings.ini file "
-                                                             "and make sure 'current_rail_monitoring_file_name' is correct, then restart "
-                                                             "SurveyAssist")
+                                                             "and make sure 'current_rail_monitoring_file_name' is correct.\n\n"
+                                                             "Also, check user_settings.ini and make sure the root SD directory is configured "
+                                                             "properly.\n\nRestart Survey Assist after making any changes.")
 
                     # open up explorer
                     os.startfile("settings.ini")
+                    os.startfile("c:/SurveyAssist/user_settings.ini")
+
                     return
                 else:
                     is_rail_survey = True
@@ -763,7 +768,8 @@ class MenuBar(tk.Frame):
         gui_app.refresh()
 
     def open_manual(self):
-        pass
+
+        os.startfile("Survey Assist Manual.docx")
 
     @staticmethod
     def clear_query():
