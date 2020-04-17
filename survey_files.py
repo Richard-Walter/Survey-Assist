@@ -36,6 +36,8 @@ class SDCard:
         self.todays_ms_60_files = self.get_todays_ms_60_files()
         self.todays_ts_15_files = self.get_todays_ts_15_files()
 
+        self.rail_monitoring_files = []
+
     def get_dbx_files(self):
 
         dbx_file_list = []
@@ -43,12 +45,13 @@ class SDCard:
         if os.path.isdir(self.dbx_directory_path):
             # search through all files and folders in the DBX directory
             for filename in os.listdir(self.dbx_directory_path):
-                if os.path.isdir(filename):
-                    dbx_file_list.append(SurveyFolder.build_survey_folder(filename))
+                full_filename = os.path.join(self.dbx_directory_path, filename)
+                if os.path.isdir(full_filename):
+                    dbx_file_list.append(SurveyFolder.build_survey_folder(full_filename))
                 else:  # is a file
-                    dbx_file_list.append(SingleFile.build_survey_file(filename))
+                    dbx_file_list.append(SingleFile.build_survey_file(full_filename))
 
-        return dbx_file_list
+        return self.filter_NoneTypes(dbx_file_list)     # remove any None Types found (i.e random files or rail surveys - These are handled seperately
 
     def get_gsi_files(self):
 
@@ -57,17 +60,42 @@ class SDCard:
         if os.path.isdir(self.gsi_directory_path):
             # search through all files and folders in the DBX directory
             for filename in os.listdir(self.gsi_directory_path):
-                gsi_file_list.append(GSIFile(filename))
+                full_filename = os.path.join(self.gsi_directory_path, filename)
+                gsi_file_list.append(GSIFile(full_filename))
 
-        return gsi_file_list
+        return self.filter_NoneTypes(gsi_file_list)
+
+    def filter_NoneTypes(self, file_list):
+
+        filtered_list = []
+        for file in file_list:
+            if file == None:
+                continue
+            else:
+                filtered_list.append(file)
+
+        return filtered_list
+
 
     def get_todays_gps_files(self):
 
         todays_gps_files = set()
 
-        for file in self.dbx_files:
-            if file.file_type == File.GPS_FILE:
-                todays_gps_files.add((file))
+        if self.dbx_files:
+
+            for file in self.dbx_files:
+
+                if file.file_type == File.GPS_FILE and Today.todays_date_reversed in file.basename:
+                    todays_gps_files.add((file))
+
+                elif 'GPSE' in file.basename and Today.todays_date_month_day_format in file.basename:
+
+                    # add all files in directory to copy
+                    todays_gps_files.add((file))
+
+                # some GPSE files dont have a date.  These will have to be grabbed regardless if they are from today or not. i
+                elif 'GPSE' in file.basename and any(x in file.file_suffix for x in ['i25', 'm25']):
+                    todays_gps_files.add((file))
 
         return todays_gps_files
 
@@ -75,10 +103,17 @@ class SDCard:
 
         ts_60_files = set()
 
-        for file in self.dbx_files:
-            if file.file_type == File.TS_FILE:
-                if file.ts_instrument == TS60:
-                    ts_60_files.add((file))
+        if self.dbx_files:
+
+            for file in self.dbx_files:
+                if file.file_type == File.TS_FILE and Today.todays_date_reversed in file.basename:
+                    if file.ts_instrument == TS60:
+                        ts_60_files.add((file))
+
+                    # get corresponding GSI file
+                    for file in self.gsi_files:
+                        if Today.todays_date_reversed in file.basename:
+                            ts_60_files.add(file)
 
         return ts_60_files
 
@@ -86,10 +121,17 @@ class SDCard:
 
         ms_60_files = set()
 
-        for file in self.dbx_files:
-            if file.file_type == File.TS_FILE:
-                if file.ts_instrument == MS60:
-                    ms_60_files.add((file))
+        if self.dbx_files:
+
+            for file in self.dbx_files:
+                if file.file_type == File.TS_FILE and Today.todays_date_reversed in file.basename:
+                    if file.ts_instrument == MS60:
+                        ms_60_files.add((file))
+
+                    # get corresponding GSI file
+                    for file in self.gsi_files:
+                        if Today.todays_date_reversed in file.basename:
+                            ms_60_files.add(file)
 
         return ms_60_files
 
@@ -97,16 +139,49 @@ class SDCard:
 
         ts_15_files = set()
 
-        for file in self.dbx_files:
-            if file.file_type == File.TS_FILE:
-                if file.ts_instrument == TS15:
-                    ts_15_files.add((file))
+        if self.dbx_files:
+
+            for file in self.dbx_files:
+                if file.file_type == File.TS_FILE and Today.todays_date_reversed in file.basename:
+                    if file.ts_instrument == TS15:
+                        ts_15_files.add((file))
+
+                    # get corresponding GSI file
+                    for file in self.gsi_files:
+                        if Today.todays_date_reversed in file.basename:
+                            ts_15_files.add(file)
 
         return ts_15_files
 
-    def get_list_all_files(self):
+    def get_list_all_todays_files(self):
 
-        return list(self.todays_gps_files) + list(self.todays_ts_60_files) + list(self.todays_ms_60_files) + list(self.todays_ts_15_files)
+        return list(self.todays_gps_files) + list(self.todays_ts_60_files) + list(self.todays_ms_60_files) + list(
+            self.todays_ts_15_files) + self.rail_monitoring_files
+
+    @staticmethod
+    def user_SD_dir_exists(user_dir):
+        if os.path.exists(user_dir):
+            return True
+        else:
+            return False
+
+    def get_rail_survey_files(self):
+
+        rail_monitoring_files = set()
+
+        for file in self.dbx_files:
+            if survey_config.current_rail_monitoring_file_name in file.basename:
+
+                rail_monitoring_files.add(file)
+
+                # get corresponding GSI file
+                for file in self.gsi_files:
+                    if survey_config.current_rail_monitoring_file_name in file.basename:
+                        rail_monitoring_files.add(file)
+
+        self.rail_monitoring_files = rail_monitoring_files
+
+        return rail_monitoring_files
 
 
 # base class for single files and folders
@@ -114,6 +189,8 @@ class File:
     GPS_FILE = 'GPS'
     GSI_FILE = 'GSI'
     TS_FILE = 'TS'
+
+    GSI_FILE_SUFFIX = '.GSI'
 
     def __init__(self, filepath):
         self.filepath = filepath
@@ -123,16 +200,14 @@ class File:
 
 
 class Folder(File):
-    GPS_FILE = 'GPS'
-    GSI_FILE = 'GSI'
+
 
     def __init__(self, filepath):
         super().__init__(filepath)
+        self.file_suffix = ""
 
 
 class SingleFile(File):
-    GPS_FILE = 'GPS'
-    GSI_FILE = 'GSI'
 
     def __init__(self, filepath):
         super().__init__(filepath)
@@ -198,7 +273,7 @@ class SurveyFolder(Folder):
             return TSFolder(filepath)
 
 
-class TSFolder(Folder):
+class TSFolder(SurveyFolder):
 
     def __init__(self, filepath):
         super().__init__(filepath)
@@ -220,7 +295,7 @@ class TSFolder(Folder):
         return self.ts_instrument
 
 
-class GPSFolder(Folder):
+class GPSFolder(SurveyFolder):
 
     def __init__(self, filepath):
         super().__init__(filepath)
