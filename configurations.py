@@ -1,8 +1,6 @@
 from configparser import ConfigParser
 import os
 import shutil
-import tkinter as tk
-import tkinter.messagebox
 
 class SurveyConfiguration:
 

@@ -1,6 +1,6 @@
 from decimal import Decimal
 import math
-
+import datetime
 import calendar
 
 import tkinter as tk
@@ -10,7 +10,6 @@ from tkinter import ttk
 FIELD_TYPE_ANGLE = 'angle'
 FIELD_TYPE_FLOAT = 'float'
 FIELD_TYPE_NUMBER = 'number'
-
 
 
 def decimalize_value(in_value, precision):
@@ -92,6 +91,23 @@ def get_calendar(locale, fwday):
         return calendar.TextCalendar(fwday)
     else:
         return calendar.LocaleTextCalendar(fwday, locale)
+
+
+class Today:
+    todays_date = datetime.datetime.today().strftime('%y%m%d')
+    todays_day = todays_date[-2:]
+    todays_month = todays_date[-4:-2]
+    todays_year = todays_date[-6:-4]
+    todays_date_reversed = todays_day + todays_month + todays_year
+    todays_date_month_day_format = todays_month + todays_day
+
+    # def __init__(self):
+    #     self.todays_date = datetime.datetime.today().strftime('%y%m%d')
+    #     self.todays_day = self.todays_date[-2:]
+    #     self.todays_month = self.todays_date[-4:-2]
+    #     self.todays_year = self.todays_date[-6:-4]
+    #     self.todays_date_reversed = self.todays_day + self.todays_month + self.todays_year
+    #     self.todays_date_month_day_format = self.todays_month + self.todays_day
 
 
 class Calendar(ttk.Frame):

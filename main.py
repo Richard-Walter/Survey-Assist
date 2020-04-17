@@ -24,16 +24,16 @@ from pathlib import Path
 from compnet import CRDCoordinateFile, ASCCoordinateFile, STDCoordinateFile, CoordinateFile, FixedFile
 from utilities import *
 
-# TODO for testing only - remove
-todays_date = '200121'
-# todays_date = '200414'
-# todays_date = datetime.datetime.today().strftime('%y%m%d')
 
-todays_day = todays_date[-2:]
-todays_month = todays_date[-4:-2]
-todays_year = todays_date[-6:-4]
-todays_date_reversed = todays_day + todays_month + todays_year
-todays_date_month_day_format = todays_month + todays_day
+# todays_date = '200121'
+# todays_date = '200414'
+todays_date = datetime.datetime.today().strftime('%y%m%d')
+
+# todays_day = todays_date[-2:]
+# todays_month = todays_date[-4:-2]
+# todays_year = todays_date[-6:-4]
+# todays_date_reversed = todays_day + todays_month + todays_year
+# todays_date_month_day_format = todays_month + todays_day
 
 gui_app = None
 
@@ -193,7 +193,6 @@ class MenuBar(tk.Frame):
     def import_sd_data(self):
 
 
-
         ts60_id_list = survey_config.ts60_id_list.split()
         ts15_id_list = survey_config.ts15_id_list.split()
         ms60_id_list = survey_config.ms60_id_list.split()
@@ -256,7 +255,7 @@ class MenuBar(tk.Frame):
                 for filename in os.listdir(dbx_directory_path):
 
                     # we are only interest in files or folders with todays date in it
-                    if todays_date_reversed in filename:
+                    if Today.todays_date_reversed in filename:
 
                         if 'GPS' in filename:
                             # add file or folder to copy
@@ -269,7 +268,7 @@ class MenuBar(tk.Frame):
                             ts_60_filename_paths.add(os.path.join(dbx_directory_path, filename))
 
                             # search for corresponding GSI file/s
-                            gsi_filenames = self.get_gsi_file(todays_date_reversed, gsi_directory_path)
+                            gsi_filenames = self.get_gsi_file(Today.todays_date_reversed, gsi_directory_path)
                             if gsi_filenames:
                                 for gsi_filename in gsi_filenames:
                                         ts_60_filename_paths.add(os.path.join(gsi_directory_path, gsi_filename))
@@ -278,7 +277,7 @@ class MenuBar(tk.Frame):
                             ts_15_filename_paths.add(os.path.join(dbx_directory_path, filename))
 
                             # search for corresponding GSI file/s
-                            gsi_filenames = self.get_gsi_file(todays_date_reversed, gsi_directory_path)
+                            gsi_filenames = self.get_gsi_file(Today.todays_date_reversed, gsi_directory_path)
                             if gsi_filenames:
                                 for gsi_filename in gsi_filenames:
                                     ts_15_filename_paths.add(os.path.join(gsi_directory_path, gsi_filename))
@@ -287,13 +286,13 @@ class MenuBar(tk.Frame):
                             ms_60_filename_paths.add(os.path.join(dbx_directory_path, filename))
 
                             # search for corresponding GSI file/s
-                            gsi_filenames = self.get_gsi_file(todays_date_reversed, gsi_directory_path)
+                            gsi_filenames = self.get_gsi_file(Today.todays_date_reversed, gsi_directory_path)
                             if gsi_filenames:
                                 for gsi_filename in gsi_filenames:
                                     ms_60_filename_paths.add(os.path.join(gsi_directory_path, gsi_filename))
 
                     # check for 1200 GSP default files that only have the daymonth suffix
-                    elif 'Default' in filename and todays_date_month_day_format in filename:
+                    elif 'Default' in filename and Today.todays_date_month_day_format in filename:
                         todays_gps_filename_paths.add(os.path.join(dbx_directory_path, filename))
 
                         # GSPE has i25 and m25 with no date.  No choice but to copy these over even if they are not from today.
@@ -473,7 +472,7 @@ class MenuBar(tk.Frame):
             print(ts_root_dir)
 
             if is_rail_survey:
-                edited_filename_path = ts_root_dir + '/EDITING/' + gsi_filename_no_ext + '_' + self.ts_used + '_' + todays_date_reversed + '_EDITED.GSI'
+                edited_filename_path = ts_root_dir + '/EDITING/' + gsi_filename_no_ext + '_' + self.ts_used + '_' + Today.todays_date_reversed + '_EDITED.GSI'
             else:
                 edited_filename_path = ts_root_dir + '/EDITING/' + gsi_filename_no_ext + '_EDITED.GSI'
             shutil.copy(file_path, edited_filename_path)
