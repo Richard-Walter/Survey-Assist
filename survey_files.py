@@ -51,7 +51,7 @@ class SDCard:
                 else:  # is a file
                     dbx_file_list.append(SingleFile.build_survey_file(full_filename))
 
-        return self.filter_NoneTypes(dbx_file_list)     # remove any None Types found (i.e random files or rail surveys - These are handled seperately
+        return self.filter_NoneTypes(dbx_file_list)  # remove any None Types found (i.e random files or rail surveys - These are handled seperately
 
     def get_gsi_files(self):
 
@@ -76,7 +76,6 @@ class SDCard:
 
         return filtered_list
 
-
     def get_todays_gps_files(self):
 
         todays_gps_files = set()
@@ -86,16 +85,18 @@ class SDCard:
             for file in self.dbx_files:
 
                 if file.file_type == File.GPS_FILE and Today.todays_date_reversed in file.basename:
-                    todays_gps_files.add((file))
+                    todays_gps_files.add(file)
 
                 elif 'GPSE' in file.basename and Today.todays_date_month_day_format in file.basename:
 
-                    # add all files in directory to copy
-                    todays_gps_files.add((file))
+                    todays_gps_files.add(file)
 
                 # some GPSE files dont have a date.  These will have to be grabbed regardless if they are from today or not. i
-                elif 'GPSE' in file.basename and any(x in file.file_suffix for x in ['i25', 'm25']):
-                    todays_gps_files.add((file))
+                elif 'GPSE' in file.basename:
+
+                    if file.file_suffix.upper() == '.I25' or file.file_suffix.upper() == '.M25':
+                    # and any(x in file.file_suffix for x in ['.i25', '.m25']):
+                        todays_gps_files.add(file)
 
         return todays_gps_files
 
@@ -201,7 +202,6 @@ class File:
 
 class Folder(File):
 
-
     def __init__(self, filepath):
         super().__init__(filepath)
         self.file_suffix = ""
@@ -216,13 +216,10 @@ class SingleFile(File):
 
     @staticmethod
     def build_survey_file(filepath):
-
         file_type = Path(filepath).suffix.upper()
 
-        if file_type == SingleFile.GPS_FILE:
+        if 'GPS' in os.path.basename(filepath):
             return GPSFile(filepath)
-        elif file_type == SingleFile.GSI_FILE:
-            return GSIFile(filepath)
 
 
 class GSIFile(SingleFile):

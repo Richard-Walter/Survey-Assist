@@ -274,7 +274,7 @@ class MenuBar(tk.Frame):
                             shutil.copy(file.filepath, import_path)
 
                 if sd_card.get_todays_ts_15_files():
-                    test = sd_card.get_todays_ts_15_files()
+
                     for file in sd_card.get_todays_ts_15_files():
                         import_path = os.path.join(import_root_directory, 'TS', 'TS15', file.basename)
                         if os.path.isdir(file.filepath):
@@ -340,6 +340,7 @@ class MenuBar(tk.Frame):
             # user wants to transfer files over manually.
             # open up explorer
             os.startfile('c:')
+
 
     def copy_over_gsi_to_edited_directory(self, gsi_file, import_path, is_rail_survey):
 
@@ -2219,9 +2220,9 @@ class CombineGSIFilesWindow:
         station_set = unsorted_combined_gsi.get_set_of_control_points()
 
         if len(stations_names_dict) != len(station_set):
-            # todo uncomment below
+
             pass
-            # tk.messagebox.showwarning("WARNING", 'Warning - Duplicate station names detected in gsi!')
+            tk.messagebox.showwarning("WARNING", 'Warning - Duplicate station names detected in gsi!')
 
         # need to sort this by station name
         stations_sorted_by_name_dict = OrderedDict(sorted(stations_names_dict.items(), key=lambda x: x[1]))
