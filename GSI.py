@@ -85,7 +85,6 @@ class GSI:
 
     def update_point_name(self, line_number, new_point_name):
 
-
         unformatted_line = self.get_unformatted_line(line_number)
 
         re_pattern = re.compile(GSI.REGULAR_EXPRESSION_LOOKUP['11'])
@@ -459,7 +458,7 @@ class GSI:
 
                 # Check to see if this shot is in the list of station setups.
                 if point_id not in unique_station_setups:
-                    stn_shots_not_in_setup += "Line No. " + str(line_number) +':   ' + point_id + '\n'
+                    stn_shots_not_in_setup += "Line No. " + str(line_number) + ':   ' + point_id + '\n'
                     line_number_errors.append(line_number)
 
                 # Also want to track of how many times each station is shot so this info can be displayed to user
@@ -477,8 +476,9 @@ class GSI:
                 else:
                     if stn_name in formatted_line['Point_ID']:
                         # error found in GSI
-                        shots_with_same_id_as_stn += "Line No. " + str(line_no+1) +':      ' + stn_name + ' ---> ' + formatted_line['Point_ID'] + '\n'
-                        line_number_errors.append(line_no+1)
+                        shots_with_same_id_as_stn += "Line No. " + str(line_no + 1) + ':      ' + stn_name + ' ---> ' + formatted_line[
+                            'Point_ID'] + '\n'
+                        line_number_errors.append(line_no + 1)
 
         # Display message to user of the station shots not found in station setups.
         if stn_shots_not_in_setup:
@@ -499,7 +499,6 @@ class GSI:
         # Check if any errors found
         if not dialog_text:
             dialog_text = "Control naming looks good!\n"
-
 
         # Create and display no. of times each station was shot
         counter = Counter(shots_to_stations)
@@ -573,9 +572,7 @@ class GSI:
                     east_diff = float(max(eastings)) - float(min(eastings))
 
                     if east_diff > float(self.survey_config.easting_tolerance):
-                        error_text = point_id + ' is out of tolerance in Easting: ' + str(round(
-                            east_diff,
-                            3)) + 'm\n'
+                        error_text = point_id + ' is out of tolerance in Easting: ' + "{:.3f}".format(round(east_diff, 3)) + 'm\n'
                         errors.append(error_text)
                         error_points.append(point)
                         print(error_text)
@@ -584,9 +581,7 @@ class GSI:
                     north_diff = float(max(northings)) - float(min(northings))
 
                     if north_diff > float(self.survey_config.northing_tolerance):
-                        error_text = point_id + ' is out of tolerance Northing: ' + str(round(
-                            north_diff,
-                            3)) + 'm\n'
+                        error_text = point_id + ' is out of tolerance Northing: ' + "{:.3f}".format(round(north_diff, 3)) + 'm\n'
                         errors.append(error_text)
                         error_points.append(point)
                         print(error_text)
@@ -595,10 +590,7 @@ class GSI:
                     height_diff = float(max(elevation)) - float(min(elevation))
 
                     if height_diff > float(self.survey_config.height_tolerance):
-                        error_text = point_id + ' is out of tolerance in height: ' + \
-                                     str(round(
-                                         height_diff,
-                                         3)) + 'm \n'
+                        error_text = point_id + ' is out of tolerance in height: ' + "{:.3f}".format(round(height_diff, 3)) + 'm \n'
                         errors.append(error_text)
                         error_points.append(point)
                         print(error_text)
