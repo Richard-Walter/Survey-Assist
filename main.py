@@ -8,6 +8,7 @@ NOTE: For 3.4 compatibility
     i) Replaced f-strings with.format method.
     ii) had to use an ordered dictionary"""
 
+# TODO check that all the points with the same name have the same PC see file MR 180420_EDITED_SAME POINTID DIFF PC.GSI
 # TODO PC changes single and batch
 
 import tkinter.messagebox
@@ -54,8 +55,7 @@ class MenuBar(tk.Frame):
                 exit()
 
         self.user_config = UserConfiguration()
-        self.monitoring_job_dir = os.path.join(survey_config.root_job_directory, survey_config.current_year,
-                                               survey_config.default_survey_type)
+        self.monitoring_job_dir = os.path.join(survey_config.root_job_directory, survey_config.current_year, survey_config.default_survey_type)
         self.query_dialog_box = None
         self.filename_path = ""
         self.compnet_working_dir = ""
@@ -66,8 +66,7 @@ class MenuBar(tk.Frame):
         # File Menu
         self.file_sub_menu = tk.Menu(self.menu_bar, tearoff=0)
         self.file_sub_menu.add_command(label="Open...", command=self.choose_gsi_file)
-        self.file_sub_menu.add_command(label="Create Dated Directory...",
-                                       command=lambda: self.new_dated_directory(False))
+        self.file_sub_menu.add_command(label="Create Dated Directory...", command=lambda: self.new_dated_directory(False))
         self.file_sub_menu.add_command(label="Create Job Directory...", command=self.new_job_directoy)
         self.file_sub_menu.add_command(label="Import SD Data", command=self.import_sd_data)
         self.file_sub_menu.add_separator()
@@ -84,24 +83,19 @@ class MenuBar(tk.Frame):
         self.edit_sub_menu.add_command(label="Change point name...", command=self.change_point_name)
         self.edit_sub_menu.add_command(label="Change target height...", command=self.change_target_height)
         self.edit_sub_menu.add_separator()
-        self.edit_sub_menu.add_command(label="Prism Constant - Fix single...", command=self.prism_constant_fix_single,
-                                       state="disabled")
-        self.edit_sub_menu.add_command(label="Prism Constant - Fix batch ...", command=self.prism_constant_fix_batch,
-                                       state="disabled")
+        self.edit_sub_menu.add_command(label="Prism Constant - Fix single...", command=self.prism_constant_fix_single, state="disabled")
+        self.edit_sub_menu.add_command(label="Prism Constant - Fix batch ...", command=self.prism_constant_fix_batch, state="disabled")
 
         self.menu_bar.add_cascade(label="Edit Survey", menu=self.edit_sub_menu, state="disabled")
 
         # Check menu
         self.check_sub_menu = tk.Menu(self.menu_bar, tearoff=0)
-        self.check_sub_menu.add_command(label="Check Tolerances (3D)",
-                                        command=self.check_3d_survey)
+        self.check_sub_menu.add_command(label="Check Tolerances (3D)", command=self.check_3d_survey)
         self.check_sub_menu.add_command(label="Check Control Naming (3D) ", command=self.check_control_naming)
         self.check_sub_menu.add_command(label="Check FL-FR (2D/3D) ", command=self.check_FLFR)
-        self.check_sub_menu.add_command(label="Check All (3D)",
-                                        command=self.check_3d_all)
+        self.check_sub_menu.add_command(label="Check All (3D)", command=self.check_3d_all)
         self.check_sub_menu.add_separator()
-        self.check_sub_menu.add_command(label="Compare Prism Constants to similar survey...",
-                                        command=self.compare_survey)
+        self.check_sub_menu.add_command(label="Compare Prism Constants to a similar survey...", command=self.compare_survey)
         self.check_sub_menu.add_command(label="Query GSI...", command=self.display_query_input_box)
         self.menu_bar.add_cascade(label="Check Survey", menu=self.check_sub_menu, state="disabled")
 
@@ -144,16 +138,13 @@ class MenuBar(tk.Frame):
     def choose_gsi_file(self):
 
         if survey_config.todays_dated_directory == "":
-
             intial_directory = self.monitoring_job_dir
 
         else:
             intial_directory = os.path.join(survey_config.todays_dated_directory, "TS")
 
-        MenuBar.filename_path = tk.filedialog.askopenfilename(initialdir=intial_directory, title="Select file",
-                                                              filetypes=[("GSI Files", ".gsi")])
-        survey_config.update(SurveyConfiguration.section_file_directories, 'last_used', os.path.dirname(
-            MenuBar.filename_path))
+        MenuBar.filename_path = tk.filedialog.askopenfilename(initialdir=intial_directory, title="Select file", filetypes=[("GSI Files", ".gsi")])
+        survey_config.update(SurveyConfiguration.section_file_directories, 'last_used', os.path.dirname(MenuBar.filename_path))
 
         GUIApplication.refresh()
         self.enable_menus()
@@ -173,15 +164,15 @@ class MenuBar(tk.Frame):
             CreateDatedDirectoryWindow(self, folder_selected)
 
     def choose_date(self):
-        # Let user choose the date, rather than default to todays date
+        # Let user choose the date, rather than the default todays date
         cal_root = tk.Toplevel()
         cal = CalendarWindow(cal_root, todays_date)
         self.master.wait_window(cal_root)
-        active_date = cal.get_selected_date()
+        # active_date = cal.get_selected_date()
 
     def open_calender(self, parent):
         cal_root = tk.Toplevel()
-        cal = CalendarWindow(cal_root, todays_date)
+        CalendarWindow(cal_root, todays_date)
         parent.wait_window(cal_root)
 
     def new_job_directoy(self):
@@ -689,11 +680,9 @@ class MenuBar(tk.Frame):
 
     def compare_survey(self):
 
-        last_used_directory = survey_config.last_used_file_dir
-
         points_diff_PC_dict = {}
 
-        old_survey_filepath = tk.filedialog.askopenfilename(parent=self.master, initialdir=last_used_directory,
+        old_survey_filepath = tk.filedialog.askopenfilename(parent=self.master, initialdir=self.monitoring_job_dir,
                                                             filetypes=[("GSI Files", ".GSI")])
         old_survey_gsi = GSI(logger)
         old_survey_gsi.format_gsi(old_survey_filepath)
@@ -703,8 +692,8 @@ class MenuBar(tk.Frame):
         line_number_errors = []
 
         dialog_subject = "Prism Constant Comparision"
-        dialog_text = "Prism constants match between surveys "
-        error_text = "Prism constants mismatch (yellow highlight) found between the two surveys. "
+        all_good_text = "Prism constants match between surveys "
+        error_text = "A difference in prism constants between the two surveys was found for the following Point IDs:\n\n"
 
         # Create a dictionary of points and their prism constant.
         # ASSUMPTION: prism constant for an old survey with no errors should be the same for the same point ID
@@ -731,12 +720,19 @@ class MenuBar(tk.Frame):
                     if old_PC != current_PC:
                         points_diff_PC_dict[current_point_ID] = {'current pc': current_PC, 'old_pc': old_PC}
                         line_number_errors.append(line_number)
-                        dialog_text = error_text
+                        error_text += '   Line ' + str(line_number) + ':  ' + current_point_ID + '----> current PC: ' + current_PC + '    ' \
+                                      'old PC: ' + old_PC + '\n'
 
-        tkinter.messagebox.showinfo(dialog_subject, dialog_text)
+
+        # check if any errors found
+        if points_diff_PC_dict:
+            dislpay_text = error_text + '\n\nThese will be highlighted in yellow'
+
+        else:
+            dislpay_text = all_good_text
+
+        tkinter.messagebox.showinfo(dialog_subject, dislpay_text)
         gui_app.list_box.populate(gsi.formatted_lines, line_number_errors)
-
-        print(points_diff_PC_dict)
 
     def export_csv(self):
 

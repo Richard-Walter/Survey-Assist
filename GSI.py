@@ -474,7 +474,8 @@ class GSI:
                     # ignore the station setup line
                     continue
                 else:
-                    if stn_name in formatted_line['Point_ID']:
+                    # if stn_name in formatted_line['Point_ID']:
+                    if stn_name == formatted_line['Point_ID']:
                         # error found in GSI
                         shots_with_same_id_as_stn += "Line No. " + str(line_no + 1) + ':      ' + stn_name + ' ---> ' + formatted_line[
                             'Point_ID'] + '\n'
@@ -505,7 +506,9 @@ class GSI:
         for key, value in sorted(counter.items()):
             shots_to_stations_message += str(key) + '  ' + str(value) + '\n'
 
-        dialog_text += '\n\n' + shots_to_stations_message
+        # if shots to stations found (2D surveys typically have none)
+        if len(counter) != 0:
+            dialog_text += '\n\n' + shots_to_stations_message
 
         return dialog_text, line_number_errors
 
@@ -638,7 +641,7 @@ class GSI:
 
 
         else:
-            tkinter.messagebox.showerror("EXPORTING CSV", "CSV had been created at:\n\n " + out_csv_file_path)
+            tkinter.messagebox.showerror("EXPORTING CSV", "A CSV file has been created at:\n\n " + out_csv_file_path)
             # open up the file for the user
             os.startfile(out_csv_file_path)
 
