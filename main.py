@@ -92,6 +92,7 @@ class MenuBar(tk.Frame):
         self.check_sub_menu = tk.Menu(self.menu_bar, tearoff=0)
         self.check_sub_menu.add_command(label="Check Tolerances (3D)", command=self.check_3d_survey)
         self.check_sub_menu.add_command(label="Check Control Naming (3D) ", command=self.check_control_naming)
+        self.check_sub_menu.add_command(label="Check Prism Constants (2D/3D) ", command=self.check_prism_constants)
         self.check_sub_menu.add_command(label="Check FL-FR (2D/3D) ", command=self.check_FLFR)
         self.check_sub_menu.add_command(label="Check All (3D)", command=self.check_3d_all)
         self.check_sub_menu.add_separator()
@@ -461,10 +462,9 @@ class MenuBar(tk.Frame):
             # display error dialog box
             tkinter.messagebox.showinfo(subject, error_text)
 
-        except Exception:
+        except Exception as ex:
             logger.exception('Error creating executing SQL query')
-            tk.messagebox.showerror("Error", 'Error executing this query:\nPlease contact the developer of this '
-                                             'program or see log file for further information')
+            tk.messagebox.showerror("Error", 'Error checking prism constants:\n\n' + str(ex))
 
         # highlight any error points
         error_point_set = set(error_points)
@@ -485,10 +485,23 @@ class MenuBar(tk.Frame):
             gui_app.list_box.populate(gsi.formatted_lines, error_line_numbers)
 
 
-        except Exception:
+        except Exception as ex:
             logger.exception('Error checking station naming')
-            tk.messagebox.showerror("Error", 'Error executing this query:\nPlease contact the developer of this '
-                                             'program or see log file for further information')
+            tk.messagebox.showerror("Error", 'Error checking control naming:\n\n' + str(ex))
+
+    def check_prism_constants(self):
+
+        try:
+            error_text, error_line_numbers = gsi.check_prism_constants()
+
+            # display error dialog box
+            tkinter.messagebox.showinfo("Checking Prism Constants", error_text)
+            gui_app.list_box.populate(gsi.formatted_lines, error_line_numbers)
+
+
+        except Exception as ex:
+            logger.exception('Error checking prism constants')
+            tk.messagebox.showerror("Error", 'Error checking prism constants:\n\n' + str(ex))
 
     def check_FLFR(self, display='YES'):
 
@@ -664,6 +677,7 @@ class MenuBar(tk.Frame):
 
         self.check_FLFR('NO')
         self.check_control_naming()
+        self.check_prism_constants()
         self.check_3d_survey()
 
     def change_target_height(self):

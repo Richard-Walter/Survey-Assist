@@ -428,6 +428,55 @@ class GSI:
 
         return control_only_filename
 
+    # lets check the survey and make sure the prism constant for a point_ID is the same throughout the survey
+    def check_prism_constants(self):
+
+        error_text = "WARNING!  The following Point ID's have more than one Prism Constant:\n\n"
+        dialog_text = 'Prism constants for each Point_ID are consistent throughout this survey'
+        point_id_pc_dict = {}
+        point_id_errors = []
+        line_number_errors = []
+
+        all_shots_except_setups = self.get_all_lines_except_setup()
+
+        for formatted_line in all_shots_except_setups:
+            point_id = formatted_line['Point_ID']
+            pc = formatted_line['Prism_Constant']
+
+            # check to see if a set of Prism Constants already exist for this point
+            if point_id not in point_id_pc_dict:
+
+                point_id_pc_dict[point_id] = set()
+
+            # add pc to a set of pcs for this point-id
+            point_id_pc_dict[point_id].add(pc)
+
+        # check if the pc list for each point id contains only 1 prism constant.  If not - error found
+        for point_id, pc_set in point_id_pc_dict.items():
+            if len(pc_set) > 1:
+                point_id_errors.append(point_id)
+
+        # any errors?
+        if point_id_errors:
+            dialog_text = error_text
+
+            # Lets add a list of points tothat contains errors so we can notify the user
+            for point_id in point_id_errors:
+                dialog_text += point_id + '\n'
+
+            # determine their line numbers so they can be highlighted
+            line_number = 0
+            dialog_text += '\n'
+
+            for formatted_line in self.formatted_lines:
+                line_number += 1
+                if formatted_line['Point_ID'] in point_id_errors:
+                    line_number_errors.append(line_number)
+                    dialog_text += 'Line No. ' + str(line_number) + ':  ' + formatted_line['Point_ID'] + '---> prism constant: ' + formatted_line[
+                        'Prism_Constant'] +'\n'
+
+        return dialog_text, line_number_errors
+
     def check_control_naming(self):
 
         unique_station_setups = self.get_set_of_control_points()
