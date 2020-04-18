@@ -212,12 +212,12 @@ class MenuBar(tk.Frame):
         # check to see if survey files from today were found
         if not sd_card.get_list_all_todays_files():
 
-            user_answer =  tk.messagebox.askyesnocancel("IMPORT SD DATA", "Couldn't find any survey files with todays date.\n\nPlease choose:\n\n"
-                                                        "YES           - to import a rail monitoring file\n"
-                                                        "NO            - to copy over the files manually\n"
-                                                        "CANCEL   - check SD path in 'user_settings' (Re-start)")
+            user_answer = tk.messagebox.askyesnocancel("IMPORT SD DATA", "Couldn't find any survey files with todays date.\n\nPlease choose:\n\n"
+                                                                         "YES           - to import a rail monitoring file\n"
+                                                                         "NO            - to copy over the files manually\n"
+                                                                         "CANCEL   - check SD path in 'user_settings' (Re-start)")
 
-            if user_answer is None:     # user selected cancel to check user settings.ini
+            if user_answer is None:  # user selected cancel to check user settings.ini
 
                 #  check user settings
                 os.startfile("c:/SurveyAssist/user_settings.ini")
@@ -227,7 +227,7 @@ class MenuBar(tk.Frame):
                 os.startfile('c:')
                 return
 
-            else:   # user selected yes to importing rail survey
+            else:  # user selected yes to importing rail survey
 
                 ImportRailMonitoringFileWindow(self.master)
                 ts_used = self.ts_used
@@ -929,8 +929,8 @@ class ConfigDialogWindow:
 
     def select_sorted_stn_file(self):
 
-        self.sorted_stn_file_path = tk.filedialog.askopenfilename(parent=self.master, filetypes=[("Text Files",
-                                                                                                  ".TXT")])
+        self.sorted_stn_file_path = tk.filedialog.askopenfilename(parent=self.master, title='Please select the sorted station file',
+                                                                  filetypes=[("Text Files",".TXT")])
         if self.sorted_stn_file_path != "":
             self.sorted_station_file_btn.config(text=os.path.basename(self.sorted_stn_file_path))
         self.dialog_window.lift()  # bring window to the front again
@@ -975,10 +975,18 @@ class ConfigDialogWindow:
         else:
 
             self.dialog_window.destroy()
-            gui_app.menu_bar.survey_config.create_config_file(precision_dictionary, survey_tolerance_dictionary,
-                                                              configuration_dictionary)
 
-            gui_app.menu_bar.survey_config = SurveyConfiguration()
+            # update config file
+            for key, value in precision_dictionary.items():
+                survey_config.update(SurveyConfiguration.section_instrument, key, value)
+
+            for key, value in survey_tolerance_dictionary.items():
+                survey_config.update(SurveyConfiguration.section_survey_tolerances, key, value)
+
+            for key, value in configuration_dictionary.items():
+                survey_config.update(SurveyConfiguration.section_config_files, key, value)
+
+            survey_config = SurveyConfiguration()
 
     def cancel(self):
 
