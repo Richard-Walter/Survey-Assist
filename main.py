@@ -721,8 +721,7 @@ class MenuBar(tk.Frame):
                         points_diff_PC_dict[current_point_ID] = {'current pc': current_PC, 'old_pc': old_PC}
                         line_number_errors.append(line_number)
                         error_text += '   Line ' + str(line_number) + ':  ' + current_point_ID + '----> current PC: ' + current_PC + '    ' \
-                                      'old PC: ' + old_PC + '\n'
-
+                                                                                                                                     'old PC: ' + old_PC + '\n'
 
         # check if any errors found
         if points_diff_PC_dict:
@@ -764,7 +763,46 @@ class MenuBar(tk.Frame):
 
     def create_CSV_from_ASC(self):
 
-        UtilityCreateCSVFromASCWindow(self)
+        asc_file_path = tk.filedialog.askopenfilename(parent=self.master, initialdir=self.monitoring_job_dir, title="Please select an .asc file",
+                                                      filetypes=[("ASC Files", ".ASC")])
+        # Create the CSV
+        csv_file = []
+        csv_file.append("POINT,EASTING,NORTHING,ELEVATION\n")
+        comma = ','
+
+        # Get the coordinates from the ASC
+        asc_coordinate_file = ASCCoordinateFile(asc_file_path)
+        coordinate_dict = asc_coordinate_file.coordinate_dictionary
+
+        for point, coordinates in sorted(coordinate_dict.items()):
+            easting = coordinates['Eastings']
+            northing = coordinates['Northings']
+            elevation = ""
+            try:
+                elevation = coordinates['Elevation']
+            except Exception:
+                pass  # elevation may not exist in some coordinate
+            finally:
+
+                csv_line = ""
+
+                # add coordinates to the CSV
+
+                csv_line += point + comma
+                csv_line += easting + comma
+                csv_line += northing + comma
+                csv_line += elevation + '\n'
+
+                csv_file += csv_line
+
+        # Write out file
+        with open("temp_create_csv.csv", "w") as f:
+            for line in csv_file:
+                f.write(line)
+
+        # Launch excel
+        if asc_file_path:
+            os.system("start EXCEL.EXE temp_create_csv.csv")
 
     @staticmethod
     def job_diary():
@@ -1772,72 +1810,6 @@ class CompnetWeightSTDFileWindow:
             # user hasn't choosen a file
             tkinter.messagebox.showinfo("Update STD File", "Please choose an STD file")
             self.dialog_window.lift()
-
-
-class UtilityCreateCSVFromASCWindow:
-
-    def __init__(self, master):
-        self.master = master
-
-        self.last_used_directory = survey_config.last_used_file_dir
-
-        #  Lets build the dialog box
-        self.dialog_window = tk.Toplevel(master)
-        self.dialog_window.title("CREATE TEMP CSV")
-
-        container = tk.Frame(self.dialog_window, width=200, height=120)
-
-        self.choose_btn = tk.Button(container, text="Choose *ASC File", command=self.create_csv_file)
-        self.choose_btn.grid(row=1, column=1, sticky='nesw', padx=20, pady=20)
-        container.pack(fill="both", expand=True)
-
-        self.dialog_window.geometry(MainWindow.position_popup(master, 150, 70))
-
-    def create_csv_file(self):
-
-        asc_file_path = tk.filedialog.askopenfilename(parent=self.master,
-                                                      initialdir=self.last_used_directory,
-                                                      title="Select file", filetypes=[("ASC Files", ".ASC")])
-        # Create the CSV
-        csv_file = []
-        csv_file.append("POINT,EASTING,NORTHING,ELEVATION\n")
-        comma = ','
-
-        # Get the coordinates from the ASC
-        asc_coordinate_file = ASCCoordinateFile(asc_file_path)
-        coordinate_dict = asc_coordinate_file.coordinate_dictionary
-
-        for point, coordinates in sorted(coordinate_dict.items()):
-            easting = coordinates['Eastings']
-            northing = coordinates['Northings']
-            elevation = ""
-            try:
-                elevation = coordinates['Elevation']
-            except Exception:
-                pass  # elevation may not exist in some coordinate
-            finally:
-
-                csv_line = ""
-
-                # add coordinates to the CSV
-
-                csv_line += point + comma
-                csv_line += easting + comma
-                csv_line += northing + comma
-                csv_line += elevation + '\n'
-
-                csv_file += csv_line
-
-        # Write out file
-        with open("temp_create_csv.csv", "w") as f:
-            for line in csv_file:
-                f.write(line)
-
-        self.dialog_window.destroy()
-
-        # Launch excel
-        if asc_file_path:
-            os.system("start EXCEL.EXE temp_create_csv.csv")
 
 
 class CompnetCompareCRDFWindow:
