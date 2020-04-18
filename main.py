@@ -9,7 +9,7 @@ NOTE: For 3.4 compatibility
     ii) had to use an ordered dictionary"""
 
 # TODO move out a9 station listing from GSI files
-# TODO add check settings if no surveys found
+
 # TODO allow user to choose SD card and USB SD card settings in a specific window.  THis can be prompted when first creating this file
 # TODO PC changes single and batch
 
@@ -209,14 +209,25 @@ class MenuBar(tk.Frame):
         # create the SD Card
         sd_card = SDCard(user_sd_directory)
 
-        # check to see if user is trying import a rail survey - these files have no date and have to be treated differently
+        # check to see if survey files from today were found
         if not sd_card.get_list_all_todays_files():
 
-            # TODO add check settings if no surveys found.  THis needs its own window with option to check settings
-            if tk.messagebox.askyesno("IMPORT SD DATA", "Couldn't find any survey files with todays date.\n\nPlease choose:\n\n"
-                                                        "YES             - to import a rail monitoring file\n"
-                                                        "NO              - to copy over the files manually\n"
-                                                        "SETTINGS   - check SD directory is configured properly"):
+            user_answer =  tk.messagebox.askyesnocancel("IMPORT SD DATA", "Couldn't find any survey files with todays date.\n\nPlease choose:\n\n"
+                                                        "YES           - to import a rail monitoring file\n"
+                                                        "NO            - to copy over the files manually\n"
+                                                        "CANCEL   - check SD path in 'user_settings' (Re-start)")
+
+            if user_answer is None:     # user selected cancel to check user settings.ini
+
+                #  check user settings
+                os.startfile("c:/SurveyAssist/user_settings.ini")
+                self.client_exit()
+
+            elif user_answer is False:  # user wants to copy files over manually
+                os.startfile('c:')
+                return
+
+            else:   # user selected yes to importing rail survey
 
                 ImportRailMonitoringFileWindow(self.master)
                 ts_used = self.ts_used
@@ -236,11 +247,6 @@ class MenuBar(tk.Frame):
                     return
                 else:
                     is_rail_survey = True
-
-            else:
-                # User wishes to copy files manually.  open up explorer
-                os.startfile('c:')
-                return
 
         # check if todays directory exists.  If not, get user to choose.
         if not todays_dated_directory:
