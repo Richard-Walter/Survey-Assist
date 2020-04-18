@@ -439,14 +439,12 @@ class GSI:
 
         all_shots_except_setups = self.get_all_lines_except_setup()
 
+
         for formatted_line in all_shots_except_setups:
             point_id = formatted_line['Point_ID']
             pc = formatted_line['Prism_Constant']
-
-            # check to see if a set of Prism Constants already exist for this point
-            if point_id not in point_id_pc_dict:
-
-                point_id_pc_dict[point_id] = set()
+            # add empty set if not already defined
+            point_id_pc_dict.setdefault(point_id, set())
 
             # add pc to a set of pcs for this point-id
             point_id_pc_dict[point_id].add(pc)

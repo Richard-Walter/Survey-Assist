@@ -1129,3 +1129,27 @@ Traceback (most recent call last):
   File "C:\Users\Richard\PycharmProjects\Survey Assist\GSI.py", line 793, in create_db
     os.remove(GSIDatabase.DATABASE_PATH)
 PermissionError: [WinError 32] The process cannot access the file because it is being used by another process: 'GSI Files\\GSI_database.db'
+2020-04-19 07:29:32,314:Survey Assist:Error checking prism constants
+Traceback (most recent call last):
+  File "C:/Users/Richard/PycharmProjects/Survey Assist/main.py", line 495, in check_prism_constants
+    error_text, error_line_numbers = gsi.check_prism_constants()
+  File "C:\Users\Richard\PycharmProjects\Survey Assist\GSI.py", line 453, in check_prism_constants
+    point_id_pc_dict[point_id].add(pc)
+KeyError: 'STN02'
+2020-04-19 07:29:59,043:Survey Assist:Database in use.  Unable to delete until it is closed
+Traceback (most recent call last):
+  File "C:\Users\Richard\PycharmProjects\Survey Assist\GSI.py", line 801, in create_db
+    os.remove(GSIDatabase.DATABASE_PATH)
+PermissionError: [WinError 32] The process cannot access the file because it is being used by another process: 'GSI Files\\GSI_database.db'
+2020-04-19 07:30:02,010:Survey Assist:Error checking prism constants
+Traceback (most recent call last):
+  File "C:/Users/Richard/PycharmProjects/Survey Assist/main.py", line 495, in check_prism_constants
+    error_text, error_line_numbers = gsi.check_prism_constants()
+  File "C:\Users\Richard\PycharmProjects\Survey Assist\GSI.py", line 453, in check_prism_constants
+    point_id_pc_dict[point_id].add(pc)
+KeyError: 'BMS'
+2020-04-19 07:37:49,821:Survey Assist:Database in use.  Unable to delete until it is closed
+Traceback (most recent call last):
+  File "C:\Users\Richard\PycharmProjects\Survey Assist\GSI.py", line 802, in create_db
+    os.remove(GSIDatabase.DATABASE_PATH)
+PermissionError: [WinError 32] The process cannot access the file because it is being used by another process: 'GSI Files\\GSI_database.db'

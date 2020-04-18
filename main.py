@@ -8,7 +8,6 @@ NOTE: For 3.4 compatibility
     i) Replaced f-strings with.format method.
     ii) had to use an ordered dictionary"""
 
-# TODO check that all the points with the same name have the same PC see file MR 180420_EDITED_SAME POINTID DIFF PC.GSI
 # TODO PC changes single and batch
 
 import tkinter.messagebox
