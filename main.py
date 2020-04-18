@@ -8,9 +8,7 @@ NOTE: For 3.4 compatibility
     i) Replaced f-strings with.format method.
     ii) had to use an ordered dictionary"""
 
-# TODO move out a9 station listing from GSI files
 
-# TODO allow user to choose SD card and USB SD card settings in a specific window.  THis can be prompted when first creating this file
 # TODO PC changes single and batch
 
 import tkinter.messagebox
@@ -39,8 +37,23 @@ class MenuBar(tk.Frame):
         # for importing rali survey
         self.ts_used = ""
 
-        # # remove todays_dated_directory value in case its old
-        # survey_config.todays_dated_directory = ""
+        # check is user settings directory and/or file exists on the users computer
+        if not os.path.isdir(UserConfiguration.user_settings_directory):
+            os.makedirs(UserConfiguration.user_settings_directory)
+
+        if not os.path.exists(UserConfiguration.user_settings_file_path):
+            shutil.copy(UserConfiguration.default_user_settings_path, UserConfiguration.user_settings_file_path)
+
+            answer = tk.messagebox.askokcancel("User Settings", "A new user_settings file has been created.\n\nPlease configure your user "
+                                                                "settings.\n\nUSER_SD_ROOT:  This is the root directory when you insert a SD card into your "
+                                                                "computer\n\nUSB-ROOT:  This is the root directory when you plug in a usb device (e.g. to "
+                                                                "transfer 1200 gps data)\n\nSurvey Assist will need to be re-started")
+
+            if answer is True:
+                # open up user settings
+                os.startfile("c:/SurveyAssist/user_settings.ini")
+                exit()
+
         self.user_config = UserConfiguration()
         self.monitoring_job_dir = os.path.join(survey_config.root_job_directory, survey_config.current_year,
                                                survey_config.default_survey_type)
@@ -99,6 +112,9 @@ class MenuBar(tk.Frame):
         # Export CSV
         self.menu_bar.add_command(label="Export CSV", command=self.export_csv, state="disabled")
 
+        # Re-display GSI
+        self.menu_bar.add_command(label="Re-display GSI", command=self.re_display_gsi, state="disabled")
+
         # Compnet menu
         self.compnet_sub_menu = tk.Menu(self.menu_bar, tearoff=0)
         self.compnet_sub_menu.add_command(label="Update Fixed File...", command=self.update_fixed_file)
@@ -118,10 +134,7 @@ class MenuBar(tk.Frame):
         self.menu_bar.add_command(label="Job diary", command=self.job_diary)
 
         # Config menu
-        self.menu_bar.add_command(label="Config", command=self.configure_survey)
-
-        # Re-display GSI
-        self.menu_bar.add_command(label="Re-display GSI", command=self.re_display_gsi, state="disabled")
+        self.menu_bar.add_command(label="Configuration", command=self.configure_survey)
 
         # Help menu
         self.help_sub_menu = tk.Menu(self.menu_bar, tearoff=0)
@@ -800,14 +813,12 @@ class MenuBar(tk.Frame):
     @staticmethod
     def display_about_dialog_box():
 
-        about_me_text = "This program reads a GSI file from a Leica Total " \
-                        "Station and displays the data in a clearer, more user-friendly format." \
-                        " \n\nYou can then execute queries on this data to extract relevant information, or check for" \
-                        " errors in a survey, such as incorrect station labelling, prism constants and tolerance " \
-                        "errors. \n\n" \
-                        "This program also assists with Compnet - combining gsi files, copying over fixed files, " \
-                        "comparing CRD files, and " \
-                        "stripping out GSI leaving just the control stations for easier analysis of problems\n\n" \
+        about_me_text = "This program imports survey data, reads in a GSI file and displays the data in a clearer, more user-friendly format." \
+                        " \n\nYou can then edit this GSI and change point names, target heights and prism constants.,  You can also check the " \
+                        "survey for errors - such as incorrect station labelling, incorrect prism constants and out-of-tolerance survey errors. " \
+                        "\n\n" \
+                        "This program also assists with Compnet - combining gsi files, copying over fixed files, comparing CRD files, and " \
+                        "stripping out the GSI leaving just the control stations for easier analysis of problems.\n\n" \
                         "Written by Richard Walter 2019"
 
         tkinter.messagebox.showinfo("About Survey Assist", about_me_text)
@@ -2785,8 +2796,8 @@ class GUIApplication(tk.Frame):
     def __init__(self, master, *args, **kwargs):
         super().__init__(master, *args, **kwargs)
 
-        self.status_bar = StatusBar(master)
         self.menu_bar = MenuBar(master)
+        self.status_bar = StatusBar(master)
         self.main_window = MainWindow(master)
         self.status_bar.status.pack(side="bottom", fill="x")
         self.menu_bar.pack(side="top", fill="x")

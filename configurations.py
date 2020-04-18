@@ -1,7 +1,8 @@
 from configparser import ConfigParser
 import os
 import shutil
-
+import tkinter as tk
+import tkinter.messagebox
 class SurveyConfiguration:
 
     section_instrument = 'INSTRUMENT'
@@ -85,16 +86,12 @@ class SurveyConfiguration:
 
 
 class UserConfiguration:
+
     section_file_directories = 'FILE DIRECTORIES'
     user_settings_directory = r"c:/SurveyAssist"
     user_settings_file_path = r"c:/SurveyAssist/user_settings.ini"
     default_user_settings_path = r"default_user_settings.ini"
 
-    if not os.path.isdir(user_settings_directory):
-        os.makedirs(user_settings_directory)
-
-    if not os.path.exists(user_settings_file_path):
-        shutil.copy(default_user_settings_path, user_settings_file_path)
 
     def __init__(self):
 
