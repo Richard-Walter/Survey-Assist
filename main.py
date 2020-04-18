@@ -8,7 +8,6 @@ NOTE: For 3.4 compatibility
     i) Replaced f-strings with.format method.
     ii) had to use an ordered dictionary"""
 
-
 # TODO PC changes single and batch
 
 import tkinter.messagebox
@@ -73,12 +72,9 @@ class MenuBar(tk.Frame):
         self.file_sub_menu.add_command(label="Import SD Data", command=self.import_sd_data)
         self.file_sub_menu.add_separator()
         self.file_sub_menu.add_command(label="Monitoring - Create", command=self.monitoring_create, state="disabled")
-        self.file_sub_menu.add_command(label="Monitoring - Update Coords", command=self.monitoring_update_coords,
-                                       state="disabled")
-        self.file_sub_menu.add_command(label="Monitoring - Update Labels", command=self.monitoring_update_labels,
-                                       state="disabled")
-        self.file_sub_menu.add_command(label="Monitoring - Rename Updated Files",
-                                       command=self.monitoring_rename_updated_files, state="disabled")
+        self.file_sub_menu.add_command(label="Monitoring - Update Coordinates", command=self.monitoring_update_coords, state="disabled")
+        self.file_sub_menu.add_command(label="Monitoring - Update Labels", command=self.monitoring_update_labels, state="disabled")
+        self.file_sub_menu.add_command(label="Monitoring - Rename Updated Files", command=self.monitoring_rename_updated_files, state="disabled")
 
         self.menu_bar.add_cascade(label="File", menu=self.file_sub_menu)
 
@@ -941,7 +937,7 @@ class ConfigDialogWindow:
     def select_sorted_stn_file(self):
 
         self.sorted_stn_file_path = tk.filedialog.askopenfilename(parent=self.master, title='Please select the sorted station file',
-                                                                  filetypes=[("Text Files",".TXT")])
+                                                                  filetypes=[("Text Files", ".TXT")])
         if self.sorted_stn_file_path != "":
             self.sorted_station_file_btn.config(text=os.path.basename(self.sorted_stn_file_path))
         self.dialog_window.lift()  # bring window to the front again
