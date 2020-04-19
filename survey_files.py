@@ -91,7 +91,7 @@ class SDCard:
                 elif 'GPSE' in file.basename:
 
                     if file.file_suffix.upper() == '.I25' or file.file_suffix.upper() == '.M25':
-                    # and any(x in file.file_suffix for x in ['.i25', '.m25']):
+                        # and any(x in file.file_suffix for x in ['.i25', '.m25']):
                         todays_gps_files.add(file)
 
         return todays_gps_files

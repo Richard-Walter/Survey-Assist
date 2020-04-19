@@ -3,8 +3,9 @@ import os
 import shutil
 import tkinter as tk
 import tkinter.messagebox
-class SurveyConfiguration:
 
+
+class SurveyConfiguration:
     section_instrument = 'INSTRUMENT'
     section_survey_tolerances = 'SURVEY_TOLERANCES'
     section_config_files = 'CONFIGURATION'
@@ -61,13 +62,15 @@ class SurveyConfiguration:
         # FILE DIRECTORIES
         self.last_used_file_dir = self.config_parser.get(SurveyConfiguration.section_file_directories, 'last_used')
         self.fixed_file_dir = self.config_parser.get(SurveyConfiguration.section_file_directories, 'fixed_file_dir')
+        self.compnet_working_dir = self.config_parser.get(SurveyConfiguration.section_file_directories, 'compnet_working_dir')
         self.root_job_directory = self.config_parser.get(SurveyConfiguration.section_file_directories, 'root_job_directory')
         self.diary_directory = self.config_parser.get(SurveyConfiguration.section_file_directories, 'diary_directory')
         self.diary_backup = self.config_parser.get(SurveyConfiguration.section_file_directories, 'diary_backup')
         self.current_year = self.config_parser.get(SurveyConfiguration.section_file_directories, 'current_year')
         self.default_survey_type = self.config_parser.get(SurveyConfiguration.section_file_directories, 'default_survey_type')
         self.todays_dated_directory = self.config_parser.get(SurveyConfiguration.section_file_directories, 'todays_dated_directory')
-        self.current_rail_monitoring_file_name = self.config_parser.get(SurveyConfiguration.section_file_directories, 'current_rail_monitoring_file_name')
+        self.current_rail_monitoring_file_name = self.config_parser.get(SurveyConfiguration.section_file_directories,
+                                                                        'current_rail_monitoring_file_name')
 
     def update(self, section, key, value):
         self.config_parser.set(section, key, value)
@@ -75,23 +78,12 @@ class SurveyConfiguration:
         with open(self.config_file_path, 'w+') as f:
             self.config_parser.write(f)
 
-    # def create_config_file(self, instrument_values, survey_tolerance_values, configuration_values, file_values):
-    #     self.config_parser[SurveyConfiguration.section_instrument] = instrument_values
-    #     self.config_parser[SurveyConfiguration.section_survey_tolerances] = survey_tolerance_values
-    #     self.config_parser[SurveyConfiguration.section_config_files] = configuration_values
-    #     self.config_parser[SurveyConfiguration.section_file_directories] = file_values
-    #
-    #     with open(self.config_file_path, 'w') as f:
-    #         self.config_parser.write(f)
-
 
 class UserConfiguration:
-
     section_file_directories = 'FILE DIRECTORIES'
     user_settings_directory = r"c:/SurveyAssist"
     user_settings_file_path = r"c:/SurveyAssist/user_settings.ini"
     default_user_settings_path = r"default_user_settings.ini"
-
 
     def __init__(self):
 
@@ -107,11 +99,10 @@ class UserConfiguration:
 
         except Exception:
 
-            #Copy over default copy of settings in case new settings have been added in python
+            # Copy over default copy of settings in case new settings have been added in python
             shutil.copy(UserConfiguration.default_user_settings_path, UserConfiguration.user_settings_file_path)
             self.user_sd_root = self.config_parser.get(UserConfiguration.section_file_directories, 'user_sd_root')
             self.usb_root = self.config_parser.get(UserConfiguration.section_file_directories, 'usb_root')
-
 
     def update(self, section, key, value):
         self.config_parser.set(section, key, value)

@@ -109,6 +109,7 @@ class MenuBar(tk.Frame):
 
         # Compnet menu
         self.compnet_sub_menu = tk.Menu(self.menu_bar, tearoff=0)
+        self.compnet_sub_menu.add_command(label="Create Compnet Job folder ...", command=self.create_compnet_job_folder, state="disabled")
         self.compnet_sub_menu.add_command(label="Update Fixed File...", command=self.update_fixed_file)
         self.compnet_sub_menu.add_command(label="Weight STD File ...", command=self.weight_STD_file)
         self.compnet_sub_menu.add_command(label="Compare CRD Files...", command=self.compare_crd_files)
@@ -215,11 +216,11 @@ class MenuBar(tk.Frame):
         if not sd_card.get_list_all_todays_files():
 
             user_answer = tk.messagebox.askyesnocancel("IMPORT SD DATA", "Couldn't find any survey files with todays date.  Please make sure you "
-                                                "have inserted the SD Card into your computer and your SD card path in user_settings is correct."
-                                                 "\n\nAre you trying to import a rail survey?\n\n"
-                                                 "YES           -  IMPORT RAIL SURVEY\n"
-                                                 "NO            - IMPORT FILES MANUALLY\n"
-                                                 "CANCEL    - INSERT SD CARD AND TRY_AGAIN")
+                                                                         "have inserted the SD Card into your computer and your SD card path in user_settings is correct."
+                                                                         "\n\nAre you trying to import a rail survey?\n\n"
+                                                                         "YES           -  IMPORT RAIL SURVEY\n"
+                                                                         "NO            - IMPORT FILES MANUALLY\n"
+                                                                         "CANCEL    - INSERT SD CARD AND TRY_AGAIN")
 
             if user_answer is None:  # user selected cancel
 
@@ -754,6 +755,31 @@ class MenuBar(tk.Frame):
     def display_query_input_box(self):
 
         QueryDialogWindow(self.master)
+
+    def create_compnet_job_folder(self):
+
+        gsi_filepath = tk.filedialog.askopenfilename(parent=self.master, initialdir=survey_config.todays_dated_directory,
+                                                     title="Choose the GSI file you want Compnet to process...", filetypes=[("GSI Files",
+                                                                                                                             ".GSI")])
+
+        gsi_filepath_basename = os.path.basename(gsi_filepath)
+        compnet_root_job_dir = tk.filedialog.askdirectory(parent=self.master, initialdir=survey_config.compnet_working_dir,
+                                                          title="Please select the Job Type Directory...")
+        compnet_job_dir = os.path.join(compnet_root_job_dir, Today.todays_date)
+
+        # Create the Compnet directories
+        if os.path.exists(compnet_job_dir) == False:
+            os.makedirs(compnet_job_dir)
+            # os.makedirs(os.path.join(os.path.join(self.selected_directory, active_date), 'OTHER'))
+
+        compnet_filepath = os.path.join(compnet_job_dir, gsi_filepath_basename, '.GSI')
+
+        # write out file to the Compnet raw data directory
+        with open(compnet_filepath, "w") as gsi_file:
+            for line in gsi_file:
+                gsi_file.write(line)
+
+        tkinter.messagebox.showinfo("COMPNET", "A new Compnet Job directory has been created")
 
     def update_fixed_file(self):
 
@@ -2147,7 +2173,7 @@ class CombineGSIFilesWindow:
         except Exception as ex:
 
             print(ex)
-            tk.messagebox.showerror("Error", "Error combining files.\n\n"+str(ex))
+            tk.messagebox.showerror("Error", "Error combining files.\n\n" + str(ex))
 
         else:
 
