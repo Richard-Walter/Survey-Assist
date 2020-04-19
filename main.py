@@ -66,7 +66,7 @@ class MenuBar(tk.Frame):
 
         # File Menu
         self.file_sub_menu = tk.Menu(self.menu_bar, tearoff=0)
-        self.file_sub_menu.add_command(label="Open...", command=self.choose_gsi_file)
+        self.file_sub_menu.add_command(label="Open GSI...", command=self.choose_gsi_file)
         self.file_sub_menu.add_command(label="Create Dated Directory...", command=lambda: self.new_dated_directory(False))
         self.file_sub_menu.add_command(label="Create Job Directory...", command=self.new_job_directoy)
         self.file_sub_menu.add_command(label="Import SD Data", command=self.import_sd_data)
@@ -416,8 +416,7 @@ class MenuBar(tk.Frame):
         except CorruptedGSIFileError:
 
             # Most likely an corrupted GSI file was selected
-            tk.messagebox.showerror("ERROR", 'Error reading GSI File:\n\nThis file is a corrupted or '
-                                             'incorrect GSI file')
+            tk.messagebox.showerror("FORMATTING GSI", 'Error reading GSI File:\n\nThis file is a corrupted or incorrect GSI file')
 
             gui_app.status_bar.status['text'] = 'Please choose a GSI File'
 
@@ -914,8 +913,7 @@ class MenuBar(tk.Frame):
         except CorruptedGSIFileError:
 
             # Most likely an corrupted GSI file was selected
-            tk.messagebox.showerror("ERROR", 'Error reading GSI File:\n\nThis file is a corrupted or '
-                                             'incorrect GSI file')
+            tk.messagebox.showerror("LOADING GSI", 'Error reading GSI File:\n\nThis file is a corrupted or incorrect GSI file')
 
             gui_app.status_bar.status['text'] = 'Please choose a GSI File'
 
