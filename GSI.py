@@ -431,14 +431,13 @@ class GSI:
     # lets check the survey and make sure the prism constant for a point_ID is the same throughout the survey
     def check_prism_constants(self):
 
-        error_text = "WARNING!  The following Point ID's have more than one Prism Constant:\n\n"
+        error_text = "WARNING!  The following Point ID's have more than one prism Constant:\n\n"
         dialog_text = 'Prism constants for each Point_ID are consistent throughout this survey'
         point_id_pc_dict = {}
         point_id_errors = []
         line_number_errors = []
 
         all_shots_except_setups = self.get_all_lines_except_setup()
-
 
         for formatted_line in all_shots_except_setups:
             point_id = formatted_line['Point_ID']
@@ -456,22 +455,25 @@ class GSI:
 
         # any errors?
         if point_id_errors:
+            dialog_point_list_text = ""
+            dialog_error_line_list_text = ""
             dialog_text = error_text
 
             # Lets add a list of points tothat contains errors so we can notify the user
             for point_id in point_id_errors:
-                dialog_text += point_id + '\n'
+                dialog_point_list_text += point_id + '\n'
+                dialog_error_line_list_text += '\n'
 
-            # determine their line numbers so they can be highlighted
-            line_number = 0
-            dialog_text += '\n'
+                for line_number, formatted_line in enumerate(self.formatted_lines):
 
-            for formatted_line in self.formatted_lines:
-                line_number += 1
-                if formatted_line['Point_ID'] in point_id_errors:
-                    line_number_errors.append(line_number)
-                    dialog_text += 'Line No. ' + str(line_number) + ':  ' + formatted_line['Point_ID'] + '---> prism constant: ' + formatted_line[
-                        'Prism_Constant'] +'\n'
+                    line_number += 1
+                    if point_id == formatted_line['Point_ID']:
+                        if not self.is_control_point(formatted_line):
+                            line_number_errors.append(line_number)
+                            dialog_error_line_list_text += 'Line No. ' + str(line_number) + ':  ' + formatted_line[
+                                'Point_ID'] + '---> prism constant: ' + formatted_line['Prism_Constant'] + '\n'
+
+            dialog_text += dialog_point_list_text + '\n' + dialog_error_line_list_text
 
         return dialog_text, line_number_errors
 
