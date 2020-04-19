@@ -212,16 +212,16 @@ class MenuBar(tk.Frame):
         # check to see if survey files from today were found
         if not sd_card.get_list_all_todays_files():
 
-            user_answer = tk.messagebox.askyesnocancel("IMPORT SD DATA", "Couldn't find any survey files with todays date.\n\nPlease choose:\n\n"
-                                                                         "YES           - to import a rail monitoring file\n"
-                                                                         "NO            - to copy over the files manually\n"
-                                                                         "CANCEL   - check SD path in 'user_settings' (Re-start)")
+            user_answer = tk.messagebox.askyesnocancel("IMPORT SD DATA", "Couldn't find any survey files with todays date.  Please make sure you "
+                                                "have inserted the SD Card into your computer and your SD card path in user_settings is correct."
+                                                 "\n\nAre you trying to import a rail survey?\n\n"
+                                                 "YES           -  IMPORT RAIL SURVEY\n"
+                                                 "NO            - IMPORT FILES MANUALLY\n"
+                                                 "CANCEL    - INSERT SD CARD AND TRY_AGAIN")
 
-            if user_answer is None:  # user selected cancel to check user settings.ini
+            if user_answer is None:  # user selected cancel
 
-                #  check user settings
-                os.startfile("c:/SurveyAssist/user_settings.ini")
-                self.client_exit()
+                return
 
             elif user_answer is False:  # user wants to copy files over manually
                 os.startfile('c:')
