@@ -8,13 +8,15 @@ NOTE: For 3.4 compatibility
     i) Replaced f-strings with.format method.
     ii) had to use an ordered dictionary"""
 
+# TODO COmpnet setup compnet initial project
+# TODO update default file location for various compnet functions once the above todo is implemented
 # TODO PC changes single and batch
 
 import tkinter.messagebox
 import logging.config
 from tkinter import filedialog
 from GSI import *
-from GSI import GSIDatabase, CorruptedGSIFileError, GSIFile
+from GSI import GSIDatabase, CorruptedGSIFileError, GSIFileContents
 from decimal import *
 from compnet import CRDCoordinateFile, ASCCoordinateFile, STDCoordinateFile, CoordinateFile, FixedFile
 from utilities import *
@@ -1719,8 +1721,7 @@ class CompnetUpdateFixedFileWindow:
 
     def get_fixed_file_path(self):
         print(survey_config.fixed_file_dir)
-        self.fixed_file_path = tk.filedialog.askopenfilename(parent=self.master,
-                                                             initialdir=survey_config.fixed_file_dir,
+        self.fixed_file_path = tk.filedialog.askopenfilename(parent=self.master, initialdir=survey_config.fixed_file_dir,
                                                              title="Select file", filetypes=[("FIX Files", ".FIX")])
         if self.fixed_file_path != "":
             self.fixed_btn.config(text=os.path.basename(self.fixed_file_path))
@@ -1728,11 +1729,8 @@ class CompnetUpdateFixedFileWindow:
         self.dialog_window.lift()  # bring window to the front again
 
     def get_coordinate_file_path(self):
-        self.coordinate_file_path = tk.filedialog.askopenfilename(parent=self.master,
-                                                                  initialdir=os.path.dirname(
-                                                                      survey_config.last_used_file_dir),
-                                                                  title="Select file",
-                                                                  filetypes=[("Coordinate Files", ".asc .CRD .STD")])
+        self.coordinate_file_path = tk.filedialog.askopenfilename(parent=self.master, initialdir=gui_app.menu_bar.monitoring_job_dir,
+                                                                  title="Select file", filetypes=[("Coordinate Files", ".asc .CRD .STD")])
         if self.coordinate_file_path != "":
             self.coord_btn.config(text=os.path.basename(self.coordinate_file_path))
         self.dialog_window.lift()  # bring window to the front again
@@ -2068,8 +2066,7 @@ class CombineGSIFilesWindow:
                                               var=self.radio_option, command=self.disable_config_button)
         self.radio_sort_config = tk.Radiobutton(self.dialog_window, text="Sort based on config file", value="3",
                                                 var=self.radio_option, command=self.enable_config_button)
-        self.sorted_file_btn = tk.Button(self.dialog_window, text='CHANGE SORTING CONFIG FILE', state="disabled",
-                                         command=self.open_config_file)
+        self.sorted_file_btn = tk.Button(self.dialog_window, text='CHANGE SORTING CONFIG FILE', state="disabled", command=self.open_config_file)
         current_config_label_txt = os.path.basename(survey_config.sorted_station_config)
         self.current_config_label = tk.Label(self.dialog_window, text=current_config_label_txt, state="disabled")
         self.files_btn = tk.Button(self.dialog_window, text="2)  CHOOSE GSI'S TO COMBINE       ",
@@ -2131,7 +2128,7 @@ class CombineGSIFilesWindow:
                 self.combined_gsi_file_path = os.path.join(self.combined_gsi_directory, combined_gsi_filename)
 
                 for filename in gsi_filenames:
-                    gsi_file = GSIFile(filename)
+                    gsi_file = GSIFileContents(filename)
                     self.gsi_contents += gsi_file.get_filecontents()
 
                 self.write_out_combined_gsi(self.gsi_contents, self.combined_gsi_file_path)
@@ -2152,8 +2149,7 @@ class CombineGSIFilesWindow:
         except Exception as ex:
 
             print(ex)
-            tk.messagebox.showerror("Error", "Error combining files.\n\nIf problem persists see "
-                                             "Richard")
+            tk.messagebox.showerror("Error", "Error combining files.\n\n"+str(ex))
 
         else:
 

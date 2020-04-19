@@ -873,7 +873,7 @@ class CorruptedGSIFileError(Exception):
         self.msg = msg
 
 
-class GSIFile:
+class GSIFileContents:
 
     def __init__(self, gsi_file_path):
         self.fixed_file_path = gsi_file_path
