@@ -8,9 +8,8 @@ NOTE: For 3.4 compatibility
     i) Replaced f-strings with.format method.
     ii) had to use an ordered dictionary"""
 
-# TODO combining GSIs - use the first file filename and then append '_combined'
 # TODO COmpnet setup compnet initial project - update default file location for various compnet functions once the above todo is implemented
-# TODO - COMPNET STRIP 2D SHOTS
+# TODO COMPNET STRIP 2D SHOTS
 # TODO COMPNET WORKFLOW BAR
 # TODO PC changes single and batch
 
@@ -111,9 +110,10 @@ class MenuBar(tk.Frame):
 
         # Compnet menu
         self.compnet_sub_menu = tk.Menu(self.menu_bar, tearoff=0)
-        self.compnet_sub_menu.add_command(label="Create Compnet Job folder ...", command=self.create_compnet_job_folder, state="disabled")
+        self.compnet_sub_menu.add_command(label="Setup New Compnet Job folders ...", command=self.create_compnet_job_folder, state="disabled")
         self.compnet_sub_menu.add_command(label="Update Fixed File...", command=self.update_fixed_file)
         self.compnet_sub_menu.add_command(label="Weight STD File ...", command=self.weight_STD_file)
+        self.compnet_sub_menu.add_separator()
         self.compnet_sub_menu.add_command(label="Compare CRD Files...", command=self.compare_crd_files)
         self.compnet_sub_menu.add_command(label="Strip Non-control Shots", command=self.strip_non_control_shots)
         self.compnet_sub_menu.add_command(label="Combine/Re-order GSI Files", command=self.combine_gsi_files)
@@ -1723,7 +1723,7 @@ class CompnetUpdateFixedFileWindow:
         except Exception as ex:
             print(ex, type(ex))
             tk.messagebox.showerror("Error", "Have you selected both files?\n\nIf problem persists, please see "
-                                             "Richard.  Check coordinates are MGA 56 ")
+                                             "Richard.  Check coordinates are MGA56\n\n" + str(ex))
 
         else:
 
@@ -1746,9 +1746,9 @@ class CompnetUpdateFixedFileWindow:
             self.dialog_window.destroy()
 
     def get_fixed_file_path(self):
-        print(survey_config.fixed_file_dir)
-        self.fixed_file_path = tk.filedialog.askopenfilename(parent=self.master, initialdir=survey_config.fixed_file_dir,
-                                                             title="Select file", filetypes=[("FIX Files", ".FIX")])
+
+        self.fixed_file_path = tk.filedialog.askopenfilename(parent=self.master, initialdir=survey_config.compnet_working_dir,
+                                                             title="Please select a compnet fixed file", filetypes=[("FIX Files", ".FIX")])
         if self.fixed_file_path != "":
             self.fixed_btn.config(text=os.path.basename(self.fixed_file_path))
             gui_app.menu_bar.compnet_working_dir = self.fixed_file_path
@@ -1756,7 +1756,8 @@ class CompnetUpdateFixedFileWindow:
 
     def get_coordinate_file_path(self):
         self.coordinate_file_path = tk.filedialog.askopenfilename(parent=self.master, initialdir=gui_app.menu_bar.monitoring_job_dir,
-                                                                  title="Select file", filetypes=[("Coordinate Files", ".asc .CRD .STD")])
+                                                                  title="Please select a coordinate file", filetypes=[("Coordinate Files",
+                                                                                                                ".asc .CRD .STD")])
         if self.coordinate_file_path != "":
             self.coord_btn.config(text=os.path.basename(self.coordinate_file_path))
         self.dialog_window.lift()  # bring window to the front again
@@ -1806,10 +1807,8 @@ class CompnetWeightSTDFileWindow:
                                                               220))
 
     def get_STD_file_path(self):
-        current_compnet_dir = gui_app.menu_bar.compnet_working_dir
 
-        self.std_file_path = tk.filedialog.askopenfilename(parent=self.master,
-                                                           initialdir=current_compnet_dir,
+        self.std_file_path = tk.filedialog.askopenfilename(parent=self.master, initialdir=survey_config.compnet_working_dir,
                                                            title="Select file", filetypes=[("STD Files", ".STD")])
         if self.std_file_path != "":
             self.choose_btn.config(text=os.path.basename(self.std_file_path))
