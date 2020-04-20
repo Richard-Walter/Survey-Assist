@@ -63,6 +63,7 @@ class SurveyConfiguration:
         self.last_used_file_dir = self.config_parser.get(SurveyConfiguration.section_file_directories, 'last_used')
         self.fixed_file_dir = self.config_parser.get(SurveyConfiguration.section_file_directories, 'fixed_file_dir')
         self.compnet_working_dir = self.config_parser.get(SurveyConfiguration.section_file_directories, 'compnet_working_dir')
+        self.compnet_raw_dir = self.config_parser.get(SurveyConfiguration.section_file_directories, 'compnet_raw_dir')
         self.root_job_directory = self.config_parser.get(SurveyConfiguration.section_file_directories, 'root_job_directory')
         self.diary_directory = self.config_parser.get(SurveyConfiguration.section_file_directories, 'diary_directory')
         self.diary_backup = self.config_parser.get(SurveyConfiguration.section_file_directories, 'diary_backup')

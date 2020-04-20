@@ -8,6 +8,7 @@ NOTE: For 3.4 compatibility
     i) Replaced f-strings with.format method.
     ii) had to use an ordered dictionary"""
 
+# TODO combining GSIs - use the first file filename and then append '_combined'
 # TODO COmpnet setup compnet initial project - update default file location for various compnet functions once the above todo is implemented
 # TODO - COMPNET STRIP 2D SHOTS
 # TODO COMPNET WORKFLOW BAR
@@ -2094,7 +2095,7 @@ class CombineGSIFilesWindow:
         self.sorted_file_btn = tk.Button(self.dialog_window, text='CHANGE SORTING CONFIG FILE', state="disabled", command=self.open_config_file)
         current_config_label_txt = os.path.basename(survey_config.sorted_station_config)
         self.current_config_label = tk.Label(self.dialog_window, text=current_config_label_txt, state="disabled")
-        self.files_btn = tk.Button(self.dialog_window, text="2)  CHOOSE GSI'S TO COMBINE       ",
+        self.files_btn = tk.Button(self.dialog_window, text="2)  CHOOSE GSI'S AND COMBINE       ",
                                    command=self.select_and_combine_gsi_files)
 
         self.sorting_lbl.grid(row=0, column=1, sticky='w', columnspan=3, padx=60, pady=(20, 2))
