@@ -2008,7 +2008,7 @@ class CompnetCompareCRDFWindow:
         last_used_directory = survey_config.last_used_file_dir
 
         if file_path_number is 1:
-            self.crd_file_path_1 = tk.filedialog.askopenfilename(parent=self.master, initialdir=last_used_directory,
+            self.crd_file_path_1 = tk.filedialog.askopenfilename(parent=self.master, initialdir=last_used_directory, title="Select CRD file",
                                                                  filetypes=[("CRD Files", ".CRD")])
 
             if self.crd_file_path_1 != "":
@@ -2016,7 +2016,7 @@ class CompnetCompareCRDFWindow:
             self.dialog_window.lift()  # bring window to the front again
 
         elif file_path_number is 2:
-            self.crd_file_path_2 = tk.filedialog.askopenfilename(parent=self.master, initialdir=last_used_directory,
+            self.crd_file_path_2 = tk.filedialog.askopenfilename(parent=self.master, initialdir=last_used_directory, title="Select CRD file",
                                                                  filetypes=[("CRD Files", ".CRD")])
 
             if self.crd_file_path_2 != "":
@@ -2123,11 +2123,13 @@ class CombineGSIFilesWindow:
 
     def open_config_file(self):
 
-        self.sorted_station_list_filepath = tk.filedialog.askopenfilename(parent=self.master, filetypes=[("TXT Files",
-                                                                                                          ".txt")])
+        self.sorted_station_list_filepath = tk.filedialog.askopenfilename(parent=self.master,
+                                                                          title="Please select the sorted station configuration file",
+                                                                          filetypes=[("TXT Files", ".txt")])
         if self.sorted_station_list_filepath != "":
             survey_config.update(SurveyConfiguration.section_config_files, 'sorted_station_config',
                                  self.sorted_station_list_filepath)
+            survey_config.sorted_station_config = self.sorted_station_list_filepath
             self.current_config_label.config(text=os.path.basename(self.sorted_station_list_filepath))
 
         self.dialog_window.lift()  # bring window to the front again
@@ -2136,22 +2138,26 @@ class CombineGSIFilesWindow:
 
         # determine sorting method
         radio_button_selection = self.radio_option.get()
-
         current_date = datetime.date.today().strftime('%d%m%y')
+        combined_gsi_filename_suffix = '_' + current_date + "_COMBINED.gsi"
 
-        combined_gsi_filename = "COMBINED_" + current_date + ".gsi"
+        # prompt if user choose to sort by config and the sorted station configuration file if it doesn't exist
+        if radio_button_selection == "3":
 
-        print(combined_gsi_filename)
-
-        file_path = ""
+            if not os.path.exists(survey_config.sorted_station_config):
+                tk.messagebox.showerror("Combining GSI Files", "Can't find the station configuration file.\n\n"
+                                                               "Please select one and then select GSI files to combine")
+                self.open_config_file()
 
         try:
             gsi_filenames = list(
-                tk.filedialog.askopenfilenames(parent=self.master, initialdir=survey_config.todays_dated_directory, filetypes=[("GSI Files",
-                                                                                                                                ".gsi")]))
+                tk.filedialog.askopenfilenames(parent=self.master, initialdir=survey_config.todays_dated_directory, title="Please select GSI files "
+                                                                                                                          "to combine",
+                                               filetypes=[("GSI Files", ".gsi")]))
             if gsi_filenames:
-                self.combined_gsi_directory = os.path.dirname(gsi_filenames[0])
-                self.combined_gsi_file_path = os.path.join(self.combined_gsi_directory, combined_gsi_filename)
+
+                first_gsi_basename = gsi_filenames[0][:-4]  # remove the .GSI
+                self.combined_gsi_file_path = first_gsi_basename + combined_gsi_filename_suffix
 
                 for filename in gsi_filenames:
                     gsi_file = GSIFileContents(filename)
@@ -2180,18 +2186,19 @@ class CombineGSIFilesWindow:
         else:
 
             if gsi_filenames:
-                tk.messagebox.showinfo("Success",
-                                       "The gsi files have been combined:\n\n" + self.combined_gsi_file_path)
+                tk.messagebox.showinfo("Success", "The gsi files have been combined:\n\n" + self.combined_gsi_file_path)
                 # display results to the user
                 MenuBar.filename_path = self.combined_gsi_file_path
                 GUIApplication.refresh()
                 gui_app.menu_bar.enable_menus()
 
-                # close window
-                self.dialog_window.destroy()
+
 
             else:
                 pass
+        finally:
+            # close window
+            self.dialog_window.destroy()
 
     def sort_alphabetically(self):
 
@@ -2202,7 +2209,7 @@ class CombineGSIFilesWindow:
         unsorted_combined_gsi = GSI(logger)
         unsorted_combined_gsi.format_gsi(self.combined_gsi_file_path)
 
-        # lets check and provide a warning to the user i
+        # lets check and provide a warning to the user if duplicate stations are detected
         stations_names_dict = unsorted_combined_gsi.get_list_of_control_points(unsorted_combined_gsi.formatted_lines)
         station_set = unsorted_combined_gsi.get_set_of_control_points()
         if len(stations_names_dict) != len(station_set):
@@ -2228,20 +2235,6 @@ class CombineGSIFilesWindow:
                     text_line += '\n'
 
                 sorted_filecontents += text_line
-
-        # stations_line_number_list = unsorted_combined_gsi.get_set_of_control_points()
-        # sorted_stations_line_numbers = sorted(stations_line_number_list)
-
-        # # old way but does not allow for duplicate stations which in theory shouldn't exist
-        # for index, station_line_number in enumerate(sorted_stations_line_numbers):
-        #
-        #     line_number = int(station_line_number)
-        #
-        #     if index < (len(sorted_stations_line_numbers)-1):
-        #
-        #         for number in range(sorted_stations_line_numbers[index+1]-line_number):
-        #
-        #             sorted_filecontents += unsorted_combined_gsi_txt[line_number+int(number)]
 
         return sorted_filecontents
 
@@ -2275,8 +2268,6 @@ class CombineGSIFilesWindow:
         with open(survey_config.sorted_station_config, 'r') as f_config_station_list:
             for line in f_config_station_list:
                 config_station_list.append(line.rstrip())
-            if len(config_station_list) != len(set(config_station_list)):
-                tk.messagebox.showwarning("WARNING", 'Warning - Duplicate station names detected in configuration file!')
 
         # check that station is in the unordered combined gsi
         for config_station in config_station_list:
