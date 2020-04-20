@@ -8,8 +8,9 @@ NOTE: For 3.4 compatibility
     i) Replaced f-strings with.format method.
     ii) had to use an ordered dictionary"""
 
-# TODO COmpnet setup compnet initial project
-# TODO update default file location for various compnet functions once the above todo is implemented
+# TODO COmpnet setup compnet initial project - update default file location for various compnet functions once the above todo is implemented
+# TODO - COMPNET STRIP 2D SHOTS
+# TODO COMPNET WORKFLOW BAR
 # TODO PC changes single and batch
 
 import tkinter.messagebox
