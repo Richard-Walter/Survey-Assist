@@ -110,7 +110,7 @@ class MenuBar(tk.Frame):
 
         # Compnet menu
         self.compnet_sub_menu = tk.Menu(self.menu_bar, tearoff=0)
-        self.compnet_sub_menu.add_command(label="Setup New Compnet Job folders ...", command=self.create_compnet_job_folder, state="disabled")
+        self.compnet_sub_menu.add_command(label="Setup New Compnet Job ...", command=self.create_compnet_job_folder, state="disabled")
         self.compnet_sub_menu.add_command(label="Update Fixed File...", command=self.update_fixed_file)
         self.compnet_sub_menu.add_command(label="Weight STD File ...", command=self.weight_STD_file)
         self.compnet_sub_menu.add_separator()
