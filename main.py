@@ -8,11 +8,9 @@ NOTE: For 3.4 compatibility
     i) Replaced f-strings with.format method.
     ii) had to use an ordered dictionary"""
 
-# TODO - leave jobbar permanantly: add Compnet funbctions and re-sdisplay obs
-# TODO check survey - if station is 2D, ignore - THat way don't need 2D, 3D labels
+# TODO - Job bar - add export CSV; add Compnet funbctions and re-sdisplay obs
 # TODO COmpnet setup compnet initial project - update default file location for various compnet functions once the above todo is implemented
 # TODO COMPNET STRIP 2D SHOTS
-# TODO COMPNET WORKFLOW BAR
 # TODO PC changes single and batch
 
 import tkinter.messagebox
@@ -155,7 +153,7 @@ class MenuBar(tk.Frame):
 
         GUIApplication.refresh()
         self.enable_menus()
-        gui_app.workflow_bar.hide_workflow_bar()
+        # gui_app.workflow_bar.hide_workflow_bar()
 
     def new_dated_directory(self, choose_date=True, folder_selected=None):
 

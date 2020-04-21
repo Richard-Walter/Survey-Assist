@@ -567,6 +567,7 @@ class GSI:
         change_points = self.get_change_points()
         points = change_points + control_points
 
+        # First, lets determine is station set up is a 2D surey or 3D
         print('CONTROL POINTS: ' + str(control_points))
         print('CHANGE POINTS: ' + str(change_points))
         print('POINTS: ' + str(points))
@@ -582,7 +583,7 @@ class GSI:
 
             cur = conn.cursor()
 
-            # Check if points are outisde of tolerance e.g. 10mm
+            # Check if points are outside of tolerance e.g. 10mm
             errors = []
 
             for point in points:
@@ -642,7 +643,7 @@ class GSI:
                     height_diff = float(max(elevation)) - float(min(elevation))
 
                     if height_diff > float(self.survey_config.height_tolerance):
-                        error_text = point_id + ' is out of tolerance in height: ' + "{:.3f}".format(round(height_diff, 3)) + 'm \n'
+                        error_text = point_id + ' is out of tolerance in Height: ' + "{:.3f}".format(round(height_diff, 3)) + 'm \n'
                         errors.append(error_text)
                         error_points.append(point)
                         print(error_text)
