@@ -8,6 +8,8 @@ NOTE: For 3.4 compatibility
     i) Replaced f-strings with.format method.
     ii) had to use an ordered dictionary"""
 
+# TODO - leave jobbar permanantly: add Compnet funbctions and re-sdisplay obs
+# TODO check survey - if station is 2D, ignore - THat way don't need 2D, 3D labels
 # TODO COmpnet setup compnet initial project - update default file location for various compnet functions once the above todo is implemented
 # TODO COMPNET STRIP 2D SHOTS
 # TODO COMPNET WORKFLOW BAR
@@ -92,11 +94,11 @@ class MenuBar(tk.Frame):
 
         # Check menu
         self.check_sub_menu = tk.Menu(self.menu_bar, tearoff=0)
-        self.check_sub_menu.add_command(label="Check Tolerances (3D)", command=self.check_3d_survey)
-        self.check_sub_menu.add_command(label="Check Control Naming (3D) ", command=self.check_control_naming)
-        self.check_sub_menu.add_command(label="Check Prism Constants (2D/3D) ", command=self.check_prism_constants)
-        self.check_sub_menu.add_command(label="Check FL-FR (2D/3D) ", command=self.check_FLFR)
-        self.check_sub_menu.add_command(label="Check All (3D)", command=self.check_3d_all)
+        self.check_sub_menu.add_command(label="Check Tolerances (3D Only)", command=self.check_3d_survey)
+        self.check_sub_menu.add_command(label="Check Control Naming ", command=self.check_control_naming)
+        self.check_sub_menu.add_command(label="Check Prism Constants", command=self.check_prism_constants)
+        self.check_sub_menu.add_command(label="Check FL-FR", command=self.check_FLFR)
+        self.check_sub_menu.add_command(label="Check All", command=self.check_3d_all)
         self.check_sub_menu.add_separator()
         self.check_sub_menu.add_command(label="Compare Prism Constants to a similar survey...", command=self.compare_survey)
         self.check_sub_menu.add_command(label="Query GSI...", command=self.display_query_input_box)
@@ -2004,10 +2006,10 @@ class CompnetCompareCRDFWindow:
 
     def get_crd_file_path(self, file_path_number):
 
-        last_used_directory = survey_config.last_used_file_dir
+        parent_dated_directory = Path(survey_config.todays_dated_directory).parent
 
         if file_path_number is 1:
-            self.crd_file_path_1 = tk.filedialog.askopenfilename(parent=self.master, initialdir=last_used_directory, title="Select CRD file",
+            self.crd_file_path_1 = tk.filedialog.askopenfilename(parent=self.master, initialdir=survey_config.todays_dated_directory, title="Select CRD file",
                                                                  filetypes=[("CRD Files", ".CRD")])
 
             if self.crd_file_path_1 != "":
@@ -2015,7 +2017,7 @@ class CompnetCompareCRDFWindow:
             self.dialog_window.lift()  # bring window to the front again
 
         elif file_path_number is 2:
-            self.crd_file_path_2 = tk.filedialog.askopenfilename(parent=self.master, initialdir=last_used_directory, title="Select CRD file",
+            self.crd_file_path_2 = tk.filedialog.askopenfilename(parent=self.master, initialdir=parent_dated_directory, title="Select CRD file",
                                                                  filetypes=[("CRD Files", ".CRD")])
 
             if self.crd_file_path_2 != "":
