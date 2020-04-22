@@ -22,6 +22,7 @@ from decimal import *
 from compnet import CRDCoordinateFile, ASCCoordinateFile, STDCoordinateFile, CoordinateFile, FixedFile
 from utilities import *
 from survey_files import *
+from shutil import copyfile
 
 todays_date = Today.todays_date
 
@@ -110,7 +111,7 @@ class MenuBar(tk.Frame):
 
         # Compnet menu
         self.compnet_sub_menu = tk.Menu(self.menu_bar, tearoff=0)
-        self.compnet_sub_menu.add_command(label="Setup New Compnet Job ...", command=self.create_compnet_job_folder, state="disabled")
+        self.compnet_sub_menu.add_command(label="Setup New Compnet Job ...", command=self.create_compnet_job_folder)
         self.compnet_sub_menu.add_command(label="Update Fixed File...", command=self.update_fixed_file)
         self.compnet_sub_menu.add_command(label="Weight STD File ...", command=self.weight_STD_file)
         self.compnet_sub_menu.add_separator()
@@ -767,28 +768,55 @@ class MenuBar(tk.Frame):
 
     def create_compnet_job_folder(self):
 
-        gsi_filepath = tk.filedialog.askopenfilename(parent=self.master, initialdir=survey_config.todays_dated_directory,
-                                                     title="Choose the GSI file you want Compnet to process...", filetypes=[("GSI Files",
-                                                                                                                             ".GSI")])
+        gsi_filepath = MenuBar.filename_path
+        compnet_raw_dir = survey_config.compnet_raw_dir
+        compnet_data_dir = survey_config.compnet_data_dir
 
-        gsi_filepath_basename = os.path.basename(gsi_filepath)
-        compnet_root_job_dir = tk.filedialog.askdirectory(parent=self.master, initialdir=survey_config.compnet_working_dir,
-                                                          title="Please select the Job Type Directory...")
-        compnet_job_dir = os.path.join(compnet_root_job_dir, Today.todays_date)
+        if not gsi_filepath:
+            gsi_filepath = tk.filedialog.askopenfilename(parent=self.master, initialdir=survey_config.todays_dated_directory,
+                                                         title="Choose the GSI file you want Compnet to process...", filetypes=[("GSI Files",
+                                                                                                                                 ".GSI")])
 
-        # Create the Compnet directories
-        if os.path.exists(compnet_job_dir) == False:
-            os.makedirs(compnet_job_dir)
-            # os.makedirs(os.path.join(os.path.join(self.selected_directory, active_date), 'OTHER'))
+        # Copy GSI over to raw directory
+        dst = os.path.join(compnet_raw_dir, os.path.basename(gsi_filepath))
 
-        compnet_filepath = os.path.join(compnet_job_dir, gsi_filepath_basename, '.GSI')
+        try:
+            copyfile(gsi_filepath, dst)
+        except Exception as ex:
+            print(ex)
+            tkinter.messagebox.showinfo("Creating Compnet Jobs Files", compnet_raw_dir + " directory does not exist")
 
-        # write out file to the Compnet raw data directory
-        with open(compnet_filepath, "w") as gsi_file:
-            for line in gsi_file:
-                gsi_file.write(line)
+        # Create the Job directory path and then create compnet job directory
+        current_path = compnet_data_dir
+        base_path = os.path.dirname(os.path.normpath(gsi_filepath))
+        dir_list = base_path.split(os.sep)
+        current_year_found = False
 
-        tkinter.messagebox.showinfo("COMPNET", "A new Compnet Job directory has been created")
+        # ['C:', 'Users', 'Richard', 'PycharmProjects', 'Survey Assist', 'Survey Data', '2020', 'MONITORING', 'A9 ARTC']
+        try:
+            for index, dir_name in enumerate(dir_list):
+
+                if current_year_found:
+                    current_path = os.path.join(current_path, dir_name)
+                    if dir_name.isdigit() and len(dir_name) == 6:      # stop when the dated directory is found e.g. 200413
+                        break
+                elif dir_name == survey_config.current_year:
+                    current_year_found = True
+                    current_path = os.path.join(current_path, dir_name)
+                else:
+                    continue
+
+            os.makedirs(current_path)
+            # TODO create a popup for user to confirm
+
+        except FileExistsError:
+            print("Directory ", current_path, " already exists")
+            tkinter.messagebox.showinfo("Creating Compnet Jobs Files", "Directory " + current_path + " already exists")
+
+        except Exception as ex:
+            print(ex)
+            tkinter.messagebox.showinfo("Creating Compnet Jobs Files", current_path + " directory does not exist")
+
 
     def update_fixed_file(self):
 
