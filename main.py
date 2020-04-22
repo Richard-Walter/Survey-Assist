@@ -588,8 +588,15 @@ class MenuBar(tk.Frame):
                 continue
 
             # if not at the end of the dictionary ( could use try except IndexError )
-            if index < len(sorted_obs_from_station_list):
+            try:
+
+            # if index < len(sorted_obs_from_station_list):
                 obs_line_2_dict = sorted_obs_from_station_list[index + 1]
+
+            except IndexError:      # end of dictionary reached
+
+                pass
+            else:
 
                 # points match - lets analyse
                 if obs_line_1_dict['Point_ID'] == obs_line_2_dict['Point_ID']:
@@ -645,10 +652,10 @@ class MenuBar(tk.Frame):
                 analysed_lines.append(obs_line_2_dict)
                 line_already_compared = index + 1
 
-            else:
-                # end of the dictionary reached - do not analyse but add as it hasnt been compared
-                analysed_lines.append(obs_line_1_dict)
-                pass
+            # else:
+            #     # end of the dictionary reached - do not analyse but add as it hasnt been compared
+            #     analysed_lines.append(obs_line_1_dict)
+            #     pass
 
         return analysed_lines
 
