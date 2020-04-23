@@ -9,7 +9,6 @@ NOTE: For 3.4 compatibility
     ii) had to use an ordered dictionary"""
 
 # TODO - Job bar - add export CSV; add Compnet funbctions and re-sdisplay obs
-# TODO COmpnet setup compnet initial project - update default file location for various compnet functions once the above todo is implemented
 # TODO COMPNET STRIP 2D SHOTS
 # TODO PC changes single and batch
 
@@ -39,6 +38,8 @@ class MenuBar(tk.Frame):
 
         # for importing rali survey
         self.ts_used = ""
+        self.compnet_working_dir = ""
+
 
         # check is user settings directory and/or file exists on the users computer
         if not os.path.isdir(UserConfiguration.user_settings_directory):
@@ -809,16 +810,17 @@ class MenuBar(tk.Frame):
 
             os.makedirs(current_path)
 
-
         except FileExistsError:
             print("Directory ", current_path, " already exists")
             tkinter.messagebox.showinfo("Creating Compnet Jobs Files", "Directory " + current_path + " already exists")
-
+            return
         except Exception as ex:
             print(ex)
             tkinter.messagebox.showinfo("Creating Compnet Jobs Files", current_path + " directory does not exist")
+            return
+        else:
 
-        finally:
+            self.compnet_working_dir = current_path
             # inform user of creating directories
             tkinter.messagebox.showinfo("Creating Compnet Jobs Files", 'The GSI file has been copied over to the C:\LS\RAW DATA directory. The '
                                                                        'following compnet job directory was also created:\n\n' + current_path)
@@ -1788,7 +1790,7 @@ class CompnetUpdateFixedFileWindow:
 
     def get_fixed_file_path(self):
 
-        self.fixed_file_path = tk.filedialog.askopenfilename(parent=self.master, initialdir=survey_config.compnet_working_dir,
+        self.fixed_file_path = tk.filedialog.askopenfilename(parent=self.master, initialdir=gui_app.menu_bar.compnet_working_dir,
                                                              title="Please select a compnet fixed file", filetypes=[("FIX Files", ".FIX")])
         if self.fixed_file_path != "":
             self.fixed_btn.config(text=os.path.basename(self.fixed_file_path))
@@ -1796,7 +1798,7 @@ class CompnetUpdateFixedFileWindow:
         self.dialog_window.lift()  # bring window to the front again
 
     def get_coordinate_file_path(self):
-        self.coordinate_file_path = tk.filedialog.askopenfilename(parent=self.master, initialdir=gui_app.menu_bar.monitoring_job_dir,
+        self.coordinate_file_path = tk.filedialog.askopenfilename(parent=self.master, initialdir=survey_config.todays_dated_directory,
                                                                   title="Please select a coordinate file", filetypes=[("Coordinate Files",
                                                                                                                 ".asc .CRD .STD")])
         if self.coordinate_file_path != "":
@@ -1849,7 +1851,7 @@ class CompnetWeightSTDFileWindow:
 
     def get_STD_file_path(self):
 
-        self.std_file_path = tk.filedialog.askopenfilename(parent=self.master, initialdir=survey_config.compnet_working_dir,
+        self.std_file_path = tk.filedialog.askopenfilename(parent=self.master, initialdir=gui_app.menu_bar.compnet_working_dir,
                                                            title="Select file", filetypes=[("STD Files", ".STD")])
         if self.std_file_path != "":
             self.choose_btn.config(text=os.path.basename(self.std_file_path))
@@ -1944,17 +1946,6 @@ class CompnetCompareCRDFWindow:
         self.dialog_window.geometry(MainWindow.position_popup(master, 310,
                                                               300))
 
-    # def center_screen(self):
-    #
-    #     dialog_w = 400
-    #     dialog_h = 300
-    #
-    #     ws = self.master.winfo_width()
-    #     hs = self.master.winfo_height()
-    #     x = int((ws / 2) - (dialog_w / 2))
-    #     y = int((hs / 2) - (dialog_w / 2))
-    #
-    #     return '{}x{}+{}+{}'.format(dialog_w, dialog_h, x, y)
 
     def compare_crd_files_outliers(self):
 
@@ -2080,7 +2071,8 @@ class CompnetStripNonControlShots:
     def strip_non_control_shots(self):
 
         # let user choose GSI file
-        gsi_file_path = MenuBar.filename_path
+        gsi_file_path = tk.filedialog.askopenfilename(initialdir=survey_config.compnet_raw_dir,
+                                                           title="Select GSI file", filetypes=[("GSI Files", ".GSI")])
 
         try:
             # create a new stripped GSI
