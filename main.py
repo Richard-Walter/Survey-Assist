@@ -1738,12 +1738,12 @@ class PrismConstantUpdate:
             # old_height_difference = float(formatted_line['Height_Diff'])
 
             new_slant_distance = float(old_slant_distance + adjusted_distance)
-            uVX = (old_easting - stn_easting) / old_slant_distance
-            uVY = (old_northing - stn_northing) / old_slant_distance
-            uVZ = (old_height - stn_height) / old_slant_distance
-            new_east = stn_easting + (uVX * new_slant_distance)
-            new_north = stn_northing + (uVY * new_slant_distance)
-            new_height = stn_height + (uVZ * new_slant_distance)
+            cos_theta_east = (old_easting - stn_easting) / old_slant_distance
+            cost_thea_north = (old_northing - stn_northing) / old_slant_distance
+            sin_theta = (old_height - stn_height) / old_slant_distance
+            new_east = stn_easting + (cos_theta_east * new_slant_distance)
+            new_north = stn_northing + (cost_thea_north * new_slant_distance)
+            new_height = stn_height + (sin_theta * new_slant_distance)
             new_horizontal_distance = math.sqrt((new_east - stn_easting) ** 2 + (new_north - stn_northing) ** 2)
             new_height_difference = abs(stn_height - new_height)
 
