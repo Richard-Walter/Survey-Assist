@@ -1679,6 +1679,7 @@ class PrismConstantUpdate:
                 tk.messagebox.showinfo("Updating Prism Constant", "An unexpected has occurred during update.")
                 return
 
+            # TODO this function plus add highlighted lines to the user
             gsi.update_prism_constant(line_number, corrections)
 
         if "PCUpdated" not in MenuBar.filename_path:
@@ -1729,7 +1730,6 @@ class PrismConstantUpdate:
             stn_northing = float(stn_formatted_line['STN_Northing'])
             stn_height = float(stn_formatted_line['STN_Elevation'])
 
-            # TODO need to convert these to numerical values, not strings or with symbols
             old_easting = float(formatted_line['Easting'])
             old_northing = float(formatted_line['Northing'])
             old_height = float(formatted_line['Elevation'])
