@@ -382,6 +382,14 @@ class GSI:
 
         return single_station_formatted_lines
 
+    def get_station_from_line_number(self, line_number):
+
+        # need to traverse backwards until we hit a station list
+        while (line_number>0):
+            if self.is_control_point(self.formatted_lines[line_number-1]):
+                return line_number, self.formatted_lines[line_number-1]
+            line_number -= 1
+
     @staticmethod
     def is_control_point(formatted_line):
 

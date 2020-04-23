@@ -607,11 +607,9 @@ class MenuBar(tk.Frame):
                             obs_line_2_dict[key] = ' '
                         elif key in ('Horizontal_Angle', 'Vertical_Angle'):
                             field_type = FIELD_TYPE_ANGLE
-                            obs_line_1_field_value = get_numerical_value_from_string(obs_line_1_field_value_str,
-                                                                                     field_type, precision)
+                            obs_line_1_field_value = get_numerical_value_from_string(obs_line_1_field_value_str,field_type, precision)
 
-                            obs_line_2_field_value = get_numerical_value_from_string(obs_line_2_field_value_str,
-                                                                                     field_type, precision)
+                            obs_line_2_field_value = get_numerical_value_from_string(obs_line_2_field_value_str, field_type, precision)
                             angular_diff = decimalize_value(angular_difference(obs_line_1_field_value,
                                                                                obs_line_2_field_value, 180), precision)
                             angle_dms = angle_decimal2DMS(angular_diff)
@@ -707,42 +705,6 @@ class MenuBar(tk.Frame):
 
         pcu = PrismConstantUpdate(self.master, line_numbers_to_ammend)
         pcu.build_fix_single_window()
-
-    #
-
-    #
-    # def get_target_height_corrections(self, line_number, new_target_height):
-    #
-    #     # correction_list = []
-    #
-    #     # update target height and Z coordinate for this line
-    #     formatted_line = gsi.get_formatted_line(line_number)
-    #
-    #     new_target_height = float(new_target_height)
-    #     old_tgt_height = formatted_line['Target_Height']
-    #     try:
-    #         old_height = float(formatted_line['Elevation'])
-    #     except ValueError:
-    #         tk.messagebox.showinfo("TARGET HEIGHT SELECTION ERROR", "Please select a line that contains a target "
-    #                                                                 "height. "
-    #                                                                 "If problem persists, please see Richard")
-    #
-    #     if old_tgt_height == '':
-    #         old_tgt_height = 0.000
-    #     elif old_tgt_height == '0':
-    #         old_tgt_height = float(0.000)
-    #     else:
-    #         old_tgt_height = float(old_tgt_height)
-    #
-    #     new_height = old_height - (new_target_height - old_tgt_height)
-    #
-    #     old_height = str(decimalize_value(old_height, self.precision))
-    #     new_height = str(decimalize_value(new_height, self.precision))
-    #     old_tgt_height = str(decimalize_value(old_tgt_height, '3dp'))  # target height is always 3dp
-    #     new_target_height = str(decimalize_value(new_target_height, '3dp'))
-    #
-    #     return {'83': new_height, '87': new_target_height}
-    # pass
 
     def prism_constant_update_batch(self):
         # pc update based on csv
@@ -1712,9 +1674,9 @@ class PrismConstantUpdate:
         # update each line to amend with coordinates
         for line_number in self.line_numbers_to_amend:
             corrections = self.get_prism_constant_corrections(line_number, self.prism_constant_selected)
-
-            if not corrections:     # something went wrong
-
+            if corrections.get('error', ""):
+                # something unexpected went wrong
+                tk.messagebox.showinfo("Updating Prism Constant", "An unexpected has occurred during update.")
                 return
 
             gsi.update_prism_constant(line_number, corrections)
@@ -1742,8 +1704,8 @@ class PrismConstantUpdate:
     def get_prism_constant_corrections(self, line_number, prism_constant_selected):
 
         precision = survey_config.precision_value
-
         formatted_line = gsi.get_formatted_line(line_number)
+        corrections_dict = OrderedDict()
 
         try:
 
@@ -1762,14 +1724,15 @@ class PrismConstantUpdate:
 
             adjusted_distance = new_pc - old_pc
 
-            #TODO need to convert these to numerical values, not strings or with symbols
-            stn_easting = float(formatted_line['STN_Easting'])
-            stn_northing = float(formatted_line['STN_Northing'])
-            stn_height = float(formatted_line['STN_Elevation'])
+            stn_line_number, stn_formatted_line = gsi.get_station_from_line_number(line_number)
+            stn_easting = float(stn_formatted_line['STN_Easting'])
+            stn_northing = float(stn_formatted_line['STN_Northing'])
+            stn_height = float(stn_formatted_line['STN_Elevation'])
 
+            # TODO need to convert these to numerical values, not strings or with symbols
             old_easting = float(formatted_line['Easting'])
             old_northing = float(formatted_line['Northing'])
-            old_height = float(formatted_line[''])
+            old_height = float(formatted_line['Elevation'])
             old_slant_distance = float(formatted_line['Slope_Distance'])
             # old_horizontal_distance = float(formatted_line['Horizontal_Dist'])
             # old_height_difference = float(formatted_line['Height_Diff'])
@@ -1799,7 +1762,7 @@ class PrismConstantUpdate:
             new_height_difference = str(decimalize_value(new_height_difference, precision))
 
             # old_pc = str(int(divmod(old_pc * 1000, 1)[0])).zfill(3)
-            new_pc = str(int(divmod(new_pc * 1000, 1)[0])).zfill(3)
+            new_pc = str(int(divmod(new_pc * 1000, 1)[0])).zfill(3).lstrip("0")
 
             corrections_dict = {'Prism_Constant': new_pc, 'Easting': new_east, 'Northing': new_north, 'Elevation': new_height,
                                 'Slope_Distance': new_slant_distance, 'Horizontal_Dist': new_horizontal_distance,
@@ -1811,12 +1774,14 @@ class PrismConstantUpdate:
             #                     'Horizontal_Dist': [old_horizontal_distance, new_horizontal_distance],
             #                     'Height_Diff': [old_height_difference, new_height_difference]}
 
+        except ValueError as ex:    # this will happen if it is an orientation shot
+
+            print("unexpected error updating prism constants\n\n" + str(ex))
         except Exception as ex:
+            corrections_dict['error'] = 'yes'
+            print("unexpected error updating prism constants\n\n" + str(ex))
+        finally:
 
-            print("error pudating prism constants\n\n" + str(ex))
-            # tk.messagebox.showinfo("INPUT ERROR", "Error has occurred updating prism constants.\n\n" + str(ex))
-
-        else:
             return corrections_dict
 
 
