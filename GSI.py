@@ -33,6 +33,9 @@ class GSI:
                                              ('85', r''), ('86', r''), ('87', r'87\.{2}\d{2}\+\d+'),
                                              ('88', r'')])
 
+    # PRISM CONSTANTS
+    PC_DICT = {'Big Joe': 0.039, 'Big Joe 2': 0.034, 'GLASS': 0.024, 'Leica 360 Prism': 0.0231, 'Leica Circular Prism': 0.000, 'Monitoring': 0.0089}
+
     def __init__(self, logger):
 
         self.logger = logger
@@ -108,6 +111,9 @@ class GSI:
 
         # update the raw gsi lines
         self.unformatted_lines[line_number - 1] = unformatted_line
+
+    def update_prism_constant(self, line_number, corrections):
+        pass
 
     def get_unformatted_line(self, line_number):
 
@@ -652,6 +658,20 @@ class GSI:
                     print('Value error at point : ' + point)
 
         return errors, error_points
+
+    def get_point_name_line_numbers(self, point_name):
+
+        point_line_numbers = []
+
+        for line_number, formatted_line in enumerate(self.formatted_lines, start=1):
+
+            if self.is_control_point(formatted_line):
+                continue
+            elif point_name == formatted_line['Point_ID']:
+                point_line_numbers.append(line_number)
+
+        return point_line_numbers
+
 
     def export_csv(self, gsi_file_path):
 
