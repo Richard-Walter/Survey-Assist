@@ -87,8 +87,8 @@ class MenuBar(tk.Frame):
         self.edit_sub_menu.add_command(label="Change point name...", command=self.change_point_name)
         self.edit_sub_menu.add_command(label="Change target height...", command=self.change_target_height)
         self.edit_sub_menu.add_separator()
-        self.edit_sub_menu.add_command(label="Prism Constant - Fix single...", command=self.prism_constant_fix_single, state="disabled")
-        self.edit_sub_menu.add_command(label="Prism Constant - Fix batch ...", command=self.prism_constant_fix_batch, state="disabled")
+        self.edit_sub_menu.add_command(label="Prism Constant - Fix single...", command=self.prism_constant_fix_single)
+        self.edit_sub_menu.add_command(label="Prism Constant - Fix batch ...", command=self.prism_constant_fix_batch)
 
         self.menu_bar.add_cascade(label="Edit Survey", menu=self.edit_sub_menu, state="disabled")
 
@@ -692,9 +692,90 @@ class MenuBar(tk.Frame):
         PointNameWindow(self.master)
 
     def prism_constant_fix_single(self):
-        pass
+
+        # allow user to select lines to update - prompt if he wants to update all PCS for that point name
+
+
+
+
+
+
+        # set the new target height hte user has entered
+        new_target_height = self.get_entered_target_height()
+
+        if new_target_height is not 'ERROR':
+
+            line_numbers_to_ammend = []
+
+            # build list of line numbers to amend
+            # selected_items = gui_app.list_box_view.selection()
+            selected_items = gui_app.list_box.list_box_view.selection()
+
+            if selected_items:
+                for selected_item in selected_items:
+                    line_numbers_to_ammend.append(gui_app.list_box.list_box_view.item(selected_item)['values'][0])
+
+                # update each line to amend with new target height and coordinates
+                for line_number in line_numbers_to_ammend:
+                    corrections = self.get_target_height_corrections(line_number, new_target_height)
+                    gsi.update_target_height(line_number, corrections)
+
+                if "TgtUpdated" not in MenuBar.filename_path:
+
+                    amended_filepath = MenuBar.filename_path[:-4] + "_TgtUpdated.gsi"
+                else:
+                    amended_filepath = MenuBar.filename_path
+
+                # create a new ammended gsi file
+                with open(amended_filepath, "w") as gsi_file:
+                    for line in gsi.unformatted_lines:
+                        gsi_file.write(line)
+
+                self.dialog_window.destroy()
+
+                # rebuild database and GUI
+                MenuBar.filename_path = amended_filepath
+                GUIApplication.refresh()
+            else:
+                # notify user that no lines were selected
+                tk.messagebox.showinfo("INPUT ERROR", "Please select a line first that you want to change target "
+                                                      "height")
+
+    def get_target_height_corrections(self, line_number, new_target_height):
+
+        # correction_list = []
+
+        # update target height and Z coordinate for this line
+        formatted_line = gsi.get_formatted_line(line_number)
+
+        new_target_height = float(new_target_height)
+        old_tgt_height = formatted_line['Target_Height']
+        try:
+            old_height = float(formatted_line['Elevation'])
+        except ValueError:
+            tk.messagebox.showinfo("TARGET HEIGHT SELECTION ERROR", "Please select a line that contains a target "
+                                                                    "height. "
+                                                                    "If problem persists, please see Richard")
+
+        if old_tgt_height == '':
+            old_tgt_height = 0.000
+        elif old_tgt_height == '0':
+            old_tgt_height = float(0.000)
+        else:
+            old_tgt_height = float(old_tgt_height)
+
+        new_height = old_height - (new_target_height - old_tgt_height)
+
+        old_height = str(decimalize_value(old_height, self.precision))
+        new_height = str(decimalize_value(new_height, self.precision))
+        old_tgt_height = str(decimalize_value(old_tgt_height, '3dp'))  # target height is always 3dp
+        new_target_height = str(decimalize_value(new_target_height, '3dp'))
+
+        return {'83': new_height, '87': new_target_height}
+    pass
 
     def prism_constant_fix_batch(self):
+        # pc update based on csv
         pass
 
     def compare_survey(self):
