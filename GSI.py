@@ -34,7 +34,9 @@ class GSI:
                                              ('88', r'')])
 
     # PRISM CONSTANTS
-    PC_DICT = {'Big Joe': 0.039, 'Big Joe 2': 0.034, 'GLASS': 0.024, 'Leica 360 Prism': 0.0231, 'Leica Circular Prism': 0.000, 'Monitoring': 0.0089}
+    PC_DICT_REAL_VALUES = {'Big Joe': 0.0390, 'Big Joe 2': 0.0340, 'GLASS': 0.0240, 'Leica 360 Prism': 0.0231, 'Leica Circular Prism': 0.0000,
+                           'Monitoring': 0.0089}
+    PC_DICT_GSI_VALUES = {'Big Joe': 39, 'Big Joe 2': 34, 'GLASS': 24, 'Leica 360 Prism': 23, 'Leica Circular Prism': 0, 'Monitoring': 8}
 
     def __init__(self, logger):
 
@@ -671,7 +673,6 @@ class GSI:
                 point_line_numbers.append(line_number)
 
         return point_line_numbers
-
 
     def export_csv(self, gsi_file_path):
 

@@ -1676,7 +1676,7 @@ class PrismConstantUpdate:
         self.pc_column_entry = ttk.Combobox(self.dialog_window, width=25, textvariable=self.pc_column, state='readonly')
 
         self.pc_column_entry = ttk.Combobox(self.dialog_window, width=25, textvariable=self.pc_column, state='readonly')
-        self.pc_column_entry['values'] = list(gsi.PC_DICT.keys())
+        self.pc_column_entry['values'] = list(gsi.PC_DICT_REAL_VALUES.keys())
 
     def build_fix_single_window(self):
 
@@ -1692,6 +1692,13 @@ class PrismConstantUpdate:
 
     def ok(self):
         self.prism_constant_selected = self.pc_column_entry.get()
+
+        if not self.prism_constant_selected:
+            tk.messagebox.showinfo("Updating Prism Constant", "Please select a prism type if you want to update")
+            self.dialog_window.lift()
+
+            return
+
         self.dialog_window.destroy()
 
         self.point_name = gsi.get_formatted_line(self.line_numbers_to_amend[0])['Point_ID']
@@ -1705,6 +1712,11 @@ class PrismConstantUpdate:
         # update each line to amend with coordinates
         for line_number in self.line_numbers_to_amend:
             corrections = self.get_prism_constant_corrections(line_number, self.prism_constant_selected)
+
+            if not corrections:     # something went wrong
+
+                return
+
             gsi.update_prism_constant(line_number, corrections)
 
         if "PCUpdated" not in MenuBar.filename_path:
@@ -1729,8 +1741,83 @@ class PrismConstantUpdate:
 
     def get_prism_constant_corrections(self, line_number, prism_constant_selected):
 
-        corrections_dict = {}
-        return corrections_dict
+        precision = survey_config.precision_value
+
+        formatted_line = gsi.get_formatted_line(line_number)
+
+        try:
+
+            old_pc = int(formatted_line['Prism_Constant'])
+            new_pc = float(gsi.PC_DICT_REAL_VALUES[prism_constant_selected])
+
+            if old_pc == gsi.PC_DICT_GSI_VALUES[prism_constant_selected]:  # PC is the same - notify user
+                tk.messagebox.showinfo("Update Prism Constant",
+                                       "The new prism constant is the same as the old one.  Please select a different prism constant if you want to "
+                                       "update")
+                return
+            if old_pc == 0:
+                old_pc = float(0.000)
+            else:
+                old_pc = float(old_pc) / 1000
+
+            adjusted_distance = new_pc - old_pc
+
+            #TODO need to convert these to numerical values, not strings or with symbols
+            stn_easting = float(formatted_line['STN_Easting'])
+            stn_northing = float(formatted_line['STN_Northing'])
+            stn_height = float(formatted_line['STN_Elevation'])
+
+            old_easting = float(formatted_line['Easting'])
+            old_northing = float(formatted_line['Northing'])
+            old_height = float(formatted_line[''])
+            old_slant_distance = float(formatted_line['Slope_Distance'])
+            # old_horizontal_distance = float(formatted_line['Horizontal_Dist'])
+            # old_height_difference = float(formatted_line['Height_Diff'])
+
+            new_slant_distance = float(old_slant_distance + adjusted_distance)
+            uVX = (old_easting - stn_easting) / old_slant_distance
+            uVY = (old_northing - stn_northing) / old_slant_distance
+            uVZ = (old_height - stn_height) / old_slant_distance
+            new_east = stn_easting + (uVX * new_slant_distance)
+            new_north = stn_northing + (uVY * new_slant_distance)
+            new_height = stn_height + (uVZ * new_slant_distance)
+            new_horizontal_distance = math.sqrt((new_east - stn_easting) ** 2 + (new_north - stn_northing) ** 2)
+            new_height_difference = abs(stn_height - new_height)
+
+            # old_easting = str(decimalize_value(formatted_line['Easting'], precision))
+            # old_northing = str(decimalize_value(formatted_line['Northing'], precision))
+            # old_height = str(decimalize_value(formatted_line['Elevation'], precision))
+            # old_slant_distance = str(decimalize_value(formatted_line['Slope_Distance'], precision))
+            # old_horizontal_distance = str(decimalize_value(formatted_line['Horizontal_Dist'], precision))
+            # old_height_difference = str(decimalize_value(formatted_line['Height_Diff'], precision))
+
+            new_slant_distance = str(decimalize_value(new_slant_distance, precision))
+            new_east = str(decimalize_value(new_east, precision))
+            new_north = str(decimalize_value(new_north, precision))
+            new_height = str(decimalize_value(new_height, precision))
+            new_horizontal_distance = str(decimalize_value(new_horizontal_distance, precision))
+            new_height_difference = str(decimalize_value(new_height_difference, precision))
+
+            # old_pc = str(int(divmod(old_pc * 1000, 1)[0])).zfill(3)
+            new_pc = str(int(divmod(new_pc * 1000, 1)[0])).zfill(3)
+
+            corrections_dict = {'Prism_Constant': new_pc, 'Easting': new_east, 'Northing': new_north, 'Elevation': new_height,
+                                'Slope_Distance': new_slant_distance, 'Horizontal_Dist': new_horizontal_distance,
+                                 'Height_Diff': new_height_difference}
+
+            # corrections_dict = {'Prism_Constant': [old_pc, new_pc], 'Easting': [old_easting, new_east], 'Northing': [old_northing, new_north],
+            #                     'Elevation': [old_height, new_height],
+            #                     'Slope_Distance': [old_slant_distance, new_slant_distance],
+            #                     'Horizontal_Dist': [old_horizontal_distance, new_horizontal_distance],
+            #                     'Height_Diff': [old_height_difference, new_height_difference]}
+
+        except Exception as ex:
+
+            print("error pudating prism constants\n\n" + str(ex))
+            # tk.messagebox.showinfo("INPUT ERROR", "Error has occurred updating prism constants.\n\n" + str(ex))
+
+        else:
+            return corrections_dict
 
 
 class TargetHeightWindow:
@@ -1800,7 +1887,6 @@ class TargetHeightWindow:
                                                       "height")
 
     def get_corrections(self, line_number, new_target_height):
-
 
         # update target height and Z coordinate for this line
         formatted_line = gsi.get_formatted_line(line_number)
