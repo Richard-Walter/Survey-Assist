@@ -35,7 +35,7 @@ class SurveyConfiguration:
     }
 
     def __init__(self):
-        self.config_file_path = './settings.ini'
+        self.config_file_path = 'Config Files/settings.ini'
 
         self.config_parser = ConfigParser()
         self.precision_value = '3dp'  # default value
@@ -83,7 +83,7 @@ class UserConfiguration:
     section_file_directories = 'FILE DIRECTORIES'
     user_settings_directory = r"c:/SurveyAssist"
     user_settings_file_path = r"c:/SurveyAssist/user_settings.ini"
-    default_user_settings_path = r"default_user_settings.ini"
+    default_user_settings_path = r"Config Files/default_user_settings.ini"
 
     def __init__(self):
 
