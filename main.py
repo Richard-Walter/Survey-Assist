@@ -9,7 +9,6 @@ NOTE: For 3.4 compatibility
     ii) had to use an ordered dictionary"""
 
 # TODO import SD RTK, search in data folder for txt file
-# TODO COMPNET STRIP 2D SHOTS
 # TODO PC changes single and batch
 
 import tkinter.messagebox
@@ -72,6 +71,8 @@ class MenuBar(tk.Frame):
         self.file_sub_menu.add_command(label="Create Dated Directory...", command=lambda: self.new_dated_directory(False))
         self.file_sub_menu.add_command(label="Create Job Directory...", command=self.new_job_directoy)
         self.file_sub_menu.add_command(label="Import SD Data", command=self.import_sd_data)
+        self.file_sub_menu.add_command(label="Job Diary", command=self.job_diary)
+
         self.file_sub_menu.add_separator()
         self.file_sub_menu.add_command(label="Monitoring - Create", command=self.monitoring_create, state="disabled")
         self.file_sub_menu.add_command(label="Monitoring - Update Coordinates", command=self.monitoring_update_coords, state="disabled")
@@ -118,11 +119,9 @@ class MenuBar(tk.Frame):
         # Utilities menu
         self.utility_sub_menu = tk.Menu(self.menu_bar, tearoff=0)
         self.utility_sub_menu.add_command(label="Export CSV", command=self.export_csv)
+
         self.utility_sub_menu.add_command(label="Create temporary CSV from .ASC file", command=self.create_CSV_from_ASC)
         self.menu_bar.add_cascade(label="Utilities", menu=self.utility_sub_menu)
-
-        # Job Diary
-        self.menu_bar.add_command(label="Job diary", command=self.job_diary)
 
         # Config menu
         self.menu_bar.add_command(label="Configuration", command=self.configure_survey)
@@ -1297,7 +1296,7 @@ class WorkflowBar(tk.Frame):
         self.btn_update_fixed_file.pack(padx=5, pady=5, side='left')
         self.btn_weight_std_file.pack(padx=5, pady=5, side='left')
 
-        #pack re-display observations
+        # pack re-display observations
         self.btn_re_display_gsi.pack(padx=50, pady=5, side='right')
 
     def show_workflow_bar(self):
