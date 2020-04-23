@@ -655,6 +655,10 @@ class GSI:
 
     def export_csv(self, gsi_file_path):
 
+        if not gsi_file_path:
+            tkinter.messagebox.showerror("ERROR", "Please open up a GSI file first before trying to export")
+            return
+
         gsi_basename = os.path.basename(gsi_file_path)
         gsi_directory = os.path.dirname(gsi_file_path)  # this should return the editing directory
         ts_directory = os.path.dirname(gsi_directory)  # this should return the TS directory

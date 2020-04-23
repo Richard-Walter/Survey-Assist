@@ -8,7 +8,7 @@ NOTE: For 3.4 compatibility
     i) Replaced f-strings with.format method.
     ii) had to use an ordered dictionary"""
 
-# TODO - Job bar - add export CSV; add Compnet funbctions and re-sdisplay obs
+# TODO import SD RTK, search in data folder for txt file
 # TODO COMPNET STRIP 2D SHOTS
 # TODO PC changes single and batch
 
@@ -39,7 +39,6 @@ class MenuBar(tk.Frame):
         # for importing rali survey
         self.ts_used = ""
         self.compnet_working_dir = ""
-
 
         # check is user settings directory and/or file exists on the users computer
         if not os.path.isdir(UserConfiguration.user_settings_directory):
@@ -104,12 +103,6 @@ class MenuBar(tk.Frame):
         self.check_sub_menu.add_command(label="Query GSI...", command=self.display_query_input_box)
         self.menu_bar.add_cascade(label="Check Survey", menu=self.check_sub_menu, state="disabled")
 
-        # Export CSV
-        self.menu_bar.add_command(label="Export CSV", command=self.export_csv, state="disabled")
-
-        # Re-display GSI
-        self.menu_bar.add_command(label="Re-display GSI", command=self.re_display_gsi, state="disabled")
-
         # Compnet menu
         self.compnet_sub_menu = tk.Menu(self.menu_bar, tearoff=0)
         self.compnet_sub_menu.add_command(label="Setup New Compnet Job ...", command=self.create_compnet_job_folder)
@@ -124,6 +117,7 @@ class MenuBar(tk.Frame):
 
         # Utilities menu
         self.utility_sub_menu = tk.Menu(self.menu_bar, tearoff=0)
+        self.utility_sub_menu.add_command(label="Export CSV", command=self.export_csv)
         self.utility_sub_menu.add_command(label="Create temporary CSV from .ASC file", command=self.create_CSV_from_ASC)
         self.menu_bar.add_cascade(label="Utilities", menu=self.utility_sub_menu)
 
@@ -592,10 +586,10 @@ class MenuBar(tk.Frame):
             # if not at the end of the dictionary ( could use try except IndexError )
             try:
 
-            # if index < len(sorted_obs_from_station_list):
+                # if index < len(sorted_obs_from_station_list):
                 obs_line_2_dict = sorted_obs_from_station_list[index + 1]
 
-            except IndexError:      # end of dictionary reached
+            except IndexError:  # end of dictionary reached
 
                 pass
             else:
@@ -769,7 +763,7 @@ class MenuBar(tk.Frame):
 
     def create_compnet_job_folder(self):
 
-        gsi_filepath = MenuBar.filename_path
+        gsi_filepath = ""
         compnet_raw_dir = survey_config.compnet_raw_dir
         compnet_data_dir = survey_config.compnet_data_dir
 
@@ -777,6 +771,8 @@ class MenuBar(tk.Frame):
             gsi_filepath = tk.filedialog.askopenfilename(parent=self.master, initialdir=survey_config.todays_dated_directory,
                                                          title="Choose the GSI file you want Compnet to process...", filetypes=[("GSI Files",
                                                                                                                                  ".GSI")])
+        if not gsi_filepath:
+            return  # user hit cancel
 
         # Copy GSI over to raw directory
         dst = os.path.join(compnet_raw_dir, os.path.basename(gsi_filepath))
@@ -800,7 +796,7 @@ class MenuBar(tk.Frame):
 
                 if current_year_found:
                     current_path = os.path.join(current_path, dir_name)
-                    if dir_name.isdigit() and len(dir_name) == 6:      # stop when the dated directory is found e.g. 200413
+                    if dir_name.isdigit() and len(dir_name) == 6:  # stop when the dated directory is found e.g. 200413
                         break
                 elif dir_name == survey_config.current_year:
                     current_year_found = True
@@ -824,7 +820,6 @@ class MenuBar(tk.Frame):
             # inform user of creating directories
             tkinter.messagebox.showinfo("Creating Compnet Jobs Files", 'The GSI file has been copied over to the C:\LS\RAW DATA directory. The '
                                                                        'following compnet job directory was also created:\n\n' + current_path)
-
 
     def update_fixed_file(self):
 
@@ -1259,6 +1254,7 @@ class WorkflowBar(tk.Frame):
         self.frame.pack(side='top', anchor=tk.W, fill=tk.X)
         self.frame.configure(background='#FFDEAC')
 
+        # new job workflow
         self.workflow_lbl = tk.Label(self.frame, text='NEW JOB WORKFLOW:')
         self.workflow_lbl.configure(background='#FFDEAC')
         self.btn_diary = tk.Button(self.frame, text="Job Diary", command=MenuBar.job_diary)
@@ -1270,12 +1266,39 @@ class WorkflowBar(tk.Frame):
         self.btn_import_sd_data.configure(background='#FCF1E1')
         self.btn_open_gsi = tk.Button(self.frame, text="Open GSI", command=lambda: gui_app.menu_bar.choose_gsi_file())
         self.btn_open_gsi.configure(background='#FCF1E1')
+        self.btn_export_csv = tk.Button(self.frame, text="Export GSI as CSV", command=lambda: gui_app.menu_bar.export_csv())
+        self.btn_export_csv.configure(background='#FCF1E1')
 
+        # Compnet workflow
+        self.compnet_workflow_lbl = tk.Label(self.frame, text='COMPNET WORKFLOW:')
+        self.compnet_workflow_lbl.configure(background='#FFDEAC')
+        self.btn_compnet_new_job = tk.Button(self.frame, text="Setup New Compnet Job", command=lambda: gui_app.menu_bar.create_compnet_job_folder())
+        self.btn_compnet_new_job.configure(background='#FCF1E1')
+        self.btn_update_fixed_file = tk.Button(self.frame, text="Update Fixed File", command=lambda: gui_app.menu_bar.update_fixed_file())
+        self.btn_update_fixed_file.configure(background='#FCF1E1')
+        self.btn_weight_std_file = tk.Button(self.frame, text="Weight STD File", command=lambda: gui_app.menu_bar.weight_STD_file())
+        self.btn_weight_std_file.configure(background='#FCF1E1')
+
+        # Redisplay observations button
+        self.btn_re_display_gsi = tk.Button(self.frame, text="Re-display GSI", command=lambda: gui_app.menu_bar.re_display_gsi())
+        self.btn_re_display_gsi.configure(background='#FCF1E1')
+
+        # pack new job workflow
         self.workflow_lbl.pack(padx=2, pady=5, side='left')
         self.btn_diary.pack(padx=5, pady=5, side='left')
         self.btn_create_directory_today.pack(padx=5, pady=5, side='left')
         self.btn_import_sd_data.pack(padx=5, pady=5, side='left')
         self.btn_open_gsi.pack(padx=5, pady=5, side='left')
+        self.btn_export_csv.pack(padx=5, pady=5, side='left')
+
+        # pack compnet workflow
+        self.compnet_workflow_lbl.pack(padx=(120, 2), pady=5, side='left')
+        self.btn_compnet_new_job.pack(padx=5, pady=5, side='left')
+        self.btn_update_fixed_file.pack(padx=5, pady=5, side='left')
+        self.btn_weight_std_file.pack(padx=5, pady=5, side='left')
+
+        #pack re-display observations
+        self.btn_re_display_gsi.pack(padx=50, pady=5, side='right')
 
     def show_workflow_bar(self):
         self.frame.pack(side='top', anchor=tk.W, fill=tk.X)
@@ -1800,7 +1823,7 @@ class CompnetUpdateFixedFileWindow:
     def get_coordinate_file_path(self):
         self.coordinate_file_path = tk.filedialog.askopenfilename(parent=self.master, initialdir=survey_config.todays_dated_directory,
                                                                   title="Please select a coordinate file", filetypes=[("Coordinate Files",
-                                                                                                                ".asc .CRD .STD")])
+                                                                                                                       ".asc .CRD .STD")])
         if self.coordinate_file_path != "":
             self.coord_btn.config(text=os.path.basename(self.coordinate_file_path))
         self.dialog_window.lift()  # bring window to the front again
@@ -1946,7 +1969,6 @@ class CompnetCompareCRDFWindow:
         self.dialog_window.geometry(MainWindow.position_popup(master, 310,
                                                               300))
 
-
     def compare_crd_files_outliers(self):
 
         self.outliers_dict = {}
@@ -2039,7 +2061,8 @@ class CompnetCompareCRDFWindow:
         parent_dated_directory = Path(survey_config.todays_dated_directory).parent
 
         if file_path_number is 1:
-            self.crd_file_path_1 = tk.filedialog.askopenfilename(parent=self.master, initialdir=survey_config.todays_dated_directory, title="Select CRD file",
+            self.crd_file_path_1 = tk.filedialog.askopenfilename(parent=self.master, initialdir=survey_config.todays_dated_directory,
+                                                                 title="Select CRD file",
                                                                  filetypes=[("CRD Files", ".CRD")])
 
             if self.crd_file_path_1 != "":
@@ -2072,7 +2095,7 @@ class CompnetStripNonControlShots:
 
         # let user choose GSI file
         gsi_file_path = tk.filedialog.askopenfilename(initialdir=survey_config.compnet_raw_dir,
-                                                           title="Select GSI file", filetypes=[("GSI Files", ".GSI")])
+                                                      title="Select GSI file", filetypes=[("GSI Files", ".GSI")])
 
         try:
             # create a new stripped GSI
