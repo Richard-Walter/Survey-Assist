@@ -785,6 +785,7 @@ class MenuBar(tk.Frame):
         except Exception as ex:
             print(ex)
             tkinter.messagebox.showinfo("Creating Compnet Jobs Files", compnet_raw_dir + " directory does not exist")
+            return
 
         # Create the Job directory path and then create compnet job directory
         current_path = compnet_data_dir
@@ -807,7 +808,7 @@ class MenuBar(tk.Frame):
                     continue
 
             os.makedirs(current_path)
-            # TODO create a popup for user to confirm
+
 
         except FileExistsError:
             print("Directory ", current_path, " already exists")
@@ -816,6 +817,11 @@ class MenuBar(tk.Frame):
         except Exception as ex:
             print(ex)
             tkinter.messagebox.showinfo("Creating Compnet Jobs Files", current_path + " directory does not exist")
+
+        finally:
+            # inform user of creating directories
+            tkinter.messagebox.showinfo("Creating Compnet Jobs Files", 'The GSI file has been copied over to the C:\LS\RAW DATA directory. The '
+                                                                       'following compnet job directory was also created:\n\n' + current_path)
 
 
     def update_fixed_file(self):
