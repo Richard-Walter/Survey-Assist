@@ -38,7 +38,7 @@ class GSI:
                            'Monitoring': 0.0089}
     PC_DICT_GSI_VALUES = {'Big Joe': 39, 'Big Joe 2': 34, 'GLASS': 24, 'Leica 360 Prism': 23, 'Leica Circular Prism': 0, 'Monitoring': 8}
 
-    def __init__(self, logger):
+    def __init__(self, logger, survey_config):
 
         self.logger = logger
         self.filename = None
@@ -46,13 +46,11 @@ class GSI:
         self.column_ids = list(GSI.GSI_WORD_ID_DICT.keys())
         self.formatted_lines = []
         self.unformatted_lines = []
-        self.survey_config = SurveyConfiguration()
+        self.survey_config = survey_config
 
     def update_target_height(self, line_number, corrections):
 
         # corrections takes the form of a dictionary e.g. {'83': new_height, '87': new_target_height}
-
-        self.survey_config = SurveyConfiguration()
 
         unformatted_line = self.get_unformatted_line(line_number)
 
@@ -366,7 +364,7 @@ class GSI:
 
     def format_gsi(self, filename):
 
-        self.survey_config = SurveyConfiguration()
+        # self.survey_config = SurveyConfiguration()
 
         with open(filename, "r") as f:
 

@@ -714,7 +714,7 @@ class MenuBar(tk.Frame):
 
         old_survey_filepath = tk.filedialog.askopenfilename(parent=self.master, initialdir=self.monitoring_job_dir,
                                                             filetypes=[("GSI Files", ".GSI")])
-        old_survey_gsi = GSI(logger)
+        old_survey_gsi = GSI(logger, survey_config)
         old_survey_gsi.format_gsi(old_survey_filepath)
         old_survey_formatted_lines_except_setups = old_survey_gsi.get_all_lines_except_setup()
         old_point_PC_dict = OrderedDict()
@@ -1024,10 +1024,10 @@ class ConfigDialogWindow:
         # self.precision_entry.bind("<<ComboboxSelected>>")
         # self.precision_entry.grid(row=0, column=1, padx=5, pady=(15, 5), sticky='w')
 
-        tk.Label(self.dialog_window, text="Easting Tolerance: ").grid(row=1, column=0, padx=5, pady=(20,5), sticky='w')
+        tk.Label(self.dialog_window, text="Easting Tolerance: ").grid(row=1, column=0, padx=5, pady=(20, 5), sticky='w')
         self.entry_easting = tk.Entry(self.dialog_window)
         self.entry_easting.insert(tkinter.END, survey_config.easting_tolerance)
-        self.entry_easting.grid(row=1, column=1, padx=5, pady=(20,5), sticky='w', )
+        self.entry_easting.grid(row=1, column=1, padx=5, pady=(20, 5), sticky='w', )
 
         tk.Label(self.dialog_window, text="Northing Tolerance: ").grid(row=2, column=0, padx=5, pady=5, sticky='w')
         self.entry_northing = tk.Entry(self.dialog_window)
@@ -1070,7 +1070,7 @@ class ConfigDialogWindow:
         configuration_dictionary = {}
         file_directory_dictionary = {}
 
-        precision_dictionary['instrument_precision'] = self.precision_entry.get()
+        # precision_dictionary['instrument_precision'] = self.precision_entry.get()
         survey_tolerance_dictionary['eastings'] = self.entry_easting.get()
         survey_tolerance_dictionary['northings'] = self.entry_northing.get()
         survey_tolerance_dictionary['height'] = self.entry_height.get()
@@ -1624,7 +1624,7 @@ class PrismConstantUpdate:
 
     def __init__(self, master, line_numbers_to_amend=None):
 
-        self.survey_config = SurveyConfiguration()  # need to create this as opening a new gsi of 4dp wont update precision of the gsi.config
+        # self.survey_config = SurveyConfiguration()  # need to create this as opening a new gsi of 4dp wont update precision of the gsi.config
         self.master = master
         self.line_numbers_to_amend = line_numbers_to_amend
         self.point_name = ""
@@ -1639,7 +1639,7 @@ class PrismConstantUpdate:
         self.pc_column = tk.StringVar()
         self.pc_column_entry = ttk.Combobox(self.dialog_window, width=32, textvariable=self.pc_column, state='readonly')
 
-        self.pc_column_entry['values'] = list(gsi.PC_DICT_REAL_VALUES.keys())
+        self.pc_column_entry['values'] = sorted(list(gsi.PC_DICT_REAL_VALUES.keys()))
 
     def build_fix_single_window(self):
 
@@ -1752,12 +1752,12 @@ class PrismConstantUpdate:
                 lines_amended.append(line_number)
 
                 print("Line amended " + str(line_number) + ":   old PC = " + old_prism_constant + "  new PC = " + str(gsi.PC_DICT_GSI_VALUES[
-                    new_prism_constant]))
+                                                                                                                          new_prism_constant]))
 
         # display to user any points not found in batch file
-        points_dialog_msg =  ""
+        points_dialog_msg = ""
         for point in sorted(point_names_not_found_in_batch_file):
-            points_dialog_msg += point +"\n"
+            points_dialog_msg += point + "\n"
 
         tk.messagebox.showwarning("Updating Prism Constant", "Warning:  Couldn't find the following point names in the pc batch file:\n\n" +
                                   points_dialog_msg)
@@ -1793,7 +1793,7 @@ class PrismConstantUpdate:
 
     def get_prism_constant_corrections(self, line_number, prism_constant_selected):
 
-        precision = self.survey_config.precision_value
+        precision = survey_config.precision_value
         formatted_line = gsi.get_formatted_line(line_number)
         corrections_dict = OrderedDict()
 
@@ -2331,7 +2331,7 @@ class CompnetStripNonControlShots:
 
         try:
             # create a new stripped GSI
-            old_gsi = GSI(logger)
+            old_gsi = GSI(logger, survey_config)
             old_gsi.format_gsi(gsi_file_path)
             control_only_filename = old_gsi.create_control_only_gsi()
 
@@ -2493,7 +2493,7 @@ class CombineGSIFilesWindow:
 
         # create a temporary gsi
 
-        unsorted_combined_gsi = GSI(logger)
+        unsorted_combined_gsi = GSI(logger, survey_config)
         unsorted_combined_gsi.format_gsi(self.combined_gsi_file_path)
 
         # lets check and provide a warning to the user if duplicate stations are detected
@@ -2532,7 +2532,7 @@ class CombineGSIFilesWindow:
         stations_not_found_from_config_list = []
 
         # create a temporary gsi
-        unsorted_combined_gsi = GSI(logger)
+        unsorted_combined_gsi = GSI(logger, survey_config)
         unsorted_combined_gsi.format_gsi(self.combined_gsi_file_path)
 
         # lets check and provide a error to the user if station names in combine GSI contain a duplicate
@@ -3111,7 +3111,7 @@ def main():
     logger = logging.getLogger('Survey Assist')
     configure_logger()
 
-    gsi = GSI(logger)
+    gsi = GSI(logger, survey_config)
     gui_app = GUIApplication(root)
     database = GSIDatabase()
 
