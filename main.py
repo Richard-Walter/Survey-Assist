@@ -2427,7 +2427,8 @@ class CombineGSIFilesWindow:
         # determine sorting method
         radio_button_selection = self.radio_option.get()
         current_date = datetime.date.today().strftime('%d%m%y')
-        combined_gsi_filename_suffix = '_' + current_date + "_COMBINED.gsi"
+        # combined_gsi_filename_suffix = '_' + current_date + "_COMBINED.gsi"
+        combined_gsi_filename_suffix = "_COMBINED.gsi"
 
         # prompt if user choose to sort by config and the sorted station configuration file if it doesn't exist
         if radio_button_selection == "3":
