@@ -607,7 +607,7 @@ class MenuBar(tk.Frame):
                             obs_line_2_dict[key] = ' '
                         elif key in ('Horizontal_Angle', 'Vertical_Angle'):
                             field_type = FIELD_TYPE_ANGLE
-                            obs_line_1_field_value = get_numerical_value_from_string(obs_line_1_field_value_str,field_type, precision)
+                            obs_line_1_field_value = get_numerical_value_from_string(obs_line_1_field_value_str, field_type, precision)
 
                             obs_line_2_field_value = get_numerical_value_from_string(obs_line_2_field_value_str, field_type, precision)
                             angular_diff = decimalize_value(angular_difference(obs_line_1_field_value,
@@ -707,8 +707,9 @@ class MenuBar(tk.Frame):
         pcu.build_fix_single_window()
 
     def prism_constant_update_batch(self):
-        # pc update based on csv
-        pass
+
+        pcu = PrismConstantUpdate(self.master)
+        pcu.build_batch_file_window()
 
     def compare_survey(self):
 
@@ -1294,7 +1295,7 @@ class WorkflowBar(tk.Frame):
         self.btn_weight_std_file.pack(padx=5, pady=5, side='left')
 
         # pack re-display observations
-        self.btn_re_display_gsi.pack(padx=50, pady=5, side='right')
+        self.btn_re_display_gsi.pack(padx=20, pady=5, side='right')
 
     def show_workflow_bar(self):
         self.frame.pack(side='top', anchor=tk.W, fill=tk.X)
@@ -1624,30 +1625,53 @@ class PointNameWindow:
 
 class PrismConstantUpdate:
 
-    def __init__(self, master, line_numbers_to_amend):
+    def __init__(self, master, line_numbers_to_amend=None):
 
         self.master = master
         self.line_numbers_to_amend = line_numbers_to_amend
         self.point_name = ""
 
+        self.config_files_path = os.path.join(os.getcwd(), 'Config Files')
         self.dialog_window = tk.Toplevel(self.master)
         self.dialog_window.title("Update Prism Constants")
-        self.label = tk.Label(self.dialog_window, text="Please select the prism constant: ")
+        self.pc_type_label = tk.Label(self.dialog_window, text="Please select the prism constant: ")
+        self.pc_batch_label = tk.Label(self.dialog_window, text="Please select the prism constant batch file to process: ")
         self.prism_constant_selected = ""
+        self.pc_batch_file_selected = ""
         self.pc_column = tk.StringVar()
-        self.pc_column_entry = ttk.Combobox(self.dialog_window, width=25, textvariable=self.pc_column, state='readonly')
+        self.pc_column_entry = ttk.Combobox(self.dialog_window, width=32, textvariable=self.pc_column, state='readonly')
 
-        self.pc_column_entry = ttk.Combobox(self.dialog_window, width=25, textvariable=self.pc_column, state='readonly')
         self.pc_column_entry['values'] = list(gsi.PC_DICT_REAL_VALUES.keys())
 
     def build_fix_single_window(self):
 
-        self.dialog_window.geometry(MainWindow.position_popup(self.master, 240, 140))
-        self.label.grid(row=0, column=1, columnspan=2, padx=25, pady=5)
-        self.pc_column_entry.grid(row=1, column=1, columnspan=2, padx=5, pady=5)
+        self.dialog_window.geometry(MainWindow.position_popup(self.master, 260, 120))
+        self.pc_type_label.grid(row=0, column=1, columnspan=2, padx=25, pady=5)
+        self.pc_column_entry.grid(row=1, column=1, columnspan=2, padx=25, pady=5)
 
         ok_b = tk.Button(self.dialog_window, text="OK", width=10, command=self.ok)
         ok_b.grid(row=3, column=1, padx=(25, 3), pady=10)
+
+        cancel_b = tk.Button(self.dialog_window, text="Cancel", width=10, command=self.cancel)
+        cancel_b.grid(row=3, column=2, padx=(3, 25), pady=10)
+
+    def build_batch_file_window(self):
+
+        # first lets build a list of batch files options for the user to choose from
+        pc_batch_file_list = []
+
+        files = os.listdir(self.config_files_path)
+        for filename in files:
+            if 'PC_BATCH_FILE' in filename:
+                pc_batch_file_list.append(filename)
+
+        self.dialog_window.geometry(MainWindow.position_popup(self.master, 340, 130))
+        self.pc_batch_label.grid(row=0, column=1, columnspan=2, padx=25, pady=5)
+        self.pc_column_entry.grid(row=1, column=1, columnspan=2, padx=25, pady=5)
+        self.pc_column_entry['values'] = pc_batch_file_list
+
+        run_pc_batch_file_btn = tk.Button(self.dialog_window, text="Update", width=10, command=self.run_pc_batch_file)
+        run_pc_batch_file_btn.grid(row=3, column=1, padx=(25, 3), pady=10)
 
         cancel_b = tk.Button(self.dialog_window, text="Cancel", width=10, command=self.cancel)
         cancel_b.grid(row=3, column=2, padx=(3, 25), pady=10)
@@ -1682,6 +1706,57 @@ class PrismConstantUpdate:
             # TODO this function plus add highlighted lines to the user
             gsi.update_prism_constant(line_number, corrections)
 
+        self.create_updated_pc_gsi_file()
+
+    def run_pc_batch_file(self):
+        self.pc_batch_file_selected = self.pc_column_entry.get()
+
+        if not self.pc_batch_file_selected:
+            tk.messagebox.showinfo("Updating Prism Constant", "Please select a prism constant batch file to process")
+            self.dialog_window.lift()
+
+            return
+
+        #lets create a dictionary as a pc lookup from batch file
+        point_pc_lookup_dict = OrderedDict()
+
+
+        pc_batch_file_path = os.path.join(self.config_files_path, self.pc_batch_file_selected)
+        with open(pc_batch_file_path) as csvfile:
+            csv_file = csv.reader(csvfile)
+            for row in csv_file:
+                point_pc_lookup_dict[row[0]] = row[1]
+
+        for line_number, formatted_line in enumerate(gsi.formatted_lines, start=1):
+            if gsi.is_control_point(formatted_line):
+                continue    # can't update pc of a setup
+
+            point_name = formatted_line['Point_ID']
+            try:
+                new_prism_constant = point_pc_lookup_dict[point_name]
+            except KeyError:
+                tk.messagebox.showinfo("Updating Prism Constant", "Couldn't find the following point name in the pc batch file\n\n" + point_name)
+                self.dialog_window.destroy()
+                return
+            else:
+
+                corrections = self.get_prism_constant_corrections(line_number, new_prism_constant)
+                if corrections.get('error', ""):
+                    # something unexpected went wrong
+                    tk.messagebox.showinfo("Updating Prism Constant", "An unexpected has occurred during update.")
+                    return
+
+                gsi.update_prism_constant(line_number, corrections)
+
+                self.create_updated_pc_gsi_file()
+
+        self.dialog_window.destroy()
+
+    def cancel(self):
+        self.dialog_window.destroy()
+
+    def create_updated_pc_gsi_file(self):
+
         if "PCUpdated" not in MenuBar.filename_path:
 
             amended_filepath = MenuBar.filename_path[:-4] + "_PCUpdated.gsi"
@@ -1698,9 +1773,6 @@ class PrismConstantUpdate:
         # rebuild database and GUI
         MenuBar.filename_path = amended_filepath
         GUIApplication.refresh()
-
-    def cancel(self):
-        self.dialog_window.destroy()
 
     def get_prism_constant_corrections(self, line_number, prism_constant_selected):
 
@@ -1766,7 +1838,7 @@ class PrismConstantUpdate:
 
             corrections_dict = {'Prism_Constant': new_pc, 'Easting': new_east, 'Northing': new_north, 'Elevation': new_height,
                                 'Slope_Distance': new_slant_distance, 'Horizontal_Dist': new_horizontal_distance,
-                                 'Height_Diff': new_height_difference}
+                                'Height_Diff': new_height_difference}
 
             # corrections_dict = {'Prism_Constant': [old_pc, new_pc], 'Easting': [old_easting, new_east], 'Northing': [old_northing, new_north],
             #                     'Elevation': [old_height, new_height],
@@ -1774,7 +1846,7 @@ class PrismConstantUpdate:
             #                     'Horizontal_Dist': [old_horizontal_distance, new_horizontal_distance],
             #                     'Height_Diff': [old_height_difference, new_height_difference]}
 
-        except ValueError as ex:    # this will happen if it is an orientation shot
+        except ValueError as ex:  # this will happen if it is an orientation shot
 
             print("unexpected error updating prism constants\n\n" + str(ex))
         except Exception as ex:
