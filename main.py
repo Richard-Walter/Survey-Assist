@@ -77,6 +77,8 @@ class MenuBar(tk.Frame):
         self.file_sub_menu.add_command(label="Monitoring - Update Coordinates", command=self.monitoring_update_coords, state="disabled")
         self.file_sub_menu.add_command(label="Monitoring - Update Labels", command=self.monitoring_update_labels, state="disabled")
         self.file_sub_menu.add_command(label="Monitoring - Rename Updated Files", command=self.monitoring_rename_updated_files, state="disabled")
+        self.file_sub_menu.add_separator()
+        self.file_sub_menu.add_command(label="Configuration", command=self.configure_survey)
 
         self.menu_bar.add_cascade(label="File", menu=self.file_sub_menu)
 
@@ -121,9 +123,6 @@ class MenuBar(tk.Frame):
 
         self.utility_sub_menu.add_command(label="Create temporary CSV from .ASC file", command=self.create_CSV_from_ASC)
         self.menu_bar.add_cascade(label="Utilities", menu=self.utility_sub_menu)
-
-        # Config menu
-        self.menu_bar.add_command(label="Configuration", command=self.configure_survey)
 
         # Help menu
         self.help_sub_menu = tk.Menu(self.menu_bar, tearoff=0)
@@ -1016,20 +1015,20 @@ class ConfigDialogWindow:
 
         # self.dialog_window.geometry(MainWindow.position_popup(master, ConfigDialog.dialog_w, ConfigDialog.dialog_h))
 
-        tk.Label(self.dialog_window, text="Precision:").grid(row=0, column=0, padx=5, pady=(15, 5), sticky='w')
-        self.precision = tk.StringVar()
-        self.precision_entry = ttk.Combobox(self.dialog_window, textvariable=self.precision, state='readonly')
-        self.precision_entry['values'] = SurveyConfiguration.precision_value_list
+        # tk.Label(self.dialog_window, text="Precision:").grid(row=0, column=0, padx=5, pady=(15, 5), sticky='w')
+        # self.precision = tk.StringVar()
+        # self.precision_entry = ttk.Combobox(self.dialog_window, textvariable=self.precision, state='readonly')
+        # self.precision_entry['values'] = SurveyConfiguration.precision_value_list
+        #
+        # self.precision_entry.current(
+        #     SurveyConfiguration.precision_value_list.index(survey_config.precision_value))
+        # self.precision_entry.bind("<<ComboboxSelected>>")
+        # self.precision_entry.grid(row=0, column=1, padx=5, pady=(15, 5), sticky='w')
 
-        self.precision_entry.current(
-            SurveyConfiguration.precision_value_list.index(survey_config.precision_value))
-        self.precision_entry.bind("<<ComboboxSelected>>")
-        self.precision_entry.grid(row=0, column=1, padx=5, pady=(15, 5), sticky='w')
-
-        tk.Label(self.dialog_window, text="Easting Tolerance: ").grid(row=1, column=0, padx=5, pady=5, sticky='w')
+        tk.Label(self.dialog_window, text="Easting Tolerance: ").grid(row=1, column=0, padx=5, pady=(20,5), sticky='w')
         self.entry_easting = tk.Entry(self.dialog_window)
         self.entry_easting.insert(tkinter.END, survey_config.easting_tolerance)
-        self.entry_easting.grid(row=1, column=1, padx=5, pady=5, sticky='w', )
+        self.entry_easting.grid(row=1, column=1, padx=5, pady=(20,5), sticky='w', )
 
         tk.Label(self.dialog_window, text="Northing Tolerance: ").grid(row=2, column=0, padx=5, pady=5, sticky='w')
         self.entry_northing = tk.Entry(self.dialog_window)
