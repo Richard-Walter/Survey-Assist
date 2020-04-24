@@ -3102,7 +3102,7 @@ def main():
     # Create main window
     root = tk.Tk()
     root.geometry("1600x1000")
-    root.title("SURVEY ASSIST - Written by Richard Walter")
+    root.title("SURVEY ASSIST")
     root.wm_iconbitmap(r'icons\analyser.ico')
 
     survey_config = SurveyConfiguration()
