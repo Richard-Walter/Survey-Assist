@@ -1708,6 +1708,8 @@ class PrismConstantUpdate:
         self.create_updated_pc_gsi_file(self.line_numbers_to_amend)
 
     def run_pc_batch_file(self):
+        lines_amended = []
+        point_names_not_found_in_batch_file = set()
         self.pc_batch_file_selected = self.pc_column_entry.get()
 
         if not self.pc_batch_file_selected:
@@ -1731,12 +1733,16 @@ class PrismConstantUpdate:
 
             point_name = formatted_line['Point_ID']
             try:
+                old_prism_constant = formatted_line['Prism_Constant']
                 new_prism_constant = point_pc_lookup_dict[point_name]
             except KeyError:
-                tk.messagebox.showinfo("Updating Prism Constant", "Couldn't find the following point name in the pc batch file\n\n" + point_name)
-                self.dialog_window.destroy()
-                return
+                # tk.messagebox.showwarning("Updating Prism Constant", "Couldn't find the following point name in the pc batch file\n\n" + point_name)
+                point_names_not_found_in_batch_file.add(point_name)
+                continue
             else:
+                # if PC is the same then skip
+                if old_prism_constant == str(gsi.PC_DICT_GSI_VALUES[new_prism_constant]):
+                    continue
 
                 corrections = self.get_prism_constant_corrections(line_number, new_prism_constant)
                 if corrections.get('error', ""):
@@ -1745,6 +1751,18 @@ class PrismConstantUpdate:
                     return
 
                 gsi.pc_change_update_coordinates(line_number, corrections)
+                lines_amended.append(line_number)
+
+                print("Line amended " + str(line_number) + ":   old PC = " + old_prism_constant + "  new PC = " + str(gsi.PC_DICT_GSI_VALUES[
+                    new_prism_constant]))
+
+        # display to user any points not found in batch file
+        points_dialog_msg =  ""
+        for point in sorted(point_names_not_found_in_batch_file):
+            points_dialog_msg += point +"\n"
+
+        tk.messagebox.showwarning("Updating Prism Constant", "Warning:  Couldn't find the following point names in the pc batch file:\n\n" +
+                                  points_dialog_msg)
 
         self.create_updated_pc_gsi_file(lines_amended)
 
