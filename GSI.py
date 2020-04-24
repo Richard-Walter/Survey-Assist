@@ -21,6 +21,7 @@ class GSI:
                                     ('85', 'STN_Northing'), ('86', 'STN_Elevation'), ('87', 'Target_Height'),
                                     ('88', 'STN_Height')])
 
+
     EXPORT_GSI_HEADER_FORMAT = ['UID', 'Point_ID', 'Easting', 'Northing', 'Elevation', 'Timestamp', 'STN_Easting', 'STN_Northing',
                                 'STN_Height', 'STN_Elevation', 'Target_Height', 'Horizontal_Angle', 'Vertical_Angle', 'Slope_Distance',
                                 'Horizontal_Dist', 'Prism_Constant', 'Height_Diff']
@@ -28,9 +29,8 @@ class GSI:
     # REGULAR EXPRESSION LOOKUP
     REGULAR_EXPRESSION_LOOKUP = OrderedDict([('11', r'\*11\d*\+\w+'), ('19', r''), ('21', r''),
                                              ('22', r''), ('31', r''), ('32', r''),
-                                             ('33', r''), ('51', r''), ('81', r''),
-                                             ('82', r''), ('83', r'83\.{2}\d{2}\+(\d*\.)?\d+'), ('84', r''),
-                                             ('85', r''), ('86', r''), ('87', r'87\.{2}\d{2}\+\d+'),
+                                             ('33', r''), ('51', r'51.{4}\+\d*\+\d{3}'), ('81', r''),
+                                              ('85', r''), ('86', r''), ('87', r'87\.{2}\d{2}\+\d+'),
                                              ('88', r'')])
 
     # PRISM CONSTANTS
@@ -114,8 +114,52 @@ class GSI:
         # update the raw gsi lines
         self.unformatted_lines[line_number - 1] = unformatted_line
 
-    def update_prism_constant(self, line_number, corrections):
-        pass
+    def pc_change_update_coordinates(self, line_number, corrections):
+        # e.g. corrections_dict = {'Prism_Constant': new_pc, 'Easting': new_east, 'Northing': new_north, 'Elevation': new_height,
+        #                     'Slope_Distance': new_slant_distance, 'Horizontal_Dist': new_horizontal_distance,
+        #                     'Height_Diff': new_height_difference}
+
+        self.update_pc(line_number, corrections['Prism_Constant'])
+        # self.update_easting(line_number, corrections['Easting'])
+        # self.update_northing(line_number, corrections['Northing'])
+        # self.update_elevation(line_number, corrections['Elevation'])
+        # self.update_slope_distance(line_number, corrections['Slope_Distance'])
+        # self.update_horizontal_dist(line_number, corrections['Horizontal_Dist'])
+        # self.update_height_diff(line_number, corrections['Height_Diff'])
+
+
+
+    def update_pc(self, line_number, new_pc):
+
+        unformatted_line = self.get_unformatted_line(line_number)
+
+        # lets find the original value
+        re_pattern = re.compile(GSI.REGULAR_EXPRESSION_LOOKUP['51'])
+        match = re_pattern.search(unformatted_line)
+        old_pc_unformatted = match.group()
+
+        # Lets build the new field value.
+        # First lets build the prefix e.g.51..1.+
+        re_pattern = re.compile(r'51.{4}\+')
+        prefix = re_pattern.search(old_pc_unformatted).group()
+
+        # lets build the middle part    e.g. +000000000007+
+        re_pattern = re.compile(r'\+\d*\+')
+        middle = re_pattern.search(old_pc_unformatted).group().lstrip('+')   # strip off + as this is included in prefix
+
+
+        # lets build the suffix.  There are 3 chars in the suffix so we need to fill the new value with leading zeros
+        suffix = new_pc.zfill(3)
+
+        # lets combine the prefix with the suffix to create the new field value to replace the old one
+        new_pc_unformatted = prefix + middle + suffix
+
+        # now replace the old value with the new one
+        unformatted_line = unformatted_line.replace(old_pc_unformatted, new_pc_unformatted)
+
+        # update the raw gsi lines
+        self.unformatted_lines[line_number - 1] = unformatted_line
+
 
     def get_unformatted_line(self, line_number):
 

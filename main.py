@@ -87,8 +87,8 @@ class MenuBar(tk.Frame):
         self.edit_sub_menu.add_command(label="Change point name...", command=self.change_point_name)
         self.edit_sub_menu.add_command(label="Change target height...", command=self.change_target_height)
         self.edit_sub_menu.add_separator()
-        self.edit_sub_menu.add_command(label="Prism Constant - Fix single...", command=self.prism_constant_update_manually)
-        self.edit_sub_menu.add_command(label="Prism Constant - Fix batch ...", command=self.prism_constant_update_batch)
+        self.edit_sub_menu.add_command(label="(BETA) Prism Constant - Fix single...", command=self.prism_constant_update_manually)
+        self.edit_sub_menu.add_command(label="(BETA) Prism Constant - Fix batch ...", command=self.prism_constant_update_batch)
 
         self.menu_bar.add_cascade(label="Edit Survey", menu=self.edit_sub_menu, state="disabled")
 
@@ -1703,8 +1703,7 @@ class PrismConstantUpdate:
                 tk.messagebox.showinfo("Updating Prism Constant", "An unexpected has occurred during update.")
                 return
 
-            # TODO this function plus add highlighted lines to the user
-            gsi.update_prism_constant(line_number, corrections)
+            gsi.pc_change_update_coordinates(line_number, corrections)
 
         self.create_updated_pc_gsi_file()
 
@@ -1719,14 +1718,13 @@ class PrismConstantUpdate:
 
         #lets create a dictionary as a pc lookup from batch file
         point_pc_lookup_dict = OrderedDict()
-
-
         pc_batch_file_path = os.path.join(self.config_files_path, self.pc_batch_file_selected)
         with open(pc_batch_file_path) as csvfile:
             csv_file = csv.reader(csvfile)
             for row in csv_file:
                 point_pc_lookup_dict[row[0]] = row[1]
 
+        # update coordinates for each line
         for line_number, formatted_line in enumerate(gsi.formatted_lines, start=1):
             if gsi.is_control_point(formatted_line):
                 continue    # can't update pc of a setup
@@ -1746,7 +1744,7 @@ class PrismConstantUpdate:
                     tk.messagebox.showinfo("Updating Prism Constant", "An unexpected has occurred during update.")
                     return
 
-                gsi.update_prism_constant(line_number, corrections)
+                gsi.pc_change_update_coordinates(line_number, corrections)
 
                 self.create_updated_pc_gsi_file()
 
