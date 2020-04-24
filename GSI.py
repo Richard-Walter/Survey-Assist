@@ -21,7 +21,6 @@ class GSI:
                                     ('85', 'STN_Northing'), ('86', 'STN_Elevation'), ('87', 'Target_Height'),
                                     ('88', 'STN_Height')])
 
-
     EXPORT_GSI_HEADER_FORMAT = ['UID', 'Point_ID', 'Easting', 'Northing', 'Elevation', 'Timestamp', 'STN_Easting', 'STN_Northing',
                                 'STN_Height', 'STN_Elevation', 'Target_Height', 'Horizontal_Angle', 'Vertical_Angle', 'Slope_Distance',
                                 'Horizontal_Dist', 'Prism_Constant', 'Height_Diff']
@@ -29,9 +28,10 @@ class GSI:
     # REGULAR EXPRESSION LOOKUP
     REGULAR_EXPRESSION_LOOKUP = OrderedDict([('11', r'\*11\d*\+\w+'), ('19', r''), ('21', r''),
                                              ('22', r''), ('31', r''), ('32', r''),
-                                             ('33', r''), ('51', r'51.{4}\+\d*\+\d{3}'), ('81', r''),
-                                              ('85', r''), ('86', r''), ('87', r'87\.{2}\d{2}\+\d+'),
-                                             ('88', r'')])
+                                             ('33', r''), ('51', r'51.{4}\+\d*\+\d{3}'),
+                                             ('81', r'81..00\+\d*\.?\d?'), ('82', r'82..00\+\d*\.?\d?'), ('83', r'83..00\+\d*\.?\d?'),
+                                             ('84', r'84..00\+\d*\.?\d?'), ('85', r'85..00\+\d*\.?\d?'), ('86', r'86..00\+\d*\.?\d?'),
+                                             ('87', r'87\.{2}\d{2}\+\d+'), ('88', r'88..00\+\d*\.?\d?')])
 
     # PRISM CONSTANTS
     PC_DICT_REAL_VALUES = {'Big Joe': 0.0390, 'Big Joe 2': 0.0340, 'GLASS': 0.0240, 'Leica 360 Prism': 0.0231, 'Leica Circular Prism': 0.0000,
@@ -120,14 +120,12 @@ class GSI:
         #                     'Height_Diff': new_height_difference}
 
         self.update_pc(line_number, corrections['Prism_Constant'])
-        # self.update_easting(line_number, corrections['Easting'])
+        self.update_easting(line_number, corrections['Easting'])
         # self.update_northing(line_number, corrections['Northing'])
         # self.update_elevation(line_number, corrections['Elevation'])
         # self.update_slope_distance(line_number, corrections['Slope_Distance'])
         # self.update_horizontal_dist(line_number, corrections['Horizontal_Dist'])
         # self.update_height_diff(line_number, corrections['Height_Diff'])
-
-
 
     def update_pc(self, line_number, new_pc):
 
@@ -145,8 +143,7 @@ class GSI:
 
         # lets build the middle part    e.g. +000000000007+
         re_pattern = re.compile(r'\+\d*\+')
-        middle = re_pattern.search(old_pc_unformatted).group().lstrip('+')   # strip off + as this is included in prefix
-
+        middle = re_pattern.search(old_pc_unformatted).group().lstrip('+')  # strip off + as this is included in prefix
 
         # lets build the suffix.  There are 3 chars in the suffix so we need to fill the new value with leading zeros
         suffix = new_pc.zfill(3)
@@ -160,6 +157,38 @@ class GSI:
         # update the raw gsi lines
         self.unformatted_lines[line_number - 1] = unformatted_line
 
+    def update_easting(self, line_number, new_easting):
+
+        # new easting must be converted from e.g.'1000.123' to  the 1234123  or 1234123.4 format
+        new_easting = new_easting.replace(".", "")
+
+        unformatted_line = self.get_unformatted_line(line_number)
+
+        # lets find the original value
+        re_pattern = re.compile(GSI.REGULAR_EXPRESSION_LOOKUP['81'])
+        match = re_pattern.search(unformatted_line)
+        old_easting_unformatted = match.group()
+
+        # Lets build the new field value. First lets build the prefix e.g.81..00+
+        re_pattern = re.compile(r'81..00\+')
+        prefix = re_pattern.search(old_easting_unformatted).group()
+
+        # lets build the suffix.  There are 3 chars in the suffix so we need to fill the new value with leading zeros
+        if self.survey_config.precision_value == '4dp':
+            new_easting = new_easting[:-1] + '.' + new_easting[-1:]
+            suffix = new_easting.zfill(17)
+        else:
+
+            suffix = new_easting.zfill(16)
+
+        # lets combine the prefix with the suffix to create the new field value to replace the old one
+        new_easting_unformatted = prefix + suffix
+
+        # now replace the old value with the new one
+        unformatted_line = unformatted_line.replace(old_easting_unformatted, new_easting_unformatted)
+
+        # update the raw gsi lines
+        self.unformatted_lines[line_number - 1] = unformatted_line
 
     def get_unformatted_line(self, line_number):
 
@@ -219,12 +248,10 @@ class GSI:
                         # Check if the field is '21' so that we can determine precision (3 or 4dp) based on field length
                         if two_digit_id == '21':
                             if len(field) == 24:
-                                self.survey_config.update(SurveyConfiguration.section_instrument,
-                                                          'instrument_precision', '4dp')
+                                self.survey_config.update(SurveyConfiguration.section_instrument, 'instrument_precision', '4dp')
                                 self.survey_config.precision_value = '4dp'
                             else:
-                                self.survey_config.update(SurveyConfiguration.section_instrument,
-                                                          'instrument_precision', '3dp')
+                                self.survey_config.update(SurveyConfiguration.section_instrument, 'instrument_precision', '3dp')
                                 self.survey_config.precision_value = '3dp'
 
                         # Strip off unnecessary digits and spaces to make the number readable
@@ -429,9 +456,9 @@ class GSI:
     def get_station_from_line_number(self, line_number):
 
         # need to traverse backwards until we hit a station list
-        while (line_number>0):
-            if self.is_control_point(self.formatted_lines[line_number-1]):
-                return line_number, self.formatted_lines[line_number-1]
+        while (line_number > 0):
+            if self.is_control_point(self.formatted_lines[line_number - 1]):
+                return line_number, self.formatted_lines[line_number - 1]
             line_number -= 1
 
     @staticmethod

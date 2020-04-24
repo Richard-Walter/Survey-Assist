@@ -1627,6 +1627,7 @@ class PrismConstantUpdate:
 
     def __init__(self, master, line_numbers_to_amend=None):
 
+        self.survey_config = SurveyConfiguration()  # need to create this as opening a new gsi of 4dp wont update precision of the gsi.config
         self.master = master
         self.line_numbers_to_amend = line_numbers_to_amend
         self.point_name = ""
@@ -1774,7 +1775,7 @@ class PrismConstantUpdate:
 
     def get_prism_constant_corrections(self, line_number, prism_constant_selected):
 
-        precision = survey_config.precision_value
+        precision = self.survey_config.precision_value
         formatted_line = gsi.get_formatted_line(line_number)
         corrections_dict = OrderedDict()
 
