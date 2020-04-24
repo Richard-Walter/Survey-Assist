@@ -256,7 +256,6 @@ class GSI:
         # update the raw gsi lines
         self.unformatted_lines[line_number - 1] = unformatted_line
 
-
     def update_slope_distance(self, line_number, slope_distance):
 
         # new slope_distance must be converted from e.g.'1000.123' to  the 1234123  or 1234123.4 format
@@ -289,7 +288,6 @@ class GSI:
 
         # update the raw gsi lines
         self.unformatted_lines[line_number - 1] = unformatted_line
-
 
     def update_horizontal_dist(self, line_number, horizontal_dist):
 

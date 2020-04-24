@@ -9,7 +9,6 @@ NOTE: For 3.4 compatibility
     ii) had to use an ordered dictionary"""
 
 # TODO import SD RTK, search in data folder for txt file
-# TODO PC changes single and batch
 
 import tkinter.messagebox
 import logging.config
@@ -1706,7 +1705,7 @@ class PrismConstantUpdate:
 
             gsi.pc_change_update_coordinates(line_number, corrections)
 
-        self.create_updated_pc_gsi_file()
+        self.create_updated_pc_gsi_file(self.line_numbers_to_amend)
 
     def run_pc_batch_file(self):
         self.pc_batch_file_selected = self.pc_column_entry.get()
@@ -1717,7 +1716,7 @@ class PrismConstantUpdate:
 
             return
 
-        #lets create a dictionary as a pc lookup from batch file
+        # lets create a dictionary as a pc lookup from batch file
         point_pc_lookup_dict = OrderedDict()
         pc_batch_file_path = os.path.join(self.config_files_path, self.pc_batch_file_selected)
         with open(pc_batch_file_path) as csvfile:
@@ -1728,7 +1727,7 @@ class PrismConstantUpdate:
         # update coordinates for each line
         for line_number, formatted_line in enumerate(gsi.formatted_lines, start=1):
             if gsi.is_control_point(formatted_line):
-                continue    # can't update pc of a setup
+                continue  # can't update pc of a setup
 
             point_name = formatted_line['Point_ID']
             try:
@@ -1747,14 +1746,14 @@ class PrismConstantUpdate:
 
                 gsi.pc_change_update_coordinates(line_number, corrections)
 
-                self.create_updated_pc_gsi_file()
+        self.create_updated_pc_gsi_file(lines_amended)
 
         self.dialog_window.destroy()
 
     def cancel(self):
         self.dialog_window.destroy()
 
-    def create_updated_pc_gsi_file(self):
+    def create_updated_pc_gsi_file(self, lines_amended=None):
 
         if "PCUpdated" not in MenuBar.filename_path:
 
@@ -1762,7 +1761,7 @@ class PrismConstantUpdate:
         else:
             amended_filepath = MenuBar.filename_path
 
-        # create a new ammended gsi file
+        # create a new amended gsi file
         with open(amended_filepath, "w") as gsi_file:
             for line in gsi.unformatted_lines:
                 gsi_file.write(line)
@@ -1771,7 +1770,10 @@ class PrismConstantUpdate:
 
         # rebuild database and GUI
         MenuBar.filename_path = amended_filepath
-        GUIApplication.refresh()
+        MenuBar.format_gsi_file()
+        MenuBar.create_and_populate_database()
+        gui_app.list_box.populate(gsi.formatted_lines, lines_amended)
+        gui_app.status_bar.status['text'] = MenuBar.filename_path
 
     def get_prism_constant_corrections(self, line_number, prism_constant_selected):
 
@@ -1805,8 +1807,6 @@ class PrismConstantUpdate:
             old_northing = float(formatted_line['Northing'])
             old_height = float(formatted_line['Elevation'])
             old_slant_distance = float(formatted_line['Slope_Distance'])
-            # old_horizontal_distance = float(formatted_line['Horizontal_Dist'])
-            # old_height_difference = float(formatted_line['Height_Diff'])
 
             new_slant_distance = float(old_slant_distance + adjusted_distance)
             cos_theta_east = (old_easting - stn_easting) / old_slant_distance
@@ -1817,13 +1817,6 @@ class PrismConstantUpdate:
             new_height = stn_height + (sin_theta * new_slant_distance)
             new_horizontal_distance = math.sqrt((new_east - stn_easting) ** 2 + (new_north - stn_northing) ** 2)
             new_height_difference = abs(stn_height - new_height)
-
-            # old_easting = str(decimalize_value(formatted_line['Easting'], precision))
-            # old_northing = str(decimalize_value(formatted_line['Northing'], precision))
-            # old_height = str(decimalize_value(formatted_line['Elevation'], precision))
-            # old_slant_distance = str(decimalize_value(formatted_line['Slope_Distance'], precision))
-            # old_horizontal_distance = str(decimalize_value(formatted_line['Horizontal_Dist'], precision))
-            # old_height_difference = str(decimalize_value(formatted_line['Height_Diff'], precision))
 
             new_slant_distance = str(decimalize_value(new_slant_distance, precision))
             new_east = str(decimalize_value(new_east, precision))
@@ -1839,11 +1832,6 @@ class PrismConstantUpdate:
                                 'Slope_Distance': new_slant_distance, 'Horizontal_Dist': new_horizontal_distance,
                                 'Height_Diff': new_height_difference}
 
-            # corrections_dict = {'Prism_Constant': [old_pc, new_pc], 'Easting': [old_easting, new_east], 'Northing': [old_northing, new_north],
-            #                     'Elevation': [old_height, new_height],
-            #                     'Slope_Distance': [old_slant_distance, new_slant_distance],
-            #                     'Horizontal_Dist': [old_horizontal_distance, new_horizontal_distance],
-            #                     'Height_Diff': [old_height_difference, new_height_difference]}
 
         except ValueError as ex:  # this will happen if it is an orientation shot
 
