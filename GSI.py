@@ -27,8 +27,8 @@ class GSI:
 
     # REGULAR EXPRESSION LOOKUP
     REGULAR_EXPRESSION_LOOKUP = OrderedDict([('11', r'\*11\d*\+\w+'), ('19', r''), ('21', r''),
-                                             ('22', r''), ('31', r''), ('32', r''),
-                                             ('33', r''), ('51', r'51.{4}\+\d*\+\d{3}'),
+                                             ('22', r''), ('31', r'31..\d\d\+\d*\.?\d?'), ('32', r'32..\d\d\+\d*\.?\d?'),
+                                             ('33', r'33..\d\d[\+-]\d*\.?\d?'), ('51', r'51.{4}\+\d*\+\d{3}'),
                                              ('81', r'81..00\+\d*\.?\d?'), ('82', r'82..00\+\d*\.?\d?'), ('83', r'83..00\+\d*\.?\d?'),
                                              ('84', r'84..00\+\d*\.?\d?'), ('85', r'85..00\+\d*\.?\d?'), ('86', r'86..00\+\d*\.?\d?'),
                                              ('87', r'87\.{2}\d{2}\+\d+'), ('88', r'88..00\+\d*\.?\d?')])
@@ -121,11 +121,11 @@ class GSI:
 
         self.update_pc(line_number, corrections['Prism_Constant'])
         self.update_easting(line_number, corrections['Easting'])
-        # self.update_northing(line_number, corrections['Northing'])
-        # self.update_elevation(line_number, corrections['Elevation'])
-        # self.update_slope_distance(line_number, corrections['Slope_Distance'])
-        # self.update_horizontal_dist(line_number, corrections['Horizontal_Dist'])
-        # self.update_height_diff(line_number, corrections['Height_Diff'])
+        self.update_northing(line_number, corrections['Northing'])
+        self.update_elevation(line_number, corrections['Elevation'])
+        self.update_slope_distance(line_number, corrections['Slope_Distance'])
+        self.update_horizontal_dist(line_number, corrections['Horizontal_Dist'])
+        self.update_height_diff(line_number, corrections['Height_Diff'])
 
     def update_pc(self, line_number, new_pc):
 
@@ -173,7 +173,7 @@ class GSI:
         re_pattern = re.compile(r'81..00\+')
         prefix = re_pattern.search(old_easting_unformatted).group()
 
-        # lets build the suffix.  There are 3 chars in the suffix so we need to fill the new value with leading zeros
+        # lets build the suffix.
         if self.survey_config.precision_value == '4dp':
             new_easting = new_easting[:-1] + '.' + new_easting[-1:]
             suffix = new_easting.zfill(17)
@@ -186,6 +186,174 @@ class GSI:
 
         # now replace the old value with the new one
         unformatted_line = unformatted_line.replace(old_easting_unformatted, new_easting_unformatted)
+
+        # update the raw gsi lines
+        self.unformatted_lines[line_number - 1] = unformatted_line
+
+    def update_northing(self, line_number, new_northing):
+
+        # new northing must be converted from e.g.'1000.123' to  the 1234123  or 1234123.4 format
+        new_northing = new_northing.replace(".", "")
+
+        unformatted_line = self.get_unformatted_line(line_number)
+
+        # lets find the original value
+        re_pattern = re.compile(GSI.REGULAR_EXPRESSION_LOOKUP['82'])
+        match = re_pattern.search(unformatted_line)
+        old_northing_unformatted = match.group()
+
+        # Lets build the new field value. First lets build the prefix e.g.82..00+
+        re_pattern = re.compile(r'82..00\+')
+        prefix = re_pattern.search(old_northing_unformatted).group()
+
+        # lets build the suffix.
+        if self.survey_config.precision_value == '4dp':
+            new_northing = new_northing[:-1] + '.' + new_northing[-1:]
+            suffix = new_northing.zfill(17)
+        else:
+
+            suffix = new_northing.zfill(16)
+
+        # lets combine the prefix with the suffix to create the new field value to replace the old one
+        new_northiing_unformatted = prefix + suffix
+
+        # now replace the old value with the new one
+        unformatted_line = unformatted_line.replace(old_northing_unformatted, new_northiing_unformatted)
+
+        # update the raw gsi lines
+        self.unformatted_lines[line_number - 1] = unformatted_line
+
+    def update_elevation(self, line_number, new_elevation):
+
+        # new elevation must be converted from e.g.'1000.123' to  the 1234123  or 1234123.4 format
+        new_elevation = new_elevation.replace(".", "")
+
+        unformatted_line = self.get_unformatted_line(line_number)
+
+        # lets find the original value
+        re_pattern = re.compile(GSI.REGULAR_EXPRESSION_LOOKUP['83'])
+        match = re_pattern.search(unformatted_line)
+        old_elevation_unformatted = match.group()
+
+        # Lets build the new field value. First lets build the prefix e.g.83..00+
+        re_pattern = re.compile(r'83..00\+')
+        prefix = re_pattern.search(old_elevation_unformatted).group()
+
+        # lets build the suffix.
+        if self.survey_config.precision_value == '4dp':
+            new_elevation = new_elevation[:-1] + '.' + new_elevation[-1:]
+            suffix = new_elevation.zfill(17)
+        else:
+
+            suffix = new_elevation.zfill(16)
+
+        # lets combine the prefix with the suffix to create the new field value to replace the old one
+        new_elevation_unformatted = prefix + suffix
+
+        # now replace the old value with the new one
+        unformatted_line = unformatted_line.replace(old_elevation_unformatted, new_elevation_unformatted)
+
+        # update the raw gsi lines
+        self.unformatted_lines[line_number - 1] = unformatted_line
+
+
+    def update_slope_distance(self, line_number, slope_distance):
+
+        # new slope_distance must be converted from e.g.'1000.123' to  the 1234123  or 1234123.4 format
+        slope_distance = slope_distance.replace(".", "")
+
+        unformatted_line = self.get_unformatted_line(line_number)
+
+        # lets find the original value
+        re_pattern = re.compile(GSI.REGULAR_EXPRESSION_LOOKUP['31'])
+        match = re_pattern.search(unformatted_line)
+        old_slope_distance_unformatted = match.group()
+
+        # Lets build the new field value. First lets build the prefix e.g.83..00+
+        re_pattern = re.compile(r'31..\d\d\+')
+        prefix = re_pattern.search(old_slope_distance_unformatted).group()
+
+        # lets build the suffix.
+        if self.survey_config.precision_value == '4dp':
+            slope_distance = slope_distance[:-1] + '.' + slope_distance[-1:]
+            suffix = slope_distance.zfill(17)
+        else:
+
+            suffix = slope_distance.zfill(16)
+
+        # lets combine the prefix with the suffix to create the new field value to replace the old one
+        new_slope_distance_unformatted = prefix + suffix
+
+        # now replace the old value with the new one
+        unformatted_line = unformatted_line.replace(old_slope_distance_unformatted, new_slope_distance_unformatted)
+
+        # update the raw gsi lines
+        self.unformatted_lines[line_number - 1] = unformatted_line
+
+
+    def update_horizontal_dist(self, line_number, horizontal_dist):
+
+        # new slope_distance must be converted from e.g.'1000.123' to  the 1234123  or 1234123.4 format
+        horizontal_dist = horizontal_dist.replace(".", "")
+
+        unformatted_line = self.get_unformatted_line(line_number)
+
+        # lets find the original value
+        re_pattern = re.compile(GSI.REGULAR_EXPRESSION_LOOKUP['32'])
+        match = re_pattern.search(unformatted_line)
+        old_horizontal_dist_unformatted = match.group()
+
+        # Lets build the new field value. First lets build the prefix e.g.83..00+
+        re_pattern = re.compile(r'32..\d\d\+')
+        prefix = re_pattern.search(old_horizontal_dist_unformatted).group()
+
+        # lets build the suffix.
+        if self.survey_config.precision_value == '4dp':
+            horizontal_dist = horizontal_dist[:-1] + '.' + horizontal_dist[-1:]
+            suffix = horizontal_dist.zfill(17)
+        else:
+
+            suffix = horizontal_dist.zfill(16)
+
+        # lets combine the prefix with the suffix to create the new field value to replace the old one
+        new_horizontal_dist_unformatted = prefix + suffix
+
+        # now replace the old value with the new one
+        unformatted_line = unformatted_line.replace(old_horizontal_dist_unformatted, new_horizontal_dist_unformatted)
+
+        # update the raw gsi lines
+        self.unformatted_lines[line_number - 1] = unformatted_line
+
+    def update_height_diff(self, line_number, height_diff):
+        # NOTE: height diff can contain a + or - symbol in the unformatted string
+
+        # new slope_distance must be converted from e.g.'1000.123' to  the 1234123  or 1234123.4 format
+        height_diff = height_diff.replace(".", "")
+
+        unformatted_line = self.get_unformatted_line(line_number)
+
+        # lets find the original value
+        re_pattern = re.compile(GSI.REGULAR_EXPRESSION_LOOKUP['33'])
+        match = re_pattern.search(unformatted_line)
+        old_height_diff_unformatted = match.group()
+
+        # Lets build the new field value. First lets build the prefix e.g.33..00+ or 33..00-
+        re_pattern = re.compile(r'33..\d\d[\+-]')
+        prefix = re_pattern.search(old_height_diff_unformatted).group()
+
+        # lets build the suffix.
+        if self.survey_config.precision_value == '4dp':
+            height_diff = height_diff[:-1] + '.' + height_diff[-1:]
+            suffix = height_diff.zfill(17)
+        else:
+
+            suffix = height_diff.zfill(16)
+
+        # lets combine the prefix with the suffix to create the new field value to replace the old one
+        new_height_diff_unformatted = prefix + suffix
+
+        # now replace the old value with the new one
+        unformatted_line = unformatted_line.replace(old_height_diff_unformatted, new_height_diff_unformatted)
 
         # update the raw gsi lines
         self.unformatted_lines[line_number - 1] = unformatted_line
