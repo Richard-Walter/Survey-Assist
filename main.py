@@ -8,7 +8,7 @@ NOTE: For 3.4 compatibility
     i) Replaced f-strings with.format method.
     ii) had to use an ordered dictionary"""
 
-# TODO import SD RTK, search in data folder for txt file
+# TODO move last_used, todays_dated_directory over to user_settings to avoid issues when multiple people are using the program
 
 import tkinter.messagebox
 import logging.config

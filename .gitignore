@@ -2,6 +2,6 @@ venv/
 .vscode
 __pycache__
 .idea/
-GSIQuery.log
+Survey Assist.log.log
 .GSI Files/
 .Survey Data/
