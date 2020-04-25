@@ -8,7 +8,6 @@ NOTE: For 3.4 compatibility
     i) Replaced f-strings with.format method.
     ii) had to use an ordered dictionary"""
 
-# TODO export csv - save GSI with _sorted
 # TODO import SD RTK, search in data folder for txt file
 
 import tkinter.messagebox
