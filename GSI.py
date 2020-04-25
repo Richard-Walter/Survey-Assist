@@ -936,6 +936,7 @@ class GSI:
         else:
             root_job_directory = filedialog.askdirectory(initialdir=gsi_directory, title='PLEASE SELECT THE JOB DIRECTORY TO EXPORT THE CSV')
             out_csv_file_path = os.path.join(root_job_directory, os.path.basename(os.path.splitext(gsi_basename)[0] + '_Sorted.csv'))
+            out_gsi_file_path = os.path.join(root_job_directory, os.path.basename(os.path.splitext(gsi_basename)[0] + '_Sorted.gsi'))
 
         # csv_header_name = list(GSI.GSI_WORD_ID_DICT.values())
         csv_header_name = list(GSI.EXPORT_GSI_HEADER_FORMAT)
@@ -943,6 +944,12 @@ class GSI:
         export_formatted_lines = self.format_gsi_for_export()
 
         try:
+            # Export the sorted GSI
+            with open(out_gsi_file_path, "w") as gsi_file:
+                for line in self.unformatted_lines:
+                    gsi_file.write(line)
+
+            # Export the csv file
             with open(out_csv_file_path, 'w', newline='') as csv_file:
                 writer = csv.DictWriter(csv_file, fieldnames=csv_header_name)
                 writer.writeheader()
@@ -959,7 +966,9 @@ class GSI:
 
 
         else:
-            tkinter.messagebox.showerror("EXPORTING CSV", "A CSV file has been created at:\n\n " + out_csv_file_path)
+            tkinter.messagebox.showerror("EXPORTING CSV", "A sorted GSI, along with a corresoinding CSV file has been created in:\n\n " +
+                                         os.path.dirname(out_csv_file_path))
+
             # open up the file for the user
             os.startfile(out_csv_file_path)
 

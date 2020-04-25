@@ -25,8 +25,10 @@ class SDCard:
 
         self.dbx_directory_path = os.path.join(self.sd_root_dir, 'DBX')
         self.gsi_directory_path = os.path.join(self.sd_root_dir, 'Gsi')
+        self.data_directory_path = os.path.join(self.sd_root_dir, 'Data')
         self.dbx_files = self.get_dbx_files()
         self.gsi_files = self.get_gsi_files()
+        self.data_files = self.get_data_files()
 
         self.todays_gps_files = self.get_todays_gps_files()
         self.todays_ts_60_files = self.get_todays_ts_60_files()
@@ -62,6 +64,18 @@ class SDCard:
 
         return self.filter_NoneTypes(gsi_file_list)
 
+    def get_data_files(self):
+
+        data_file_list = []
+
+        if os.path.isdir(self.data_directory_path):
+            # search through all files and folders in the Data directory
+            for filename in os.listdir(self.data_directory_path):
+                full_filename = os.path.join(self.data_directory_path, filename)
+                data_file_list.append(GPSFile(full_filename))
+
+        return self.filter_NoneTypes(data_file_list)
+
     def filter_NoneTypes(self, file_list):
 
         filtered_list = []
@@ -94,6 +108,13 @@ class SDCard:
                     if file.file_suffix.upper() == '.I25' or file.file_suffix.upper() == '.M25':
                         # and any(x in file.file_suffix for x in ['.i25', '.m25']):
                         todays_gps_files.add(file)
+
+        if self.data_files:
+            for file in self.data_files:
+
+                if file.file_type == File.GPS_FILE and Today.todays_date_reversed in file.basename:
+                    todays_gps_files.add(file)
+
 
         return todays_gps_files
 
