@@ -414,20 +414,20 @@ class MenuBar(tk.Frame):
             # Do nothing: User has hit the cancel button
             gui_app.status_bar.status['text'] = 'Please choose a GSI File'
 
-        except CorruptedGSIFileError:
+        except CorruptedGSIFileError as ex:
 
             # Most likely an corrupted GSI file was selected
-            tk.messagebox.showerror("FORMATTING GSI", 'Error reading GSI File:\n\nThis file is a corrupted or incorrect GSI file')
+            tk.messagebox.showerror("FORMATTING GSI", 'Error reading GSI File:\n\nThis file is a corrupted or incorrect GSI file\n\n' + str(ex))
 
             gui_app.status_bar.status['text'] = 'Please choose a GSI File'
 
-        except Exception:
+        except Exception as ex:
 
             # Most likely an incorrect file was chosen
             logger.exception('Error has occurred. ')
 
             tk.messagebox.showerror("ERROR", 'Error reading GSI File:\n\nPlease make sure file is not opened '
-                                             'by another program.  If problem continues please contact Richard Walter')
+                                             'by another program.  If problem continues please contact Richard Walter\n\n' + str(ex))
 
     @staticmethod
     def create_and_populate_database():
@@ -485,7 +485,6 @@ class MenuBar(tk.Frame):
             tkinter.messagebox.showinfo("Checking GSI Naming", error_text)
             gui_app.list_box.populate(gsi.formatted_lines, error_line_numbers)
 
-
         except Exception as ex:
             logger.exception('Error checking station naming')
             tk.messagebox.showerror("Error", 'Error checking control naming:\n\n' + str(ex))
@@ -498,7 +497,6 @@ class MenuBar(tk.Frame):
             # display error dialog box
             tkinter.messagebox.showinfo("Checking Prism Constants", error_text)
             gui_app.list_box.populate(gsi.formatted_lines, error_line_numbers)
-
 
         except Exception as ex:
             logger.exception('Error checking prism constants')
@@ -628,7 +626,7 @@ class MenuBar(tk.Frame):
 
                             obs_line_2_field_value = get_numerical_value_from_string(obs_line_2_field_value_str, field_type, precision)
                             if (obs_line_1_field_value != "") and (obs_line_2_field_value != ""):
-                                float_diff_str = str(decimalize_value(obs_line_1_field_value - obs_line_2_field_value,precision))
+                                float_diff_str = str(decimalize_value(obs_line_1_field_value - obs_line_2_field_value, precision))
                                 float_diff_str = self.check_diff_exceed_tolerance(key, float_diff_str)
                                 obs_line_2_dict[key] = float_diff_str
 
@@ -992,13 +990,13 @@ class MenuBar(tk.Frame):
 
             gui_app.status_bar.status['text'] = 'Please choose a GSI File'
 
-        except Exception:
+        except Exception as ex:
 
             # Most likely an incorrect file was chosen
             logger.exception('Error has occurred. ')
 
             tk.messagebox.showerror("ERROR", 'Error reading GSI File:\n\nPlease make sure file is not opened '
-                                             'by another program.  If problem continues please contact Richard Walter')
+                                             'by another program.  If problem continues please contact Richard Walter\n\n' + str(ex))
 
 
 class ConfigDialogWindow:
@@ -1205,10 +1203,9 @@ class QueryDialogWindow:
 
             return rows
 
-        except Exception:
+        except Exception as ex:
             logger.exception('Error creating executing SQL query:  {}'.format(sql_query_text))
-            tk.messagebox.showerror("Error", 'Error executing this query:\nPlease contact the developer of this '
-                                             'program')
+            tk.messagebox.showerror("Error", 'Error executing this query:\nPlease contact the developer of this program\n\n' + str(ex))
 
     @staticmethod
     def repopulate_list_box(query_results):
@@ -1448,18 +1445,18 @@ class ListBoxFrame(tk.Frame):
             # Do nothing: User has hit the cancel button
             gui_app.status_bar.status['text'] = 'Please choose a GSI File'
 
-        except CorruptedGSIFileError:
+        except CorruptedGSIFileError as ex:
 
             # Most likely an corrupted GSI file was selected
             tk.messagebox.showerror("ERROR", 'Error reading GSI File:\n\nThis file is a corrupted or '
-                                             'incorrect GSI file')
+                                             'incorrect GSI file\n\n' + str(ex))
 
             gui_app.status_bar.status['text'] = 'Please choose a GSI File'
 
-        except Exception:
+        except Exception as ex:
 
             # Most likely an incorrect file was chosen
-            logger.exception('Error has occurred. ')
+            logger.exception('Error has occurred.\n\n' + str(ex))
 
             tk.messagebox.showerror("ERROR", 'Error reading GSI File:\n\nPlease make sure file is not opened '
                                              'by another program.  If problem continues please contact Richard Walter')

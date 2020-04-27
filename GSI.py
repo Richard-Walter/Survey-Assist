@@ -465,8 +465,7 @@ class GSI:
                     stn_setup = False
 
             except KeyError:
-                self.logger.exception(
-                    "File doesn't appear to be a valid GSI file.  Missing Key ID: {}".format(field_value))
+                self.logger.exception( "File doesn't appear to be a valid GSI file.  Missing Key ID: {}".format(field_value))
                 raise CorruptedGSIFileError
 
     @staticmethod
@@ -482,7 +481,7 @@ class GSI:
             hour = timestamp[-4:-2]
 
         except ValueError:
-            # self.logger.exception(f'Incorrect timestamp {timestamp}- cannot be formatted properly')
+
             self.logger.exception('Incorrect timestamp {}- cannot be formatted properly'.format(timestamp))
 
         else:
@@ -1093,8 +1092,8 @@ class GSIDatabase:
             # self.conn.execute(f'DELETE FROM {GSIDatabase.TABLE_NAME}')
             self.conn.execute('DELETE FROM {}'.format(GSIDatabase.TABLE_NAME))
 
-        except Exception:
-            self.logger.exception("Error creating database: ")
+        except Exception as ex:
+            self.logger.exception("Error creating database: \n\n" + str(ex))
             # self.conn.close()
 
     def create_table(self):

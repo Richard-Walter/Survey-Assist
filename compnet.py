@@ -96,8 +96,6 @@ class CoordinateFile:
             except ValueError:
                 # probabaly a blank line
                 pass
-            except Exception as ex:
-                print(ex)
 
 
 class CRDCoordinateFile(CoordinateFile):
@@ -176,7 +174,7 @@ class STDCoordinateFile(CoordinateFile):
                 line_sections[5] = str(northing)
                 line_sections[6] = str(elevation)
             else:
-                raise Exception("It appears that the coordinate file is no formatted propery")
+                raise Exception("It appears that the coordinate file is no formatted properly")
 
             self.updated_std_contents += " ".join(line_sections) + '\n'
 
