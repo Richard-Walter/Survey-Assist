@@ -8,7 +8,13 @@ NOTE: For 3.4 compatibility
     i) Replaced f-strings with.format method.
     ii) had to use an ordered dictionary"""
 
+# TODO Utlity program to print off list of change points
+# TODO Create a csv from a CRD (consider 2d and 3d) to paste into calc sheet
+# TODO Really need to log when getting errors, or at least dispaly str(ex) on the popup dialog when error occurs
+# TODO Make popup windows like job diary closer to top left hand corner
+# TODO utility that moves fixed points over to weighted points (consider 2 and 3D)
 # TODO move last_used, todays_dated_directory over to user_settings to avoid issues when multiple people are using the program
+# TODO Monitoring files : name (_PC_BATCH_FILE) and place all PC batch csv files into Config Files  Make sure they have the correct prism type naming
 
 import tkinter.messagebox
 import logging.config

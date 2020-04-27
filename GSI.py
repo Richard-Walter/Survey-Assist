@@ -928,13 +928,16 @@ class GSI:
         ts_directory = os.path.dirname(gsi_directory)  # this should return the TS directory
         root_job_directory = os.path.dirname(ts_directory)  # this should return the job directory e.g. 200416
 
-        if (os.path.isdir(root_job_directory + '/TS')) & (os.path.isdir(root_job_directory + '/GPS')) & (
-                os.path.isdir(root_job_directory + '/OUTPUT')):
+        # check if file is in the edited directory of a dated file format folder
+        if (os.path.isdir(root_job_directory + '/TS')) & (os.path.isdir(root_job_directory + '/GPS')) & (os.path.isdir(root_job_directory + '/OUTPUT')):
 
             out_csv_file_path = os.path.join(root_job_directory, os.path.basename(os.path.splitext(gsi_basename)[0] + '_Sorted.csv'))
+            out_gsi_file_path = os.path.join(root_job_directory, os.path.basename(os.path.splitext(gsi_basename)[0] + '_Sorted.gsi'))
 
         else:
             root_job_directory = filedialog.askdirectory(initialdir=gsi_directory, title='PLEASE SELECT THE JOB DIRECTORY TO EXPORT THE CSV')
+            if root_job_directory == "":
+                return      # user cancelled the dialog box
             out_csv_file_path = os.path.join(root_job_directory, os.path.basename(os.path.splitext(gsi_basename)[0] + '_Sorted.csv'))
             out_gsi_file_path = os.path.join(root_job_directory, os.path.basename(os.path.splitext(gsi_basename)[0] + '_Sorted.gsi'))
 
@@ -962,7 +965,7 @@ class GSI:
 
         except Exception as ex:
             print(ex)
-            tkinter.messagebox.showerror("ERROR", "Something went wrong exporting CSV.  Contact Richard")
+            tkinter.messagebox.showerror("ERROR", "Something went wrong exporting CSV.  Contact Richard\n\n" + str(ex))
 
 
         else:
