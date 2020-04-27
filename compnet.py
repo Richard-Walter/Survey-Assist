@@ -90,6 +90,9 @@ class CoordinateFile:
                 except ValueError:
                     # elevation doesnt exist in this coordinate file
                     pass
+                except AttributeError:
+                    # elevation doesnt exist in this coordinate file
+                    pass
                 finally:
                     self.coordinate_dictionary[point_name] = point_coordinate_dict
 
