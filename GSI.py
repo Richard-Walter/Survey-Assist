@@ -412,10 +412,10 @@ class GSI:
                         # Check if the field is '21' so that we can determine precision (3 or 4dp) based on field length
                         if two_digit_id == '21':
                             if len(field) == 24:
-                                self.survey_config.update(SurveyConfiguration.section_instrument, 'instrument_precision', '4dp')
+                                # self.survey_config.update(SurveyConfiguration.section_instrument, 'instrument_precision', '4dp')
                                 self.survey_config.precision_value = '4dp'
                             else:
-                                self.survey_config.update(SurveyConfiguration.section_instrument, 'instrument_precision', '3dp')
+                                # self.survey_config.update(SurveyConfiguration.section_instrument, 'instrument_precision', '3dp')
                                 self.survey_config.precision_value = '3dp'
 
                         # Strip off unnecessary digits and spaces to make the number readable
@@ -1087,7 +1087,7 @@ class GSIDatabase:
                 self.create_table()
 
         except PermissionError:
-            self.logger.exception("Database in use.  Unable to delete until it is closed")
+            self.logger.info("Database in use.  Unable to delete until it is closed")
 
             # Clear table contents - this can happen if another GSI file is opened within the applicaton
             # self.conn.execute(f'DELETE FROM {GSIDatabase.TABLE_NAME}')

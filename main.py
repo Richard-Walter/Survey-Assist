@@ -624,14 +624,11 @@ class MenuBar(tk.Frame):
                             pass
                         else:  # field should be a float
                             field_type = FIELD_TYPE_FLOAT
-                            obs_line_1_field_value = get_numerical_value_from_string(obs_line_1_field_value_str,
-                                                                                     field_type, precision)
+                            obs_line_1_field_value = get_numerical_value_from_string(obs_line_1_field_value_str, field_type, precision)
 
-                            obs_line_2_field_value = get_numerical_value_from_string(obs_line_2_field_value_str,
-                                                                                     field_type, precision)
+                            obs_line_2_field_value = get_numerical_value_from_string(obs_line_2_field_value_str, field_type, precision)
                             if (obs_line_1_field_value != "") and (obs_line_2_field_value != ""):
-                                float_diff_str = str(decimalize_value(obs_line_1_field_value - obs_line_2_field_value,
-                                                                      precision))
+                                float_diff_str = str(decimalize_value(obs_line_1_field_value - obs_line_2_field_value,precision))
                                 float_diff_str = self.check_diff_exceed_tolerance(key, float_diff_str)
                                 obs_line_2_dict[key] = float_diff_str
 
