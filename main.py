@@ -9,6 +9,7 @@ NOTE: For 3.4 compatibility
     ii) had to use an ordered dictionary"""
 
 # TODO Utlity program to print off list of change points
+# TODO TEST RTK DATA import
 # TODO Create a csv from a CRD (consider 2d and 3d) to paste into calc sheet
 # TODO Make popup windows like job diary closer to top left hand corner
 # TODO utility that moves fixed points over to weighted points (consider 2 and 3D)
