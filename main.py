@@ -9,14 +9,13 @@ NOTE: For 3.4 compatibility
     ii) had to use an ordered dictionary"""
 
 # TODO TEST RTK DATA import
-# TODO Make popup windows like job diary closer to top left hand corner
 # TODO Copy GPS from dated directory to GNSS Temp to C:\Temp\GNSS Temp.  Ask user to choose folder.  Prompt to delete existing GPS files
 # TODO Create a csv from a CRD (consider 2d and 3d) to paste into calc sheet
 # TODO Utlity program to print off list of change points
-# TODO - check target heights are the same within and compared to another survey
+# TODO check target heights are the same within and compared to another survey
 # TODO utility that moves fixed points over to weighted points (consider 2 and 3D)
 # TODO move last_used, todays_dated_directory over to user_settings to avoid issues when multiple people are using the program
-# TODO Monitoring files : name (_PC_BATCH_FILE) and place all PC batch csv files into Config Files  Make sure they have the correct prism type naming
+# TODO Monitoring files : create csv files that go into the TS/DATA folder see MS60/Data
 
 import tkinter.messagebox
 import logging.config
@@ -1312,19 +1311,13 @@ class MainWindow(tk.Frame):
 
     @staticmethod
     def position_popup(master, popup_w, popup_h):
+
+        offset_x = 60
+        offset_y = 120
+
         master.update_idletasks()
-        mx = master.winfo_x()
-        my = master.winfo_y()
-        mw = master.winfo_width()
-        mh = master.winfo_height()
 
-        offset_x = 100
-        offset_y = 100
-
-        x = mx + offset_x
-        y = my + offset_y
-
-        return '{}x{}+{}+{}'.format(popup_w, popup_h, x, y)
+        return '{}x{}+{}+{}'.format(popup_w, popup_h, offset_x, offset_y)
 
 
 class ListBoxFrame(tk.Frame):
@@ -2006,8 +1999,8 @@ class CompnetUpdateFixedFileWindow:
 
         container.pack(fill="both", expand=True)
 
-        self.dialog_window.geometry(MainWindow.position_popup(master, 270,
-                                                              140))
+        self.dialog_window.geometry(MainWindow.position_popup(master, 240,180))
+
 
     def update_fixed_file(self):
 
