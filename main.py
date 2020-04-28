@@ -3104,7 +3104,8 @@ def main():
 
     # Create main window
     root = tk.Tk()
-    root.geometry("1600x1000")
+    # root.geometry("1600x1000")
+    root.state('zoomed')
     root.title("SURVEY ASSIST")
     root.wm_iconbitmap(r'icons\analyser.ico')
 
