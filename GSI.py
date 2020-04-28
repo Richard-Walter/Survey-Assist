@@ -968,7 +968,7 @@ class GSI:
 
 
         else:
-            tkinter.messagebox.showerror("EXPORTING CSV", "A sorted GSI, along with a corresoinding CSV file has been created in:\n\n " +
+            tkinter.messagebox.showerror("EXPORTING CSV", "A sorted GSI, along with a corresponding CSV file has been created in:\n\n " +
                                          os.path.dirname(out_csv_file_path))
 
             # open up the file for the user

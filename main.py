@@ -8,6 +8,8 @@ NOTE: For 3.4 compatibility
     i) Replaced f-strings with.format method.
     ii) had to use an ordered dictionary"""
 
+# TODO Copy GPS from dated directory to GNSS Temp to C:\Temp\GNSS Temp.  Ask user to choose folder.  Prompt to delete existing GPS files
+# TODO - check target heights are the same within and compared to another survey
 # TODO Utlity program to print off list of change points
 # TODO TEST RTK DATA import
 # TODO Create a csv from a CRD (consider 2d and 3d) to paste into calc sheet
