@@ -8,12 +8,12 @@ NOTE: For 3.4 compatibility
     i) Replaced f-strings with.format method.
     ii) had to use an ordered dictionary"""
 
-# TODO Copy GPS from dated directory to GNSS Temp to C:\Temp\GNSS Temp.  Ask user to choose folder.  Prompt to delete existing GPS files
-# TODO - check target heights are the same within and compared to another survey
-# TODO Utlity program to print off list of change points
 # TODO TEST RTK DATA import
-# TODO Create a csv from a CRD (consider 2d and 3d) to paste into calc sheet
 # TODO Make popup windows like job diary closer to top left hand corner
+# TODO Copy GPS from dated directory to GNSS Temp to C:\Temp\GNSS Temp.  Ask user to choose folder.  Prompt to delete existing GPS files
+# TODO Create a csv from a CRD (consider 2d and 3d) to paste into calc sheet
+# TODO Utlity program to print off list of change points
+# TODO - check target heights are the same within and compared to another survey
 # TODO utility that moves fixed points over to weighted points (consider 2 and 3D)
 # TODO move last_used, todays_dated_directory over to user_settings to avoid issues when multiple people are using the program
 # TODO Monitoring files : name (_PC_BATCH_FILE) and place all PC batch csv files into Config Files  Make sure they have the correct prism type naming
