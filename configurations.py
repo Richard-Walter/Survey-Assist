@@ -27,7 +27,6 @@ class SurveyConfiguration:
     }
 
     default_file_directories_values = {
-        'last_used': 'GSIFiles/',
         'fixed_file_dir': 'c:/LS/Data/'
     }
 
@@ -57,7 +56,7 @@ class SurveyConfiguration:
         self.sorted_station_config = self.config_parser.get(SurveyConfiguration.section_config_files, 'sorted_station_config')
 
         # FILE DIRECTORIES
-        self.last_used_file_dir = self.config_parser.get(SurveyConfiguration.section_file_directories, 'last_used')
+        self.last_used_file_dir = ""
         self.compnet_data_dir = self.config_parser.get(SurveyConfiguration.section_file_directories, 'compnet_data_dir')
         self.compnet_raw_dir = self.config_parser.get(SurveyConfiguration.section_file_directories, 'compnet_raw_dir')
         self.root_job_directory = self.config_parser.get(SurveyConfiguration.section_file_directories, 'root_job_directory')
@@ -65,7 +64,7 @@ class SurveyConfiguration:
         self.diary_backup = self.config_parser.get(SurveyConfiguration.section_file_directories, 'diary_backup')
         self.current_year = self.config_parser.get(SurveyConfiguration.section_file_directories, 'current_year')
         self.default_survey_type = self.config_parser.get(SurveyConfiguration.section_file_directories, 'default_survey_type')
-        self.todays_dated_directory = self.config_parser.get(SurveyConfiguration.section_file_directories, 'todays_dated_directory')
+        self.todays_dated_directory = ""
         self.current_rail_monitoring_file_name = self.config_parser.get(SurveyConfiguration.section_file_directories,
                                                                         'current_rail_monitoring_file_name')
 

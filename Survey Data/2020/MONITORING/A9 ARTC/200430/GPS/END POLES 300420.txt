@@ -1,0 +1,26 @@
+GPS Export Using GPS RTK.FRT 
+
+Point ID,Easting,Northing,Ortho Height,Antenna Height,Local Ellipsoid Height,3D Coordinate Quality,2D Coordinate Quality,1D Coordinate Quality,Reference Station Point ID,Easting Reference Station,Northing Reference Station,Ortho Height Reference Station,Antenna Ht Reference Station,Local Ellipsoid Height
+
+829849,287338.8702,6216191.9170,150.2077,1.4930,172.5431,0.0090,0.0037,0.0083, , , , , ,                     RTCM-Ref 0,                   291928.7369,                  6221563.0558,                       89.0982,                        0.0000,                      111.4272
+629845,287273.7138,6216092.7978,138.0811,1.4930,160.4158,0.0099,0.0040,0.0090, , , , , ,                     RTCM-Ref 0,                   291928.7369,                  6221563.0558,                       89.0982,                        0.0000,                      111.4272
+
+Check Points,
+
+Job Name: END POLES 130320              
+Description:                                 
+Date of Survey: 13/03/2020
+Surveyor:                 
+Instrument: CS15;250028
+
+
+
+Check Points,
+
+Job Name: END POLES 130320              
+Description:                                 
+Date of Survey: 13/03/2020
+Surveyor:                 
+Instrument: CS15;250028
+
+

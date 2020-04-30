@@ -8,13 +8,12 @@ NOTE: For 3.4 compatibility
     i) Replaced f-strings with.format method.
     ii) had to use an ordered dictionary"""
 
-# TODO TEST RTK DATA import
 # TODO Copy GPS from dated directory to GNSS Temp to C:\Temp\GNSS Temp.  Ask user to choose folder.  Prompt to delete existing GPS files
 # TODO Create a csv from a CRD (consider 2d and 3d) to paste into calc sheet
 # TODO Utlity program to print off list of change points
 # TODO check target heights are the same within and compared to another survey
 # TODO utility that moves fixed points over to weighted points (consider 2 and 3D)
-# TODO remove move last_used, todays_dated_directory from settings file.  Just use these within Survey Assist
+
 # TODO Monitoring files : create csv files that go into the TS/DATA folder see MS60/Data
 
 import tkinter.messagebox
@@ -148,7 +147,7 @@ class MenuBar(tk.Frame):
             intial_directory = os.path.join(survey_config.todays_dated_directory, "TS")
 
         MenuBar.filename_path = tk.filedialog.askopenfilename(initialdir=intial_directory, title="Select file", filetypes=[("GSI Files", ".gsi")])
-        survey_config.update(SurveyConfiguration.section_file_directories, 'last_used', os.path.dirname(MenuBar.filename_path))
+        # survey_config.update(SurveyConfiguration.section_file_directories, 'last_used', os.path.dirname(MenuBar.filename_path))
 
         GUIApplication.refresh()
         self.enable_menus()
@@ -1522,7 +1521,7 @@ class CreateDatedDirectoryWindow:
 
             create_dated_folder = os.path.join(self.selected_directory)
             tk.messagebox.showinfo("Create directory", "Dated directory created in:\n\n" + create_dated_folder)
-            survey_config.update(SurveyConfiguration.section_file_directories, 'todays_dated_directory', new_directory_path)
+            # survey_config.update(SurveyConfiguration.section_file_directories, 'todays_dated_directory', new_directory_path)
             survey_config.todays_dated_directory = new_directory_path
 
         else:
@@ -2427,8 +2426,7 @@ class CombineGSIFilesWindow:
                                                                           title="Please select the sorted station configuration file",
                                                                           filetypes=[("TXT Files", ".txt")])
         if self.sorted_station_list_filepath != "":
-            survey_config.update(SurveyConfiguration.section_config_files, 'sorted_station_config',
-                                 self.sorted_station_list_filepath)
+            survey_config.update(SurveyConfiguration.section_config_files, 'sorted_station_config', self.sorted_station_list_filepath)
             survey_config.sorted_station_config = self.sorted_station_list_filepath
             self.current_config_label.config(text=os.path.basename(self.sorted_station_list_filepath))
 
