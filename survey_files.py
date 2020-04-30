@@ -89,6 +89,8 @@ class SDCard:
 
     def get_todays_gps_files(self):
 
+        todays_date_found = False   # this is used for GPSE.  Only copy over .i or .m files if at least one file with todays date exists
+
         todays_gps_files = set()
 
         if self.dbx_files:
@@ -106,13 +108,14 @@ class SDCard:
                     if Today.todays_date_month_day_format in file.basename:
 
                         todays_gps_files.add(file)
+                        todays_date_found = True
 
                     # some GPSE files (e.g. .i25, .m25) dont have a date.  Just grab them all
                     elif 'GPSE' in file.basename:
                         # if file.file_suffix.upper() in ['.I25', '.I23', '.M25', '.M23']:
                         if any(x in file.file_suffix.upper() for x in ['.I', '.M']):
-
-                            todays_gps_files.add(file)
+                            if todays_date_found:
+                                todays_gps_files.add(file)
 
         if self.data_files:
             for file in self.data_files:
