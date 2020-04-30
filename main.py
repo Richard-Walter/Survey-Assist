@@ -8,7 +8,6 @@ NOTE: For 3.4 compatibility
     i) Replaced f-strings with.format method.
     ii) had to use an ordered dictionary"""
 
-# TODO Create a csv from a CRD (consider 2d and 3d) to paste into calc sheet
 # TODO Utlity program to print off list of change points
 # TODO check target heights are the same within and compared to another survey
 
@@ -124,7 +123,8 @@ class MenuBar(tk.Frame):
         # Utilities menu
         self.utility_sub_menu = tk.Menu(self.menu_bar, tearoff=0)
         self.utility_sub_menu.add_command(label="Export CSV", command=self.export_csv)
-        self.utility_sub_menu.add_command(label="Create temporary CSV from .ASC file", command=self.create_CSV_from_ASC)
+        self.utility_sub_menu.add_command(label="Create popup CSV from .ASC file", command=self.create_CSV_from_ASC)
+        self.utility_sub_menu.add_command(label="Create popup CSV from .CRD file", command=self.create_CSV_from_CRD)
         self.utility_sub_menu.add_command(label="Copy todays GPS to GNSS temp directory", command=self.copy_gps_to_gnss_temp)
 
         self.menu_bar.add_cascade(label="Utilities", menu=self.utility_sub_menu)
@@ -874,6 +874,10 @@ class MenuBar(tk.Frame):
 
         asc_file_path = tk.filedialog.askopenfilename(parent=self.master, initialdir=self.monitoring_job_dir, title="Please select an .asc file",
                                                       filetypes=[("ASC Files", ".ASC")])
+
+        if not asc_file_path:   # user cancel
+            return
+
         # Create the CSV
         csv_file = []
         csv_file.append("POINT,EASTING,NORTHING,ELEVATION\n")
@@ -883,7 +887,7 @@ class MenuBar(tk.Frame):
         asc_coordinate_file = ASCCoordinateFile(asc_file_path)
         coordinate_dict = asc_coordinate_file.coordinate_dictionary
 
-        for point, coordinates in sorted(coordinate_dict.items()):
+        for point, coordinates in coordinate_dict.items():
             easting = coordinates['Eastings']
             northing = coordinates['Northings']
             elevation = ""
@@ -912,6 +916,54 @@ class MenuBar(tk.Frame):
         # Launch excel
         if asc_file_path:
             os.system("start EXCEL.EXE temp_create_csv.csv")
+
+    def create_CSV_from_CRD(self):
+
+        crd_file_path = tk.filedialog.askopenfilename(parent=self.master, initialdir=survey_config.todays_dated_directory, title="Please select a "
+                                                        ".CRD file", filetypes=[("CRD Files", ".CRD")])
+        if not crd_file_path:   # user cancelled
+            return
+
+        # Create the CSV
+        csv_file = []
+        csv_file.append("POINT,EASTING,NORTHING,ELEVATION\n")
+        comma = ','
+
+        # Get the coordinates from the CRD
+        crd_coordinate_file = CRDCoordinateFile(crd_file_path)
+        coordinate_dict = crd_coordinate_file.coordinate_dictionary
+
+        for point, coordinates in coordinate_dict.items():
+            easting = coordinates['Eastings']
+            northing = coordinates['Northings']
+            elevation = ""
+            try:
+                elevation = coordinates['Elevation']
+            except Exception:
+                pass  # elevation may not exist in some coordinate
+            finally:
+
+                csv_line = ""
+
+                # add coordinates to the CSV
+
+                csv_line += point + comma
+                csv_line += easting + comma
+                csv_line += northing + comma
+                csv_line += elevation + '\n'
+
+                csv_file += csv_line
+
+        # Write out file
+        try:
+            with open("temp_create_csv.csv", "w") as f:
+                for line in csv_file:
+                    f.write(line)
+        except Exception as ex:
+            tk.messagebox.showerror("Error creating the CSV", str(ex))
+
+        # Launch excel
+        os.system("start EXCEL.EXE temp_create_csv.csv")
 
     def copy_gps_to_gnss_temp(self):
 
