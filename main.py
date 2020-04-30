@@ -14,7 +14,7 @@ NOTE: For 3.4 compatibility
 # TODO Utlity program to print off list of change points
 # TODO check target heights are the same within and compared to another survey
 # TODO utility that moves fixed points over to weighted points (consider 2 and 3D)
-# TODO move last_used, todays_dated_directory over to user_settings to avoid issues when multiple people are using the program
+# TODO remove move last_used, todays_dated_directory from settings file.  Just use these within Survey Assist
 # TODO Monitoring files : create csv files that go into the TS/DATA folder see MS60/Data
 
 import tkinter.messagebox

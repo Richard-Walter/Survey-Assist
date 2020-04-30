@@ -95,19 +95,24 @@ class SDCard:
 
             for file in self.dbx_files:
 
-                if file.file_type == File.GPS_FILE and Today.todays_date_reversed in file.basename:
-                    todays_gps_files.add(file)
-
-                elif 'GPS' in file.basename and Today.todays_date_month_day_format in file.basename:
-
-                    todays_gps_files.add(file)
-
-                # some GPSE files dont have a date.  These will have to be grabbed regardless if they are from today or not. i
-                elif 'GPSE' in file.basename:
-
-                    if file.file_suffix.upper() in ['.I25', '.I23', '.M25', '.M23']:
-                        # and any(x in file.file_suffix for x in ['.i25', '.m25']):
+                #frist, determine if it is a folder (GPS is viva type)
+                if isinstance(file, GPSFolder):
+                    if Today.todays_date_reversed in file.basename:
                         todays_gps_files.add(file)
+
+                # its a single file (1200 series GPS)
+                elif any(x in file.basename for x in ['GPSE', 'GPSF', 'GPSG', 'GPSH']):
+
+                    if Today.todays_date_month_day_format in file.basename:
+
+                        todays_gps_files.add(file)
+
+                    # some GPSE files (e.g. .i25, .m25) dont have a date.  Just grab them all
+                    elif 'GPSE' in file.basename:
+                        # if file.file_suffix.upper() in ['.I25', '.I23', '.M25', '.M23']:
+                        if any(x in file.file_suffix.upper() for x in ['.I', '.M']):
+
+                            todays_gps_files.add(file)
 
         if self.data_files:
             for file in self.data_files:
