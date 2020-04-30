@@ -105,7 +105,7 @@ class SDCard:
                 # some GPSE files dont have a date.  These will have to be grabbed regardless if they are from today or not. i
                 elif 'GPSE' in file.basename:
 
-                    if file.file_suffix.upper() == '.I25' or file.file_suffix.upper() == '.M25':
+                    if file.file_suffix.upper() in ['.I25', '.I23', '.M25', '.M23']:
                         # and any(x in file.file_suffix for x in ['.i25', '.m25']):
                         todays_gps_files.add(file)
 
@@ -114,7 +114,6 @@ class SDCard:
 
                 if file.file_type == File.GPS_FILE and Today.todays_date_reversed in file.basename:
                     todays_gps_files.add(file)
-
 
         return todays_gps_files
 
