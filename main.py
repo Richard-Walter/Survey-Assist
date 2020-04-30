@@ -206,7 +206,12 @@ class MenuBar(tk.Frame):
                 tk.messagebox.showinfo("IMPORT SD DATA", "Can't find your SD card drive.\n\nPress OK to select your SD drive.")
 
                 user_sd_directory = tkinter.filedialog.askdirectory(parent=self.master, initialdir='C:\\', title='Please choose the SD card drive')
-                self.user_config.update(UserConfiguration.section_file_directories, 'user_sd_root', user_sd_directory)
+
+                if user_sd_directory:
+                    self.user_config.update(UserConfiguration.section_file_directories, 'user_sd_root', user_sd_directory)
+                    self.user_config.user_sd_root = user_sd_directory
+                else:   # user hit cancel
+                    return
             else:
                 user_sd_directory = usb_root_directory
 
