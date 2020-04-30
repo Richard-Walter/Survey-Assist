@@ -264,10 +264,10 @@ class MenuBar(tk.Frame):
             return
 
         # lets copy files over to the dated directory but confirm with user first
-        filenames_txt_list = ""
-        confirm_msg = "The following files will be copied over to " + import_root_directory + "\n\n"
-
         filename_paths = set([file.filepath for file in sd_card.get_list_all_todays_files()])
+        filenames_txt_list = ""
+        confirm_msg = "The following " + str(len(filename_paths)) +" files will be copied over to " + import_root_directory + "\n\n"
+
         for full_file_name in sorted(filename_paths):
             filenames_txt_list += os.path.basename(full_file_name) + '\n'
 
