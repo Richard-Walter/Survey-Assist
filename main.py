@@ -8,11 +8,9 @@ NOTE: For 3.4 compatibility
     i) Replaced f-strings with.format method.
     ii) had to use an ordered dictionary"""
 
-# TODO Copy GPS from dated directory to GNSS Temp to C:\Temp\GNSS Temp.  Ask user to choose folder.  Prompt to delete existing GPS files
 # TODO Create a csv from a CRD (consider 2d and 3d) to paste into calc sheet
 # TODO Utlity program to print off list of change points
 # TODO check target heights are the same within and compared to another survey
-# TODO utility that moves fixed points over to weighted points (consider 2 and 3D)
 
 # TODO Monitoring files : create csv files that go into the TS/DATA folder see MS60/Data
 
@@ -26,6 +24,7 @@ from compnet import CRDCoordinateFile, ASCCoordinateFile, STDCoordinateFile, Coo
 from utilities import *
 from survey_files import *
 from shutil import copyfile
+from distutils.dir_util import copy_tree
 
 todays_date = Today.todays_date
 
@@ -125,8 +124,9 @@ class MenuBar(tk.Frame):
         # Utilities menu
         self.utility_sub_menu = tk.Menu(self.menu_bar, tearoff=0)
         self.utility_sub_menu.add_command(label="Export CSV", command=self.export_csv)
-
         self.utility_sub_menu.add_command(label="Create temporary CSV from .ASC file", command=self.create_CSV_from_ASC)
+        self.utility_sub_menu.add_command(label="Copy todays GPS to GNSS temp directory", command=self.copy_gps_to_gnss_temp)
+
         self.menu_bar.add_cascade(label="Utilities", menu=self.utility_sub_menu)
 
         # Help menu
@@ -209,7 +209,7 @@ class MenuBar(tk.Frame):
                 if user_sd_directory:
                     self.user_config.update(UserConfiguration.section_file_directories, 'user_sd_root', user_sd_directory)
                     self.user_config.user_sd_root = user_sd_directory
-                else:   # user hit cancel
+                else:  # user hit cancel
                     return
             else:
                 user_sd_directory = usb_root_directory
@@ -283,7 +283,7 @@ class MenuBar(tk.Frame):
         # lets copy files over to the dated directory but confirm with user first
         filename_paths = set([file.filepath for file in sd_card.get_list_all_todays_files()])
         filenames_txt_list = ""
-        confirm_msg = "The following " + str(len(filename_paths)) +" files will be copied over to " + import_root_directory + "\n\n"
+        confirm_msg = "The following " + str(len(filename_paths)) + " files will be copied over to " + import_root_directory + "\n\n"
 
         for full_file_name in sorted(filename_paths):
             filenames_txt_list += os.path.basename(full_file_name) + '\n'
@@ -913,6 +913,53 @@ class MenuBar(tk.Frame):
         if asc_file_path:
             os.system("start EXCEL.EXE temp_create_csv.csv")
 
+    def copy_gps_to_gnss_temp(self):
+
+        try:
+            if not os.path.exists(survey_config.gnss_temp_dir):
+                os.makedirs(survey_config.gnss_temp_dir)
+
+            gnss_dir_path = tk.filedialog.askdirectory(parent=self.master, initialdir=survey_config.gnss_temp_dir, title="Please choose the temp GNSS "
+                                                                                                                          "job directory")
+
+            if not gnss_dir_path:  # use cancelled the dialog box
+                return
+
+            confirm_msg = "All GPS files in "+ gnss_dir_path + " will be deleted before copying across todays GNSS files.\n\nAre you sure " \
+                                                                    "you want to continue?"
+            if tk.messagebox.askokcancel("Copy GPS files to GNSS Temp", confirm_msg):
+
+                todays_dated_directory = survey_config.todays_dated_directory
+
+                if not todays_dated_directory:
+                    todays_GPS_directory = tk.filedialog.askdirectory(parent=self.master, initialdir=survey_config.root_job_directory,
+                                                                      title="Please choose the GPS directory containing the GPS files you wish to "
+                                                                            "transfer ")
+                else:
+                    todays_GPS_directory = os.path.join(todays_dated_directory, 'GPS')
+
+                if not todays_GPS_directory:
+                    return  # user cancelled
+
+                # remove existing files in the temp directory
+                # for filename in os.listdir(gnss_dir_path):
+                #     filepath = os.path.join(gnss_dir_path, filename)
+                #     os.remove(filepath)
+                shutil.rmtree(gnss_dir_path)
+
+                # copy over GPS files
+                # for file in os.listdir(todays_GPS_directory):
+                #     shutil.copyfile(os.path.join(file, todays_GPS_directory), os.path.join(gnss_dir_path, file))
+                copy_tree(todays_GPS_directory, gnss_dir_path)
+
+                tk.messagebox.showinfo("Copying GPS files", "GPS files successfully copied over.")
+
+            else:  # cancel the copying of files
+                return
+        except Exception as ex:
+            print(ex)
+            tk.messagebox.showerror("Copying GPS files", "AN unexpected error has occured.\n\n" + str(ex))
+
     @staticmethod
     def job_diary():
 
@@ -1328,7 +1375,6 @@ class MainWindow(tk.Frame):
 
     @staticmethod
     def position_popup(master, popup_w, popup_h):
-
         offset_x = 20
         offset_y = 20
 
@@ -2016,8 +2062,7 @@ class CompnetUpdateFixedFileWindow:
 
         container.pack(fill="both", expand=True)
 
-        self.dialog_window.geometry(MainWindow.position_popup(master, 240,180))
-
+        self.dialog_window.geometry(MainWindow.position_popup(master, 240, 180))
 
     def update_fixed_file(self):
 
