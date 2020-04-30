@@ -1312,8 +1312,8 @@ class MainWindow(tk.Frame):
     @staticmethod
     def position_popup(master, popup_w, popup_h):
 
-        offset_x = 60
-        offset_y = 120
+        offset_x = 20
+        offset_y = 20
 
         master.update_idletasks()
 
@@ -2721,7 +2721,7 @@ class JobDiaryWindow:
 
         self.diary_entries.bind("<<TreeviewSelect>>", self.activate_record)
 
-        self.master.geometry(MainWindow.position_popup(self.master, 1100, 900))
+        self.master.geometry(MainWindow.position_popup(self.master, 1100, 700))
 
         self.backup_diary()
 
