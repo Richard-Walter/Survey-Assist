@@ -262,7 +262,20 @@ class MenuBar(tk.Frame):
             import_root_directory = tkinter.filedialog.askdirectory(parent=self.master, initialdir=self.monitoring_job_dir,
                                                                     title='Choose the job root directory where you would like to import the SD data '
                                                                           'to')
-            survey_config.todays_dated_directory = import_root_directory
+            # check that the user has choosen a dated directory
+            folders = []
+            files = os.listdir(import_root_directory)
+            for f in files:
+                if os.path.isdir(os.path.join(import_root_directory, f)):
+                    folders.append(f)
+
+            if all(x in folders for x in ['GPS', 'TS', 'OUTPUT', 'OTHER']):
+
+                survey_config.todays_dated_directory = import_root_directory
+
+            else:
+                tk.messagebox.showerror("COPYING SD DATA", "The root job folder is not a dated dirctory.  Please try re-importing")
+                return
 
         if not import_root_directory:
             # user has closed down the ask directory so exit import sd
@@ -338,7 +351,7 @@ class MenuBar(tk.Frame):
                             shutil.copy(file.filepath, import_path)
 
                         if file.file_suffix.upper() == File.GSI_FILE_SUFFIX:
-                            # Check and copy over gsi to edited diretory if it exists
+                            # Check and copy over gsi to edited directory if it exists
                             self.copy_over_gsi_to_edited_directory(file, import_path, is_rail_survey)
 
 
