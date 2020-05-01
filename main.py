@@ -4,13 +4,13 @@
 in a clearer, more user-friendly format.  You can then execute queries on this data to extract relevant information.
 It also checks for survey errors in a survey, and contains some utilities to help with CompNet.
 
-NOTE: For 3.4 compatibility
-    i) Replaced f-strings with.format method.
-    ii) had to use an ordered dictionary"""
+VERSION HISTORY
+---------------
+v1.0 Initial Release
 
-# TODO Utlity program to print off list of change points
+"""
+
 # TODO check target heights are the same within and compared to another survey
-
 # TODO Monitoring files : create csv files that go into the TS/DATA folder see MS60/Data
 
 import tkinter.messagebox
@@ -126,6 +126,7 @@ class MenuBar(tk.Frame):
         self.utility_sub_menu.add_command(label="Create popup CSV from .ASC file", command=self.create_CSV_from_ASC)
         self.utility_sub_menu.add_command(label="Create popup CSV from .CRD file", command=self.create_CSV_from_CRD)
         self.utility_sub_menu.add_command(label="Copy todays GPS to GNSS temp directory", command=self.copy_gps_to_gnss_temp)
+        self.utility_sub_menu.add_command(label="Create printable list of change points", command=self.create_list_of_change_points)
 
         self.menu_bar.add_cascade(label="Utilities", menu=self.utility_sub_menu)
 
@@ -875,7 +876,7 @@ class MenuBar(tk.Frame):
         asc_file_path = tk.filedialog.askopenfilename(parent=self.master, initialdir=self.monitoring_job_dir, title="Please select an .asc file",
                                                       filetypes=[("ASC Files", ".ASC")])
 
-        if not asc_file_path:   # user cancel
+        if not asc_file_path:  # user cancel
             return
 
         # Create the CSV
@@ -920,8 +921,9 @@ class MenuBar(tk.Frame):
     def create_CSV_from_CRD(self):
 
         crd_file_path = tk.filedialog.askopenfilename(parent=self.master, initialdir=survey_config.todays_dated_directory, title="Please select a "
-                                                        ".CRD file", filetypes=[("CRD Files", ".CRD")])
-        if not crd_file_path:   # user cancelled
+                                                                                                                                 ".CRD file",
+                                                      filetypes=[("CRD Files", ".CRD")])
+        if not crd_file_path:  # user cancelled
             return
 
         # Create the CSV
@@ -971,14 +973,15 @@ class MenuBar(tk.Frame):
             if not os.path.exists(survey_config.gnss_temp_dir):
                 os.makedirs(survey_config.gnss_temp_dir)
 
-            gnss_dir_path = tk.filedialog.askdirectory(parent=self.master, initialdir=survey_config.gnss_temp_dir, title="Please choose the temp GNSS "
-                                                                                                                          "job directory")
+            gnss_dir_path = tk.filedialog.askdirectory(parent=self.master, initialdir=survey_config.gnss_temp_dir,
+                                                       title="Please choose the temp GNSS "
+                                                             "job directory")
 
             if not gnss_dir_path:  # use cancelled the dialog box
                 return
 
-            confirm_msg = "All GPS files in "+ gnss_dir_path + " will be deleted before copying across todays GNSS files.\n\nAre you sure " \
-                                                                    "you want to continue?"
+            confirm_msg = "All GPS files in " + gnss_dir_path + " will be deleted before copying across todays GNSS files.\n\nAre you sure " \
+                                                                "you want to continue?"
             if tk.messagebox.askokcancel("Copy GPS files to GNSS Temp", confirm_msg):
 
                 todays_dated_directory = survey_config.todays_dated_directory
@@ -1011,6 +1014,62 @@ class MenuBar(tk.Frame):
         except Exception as ex:
             print(ex)
             tk.messagebox.showerror("Copying GPS files", "AN unexpected error has occured.\n\n" + str(ex))
+
+    def create_list_of_change_points(self):
+
+        change_point_list_text = ""
+
+        if not MenuBar.filename_path:
+            self.choose_gsi_file()
+
+        if not MenuBar.filename_path:   # no gsi open
+            return
+
+        change_points = []
+
+        # get a list of stations
+        control_points_dict = gsi.get_list_of_control_points(gsi.formatted_lines)
+
+        # determine change points. First create a point id list
+        point_id_list = []
+        for formatted_line in gsi.formatted_lines:
+            point_id_list.append(formatted_line['Point_ID'])
+
+        point_id_frequency = Counter(point_id_list)
+
+        # if point_id occurs more than 4 times its probably a change point
+        for point_id, count in point_id_frequency.items():
+            if count > 3:
+                if point_id in control_points_dict.values():
+                    continue    # dont add stations to change point list
+                else:
+                    change_points.append(point_id)
+
+        # determine the change points for each station setup
+        for line_number, control_name in control_points_dict.items():
+            shots_from_station = gsi.get_all_shots_from_a_station_including_setup(control_name, line_number)
+
+            station_change_points = set()
+
+            for formatted_line in shots_from_station.values():
+                if gsi.is_control_point(formatted_line):    # should only ever be one
+                    change_point_list_text += "@" + control_name +'\n'
+                elif formatted_line['Point_ID'] in change_points:
+                    station_change_points.add(formatted_line['Point_ID'])
+
+            # formatted the file to write out
+            for change_point in sorted(station_change_points):
+                change_point_list_text += "   " + change_point + '\n'
+
+        # Write out file
+        try:
+            with open("C:\SurveyAssist\change_point_list.txt", "w") as f:
+                f.write(change_point_list_text)
+        except Exception as ex:
+            tk.messagebox.showerror("Error creating the change point list", str(ex))
+
+        # Launch text file
+        os.startfile("C:\SurveyAssist\change_point_list.txt")
 
     @staticmethod
     def job_diary():
@@ -3218,7 +3277,7 @@ def main():
     survey_config = SurveyConfiguration()
 
     # Setup logger
-    logger = logging.getLogger('Survey Assist')
+    logger = logging.getLogger('Survey Assist - v1.0')
     configure_logger()
 
     gsi = GSI(logger, survey_config)
