@@ -634,22 +634,43 @@ class GSI:
 
     def get_change_points(self):
 
-        change_points = set()
+        change_points = []
+        control_points_dict = self.get_list_of_control_points(self.formatted_lines)
 
-        # list of point_IDs used for determining change points
+        # First, create a list of all point_ids and there frequency of occurrence
         point_id_list = []
-
         for formatted_line in self.formatted_lines:
             point_id_list.append(formatted_line['Point_ID'])
 
-        # if point ID occurs 8 times then it probably is a change point
-        point_id_frequency = Counter(point_id_list);
+        point_id_frequency = Counter(point_id_list)
 
+        # Next, determine if point_id is change point - i.e. if it occurs more than 4 times its probably a change point
         for point_id, count in point_id_frequency.items():
-            if count > 7:
-                change_points.add(point_id)
+            if count > 3:
+                if point_id in control_points_dict.values():
+                    continue  # dont add stations to change point list
+                else:
+                    change_points.append(point_id)
 
         return sorted(change_points)
+
+        # old code
+        # change_points = set()
+        #
+        # # list of point_IDs used for determining change points
+        # point_id_list = []
+        #
+        # for formatted_line in self.formatted_lines:
+        #     point_id_list.append(formatted_line['Point_ID'])
+        #
+        # # if point ID occurs 8 times then it probably is a change point
+        # point_id_frequency = Counter(point_id_list);
+        #
+        # for point_id, count in point_id_frequency.items():
+        #     if count > 7:
+        #         change_points.add(point_id)
+        #
+        # return sorted(change_points)
 
     # Create a new GSI with suffix that contains only control.  ALl other shots are removed from the GSI
 

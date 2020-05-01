@@ -9,7 +9,6 @@ VERSION HISTORY
 v1.0 Initial Release
 
 """
-# TODO redo get change point list based on create prinatable list of change points
 # TODO check target heights are the same compared to another survey - make this just compare with another survey
 
 
@@ -1081,25 +1080,26 @@ class MenuBar(tk.Frame):
         if not MenuBar.filename_path:  # no gsi open
             return
 
-        change_points = []
+        change_points = gsi.get_change_points()
+        # change_points = []
 
         # get a list of stations
         control_points_dict = gsi.get_list_of_control_points(gsi.formatted_lines)
 
-        # determine change points. First create a point id list
-        point_id_list = []
-        for formatted_line in gsi.formatted_lines:
-            point_id_list.append(formatted_line['Point_ID'])
-
-        point_id_frequency = Counter(point_id_list)
-
-        # if point_id occurs more than 4 times its probably a change point
-        for point_id, count in point_id_frequency.items():
-            if count > 3:
-                if point_id in control_points_dict.values():
-                    continue  # dont add stations to change point list
-                else:
-                    change_points.append(point_id)
+        # # determine change points. First create a point id list
+        # point_id_list = []
+        # for formatted_line in gsi.formatted_lines:
+        #     point_id_list.append(formatted_line['Point_ID'])
+        #
+        # point_id_frequency = Counter(point_id_list)
+        #
+        # # if point_id occurs more than 4 times its probably a change point
+        # for point_id, count in point_id_frequency.items():
+        #     if count > 3:
+        #         if point_id in control_points_dict.values():
+        #             continue  # dont add stations to change point list
+        #         else:
+        #             change_points.append(point_id)
 
         # determine the change points for each station setup
         for line_number, control_name in control_points_dict.items():
