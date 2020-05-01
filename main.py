@@ -76,7 +76,7 @@ class MenuBar(tk.Frame):
         self.file_sub_menu.add_command(label="Create Job Directory...", command=self.new_job_directoy)
         self.file_sub_menu.add_command(label="Import SD Data", command=self.import_sd_data)
         self.file_sub_menu.add_separator()
-        self.file_sub_menu.add_command(label="Monitoring - Create", command=self.monitoring_create)
+        self.file_sub_menu.add_command(label="Monitoring - Create (beta)", command=self.monitoring_create)
         self.file_sub_menu.add_command(label="Monitoring - Update Coordinates", command=self.monitoring_update_coords, state="disabled")
         self.file_sub_menu.add_command(label="Monitoring - Update Labels", command=self.monitoring_update_labels, state="disabled")
         self.file_sub_menu.add_command(label="Monitoring - Rename Updated Files", command=self.monitoring_rename_updated_files, state="disabled")
@@ -450,24 +450,7 @@ class MenuBar(tk.Frame):
                 for coordinates in coordinate_list.values():
                     wr.writerow(coordinates)
 
-            # csv_line = ""
-            #
-            # # add coordinates to the CSV
-            #
-            # csv_line += point + comma
-            # csv_line += easting + comma
-            # csv_line += northing + comma
-            # csv_line += elevation + '\n'
-            #
-            # csv_file += csv_line
-            #
-            # # Write out file
-            # try:
-            #     with open("temp_create_csv.csv", "w") as f:
-            #         for line in csv_file:
-            #             f.write(line)
-            # except Exception as ex:
-            #     tk.messagebox.showerror("Error creating the CSV", str(ex))
+        tk.messagebox.showinfo("Create Monitoring Files", "Monitoring files have been created at " + monitoring_files_dir)
 
     def monitoring_update_coords(self):
         pass
