@@ -105,7 +105,7 @@ class MenuBar(tk.Frame):
         self.check_sub_menu.add_command(label="Check FL-FR", command=self.check_FLFR)
         self.check_sub_menu.add_command(label="Check All", command=self.check_3d_all)
         self.check_sub_menu.add_separator()
-        self.check_sub_menu.add_command(label="Compare Prism Constants to a similar survey...", command=self.compare_survey)
+        self.check_sub_menu.add_command(label="Compare with a similar survey...", command=self.compare_survey)
         self.check_sub_menu.add_command(label="Query GSI...", command=self.display_query_input_box)
         self.menu_bar.add_cascade(label="Check Survey", menu=self.check_sub_menu, state="disabled")
 
@@ -444,7 +444,7 @@ class MenuBar(tk.Frame):
             monitoring_files_dir = os.path.join(os.getcwd(), 'Monitoring Files')
             out_csv = os.path.join(monitoring_files_dir, station_name + '.csv')
 
-            with open(out_csv, 'w',  newline='') as my_file:
+            with open(out_csv, 'w', newline='') as my_file:
                 wr = csv.writer(my_file)
                 for coordinates in coordinate_list.values():
                     wr.writerow(coordinates)
@@ -788,7 +788,7 @@ class MenuBar(tk.Frame):
         points_diff_PC_dict = {}
 
         old_survey_filepath = tk.filedialog.askopenfilename(parent=self.master, initialdir=self.monitoring_job_dir,
-                                                            filetypes=[("GSI Files", ".GSI")])
+                                                            title="Please choose a similar survey", filetypes=[("GSI Files", ".GSI")])
         old_survey_gsi = GSI(logger, survey_config)
         old_survey_gsi.format_gsi(old_survey_filepath)
         old_survey_formatted_lines_except_setups = old_survey_gsi.get_all_lines_except_setup()
@@ -825,11 +825,13 @@ class MenuBar(tk.Frame):
                     if old_PC != current_PC:
                         points_diff_PC_dict[current_point_ID] = {'current pc': current_PC, 'old_pc': old_PC}
                         line_number_errors.append(line_number)
-                        error_text += '   Line ' + str(line_number) + ':  ' + current_point_ID + '----> current PC: ' + current_PC + '    ' \
-                                                                                                                                     'old PC: ' + old_PC + '\n'
+                        # error_text += current_point_ID + '----> current PC: ' + current_PC + '    old PC: ' + old_PC + '\n'
 
         # check if any errors found
         if points_diff_PC_dict:
+            for point, differences_dict in points_diff_PC_dict.items():
+                error_text += point + '----> current PC: ' + differences_dict['current pc'] + '    old PC: ' + differences_dict['old_pc'] + '\n'
+
             dislpay_text = error_text + '\n\nThese will be highlighted in yellow'
 
         else:
