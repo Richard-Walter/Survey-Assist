@@ -10,7 +10,7 @@ v1.0 Initial Release
 
 """
 
-# TODO check target heights are the same within and compared to another survey
+# TODO check target heights are the same compared to another survey
 # TODO Monitoring files : create csv files that go into the TS/DATA folder see MS60/Data
 
 import tkinter.messagebox
@@ -101,6 +101,7 @@ class MenuBar(tk.Frame):
         self.check_sub_menu.add_command(label="Check Tolerances (3D Only)", command=self.check_3d_survey)
         self.check_sub_menu.add_command(label="Check Control Naming ", command=self.check_control_naming)
         self.check_sub_menu.add_command(label="Check Prism Constants", command=self.check_prism_constants)
+        self.check_sub_menu.add_command(label="Check Target Heights", command=self.check_target_heights)
         self.check_sub_menu.add_command(label="Check FL-FR", command=self.check_FLFR)
         self.check_sub_menu.add_command(label="Check All", command=self.check_3d_all)
         self.check_sub_menu.add_separator()
@@ -521,6 +522,19 @@ class MenuBar(tk.Frame):
             logger.exception('Error checking prism constants')
             tk.messagebox.showerror("Error", 'Error checking prism constants:\n\n' + str(ex))
 
+    def check_target_heights(self):
+
+        try:
+            error_text, error_line_numbers = gsi.check_target_heights()
+
+            # display error dialog box
+            tkinter.messagebox.showinfo("Checking Target Heights", error_text)
+            gui_app.list_box.populate(gsi.formatted_lines, error_line_numbers)
+
+        except Exception as ex:
+            logger.exception('Error checking target heights')
+            tk.messagebox.showerror("Error", 'Error checking target heights:\n\n' + str(ex))
+
     def check_FLFR(self, display='YES'):
 
         error_line_number_list = []
@@ -698,6 +712,7 @@ class MenuBar(tk.Frame):
         self.check_FLFR('NO')
         self.check_control_naming()
         self.check_prism_constants()
+        self.check_target_heights()
         self.check_3d_survey()
 
     def change_target_height(self):

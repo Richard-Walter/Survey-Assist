@@ -682,7 +682,7 @@ class GSI:
     def check_prism_constants(self):
 
         error_text = "WARNING!  The following Point ID's have more than one prism Constant:\n\n"
-        dialog_text = 'Prism constants for each Point_ID are consistent throughout this survey'
+        dialog_text = 'Prism constants for each Point ID are consistent throughout this survey'
         point_id_pc_dict = {}
         point_id_errors = []
         line_number_errors = []
@@ -722,6 +722,55 @@ class GSI:
                             line_number_errors.append(line_number)
                             dialog_error_line_list_text += 'Line No. ' + str(line_number) + ':  ' + formatted_line[
                                 'Point_ID'] + '---> prism constant: ' + formatted_line['Prism_Constant'] + '\n'
+
+            dialog_text += dialog_point_list_text + '\n' + dialog_error_line_list_text
+
+        return dialog_text, line_number_errors
+
+    # lets check the survey and make sure the prism constant for a point_ID is the same throughout the survey
+    def check_target_heights(self):
+
+        error_text = "WARNING!  The following Point ID's have more than one target height:\n\n"
+        dialog_text = 'Target heights for each Point ID are consistent throughout this survey'
+        point_id_target_height_dict = {}
+        point_id_errors = []
+        line_number_errors = []
+
+        all_shots_except_setups = self.get_all_lines_except_setup()
+
+        for formatted_line in all_shots_except_setups:
+            point_id = formatted_line['Point_ID']
+            target_height = formatted_line['Target_Height']
+            # add empty set if not already defined
+            point_id_target_height_dict.setdefault(point_id, set())
+
+            # add target height to a set of target heights for this point-id
+            point_id_target_height_dict[point_id].add(target_height)
+
+        # check if the target height list for each point id contains only 1 target height.  If not - error found
+        for point_id, target_height_set in point_id_target_height_dict.items():
+            if len(target_height_set) > 1:
+                point_id_errors.append(point_id)
+
+        # any errors?
+        if point_id_errors:
+            dialog_point_list_text = ""
+            dialog_error_line_list_text = ""
+            dialog_text = error_text
+
+            # Lets add a list of points tothat contains errors so we can notify the user
+            for point_id in point_id_errors:
+                dialog_point_list_text += point_id + '\n'
+                dialog_error_line_list_text += '\n'
+
+                for line_number, formatted_line in enumerate(self.formatted_lines):
+
+                    line_number += 1
+                    if point_id == formatted_line['Point_ID']:
+                        if not self.is_control_point(formatted_line):
+                            line_number_errors.append(line_number)
+                            dialog_error_line_list_text += 'Line No. ' + str(line_number) + ':  ' + formatted_line[
+                                'Point_ID'] + '---> target height: ' + formatted_line['Target_Height'] + '\n'
 
             dialog_text += dialog_point_list_text + '\n' + dialog_error_line_list_text
 
