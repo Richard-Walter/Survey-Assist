@@ -11,7 +11,7 @@ v1.0 Initial Release
 """
 
 # TODO check target heights are the same compared to another survey
-# TODO Monitoring files : create csv files that go into the TS/DATA folder see MS60/Data
+
 
 import tkinter.messagebox
 import logging.config
@@ -24,6 +24,7 @@ from utilities import *
 from survey_files import *
 from shutil import copyfile
 from distutils.dir_util import copy_tree
+from itertools import groupby
 
 todays_date = Today.todays_date
 
@@ -75,7 +76,7 @@ class MenuBar(tk.Frame):
         self.file_sub_menu.add_command(label="Create Job Directory...", command=self.new_job_directoy)
         self.file_sub_menu.add_command(label="Import SD Data", command=self.import_sd_data)
         self.file_sub_menu.add_separator()
-        self.file_sub_menu.add_command(label="Monitoring - Create", command=self.monitoring_create, state="disabled")
+        self.file_sub_menu.add_command(label="Monitoring - Create", command=self.monitoring_create)
         self.file_sub_menu.add_command(label="Monitoring - Update Coordinates", command=self.monitoring_update_coords, state="disabled")
         self.file_sub_menu.add_command(label="Monitoring - Update Labels", command=self.monitoring_update_labels, state="disabled")
         self.file_sub_menu.add_command(label="Monitoring - Rename Updated Files", command=self.monitoring_rename_updated_files, state="disabled")
@@ -409,7 +410,64 @@ class MenuBar(tk.Frame):
         return gsi_filenames
 
     def monitoring_create(self):
-        pass
+
+        if not MenuBar.filename_path:
+            self.choose_gsi_file()
+
+        if not MenuBar.filename_path:  # user cancelled
+            return
+
+        csv_dict = {}
+
+        station_list_dict = gsi.get_list_of_control_points(gsi.formatted_lines)
+
+        for line_number, station_name in station_list_dict.items():
+
+            coordinate_dict = OrderedDict()
+
+            station_shots_dict = gsi.get_all_shots_from_a_station_including_setup(station_name, line_number)
+
+            # Create a csv for each of the station shots
+            for formatted_line in station_shots_dict.values():
+
+                if gsi.is_control_point(formatted_line):
+                    continue
+
+                coordinate_dict[formatted_line['Point_ID']] = [formatted_line['Point_ID'], formatted_line['Easting'], formatted_line['Northing'],
+                                                               formatted_line['Elevation']]
+
+            csv_dict[station_name] = coordinate_dict
+
+        # csv_file_dict = {k: list(v) for (k, v) in groupby(csv_line, lambda x: x[0])}
+
+        # export monitoring files
+        for station_name, coordinate_list in csv_dict.items():
+            monitoring_files_dir = os.path.join(os.getcwd(), 'Monitoring Files')
+            out_csv = os.path.join(monitoring_files_dir, station_name + '.csv')
+
+            with open(out_csv, 'w',  newline='') as my_file:
+                wr = csv.writer(my_file)
+                for coordinates in coordinate_list.values():
+                    wr.writerow(coordinates)
+
+            # csv_line = ""
+            #
+            # # add coordinates to the CSV
+            #
+            # csv_line += point + comma
+            # csv_line += easting + comma
+            # csv_line += northing + comma
+            # csv_line += elevation + '\n'
+            #
+            # csv_file += csv_line
+            #
+            # # Write out file
+            # try:
+            #     with open("temp_create_csv.csv", "w") as f:
+            #         for line in csv_file:
+            #             f.write(line)
+            # except Exception as ex:
+            #     tk.messagebox.showerror("Error creating the CSV", str(ex))
 
     def monitoring_update_coords(self):
         pass
@@ -1037,7 +1095,7 @@ class MenuBar(tk.Frame):
         if not MenuBar.filename_path:
             self.choose_gsi_file()
 
-        if not MenuBar.filename_path:   # no gsi open
+        if not MenuBar.filename_path:  # no gsi open
             return
 
         change_points = []
@@ -1056,7 +1114,7 @@ class MenuBar(tk.Frame):
         for point_id, count in point_id_frequency.items():
             if count > 3:
                 if point_id in control_points_dict.values():
-                    continue    # dont add stations to change point list
+                    continue  # dont add stations to change point list
                 else:
                     change_points.append(point_id)
 
@@ -1067,8 +1125,8 @@ class MenuBar(tk.Frame):
             station_change_points = set()
 
             for formatted_line in shots_from_station.values():
-                if gsi.is_control_point(formatted_line):    # should only ever be one
-                    change_point_list_text += "@" + control_name +'\n'
+                if gsi.is_control_point(formatted_line):  # should only ever be one
+                    change_point_list_text += "@" + control_name + '\n'
                 elif formatted_line['Point_ID'] in change_points:
                     station_change_points.add(formatted_line['Point_ID'])
 
