@@ -10,7 +10,7 @@ v1.0 Initial Release
 
 """
 
-# TODO check target heights are the same compared to another survey
+# TODO check target heights are the same compared to another survey - make this just compare with another survey
 
 
 import tkinter.messagebox
