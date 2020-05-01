@@ -9,7 +9,7 @@ VERSION HISTORY
 v1.0 Initial Release
 
 """
-
+# TODO redo get change point list based on create prinatable list of change points
 # TODO check target heights are the same compared to another survey - make this just compare with another survey
 
 
@@ -1492,6 +1492,10 @@ class WorkflowBar(tk.Frame):
         self.btn_import_sd_data.configure(background='#FCF1E1')
         self.btn_open_gsi = tk.Button(self.frame, text="Open GSI", command=lambda: gui_app.menu_bar.choose_gsi_file())
         self.btn_open_gsi.configure(background='#FCF1E1')
+        self.lbl_edit_gsi = tk.Label(self.frame, text="Edit GSI", borderwidth=2, relief="groove", padx=4, pady=4)
+        self.lbl_edit_gsi.configure(background='#FCF1E1')
+        self.btn_check_survey = tk.Button(self.frame, text="Check Survey", command=lambda: gui_app.menu_bar.check_3d_all())
+        self.btn_check_survey.configure(background='#FCF1E1')
         self.btn_export_csv = tk.Button(self.frame, text="Export GSI as CSV", command=lambda: gui_app.menu_bar.export_csv())
         self.btn_export_csv.configure(background='#FCF1E1')
 
@@ -1504,6 +1508,8 @@ class WorkflowBar(tk.Frame):
         self.btn_update_fixed_file.configure(background='#FCF1E1')
         self.btn_weight_std_file = tk.Button(self.frame, text="Weight STD File", command=lambda: gui_app.menu_bar.weight_STD_file())
         self.btn_weight_std_file.configure(background='#FCF1E1')
+        self.btn_csv_from_crd = tk.Button(self.frame, text="Popup CSV from CRD", command=lambda: gui_app.menu_bar.create_CSV_from_CRD())
+        self.btn_csv_from_crd.configure(background='#FCF1E1')
 
         # Redisplay observations button
         self.btn_re_display_gsi = tk.Button(self.frame, text="Re-display GSI", command=lambda: gui_app.menu_bar.re_display_gsi())
@@ -1515,6 +1521,8 @@ class WorkflowBar(tk.Frame):
         self.btn_create_directory_today.pack(padx=5, pady=5, side='left')
         self.btn_import_sd_data.pack(padx=5, pady=5, side='left')
         self.btn_open_gsi.pack(padx=5, pady=5, side='left')
+        self.lbl_edit_gsi.pack(padx=5, pady=5, side='left')
+        self.btn_check_survey.pack(padx=5, pady=5, side='left')
         self.btn_export_csv.pack(padx=5, pady=5, side='left')
 
         # pack compnet workflow
@@ -1522,6 +1530,7 @@ class WorkflowBar(tk.Frame):
         self.btn_compnet_new_job.pack(padx=5, pady=5, side='left')
         self.btn_update_fixed_file.pack(padx=5, pady=5, side='left')
         self.btn_weight_std_file.pack(padx=5, pady=5, side='left')
+        self.btn_csv_from_crd.pack(padx=5, pady=5, side='left')
 
         # pack re-display observations
         self.btn_re_display_gsi.pack(padx=20, pady=5, side='right')
