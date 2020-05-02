@@ -9,8 +9,6 @@ VERSION HISTORY
 v1.0 Initial Release
 
 """
-# TODO check point names are same as similar survey
-
 
 import tkinter.messagebox
 import logging.config
@@ -790,6 +788,8 @@ class MenuBar(tk.Frame):
 
         points_pc_diff_dict = {}
         points_target_height_diff_dict = {}
+        old_point_ids = set()
+        new_point_ids = set()
 
         old_survey_filepath = tk.filedialog.askopenfilename(parent=self.master, initialdir=self.monitoring_job_dir,
                                                             title="Please choose a similar survey", filetypes=[("GSI Files", ".GSI")])
@@ -801,7 +801,7 @@ class MenuBar(tk.Frame):
         line_number_errors = set()
 
         dialog_subject = "Survey Comparision"
-        all_good_text = "Prism constants and target heights match between surveys "
+        all_good_text = "Point naming, prism constants and target heights match between surveys "
         error_text = "A difference between the two surveys was found:\n\n"
 
         # Create a dictionary of points and their prism constant.
@@ -811,6 +811,7 @@ class MenuBar(tk.Frame):
             old_point_compare_dict[formatted_line['Point_ID'] + str(index)] = {'old_point_id': formatted_line['Point_ID'],
                                                                                'Prism_Constant': formatted_line['Prism_Constant'],
                                                                                'Target_Height': formatted_line['Target_Height']}
+            old_point_ids.add(formatted_line['Point_ID'])
 
         # for each point and its corresponding PC in old survey, check to see it matches PC in current survey
         for old_compare_values_list in old_point_compare_dict.values():
@@ -821,41 +822,56 @@ class MenuBar(tk.Frame):
                 if gsi.is_control_point(current_gsi_line):
                     continue
 
-                current_point_ID = current_gsi_line['Point_ID']
+                current_point_id = current_gsi_line['Point_ID']
                 current_PC = current_gsi_line['Prism_Constant']
                 current_target_height = current_gsi_line['Target_Height']
 
-                if old_compare_values_list['old_point_id'] == current_point_ID:
+                new_point_ids.add(current_point_id)
+
+                if old_compare_values_list['old_point_id'] == current_point_id:
 
                     # Compare PC - they should be the same.  If not report to user
                     if old_compare_values_list['Prism_Constant'] != current_PC:
-                        points_pc_diff_dict[current_point_ID] = {'current_pc': current_PC, 'old_pc': old_compare_values_list['Prism_Constant']}
+                        points_pc_diff_dict[current_point_id] = {'current_pc': current_PC, 'old_pc': old_compare_values_list['Prism_Constant']}
                         line_number_errors.add(line_number)
 
                     # Compare target height - they should be the same.  If not report to user
-                    print(current_point_ID + "  " + old_compare_values_list['Target_Height'])
+                    print(current_point_id + "  " + old_compare_values_list['Target_Height'])
                     if old_compare_values_list['Target_Height'] != current_target_height:
-                        points_target_height_diff_dict[current_point_ID] = {'current_target_height': current_target_height,
+                        points_target_height_diff_dict[current_point_id] = {'current_target_height': current_target_height,
                                                                             'old_target_height': old_compare_values_list['Target_Height']}
                         line_number_errors.add(line_number)
 
+        # get list of points if any, that are different between the two surveys
+        diff_points = sorted((new_point_ids.difference(old_point_ids)))
+
         # check if any errors found
-        if points_pc_diff_dict or points_target_height_diff_dict:
+        if points_pc_diff_dict or points_target_height_diff_dict or diff_points:
 
             if points_pc_diff_dict:
 
-                error_text += 'ERRORS IN PRISM CONSTANT:\n\n'
+                error_text += 'DIFFERENCES IN PRISM CONSTANT:\n\n'
                 for point, differences_dict in points_pc_diff_dict.items():
                     error_text += point + '----> current PC: ' + differences_dict['current_pc'] + '  old PC: ' + differences_dict['old_pc'] + '\n'
 
             if points_target_height_diff_dict:
 
-                error_text += '\nERRORS IN TARGET HEIGHT:\n\n'
+                error_text += '\nDIFFERENCES IN TARGET HEIGHT:\n\n'
                 for point, differences_dict in points_target_height_diff_dict.items():
                     error_text += point + '---> current height: ' + differences_dict['current_target_height'] + '  old height: ' + \
                                   differences_dict['old_target_height'] + '\n'
 
-            display_text = error_text + '\n\nThese errors will be highlighted in yellow'
+            if diff_points:
+                error_text += 'The following list of points were not found in the compared survey:\n\n'
+                for point in diff_points:
+                    error_text += "  " + point + '\n'
+
+                    # add line numbers where point_id is found in current gsi
+                    point_line_number_errors = gsi.get_point_name_line_numbers(point)
+                    for line_number in point_line_number_errors:
+                        line_number_errors.add(line_number)
+
+            display_text = error_text + '\nThese errors will be highlighted in yellow'
 
         else:
             display_text = all_good_text
