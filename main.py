@@ -9,7 +9,7 @@ VERSION HISTORY
 v1.0 Initial Release
 
 """
-
+# TODO zfill output of survey and PC errors
 
 import tkinter.messagebox
 import logging.config
