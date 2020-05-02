@@ -510,17 +510,17 @@ class MenuBar(tk.Frame):
 
         errors, error_points, subject, = "", "", ""
         error_line_numbers = []
-        subject = "Checking Tolerances"
+        subject = "Checking Survey Tolerances"
 
         try:
             errors, error_points = gsi.check_3D_survey(database.conn)
-            error_text = ""
-
-            for error in errors:
-                error_text += error
+            error_text = "The following points are outside the specified survey tolerance:\n\n"
 
             if not errors:
                 error_text = "Survey is within the specified tolerance.  Well done!"
+            else:
+                for error in errors:
+                    error_text += error
 
             # display error dialog box
             tkinter.messagebox.showinfo(subject, error_text)

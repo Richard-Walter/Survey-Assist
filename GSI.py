@@ -888,23 +888,18 @@ class GSI:
         points = change_points + control_points
 
         # First, lets determine is station set up is a 2D surey or 3D
-        print('CONTROL POINTS: ' + str(control_points))
-        print('CHANGE POINTS: ' + str(change_points))
-        print('POINTS: ' + str(points))
 
         sql_query_columns = 'Point_ID, Easting, Northing, Elevation'
         sql_where_column = 'Point_ID'
 
-        error_points = []
+        error_points_dict = OrderedDict()
+        error_points = set()
 
         with conn:
 
             sql_query_text = "SELECT {} FROM GSI WHERE {}=?".format(sql_query_columns, sql_where_column)
 
             cur = conn.cursor()
-
-            # Check if points are outside of tolerance e.g. 10mm
-            errors = []
 
             for point in points:
 
@@ -936,42 +931,42 @@ class GSI:
                         northings.append(row[2])
                         elevation.append(row[3])
 
-                    # print(point_id, max(eastings), min(eastings), max(northings), min(northings), max(elevation),
-                    #       min(elevation))
-
                 try:
 
-                    # Check Eastings
+                    # Check for differences
+                    point_tolerances_errors_dict = {}       # Easting, Northing, Elevation
                     east_diff = float(max(eastings)) - float(min(eastings))
-
-                    if east_diff > float(self.survey_config.easting_tolerance):
-                        error_text = point_id + ' is out of tolerance in Easting: ' + "{:.3f}".format(round(east_diff, 3)) + 'm\n'
-                        errors.append(error_text)
-                        error_points.append(point)
-                        print(error_text)
-
-                    # Check Northings
                     north_diff = float(max(northings)) - float(min(northings))
-
-                    if north_diff > float(self.survey_config.northing_tolerance):
-                        error_text = point_id + ' is out of tolerance Northing: ' + "{:.3f}".format(round(north_diff, 3)) + 'm\n'
-                        errors.append(error_text)
-                        error_points.append(point)
-                        print(error_text)
-
-                    # Check Elevation
                     height_diff = float(max(elevation)) - float(min(elevation))
 
+                    if east_diff > float(self.survey_config.easting_tolerance):
+                        point_tolerances_errors_dict['Easting'] = 'E='+"{:.3f}".format(round(east_diff, 3)) + 'm  '
+
+                    if north_diff > float(self.survey_config.northing_tolerance):
+                        point_tolerances_errors_dict['Northing'] = 'N='+"{:.3f}".format(round(north_diff, 3)) + 'm  '
+
                     if height_diff > float(self.survey_config.height_tolerance):
-                        error_text = point_id + ' is out of tolerance in Height: ' + "{:.3f}".format(round(height_diff, 3)) + 'm \n'
-                        errors.append(error_text)
-                        error_points.append(point)
-                        print(error_text)
+                        point_tolerances_errors_dict['Height'] = 'H='+"{:.3f}".format(round(height_diff, 3)) + 'm'
+
+                    # add to error dictionary if errors found:
+                    if point_tolerances_errors_dict:
+                        error_points_dict[point_id] = point_tolerances_errors_dict
 
                 except ValueError:
                     print('Value error at point : ' + point)
 
-        return errors, error_points
+            # create error message if exist
+            if error_points_dict:
+
+                for point_name, tolerance_errors in error_points_dict.items():
+                    error_points.add(point_name)
+                    point_text = (point_name + ':').ljust(10)
+                    error_text += '\n'+ point_text
+                    error_text += tolerance_errors.get('Easting', '')
+                    error_text += tolerance_errors.get('Northing', '')
+                    error_text += tolerance_errors.get('Height', '')
+
+        return error_text, error_points
 
     def get_point_name_line_numbers(self, point_name):
 
