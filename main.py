@@ -751,6 +751,10 @@ class MenuBar(tk.Frame):
 
     def check_3d_all(self):
 
+        if not MenuBar.filename_path:
+            tk.messagebox.showinfo("Check Survey", "Please open up a GSI file first.")
+            return
+
         self.check_FLFR('NO')
         self.check_control_naming()
         self.check_prism_constants()
@@ -787,6 +791,10 @@ class MenuBar(tk.Frame):
 
     def compare_survey(self):
 
+        if not MenuBar.filename_path:
+            tk.messagebox.showinfo("Compare Survey", "Please open up a GSI file first.")
+            return
+
         points_pc_diff_dict = {}
         points_target_height_diff_dict = {}
         old_point_ids = set()
@@ -794,6 +802,10 @@ class MenuBar(tk.Frame):
 
         old_survey_filepath = tk.filedialog.askopenfilename(parent=self.master, initialdir=self.monitoring_job_dir,
                                                             title="Please choose a similar survey", filetypes=[("GSI Files", ".GSI")])
+
+        if not old_survey_filepath: # user cancelled
+            return
+
         old_survey_gsi = GSI(logger, survey_config)
         old_survey_gsi.format_gsi(old_survey_filepath)
         old_survey_formatted_lines_except_setups = old_survey_gsi.get_all_lines_except_setup()
@@ -1538,13 +1550,15 @@ class WorkflowBar(tk.Frame):
         self.lbl_edit_gsi.configure(background='#FCF1E1')
         self.btn_check_survey = tk.Button(self.frame, text="Check Survey", command=lambda: gui_app.menu_bar.check_3d_all())
         self.btn_check_survey.configure(background='#FCF1E1')
-        self.btn_export_csv = tk.Button(self.frame, text="Export GSI as CSV", command=lambda: gui_app.menu_bar.export_csv())
+        self.btn_compare_survey = tk.Button(self.frame, text="Compare Survey", command=lambda: gui_app.menu_bar.compare_survey())
+        self.btn_compare_survey.configure(background='#FCF1E1')
+        self.btn_export_csv = tk.Button(self.frame, text="Export GSI", command=lambda: gui_app.menu_bar.export_csv())
         self.btn_export_csv.configure(background='#FCF1E1')
 
         # Compnet workflow
         self.compnet_workflow_lbl = tk.Label(self.frame, text='COMPNET WORKFLOW:')
         self.compnet_workflow_lbl.configure(background='#FFDEAC')
-        self.btn_compnet_new_job = tk.Button(self.frame, text="Setup New Compnet Job", command=lambda: gui_app.menu_bar.create_compnet_job_folder())
+        self.btn_compnet_new_job = tk.Button(self.frame, text="Setup New Job", command=lambda: gui_app.menu_bar.create_compnet_job_folder())
         self.btn_compnet_new_job.configure(background='#FCF1E1')
         self.btn_update_fixed_file = tk.Button(self.frame, text="Update Fixed File", command=lambda: gui_app.menu_bar.update_fixed_file())
         self.btn_update_fixed_file.configure(background='#FCF1E1')
@@ -1565,10 +1579,11 @@ class WorkflowBar(tk.Frame):
         self.btn_open_gsi.pack(padx=5, pady=5, side='left')
         self.lbl_edit_gsi.pack(padx=5, pady=5, side='left')
         self.btn_check_survey.pack(padx=5, pady=5, side='left')
+        self.btn_compare_survey.pack(padx=5, pady=5, side='left')
         self.btn_export_csv.pack(padx=5, pady=5, side='left')
 
         # pack compnet workflow
-        self.compnet_workflow_lbl.pack(padx=(120, 2), pady=5, side='left')
+        self.compnet_workflow_lbl.pack(padx=(60, 2), pady=5, side='left')
         self.btn_compnet_new_job.pack(padx=5, pady=5, side='left')
         self.btn_update_fixed_file.pack(padx=5, pady=5, side='left')
         self.btn_weight_std_file.pack(padx=5, pady=5, side='left')

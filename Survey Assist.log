@@ -18,3 +18,17 @@ Traceback (most recent call last):
   File "C:\Users\Richard\PycharmProjects\Survey Assist\GSI.py", line 1081, in create_db
     os.remove(GSIDatabase.DATABASE_PATH)
 PermissionError: [WinError 32] The process cannot access the file because it is being used by another process: 'GSI Files\\GSI_database.db'
+2020-05-02 16:55:57,354:Survey Assist - v1.0:Error creating executing SQL query
+Traceback (most recent call last):
+  File "C:/Users/rjwal_000/PycharmProjects/Survey Assist/main.py", line 516, in check_3d_survey
+    errors, error_points = gsi.check_3D_survey(database.conn)
+  File "C:\Users\rjwal_000\PycharmProjects\Survey Assist\GSI.py", line 900, in check_3D_survey
+    with conn:
+AttributeError: __exit__
+2020-05-02 16:57:41,888:Survey Assist - v1.0:Error creating executing SQL query
+Traceback (most recent call last):
+  File "C:/Users/rjwal_000/PycharmProjects/Survey Assist/main.py", line 516, in check_3d_survey
+    errors, error_points = gsi.check_3D_survey(database.conn)
+  File "C:\Users\rjwal_000\PycharmProjects\Survey Assist\GSI.py", line 900, in check_3D_survey
+    with conn:
+AttributeError: __exit__
