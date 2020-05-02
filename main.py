@@ -10,6 +10,7 @@ v1.0 Initial Release
 
 """
 
+
 import tkinter.messagebox
 import logging.config
 from tkinter import filedialog
@@ -114,7 +115,7 @@ class MenuBar(tk.Frame):
         self.compnet_sub_menu.add_command(label="Weight STD File ...", command=self.weight_STD_file)
         self.compnet_sub_menu.add_separator()
         self.compnet_sub_menu.add_command(label="Compare CRD Files...", command=self.compare_crd_files)
-        self.compnet_sub_menu.add_command(label="Strip Non-control Shots", command=self.strip_non_control_shots)
+        self.compnet_sub_menu.add_command(label="Create control only GSI", command=self.create_control_only_gsi)
         self.compnet_sub_menu.add_command(label="Combine/Re-order GSI Files", command=self.combine_gsi_files)
 
         self.menu_bar.add_cascade(label="Compnet", menu=self.compnet_sub_menu)
@@ -959,9 +960,9 @@ class MenuBar(tk.Frame):
 
         CompnetCompareCRDFWindow(self.master)
 
-    def strip_non_control_shots(self):
+    def create_control_only_gsi(self):
 
-        CompnetStripNonControlShots()
+        CompnetCreateControlOnlyGSI()
 
     def combine_gsi_files(self):
 
@@ -2590,7 +2591,7 @@ class CompnetCompareCRDFWindow:
             self.compare_crd_btn.configure(state=tk.NORMAL)
 
 
-class CompnetStripNonControlShots:
+class CompnetCreateControlOnlyGSI:
 
     def __init__(self):
 
