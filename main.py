@@ -23,7 +23,6 @@ from utilities import *
 from survey_files import *
 from shutil import copyfile
 from distutils.dir_util import copy_tree
-from itertools import groupby
 
 todays_date = Today.todays_date
 
@@ -106,6 +105,7 @@ class MenuBar(tk.Frame):
         self.check_sub_menu.add_command(label="Check All", command=self.check_3d_all)
         self.check_sub_menu.add_separator()
         self.check_sub_menu.add_command(label="Compare with a similar survey...", command=self.compare_survey)
+        self.check_sub_menu.add_separator()
         self.check_sub_menu.add_command(label="Query GSI...", command=self.display_query_input_box)
         self.menu_bar.add_cascade(label="Check Survey", menu=self.check_sub_menu, state="disabled")
 
@@ -150,6 +150,9 @@ class MenuBar(tk.Frame):
 
         MenuBar.filename_path = tk.filedialog.askopenfilename(initialdir=intial_directory, title="Select file", filetypes=[("GSI Files", ".gsi")])
         # survey_config.update(SurveyConfiguration.section_file_directories, 'last_used', os.path.dirname(MenuBar.filename_path))
+
+        if not MenuBar.filename_path:    # user cancelled
+            return
 
         GUIApplication.refresh()
         self.enable_menus()
