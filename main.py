@@ -9,7 +9,7 @@ VERSION HISTORY
 v1.0 Initial Release
 
 """
-# TODO check target heights are the same compared to another survey - make this just compare with another survey
+# TODO check point names are same as similar survey
 
 
 import tkinter.messagebox
@@ -785,30 +785,32 @@ class MenuBar(tk.Frame):
 
     def compare_survey(self):
 
-        points_diff_PC_dict = {}
+        points_pc_diff_dict = {}
+        points_target_height_diff_dict = {}
 
         old_survey_filepath = tk.filedialog.askopenfilename(parent=self.master, initialdir=self.monitoring_job_dir,
                                                             title="Please choose a similar survey", filetypes=[("GSI Files", ".GSI")])
         old_survey_gsi = GSI(logger, survey_config)
         old_survey_gsi.format_gsi(old_survey_filepath)
         old_survey_formatted_lines_except_setups = old_survey_gsi.get_all_lines_except_setup()
-        old_point_PC_dict = OrderedDict()
+        old_point_compare_dict = OrderedDict()
 
-        line_number_errors = []
+        line_number_errors = set()
 
-        dialog_subject = "Prism Constant Comparision"
-        all_good_text = "Prism constants match between surveys "
-        error_text = "A difference in prism constants between the two surveys was found for the following Point IDs:\n\n"
+        dialog_subject = "Survey Comparision"
+        all_good_text = "Prism constants and target heights match between surveys "
+        error_text = "A difference between the two surveys was found:\n\n"
 
         # Create a dictionary of points and their prism constant.
         # ASSUMPTION: prism constant for an old survey with no errors should be the same for the same point ID
-        for formatted_line in old_survey_formatted_lines_except_setups:
-            old_point_PC_dict[formatted_line['Point_ID']] = formatted_line['Prism_Constant']
-
-        print(old_point_PC_dict)
+        for index, formatted_line in enumerate(old_survey_formatted_lines_except_setups):
+            # add a unique point ID so we are not overwritting point_id with potential different values
+            old_point_compare_dict[formatted_line['Point_ID'] + str(index)] = {'old_point_id': formatted_line['Point_ID'],
+                                                                               'Prism_Constant': formatted_line['Prism_Constant'],
+                                                                               'Target_Height': formatted_line['Target_Height']}
 
         # for each point and its corresponding PC in old survey, check to see it matches PC in current survey
-        for old_point_ID, old_PC in old_point_PC_dict.items():
+        for old_compare_values_list in old_point_compare_dict.values():
 
             for line_number, current_gsi_line in enumerate(gsi.formatted_lines, start=1):
 
@@ -818,27 +820,45 @@ class MenuBar(tk.Frame):
 
                 current_point_ID = current_gsi_line['Point_ID']
                 current_PC = current_gsi_line['Prism_Constant']
+                current_target_height = current_gsi_line['Target_Height']
 
-                if old_point_ID == current_point_ID:
+                if old_compare_values_list['old_point_id'] == current_point_ID:
 
                     # Compare PC - they should be the same.  If not report to user
-                    if old_PC != current_PC:
-                        points_diff_PC_dict[current_point_ID] = {'current pc': current_PC, 'old_pc': old_PC}
-                        line_number_errors.append(line_number)
-                        # error_text += current_point_ID + '----> current PC: ' + current_PC + '    old PC: ' + old_PC + '\n'
+                    if old_compare_values_list['Prism_Constant'] != current_PC:
+                        points_pc_diff_dict[current_point_ID] = {'current_pc': current_PC, 'old_pc': old_compare_values_list['Prism_Constant']}
+                        line_number_errors.add(line_number)
+
+                    # Compare target height - they should be the same.  If not report to user
+                    print(current_point_ID + "  " + old_compare_values_list['Target_Height'])
+                    if old_compare_values_list['Target_Height'] != current_target_height:
+                        points_target_height_diff_dict[current_point_ID] = {'current_target_height': current_target_height,
+                                                                            'old_target_height': old_compare_values_list['Target_Height']}
+                        line_number_errors.add(line_number)
 
         # check if any errors found
-        if points_diff_PC_dict:
-            for point, differences_dict in points_diff_PC_dict.items():
-                error_text += point + '----> current PC: ' + differences_dict['current pc'] + '    old PC: ' + differences_dict['old_pc'] + '\n'
+        if points_pc_diff_dict or points_target_height_diff_dict:
 
-            dislpay_text = error_text + '\n\nThese will be highlighted in yellow'
+            if points_pc_diff_dict:
+
+                error_text += 'ERRORS IN PRISM CONSTANT:\n\n'
+                for point, differences_dict in points_pc_diff_dict.items():
+                    error_text += point + '----> current PC: ' + differences_dict['current_pc'] + '  old PC: ' + differences_dict['old_pc'] + '\n'
+
+            if points_target_height_diff_dict:
+
+                error_text += '\nERRORS IN TARGET HEIGHT:\n\n'
+                for point, differences_dict in points_target_height_diff_dict.items():
+                    error_text += point + '---> current height: ' + differences_dict['current_target_height'] + '  old height: ' + \
+                                  differences_dict['old_target_height'] + '\n'
+
+            display_text = error_text + '\n\nThese errors will be highlighted in yellow'
 
         else:
-            dislpay_text = all_good_text
+            display_text = all_good_text
 
-        tkinter.messagebox.showinfo(dialog_subject, dislpay_text)
-        gui_app.list_box.populate(gsi.formatted_lines, line_number_errors)
+        tkinter.messagebox.showinfo(dialog_subject, display_text)
+        gui_app.list_box.populate(gsi.formatted_lines, list(line_number_errors))
 
     def export_csv(self):
 
