@@ -514,20 +514,21 @@ class MenuBar(tk.Frame):
 
         try:
             errors, error_points = gsi.check_3D_survey(database.conn)
-            error_text = "The following points are outside the specified survey tolerance:\n\n"
+            error_text = "The following points are outside the specified survey tolerance:\n"
 
             if not errors:
                 error_text = "Survey is within the specified tolerance.  Well done!"
             else:
-                for error in errors:
-                    error_text += error
+                error_text += errors
 
             # display error dialog box
+            print(error_text)
             tkinter.messagebox.showinfo(subject, error_text)
+            # CustomDialogBox(self.master, error_text)
 
         except Exception as ex:
             logger.exception('Error creating executing SQL query')
-            tk.messagebox.showerror("Error", 'Error checking prism constants:\n\n' + str(ex))
+            tk.messagebox.showerror("Error", 'Error checking survey tolerance:\n\n' + str(ex))
 
         # highlight any error points
         error_point_set = set(error_points)

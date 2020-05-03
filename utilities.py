@@ -6,6 +6,7 @@ import calendar
 import tkinter as tk
 import tkinter.font as tkFont
 from tkinter import ttk
+import tkinter.scrolledtext as tkst
 
 FIELD_TYPE_ANGLE = 'angle'
 FIELD_TYPE_FLOAT = 'float'
@@ -93,8 +94,34 @@ def get_calendar(locale, fwday):
         return calendar.LocaleTextCalendar(fwday, locale)
 
 
-class Today:
+class CustomDialogBox:
 
+    def __init__(self, master, msg):
+
+        super().__init__()
+
+        self.top = tk.Toplevel(master)
+        self.top.title = "TITLE"
+
+        self.top = tk.Toplevel(master)
+        self.top.title = "TITLE"
+        self.frame = tk.Frame(self.top, bg='orange')
+
+        self.frame.pack(fill='both', expand='yes')
+        self.scrolled_text = tkst.ScrolledText(
+            master=self.frame,
+            wrap='word',  # wrap text at full words only
+            # width=70,  # characters
+            # height=30,  # text lines
+        )
+
+        # the padx/pady space will form a frame
+        self.scrolled_text.pack(fill='both', expand=True, ipadx=2, ipady=2, padx=2, pady=2)
+        self.scrolled_text.insert('insert', msg)
+
+        master.wait_window(self.top)
+
+class Today:
     todays_date = datetime.datetime.today().strftime('%y%m%d')
     # todays_date = '200414'
     todays_day = todays_date[-2:]

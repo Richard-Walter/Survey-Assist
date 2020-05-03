@@ -961,7 +961,7 @@ class GSI:
                 for point_name, tolerance_errors in error_points_dict.items():
                     error_points.add(point_name)
                     point_text = (point_name + ':').ljust(10)
-                    error_text += '\n'+ point_text
+                    error_text += '\n '+ point_text
                     error_text += tolerance_errors.get('Easting', '')
                     error_text += tolerance_errors.get('Northing', '')
                     error_text += tolerance_errors.get('Height', '')
