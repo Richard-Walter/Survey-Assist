@@ -9,7 +9,6 @@ VERSION HISTORY
 v1.0 Initial Release
 
 """
-# TODO zfill output of survey and PC errors
 
 import tkinter.messagebox
 import logging.config
@@ -70,6 +69,7 @@ class MenuBar(tk.Frame):
         self.file_sub_menu = tk.Menu(self.menu_bar, tearoff=0)
         self.file_sub_menu.add_command(label="Open GSI...", command=self.choose_gsi_file)
         self.file_sub_menu.add_command(label="Create Dated Directory...", command=lambda: self.new_dated_directory(False))
+        self.file_sub_menu.add_command(label="Choose Dated Directory...", command=self.choose_dated_directory)
         self.file_sub_menu.add_command(label="Create Job Directory...", command=self.new_job_directoy)
         self.file_sub_menu.add_command(label="Import SD Data", command=self.import_sd_data)
         self.file_sub_menu.add_separator()
@@ -182,6 +182,23 @@ class MenuBar(tk.Frame):
         CalendarWindow(cal_root, todays_date)
         parent.wait_window(cal_root)
 
+    def choose_dated_directory(self):
+
+        # ask user to slect the root dated directory
+        dated_directory_path = filedialog.askdirectory(parent=self.master, initialdir=survey_config.root_job_directory, title='Please select the '
+                                                                                                                             'dated '
+                                                                                                                         'directory')
+        if dated_directory_path:
+
+            # check to see if it has a dated directory structure
+            # check if file is in the edited directory of a dated file format folder
+            if (os.path.isdir(dated_directory_path + '/TS')) & (os.path.isdir(dated_directory_path + '/GPS')) & (os.path.isdir(dated_directory_path + '/OUTPUT')):
+
+                survey_config.todays_dated_directory = dated_directory_path
+            else:
+                tk.messagebox.showwarning("Survey Assist", "The directory you have selected doesn't appear to be a valid dated directory.")
+                return
+
     def new_job_directoy(self):
 
         initial_dir = os.path.join(survey_config.root_job_directory, survey_config.current_year, survey_config.default_survey_type)
@@ -206,9 +223,9 @@ class MenuBar(tk.Frame):
             # lets check the usb drive for 1200 series GPS's
             if not SDCard.user_SD_dir_exists(usb_root_directory):
 
-                tk.messagebox.showinfo("IMPORT SD DATA", "Can't find your SD card drive.\n\nPress OK to select your SD drive.")
+                tk.messagebox.showinfo("IMPORT SD DATA", "Can't find your SD card drive.\n\nPlease select your SD drive.")
 
-                user_sd_directory = tkinter.filedialog.askdirectory(parent=self.master, initialdir='C:\\', title='Please choose the SD card drive')
+                user_sd_directory = tkinter.filedialog.askdirectory(parent=self.master, initialdir='C:\\', title='Please choose your SD card drive')
 
                 if user_sd_directory:
                     self.user_config.update(UserConfiguration.section_file_directories, 'user_sd_root', user_sd_directory)

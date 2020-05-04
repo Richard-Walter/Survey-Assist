@@ -998,7 +998,7 @@ class GSI:
             out_csv_file_path = os.path.join(root_job_directory, os.path.basename(os.path.splitext(gsi_basename)[0] + '_Sorted.csv'))
             out_gsi_file_path = os.path.join(root_job_directory, os.path.basename(os.path.splitext(gsi_basename)[0] + '_Sorted.gsi'))
 
-        else:
+        else:   # get user to choose the the directory to export
             root_job_directory = filedialog.askdirectory(initialdir=gsi_directory, title='PLEASE SELECT THE JOB DIRECTORY TO EXPORT THE CSV')
             if root_job_directory == "":
                 return      # user cancelled the dialog box
@@ -1033,11 +1033,13 @@ class GSI:
 
 
         else:
-            tkinter.messagebox.showerror("EXPORTING CSV", "A sorted GSI, along with a corresponding CSV file has been created in:\n\n " +
-                                         os.path.dirname(out_csv_file_path))
+            ok = tkinter.messagebox.askyesno("EXPORTING CSV", "A sorted GSI, along with a corresponding CSV file has been created in:\n\n " +
+                                         os.path.dirname(out_csv_file_path) + "\n\nWould you like to open up the CSV file now in Excel?")
 
             # open up the file for the user
-            os.startfile(out_csv_file_path)
+            if ok:
+                os.startfile(out_csv_file_path)
+
 
     def format_gsi_for_export(self):
 
