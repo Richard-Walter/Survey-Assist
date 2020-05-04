@@ -185,9 +185,8 @@ class MenuBar(tk.Frame):
     def choose_dated_directory(self):
 
         # ask user to slect the root dated directory
-        dated_directory_path = filedialog.askdirectory(parent=self.master, initialdir=survey_config.root_job_directory, title='Please select the '
-                                                                                                                             'dated '
-                                                                                                                         'directory')
+        dated_directory_path = filedialog.askdirectory(parent=self.master, initialdir=self.monitoring_job_dir, title='Please select the '
+                                                                                                                             'dated directory')
         if dated_directory_path:
 
             # check to see if it has a dated directory structure
