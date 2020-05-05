@@ -9,7 +9,7 @@ VERSION HISTORY
 v1.0 Initial Release
 
 """
-
+# TODO try catch around the whole program and log error to stop SA from crashing
 import tkinter.messagebox
 import logging.config
 from tkinter import filedialog
