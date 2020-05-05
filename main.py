@@ -2848,7 +2848,7 @@ class CombineGSIFilesWindow:
 
         if len(stations_names_dict) != len(station_set):
             pass
-            tk.messagebox.showwarning("WARNING", 'Warning - Duplicate station names detected in gsi!')
+            tk.messagebox.showwarning("WARNING", 'Warning - Duplicate station names detected in the combined gsi!')
 
         # need to sort this by station name
         stations_sorted_by_name_dict = OrderedDict(sorted(stations_names_dict.items(), key=lambda x: x[1]))
