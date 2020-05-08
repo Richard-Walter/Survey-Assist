@@ -10,6 +10,7 @@ v1.0 Initial Release
 
 """
 # TODO try catch around the whole program and log error to stop SA from crashing
+# TODO add current tolerance values in the check tolerance dialog with message " these can be change in the settings.ini in the COnfig FIles folder
 import tkinter.messagebox
 import logging.config
 from tkinter import filedialog
