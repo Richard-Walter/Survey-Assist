@@ -748,7 +748,7 @@ class GSI:
 
         return dialog_text, line_number_errors
 
-    # lets check the survey and make sure the prism constant for a point_ID is the same throughout the survey
+    # lets check the survey and make sure the target height for a point_ID is the same throughout the survey
     def check_target_heights(self):
 
         error_text = "WARNING!  The following Point ID's have more than one target height:\n\n"
