@@ -9,7 +9,7 @@ VERSION HISTORY
 v1.0 Initial Release
 
 """
-# TODO try catch around the whole program and log error to stop SA from crashing
+
 import tkinter.messagebox
 import logging.config
 from tkinter import filedialog
@@ -96,7 +96,7 @@ class MenuBar(tk.Frame):
 
         # Check menu
         self.check_sub_menu = tk.Menu(self.menu_bar, tearoff=0)
-        self.check_sub_menu.add_command(label="Check Tolerances (3D Only)", command=self.check_3d_survey)
+        self.check_sub_menu.add_command(label="Check Tolerances (3D)", command=self.check_3d_survey)
         self.check_sub_menu.add_command(label="Check Control Naming ", command=self.check_control_naming)
         self.check_sub_menu.add_command(label="Check Prism Constants", command=self.check_prism_constants)
         self.check_sub_menu.add_command(label="Check Target Heights", command=self.check_target_heights)
@@ -141,34 +141,45 @@ class MenuBar(tk.Frame):
 
     def choose_gsi_file(self):
 
-        if survey_config.todays_dated_directory == "":
-            intial_directory = self.monitoring_job_dir
+        try:
+            if survey_config.todays_dated_directory == "":
+                intial_directory = self.monitoring_job_dir
 
-        else:
-            intial_directory = os.path.join(survey_config.todays_dated_directory, "TS")
+            else:
+                intial_directory = os.path.join(survey_config.todays_dated_directory, "TS")
 
-        MenuBar.filename_path = tk.filedialog.askopenfilename(initialdir=intial_directory, title="Select file", filetypes=[("GSI Files", ".gsi")])
-        # survey_config.update(SurveyConfiguration.section_file_directories, 'last_used', os.path.dirname(MenuBar.filename_path))
+            MenuBar.filename_path = tk.filedialog.askopenfilename(initialdir=intial_directory, title="Select file", filetypes=[("GSI Files", ".gsi")])
+            # survey_config.update(SurveyConfiguration.section_file_directories, 'last_used', os.path.dirname(MenuBar.filename_path))
 
-        if not MenuBar.filename_path:    # user cancelled
+            if not MenuBar.filename_path:    # user cancelled
+                return
+
+            GUIApplication.refresh()
+            self.enable_menus()
+        except Exception as ex:
+            print("Problem opening up the GSI file\n\n" + str(ex))
+            logger.exception("An unexpected error has occurred\n\nProblem opening up the GSI file\n\n" + str(ex))
+            tk.messagebox.showerror("Survey Assist", "An unexpected error has occurred\n\nProblem opening up the GSI file\n\n" + str(ex))
             return
-
-        GUIApplication.refresh()
-        self.enable_menus()
-        # gui_app.workflow_bar.hide_workflow_bar()
 
     def new_dated_directory(self, choose_date=True, folder_selected=None):
 
-        # default path for the file dialog to open too
-        default_path = os.path.join(survey_config.root_job_directory, survey_config.current_year, survey_config.default_survey_type)
-        if folder_selected is None:
-            folder_selected = filedialog.askdirectory(parent=self.master, initialdir=default_path, title='Please select the job directory')
+        try:
+            # default path for the file dialog to open too
+            default_path = os.path.join(survey_config.root_job_directory, survey_config.current_year, survey_config.default_survey_type)
+            if folder_selected is None:
+                folder_selected = filedialog.askdirectory(parent=self.master, initialdir=default_path, title='Please select the job directory')
 
-        if os.path.exists(folder_selected):
-            if choose_date is True:
-                self.choose_date()
+            if os.path.exists(folder_selected):
+                if choose_date is True:
+                    self.choose_date()
 
-            CreateDatedDirectoryWindow(self, folder_selected)
+                CreateDatedDirectoryWindow(self, folder_selected)
+        except Exception as ex:
+            print("Unexpected error has occurred\n\n" + str(ex))
+            logger.exception("An unexpected error has occurred\n\nnew_dated_directory()\n\n" + str(ex))
+            tk.messagebox.showerror("Survey Assist", "An unexpected error has occurred\n\nnew_dated_directory()\n\n" + str(ex))
+            return
 
     def choose_date(self):
         # Let user choose the date, rather than the default todays date
@@ -184,19 +195,25 @@ class MenuBar(tk.Frame):
 
     def choose_dated_directory(self):
 
-        # ask user to slect the root dated directory
-        dated_directory_path = filedialog.askdirectory(parent=self.master, initialdir=self.monitoring_job_dir, title='Please select the '
-                                                                                                                             'dated directory')
-        if dated_directory_path:
+        try:
+            # ask user to slect the root dated directory
+            dated_directory_path = filedialog.askdirectory(parent=self.master, initialdir=self.monitoring_job_dir, title='Please select the '
+                                                                                                                                 'dated directory')
+            if dated_directory_path:
 
-            # check to see if it has a dated directory structure
-            # check if file is in the edited directory of a dated file format folder
-            if (os.path.isdir(dated_directory_path + '/TS')) & (os.path.isdir(dated_directory_path + '/GPS')) & (os.path.isdir(dated_directory_path + '/OUTPUT')):
+                # check to see if it has a dated directory structure
+                # check if file is in the edited directory of a dated file format folder
+                if (os.path.isdir(dated_directory_path + '/TS')) & (os.path.isdir(dated_directory_path + '/GPS')) & (os.path.isdir(dated_directory_path + '/OUTPUT')):
 
-                survey_config.todays_dated_directory = dated_directory_path
-            else:
-                tk.messagebox.showwarning("Survey Assist", "The directory you have selected doesn't appear to be a valid dated directory.")
-                return
+                    survey_config.todays_dated_directory = dated_directory_path
+                else:
+                    tk.messagebox.showwarning("Survey Assist", "The directory you have selected doesn't appear to be a valid dated directory.")
+                    return
+        except Exception as ex:
+            print("Unexpected error has occurred\n\n" + str(ex))
+            logger.exception("An unexpected error has occurred\n\nchoose_dated_directory()\n\n" + str(ex))
+            tk.messagebox.showerror("Survey Assist", "An unexpected error has occurred\n\nchoose_dated_directory()\n\n" + str(ex))
+            return
 
     def new_job_directoy(self):
 
@@ -428,46 +445,53 @@ class MenuBar(tk.Frame):
 
     def monitoring_create(self):
 
-        if not MenuBar.filename_path:
-            self.choose_gsi_file()
+        try:
+            if not MenuBar.filename_path:
+                self.choose_gsi_file()
 
-        if not MenuBar.filename_path:  # user cancelled
+            if not MenuBar.filename_path:  # user cancelled
+                return
+
+            csv_dict = {}
+
+            station_list_dict = gsi.get_list_of_control_points(gsi.formatted_lines)
+
+            for line_number, station_name in station_list_dict.items():
+
+                coordinate_dict = OrderedDict()
+
+                station_shots_dict = gsi.get_all_shots_from_a_station_including_setup(station_name, line_number)
+
+                # Create a csv for each of the station shots
+                for formatted_line in station_shots_dict.values():
+
+                    if gsi.is_control_point(formatted_line):
+                        continue
+
+                    coordinate_dict[formatted_line['Point_ID']] = [formatted_line['Point_ID'], formatted_line['Easting'], formatted_line['Northing'],
+                                                                   formatted_line['Elevation']]
+
+                csv_dict[station_name] = coordinate_dict
+
+            # csv_file_dict = {k: list(v) for (k, v) in groupby(csv_line, lambda x: x[0])}
+
+            # export monitoring files
+            for station_name, coordinate_list in csv_dict.items():
+                monitoring_files_dir = os.path.join(os.getcwd(), 'Monitoring Files')
+                out_csv = os.path.join(monitoring_files_dir, station_name + '.csv')
+
+                with open(out_csv, 'w', newline='') as my_file:
+                    wr = csv.writer(my_file)
+                    for coordinates in coordinate_list.values():
+                        wr.writerow(coordinates)
+
+            tk.messagebox.showinfo("Create Monitoring Files", "Monitoring files have been created at " + monitoring_files_dir)
+
+        except Exception as ex:
+            print("Problem opening up the GSI file\n\n" + str(ex))
+            logger.exception("An unexpected error has occurred\n\nProblem opening up the GSI file\n\n" + str(ex))
+            tk.messagebox.showerror("Survey Assist", "An unexpected error has occurred\n\nProblem opening up the GSI file\n\n" + str(ex))
             return
-
-        csv_dict = {}
-
-        station_list_dict = gsi.get_list_of_control_points(gsi.formatted_lines)
-
-        for line_number, station_name in station_list_dict.items():
-
-            coordinate_dict = OrderedDict()
-
-            station_shots_dict = gsi.get_all_shots_from_a_station_including_setup(station_name, line_number)
-
-            # Create a csv for each of the station shots
-            for formatted_line in station_shots_dict.values():
-
-                if gsi.is_control_point(formatted_line):
-                    continue
-
-                coordinate_dict[formatted_line['Point_ID']] = [formatted_line['Point_ID'], formatted_line['Easting'], formatted_line['Northing'],
-                                                               formatted_line['Elevation']]
-
-            csv_dict[station_name] = coordinate_dict
-
-        # csv_file_dict = {k: list(v) for (k, v) in groupby(csv_line, lambda x: x[0])}
-
-        # export monitoring files
-        for station_name, coordinate_list in csv_dict.items():
-            monitoring_files_dir = os.path.join(os.getcwd(), 'Monitoring Files')
-            out_csv = os.path.join(monitoring_files_dir, station_name + '.csv')
-
-            with open(out_csv, 'w', newline='') as my_file:
-                wr = csv.writer(my_file)
-                for coordinates in coordinate_list.values():
-                    wr.writerow(coordinates)
-
-        tk.messagebox.showinfo("Create Monitoring Files", "Monitoring files have been created at " + monitoring_files_dir)
 
     def monitoring_update_coords(self):
         pass
@@ -509,18 +533,35 @@ class MenuBar(tk.Frame):
 
     @staticmethod
     def create_and_populate_database():
-        database.create_db()
-        database.populate_table(gsi.formatted_lines)
+        try:
+            database.create_db()
+            database.populate_table(gsi.formatted_lines)
+        except Exception as ex:
+            print("Problem opening up the GSI file\n\n" + str(ex))
+            logger.exception("An unexpected error has occurred\n\ncreate_and_populate_database()\n\n" + str(ex))
+            tk.messagebox.showerror("Survey Assist", "An unexpected error has occurred\n\ncreate_and_populate_database()\n\n" + str(ex))
+            return
 
     @staticmethod
     def update_database():
-
-        database.populate_table(gsi.formatted_lines)
+        try:
+            database.populate_table(gsi.formatted_lines)
+        except Exception as ex:
+            print("Problem opening up the GSI file\n\n" + str(ex))
+            logger.exception("An unexpected error has occurred\n\nupdate_database()\n\n" + str(ex))
+            tk.messagebox.showerror("Survey Assist", "An unexpected error has occurred\n\nupdate_database()\n\n" + str(ex))
+            return
 
     @staticmethod
     def update_gui():
-        gui_app.list_box.populate(gsi.formatted_lines)
-        gui_app.status_bar.status['text'] = MenuBar.filename_path
+        try:
+            gui_app.list_box.populate(gsi.formatted_lines)
+            gui_app.status_bar.status['text'] = MenuBar.filename_path
+        except Exception as ex:
+            print("Problem opening up the GSI file\n\n" + str(ex))
+            logger.exception("An unexpected error has occurred\n\nupdate_gui()\n\n" + str(ex))
+            tk.messagebox.showerror("Survey Assist", "An unexpected error has occurred\n\nupdate_gui()\n\n" + str(ex))
+            return
 
     def check_3d_survey(self):
 
@@ -545,7 +586,7 @@ class MenuBar(tk.Frame):
             # CustomDialogBox(self.master, error_text)
 
         except Exception as ex:
-            logger.exception('Error creating executing SQL query')
+            logger.exception('Error creating executing SQL query\n\n' + str(ex))
             tk.messagebox.showerror("Error", 'Error checking survey tolerance:\n\n' + str(ex))
 
         # highlight any error points
@@ -567,7 +608,7 @@ class MenuBar(tk.Frame):
             gui_app.list_box.populate(gsi.formatted_lines, error_line_numbers)
 
         except Exception as ex:
-            logger.exception('Error checking station naming')
+            logger.exception('Error checking station naming\n\n' + str(ex))
             tk.messagebox.showerror("Error", 'Error checking control naming:\n\n' + str(ex))
 
     def check_prism_constants(self):
@@ -580,7 +621,7 @@ class MenuBar(tk.Frame):
             gui_app.list_box.populate(gsi.formatted_lines, error_line_numbers)
 
         except Exception as ex:
-            logger.exception('Error checking prism constants')
+            logger.exception('Error checking prism constants\n\n' + str(ex))
             tk.messagebox.showerror("Error", 'Error checking prism constants:\n\n' + str(ex))
 
     def check_target_heights(self):
@@ -593,56 +634,64 @@ class MenuBar(tk.Frame):
             gui_app.list_box.populate(gsi.formatted_lines, error_line_numbers)
 
         except Exception as ex:
-            logger.exception('Error checking target heights')
+            logger.exception('Error checking target heights\n\n' + str(ex))
             tk.messagebox.showerror("Error", 'Error checking target heights:\n\n' + str(ex))
 
     def check_FLFR(self, display='YES'):
 
-        error_line_number_list = []
-        dialog_text_set = set()
-        dialog_text = "\n"
-        formatted_gsi_lines_analysis = []
+        try:
 
-        for gsi_line_number, line in enumerate(gsi.formatted_lines, start=0):
+            error_line_number_list = []
+            dialog_text_set = set()
+            dialog_text = "\n"
+            formatted_gsi_lines_analysis = []
 
-            if GSI.is_control_point(line):
-                station_name = line['Point_ID']
-                obs_from_station_dict = gsi.get_all_shots_from_a_station_including_setup(station_name, gsi_line_number)
-                analysed_lines = self.anaylseFLFR(copy.deepcopy(obs_from_station_dict))
+            for gsi_line_number, line in enumerate(gsi.formatted_lines, start=0):
 
-                # add the analysis lines for this station
-                for aline in analysed_lines:
-                    formatted_gsi_lines_analysis.append(aline)
+                if GSI.is_control_point(line):
+                    station_name = line['Point_ID']
+                    obs_from_station_dict = gsi.get_all_shots_from_a_station_including_setup(station_name, gsi_line_number)
+                    analysed_lines = self.anaylseFLFR(copy.deepcopy(obs_from_station_dict))
 
-                    # for each station setup add 'STN->Point_ID' for each error found
-                    for key, field_value in aline.items():
-                        if '*' in field_value:
-                            dialog_text_set.add("         " + station_name + "  --->  " + aline['Point_ID'] + '\n')
-                            break
+                    # add the analysis lines for this station
+                    for aline in analysed_lines:
+                        formatted_gsi_lines_analysis.append(aline)
 
-        # check for tagged values so line error can be determined
-        for index, line_dict in enumerate(formatted_gsi_lines_analysis):
+                        # for each station setup add 'STN->Point_ID' for each error found
+                        for key, field_value in aline.items():
+                            if '*' in field_value:
+                                dialog_text_set.add("         " + station_name + "  --->  " + aline['Point_ID'] + '\n')
+                                break
 
-            for key, field_value in line_dict.items():
-                if '*' in field_value:
-                    error_line_number_list.append(index + 1)
-                    break
+            # check for tagged values so line error can be determined
+            for index, line_dict in enumerate(formatted_gsi_lines_analysis):
 
-        if dialog_text_set:
-            dialog_text = " The following shots exceed the FL_FR tolerance:\n\n"
+                for key, field_value in line_dict.items():
+                    if '*' in field_value:
+                        error_line_number_list.append(index + 1)
+                        break
 
-            for line in sorted(dialog_text_set):
-                dialog_text += line
-        else:
-            dialog_text = " FL-FR shots are within specified tolerance"
+            if dialog_text_set:
+                dialog_text = " The following shots exceed the FL_FR tolerance:\n\n"
 
-        # display dialog box
-        tkinter.messagebox.showinfo("Checking FL-FR", dialog_text)
+                for line in sorted(dialog_text_set):
+                    dialog_text += line
+            else:
+                dialog_text = " FL-FR shots are within specified tolerance"
 
-        if display == 'NO':  # don't display results to user - just a popup dialog to let them know there is an issue
-            pass
-        else:
-            gui_app.list_box.populate(formatted_gsi_lines_analysis, error_line_number_list)
+            # display dialog box
+            tkinter.messagebox.showinfo("Checking FL-FR", dialog_text)
+
+            if display == 'NO':  # don't display results to user - just a popup dialog to let them know there is an issue
+                pass
+            else:
+                gui_app.list_box.populate(formatted_gsi_lines_analysis, error_line_number_list)
+
+        except Exception as ex:
+            print("Problem opening up the GSI file\n\n" + str(ex))
+            logger.exception("An unexpected error has occurred\n\ncheck_FLFR()\n\n" + str(ex))
+            tk.messagebox.showerror("Survey Assist", "An unexpected error has occurred\n\ncheck_FLFR()\n\n" + str(ex))
+            return
 
     def anaylseFLFR(self, obs_from_station_dict):
 
@@ -788,132 +837,154 @@ class MenuBar(tk.Frame):
 
     def prism_constant_update_manually(self):
 
-        line_numbers_to_ammend = []
-        selected_items = gui_app.list_box.list_box_view.selection()
+        try:
+            line_numbers_to_ammend = []
+            selected_items = gui_app.list_box.list_box_view.selection()
 
-        # lets get a list of line numbers to ammend
-        if selected_items:
-            for selected_item in selected_items:
-                line_numbers_to_ammend.append(gui_app.list_box.list_box_view.item(selected_item)['values'][0])
-        else:
-            # no lines selected
-            tkinter.messagebox.showinfo("Updateing Prism Constant", "Please select at least one line to update")
+            # lets get a list of line numbers to ammend
+            if selected_items:
+                for selected_item in selected_items:
+                    line_numbers_to_ammend.append(gui_app.list_box.list_box_view.item(selected_item)['values'][0])
+            else:
+                # no lines selected
+                tkinter.messagebox.showinfo("Updateing Prism Constant", "Please select at least one line to update")
+                return
+
+            pcu = PrismConstantUpdate(self.master, line_numbers_to_ammend)
+            pcu.build_fix_single_window()
+        except Exception as ex:
+            print("Problem opening up the GSI file\n\n" + str(ex))
+            logger.exception("An unexpected error has occurred\n\nprism_constant_update_manually()\n\n" + str(ex))
+            tk.messagebox.showerror("Survey Assist", "An unexpected error has occurred\n\nprism_constant_update_manually()\n\n" + str(ex))
             return
-
-        pcu = PrismConstantUpdate(self.master, line_numbers_to_ammend)
-        pcu.build_fix_single_window()
 
     def prism_constant_update_batch(self):
-
-        pcu = PrismConstantUpdate(self.master)
-        pcu.build_batch_file_window()
+        try:
+            pcu = PrismConstantUpdate(self.master)
+            pcu.build_batch_file_window()
+        except Exception as ex:
+            print("Problem opening up the GSI file\n\n" + str(ex))
+            logger.exception("An unexpected error has occurred\n\nprism_constant_update_batch()\n\n" + str(ex))
+            tk.messagebox.showerror("Survey Assist", "An unexpected error has occurred\n\nprism_constant_update_batch()\n\n" + str(ex))
+            return
 
     def compare_survey(self):
+        try:
+            if not MenuBar.filename_path:
+                tk.messagebox.showinfo("Compare Survey", "Please open up a GSI file first.")
+                return
 
-        if not MenuBar.filename_path:
-            tk.messagebox.showinfo("Compare Survey", "Please open up a GSI file first.")
+            points_pc_diff_dict = {}
+            points_target_height_diff_dict = {}
+            old_point_ids = set()
+            new_point_ids = set()
+
+            old_survey_filepath = tk.filedialog.askopenfilename(parent=self.master, initialdir=self.monitoring_job_dir,
+                                                                title="Please choose a similar survey", filetypes=[("GSI Files", ".GSI")])
+
+            if not old_survey_filepath: # user cancelled
+                return
+
+            old_survey_gsi = GSI(logger, survey_config)
+            old_survey_gsi.format_gsi(old_survey_filepath)
+            old_survey_formatted_lines_except_setups = old_survey_gsi.get_all_lines_except_setup()
+            old_point_compare_dict = OrderedDict()
+
+            line_number_errors = set()
+
+            dialog_subject = "Survey Comparision"
+            all_good_text = "Point naming, prism constants and target heights match between surveys "
+            error_text = "A difference between the two surveys was found:\n\n"
+
+            # Create a dictionary of points and their prism constant.
+            # ASSUMPTION: prism constant for an old survey with no errors should be the same for the same point ID
+            for index, formatted_line in enumerate(old_survey_formatted_lines_except_setups):
+                # add a unique point ID so we are not overwritting point_id with potential different values
+                old_point_compare_dict[formatted_line['Point_ID'] + str(index)] = {'old_point_id': formatted_line['Point_ID'],
+                                                                                   'Prism_Constant': formatted_line['Prism_Constant'],
+                                                                                   'Target_Height': formatted_line['Target_Height']}
+                old_point_ids.add(formatted_line['Point_ID'])
+
+            # for each point and its corresponding PC in old survey, check to see it matches PC in current survey
+            for old_compare_values_list in old_point_compare_dict.values():
+
+                for line_number, current_gsi_line in enumerate(gsi.formatted_lines, start=1):
+
+                    # check to see if point id is a control point and skip if true
+                    if gsi.is_control_point(current_gsi_line):
+                        continue
+
+                    current_point_id = current_gsi_line['Point_ID']
+                    current_PC = current_gsi_line['Prism_Constant']
+                    current_target_height = current_gsi_line['Target_Height']
+
+                    new_point_ids.add(current_point_id)
+
+                    if old_compare_values_list['old_point_id'] == current_point_id:
+
+                        # Compare PC - they should be the same.  If not report to user
+                        if old_compare_values_list['Prism_Constant'] != current_PC:
+                            points_pc_diff_dict[current_point_id] = {'current_pc': current_PC, 'old_pc': old_compare_values_list['Prism_Constant']}
+                            line_number_errors.add(line_number)
+
+                        # Compare target height - they should be the same.  If not report to user
+                        print(current_point_id + "  " + old_compare_values_list['Target_Height'])
+                        if old_compare_values_list['Target_Height'] != current_target_height:
+                            points_target_height_diff_dict[current_point_id] = {'current_target_height': current_target_height,
+                                                                                'old_target_height': old_compare_values_list['Target_Height']}
+                            line_number_errors.add(line_number)
+
+            # get list of points if any, that are different between the two surveys
+            diff_points = sorted((new_point_ids.difference(old_point_ids)))
+
+            # check if any errors found
+            if points_pc_diff_dict or points_target_height_diff_dict or diff_points:
+
+                if points_pc_diff_dict:
+
+                    error_text += 'DIFFERENCES IN PRISM CONSTANT:\n\n'
+                    for point, differences_dict in points_pc_diff_dict.items():
+                        error_text += point + '----> current PC: ' + differences_dict['current_pc'] + '  old PC: ' + differences_dict['old_pc'] + '\n'
+
+                if points_target_height_diff_dict:
+
+                    error_text += '\nDIFFERENCES IN TARGET HEIGHT:\n\n'
+                    for point, differences_dict in points_target_height_diff_dict.items():
+                        error_text += point + '---> current height: ' + differences_dict['current_target_height'] + '  old height: ' + \
+                                      differences_dict['old_target_height'] + '\n'
+
+                if diff_points:
+                    error_text += 'The following list of points were not found in the compared survey:\n\n'
+                    for point in diff_points:
+                        error_text += "  " + point + '\n'
+
+                        # add line numbers where point_id is found in current gsi
+                        point_line_number_errors = gsi.get_point_name_line_numbers(point)
+                        for line_number in point_line_number_errors:
+                            line_number_errors.add(line_number)
+
+                display_text = error_text + '\nThese errors will be highlighted in yellow'
+
+            else:
+                display_text = all_good_text
+
+            tkinter.messagebox.showinfo(dialog_subject, display_text)
+            gui_app.list_box.populate(gsi.formatted_lines, list(line_number_errors))
+
+        except Exception as ex:
+            print("Problem opening up the GSI file\n\n" + str(ex))
+            logger.exception("An unexpected error has occurred\n\ncompare_survey()\n\n" + str(ex))
+            tk.messagebox.showerror("Survey Assist", "An unexpected error has occurred\n\ncompare_survey()\n\n" + str(ex))
             return
-
-        points_pc_diff_dict = {}
-        points_target_height_diff_dict = {}
-        old_point_ids = set()
-        new_point_ids = set()
-
-        old_survey_filepath = tk.filedialog.askopenfilename(parent=self.master, initialdir=self.monitoring_job_dir,
-                                                            title="Please choose a similar survey", filetypes=[("GSI Files", ".GSI")])
-
-        if not old_survey_filepath: # user cancelled
-            return
-
-        old_survey_gsi = GSI(logger, survey_config)
-        old_survey_gsi.format_gsi(old_survey_filepath)
-        old_survey_formatted_lines_except_setups = old_survey_gsi.get_all_lines_except_setup()
-        old_point_compare_dict = OrderedDict()
-
-        line_number_errors = set()
-
-        dialog_subject = "Survey Comparision"
-        all_good_text = "Point naming, prism constants and target heights match between surveys "
-        error_text = "A difference between the two surveys was found:\n\n"
-
-        # Create a dictionary of points and their prism constant.
-        # ASSUMPTION: prism constant for an old survey with no errors should be the same for the same point ID
-        for index, formatted_line in enumerate(old_survey_formatted_lines_except_setups):
-            # add a unique point ID so we are not overwritting point_id with potential different values
-            old_point_compare_dict[formatted_line['Point_ID'] + str(index)] = {'old_point_id': formatted_line['Point_ID'],
-                                                                               'Prism_Constant': formatted_line['Prism_Constant'],
-                                                                               'Target_Height': formatted_line['Target_Height']}
-            old_point_ids.add(formatted_line['Point_ID'])
-
-        # for each point and its corresponding PC in old survey, check to see it matches PC in current survey
-        for old_compare_values_list in old_point_compare_dict.values():
-
-            for line_number, current_gsi_line in enumerate(gsi.formatted_lines, start=1):
-
-                # check to see if point id is a control point and skip if true
-                if gsi.is_control_point(current_gsi_line):
-                    continue
-
-                current_point_id = current_gsi_line['Point_ID']
-                current_PC = current_gsi_line['Prism_Constant']
-                current_target_height = current_gsi_line['Target_Height']
-
-                new_point_ids.add(current_point_id)
-
-                if old_compare_values_list['old_point_id'] == current_point_id:
-
-                    # Compare PC - they should be the same.  If not report to user
-                    if old_compare_values_list['Prism_Constant'] != current_PC:
-                        points_pc_diff_dict[current_point_id] = {'current_pc': current_PC, 'old_pc': old_compare_values_list['Prism_Constant']}
-                        line_number_errors.add(line_number)
-
-                    # Compare target height - they should be the same.  If not report to user
-                    print(current_point_id + "  " + old_compare_values_list['Target_Height'])
-                    if old_compare_values_list['Target_Height'] != current_target_height:
-                        points_target_height_diff_dict[current_point_id] = {'current_target_height': current_target_height,
-                                                                            'old_target_height': old_compare_values_list['Target_Height']}
-                        line_number_errors.add(line_number)
-
-        # get list of points if any, that are different between the two surveys
-        diff_points = sorted((new_point_ids.difference(old_point_ids)))
-
-        # check if any errors found
-        if points_pc_diff_dict or points_target_height_diff_dict or diff_points:
-
-            if points_pc_diff_dict:
-
-                error_text += 'DIFFERENCES IN PRISM CONSTANT:\n\n'
-                for point, differences_dict in points_pc_diff_dict.items():
-                    error_text += point + '----> current PC: ' + differences_dict['current_pc'] + '  old PC: ' + differences_dict['old_pc'] + '\n'
-
-            if points_target_height_diff_dict:
-
-                error_text += '\nDIFFERENCES IN TARGET HEIGHT:\n\n'
-                for point, differences_dict in points_target_height_diff_dict.items():
-                    error_text += point + '---> current height: ' + differences_dict['current_target_height'] + '  old height: ' + \
-                                  differences_dict['old_target_height'] + '\n'
-
-            if diff_points:
-                error_text += 'The following list of points were not found in the compared survey:\n\n'
-                for point in diff_points:
-                    error_text += "  " + point + '\n'
-
-                    # add line numbers where point_id is found in current gsi
-                    point_line_number_errors = gsi.get_point_name_line_numbers(point)
-                    for line_number in point_line_number_errors:
-                        line_number_errors.add(line_number)
-
-            display_text = error_text + '\nThese errors will be highlighted in yellow'
-
-        else:
-            display_text = all_good_text
-
-        tkinter.messagebox.showinfo(dialog_subject, display_text)
-        gui_app.list_box.populate(gsi.formatted_lines, list(line_number_errors))
 
     def export_csv(self):
-
-        gsi.export_csv(MenuBar.filename_path)
+        try:
+            gsi.export_csv(MenuBar.filename_path)
+        except Exception as ex:
+            print("Problem opening up the GSI file\n\n" + str(ex))
+            logger.exception("An unexpected error has occurred\n\nexport_csv()\n\n" + str(ex))
+            tk.messagebox.showerror("Survey Assist", "An unexpected error has occurred\n\nexport_csv()\n\n" + str(ex))
+            return
 
     def display_query_input_box(self):
 
@@ -1001,99 +1072,113 @@ class MenuBar(tk.Frame):
 
     def create_CSV_from_ASC(self):
 
-        asc_file_path = tk.filedialog.askopenfilename(parent=self.master, initialdir=self.monitoring_job_dir, title="Please select an .asc file",
-                                                      filetypes=[("ASC Files", ".ASC")])
-
-        if not asc_file_path:  # user cancel
-            return
-
-        # Create the CSV
-        csv_file = []
-        csv_file.append("POINT,EASTING,NORTHING,ELEVATION\n")
-        comma = ','
-
-        # Get the coordinates from the ASC
-        asc_coordinate_file = ASCCoordinateFile(asc_file_path)
-        coordinate_dict = asc_coordinate_file.coordinate_dictionary
-
-        for point, coordinates in coordinate_dict.items():
-            easting = coordinates['Eastings']
-            northing = coordinates['Northings']
-            elevation = ""
-            try:
-                elevation = coordinates['Elevation']
-            except Exception:
-                pass  # elevation may not exist in some coordinate
-            finally:
-
-                csv_line = ""
-
-                # add coordinates to the CSV
-
-                csv_line += point + comma
-                csv_line += easting + comma
-                csv_line += northing + comma
-                csv_line += elevation + '\n'
-
-                csv_file += csv_line
-
-        # Write out file
-        with open("temp_create_csv.csv", "w") as f:
-            for line in csv_file:
-                f.write(line)
-
-        # Launch excel
-        if asc_file_path:
-            os.system("start EXCEL.EXE temp_create_csv.csv")
-
-    def create_CSV_from_CRD(self):
-
-        crd_file_path = tk.filedialog.askopenfilename(parent=self.master, initialdir=survey_config.todays_dated_directory, title="Please select a "
-                                                                                                                                 ".CRD file",
-                                                      filetypes=[("CRD Files", ".CRD")])
-        if not crd_file_path:  # user cancelled
-            return
-
-        # Create the CSV
-        csv_file = []
-        csv_file.append("POINT,EASTING,NORTHING,ELEVATION\n")
-        comma = ','
-
-        # Get the coordinates from the CRD
-        crd_coordinate_file = CRDCoordinateFile(crd_file_path)
-        coordinate_dict = crd_coordinate_file.coordinate_dictionary
-
-        for point, coordinates in coordinate_dict.items():
-            easting = coordinates['Eastings']
-            northing = coordinates['Northings']
-            elevation = ""
-            try:
-                elevation = coordinates['Elevation']
-            except Exception:
-                pass  # elevation may not exist in some coordinate
-            finally:
-
-                csv_line = ""
-
-                # add coordinates to the CSV
-
-                csv_line += point + comma
-                csv_line += easting + comma
-                csv_line += northing + comma
-                csv_line += elevation + '\n'
-
-                csv_file += csv_line
-
-        # Write out file
         try:
+            asc_file_path = tk.filedialog.askopenfilename(parent=self.master, initialdir=self.monitoring_job_dir, title="Please select an .asc file",
+                                                          filetypes=[("ASC Files", ".ASC")])
+
+            if not asc_file_path:  # user cancel
+                return
+
+            # Create the CSV
+            csv_file = []
+            csv_file.append("POINT,EASTING,NORTHING,ELEVATION\n")
+            comma = ','
+
+            # Get the coordinates from the ASC
+            asc_coordinate_file = ASCCoordinateFile(asc_file_path)
+            coordinate_dict = asc_coordinate_file.coordinate_dictionary
+
+            for point, coordinates in coordinate_dict.items():
+                easting = coordinates['Eastings']
+                northing = coordinates['Northings']
+                elevation = ""
+                try:
+                    elevation = coordinates['Elevation']
+                except Exception:
+                    pass  # elevation may not exist in some coordinate
+                finally:
+
+                    csv_line = ""
+
+                    # add coordinates to the CSV
+
+                    csv_line += point + comma
+                    csv_line += easting + comma
+                    csv_line += northing + comma
+                    csv_line += elevation + '\n'
+
+                    csv_file += csv_line
+
+            # Write out file
             with open("temp_create_csv.csv", "w") as f:
                 for line in csv_file:
                     f.write(line)
-        except Exception as ex:
-            tk.messagebox.showerror("Error creating the CSV", str(ex))
 
-        # Launch excel
-        os.system("start EXCEL.EXE temp_create_csv.csv")
+            # Launch excel
+            if asc_file_path:
+                os.system("start EXCEL.EXE temp_create_csv.csv")
+
+        except Exception as ex:
+            print("Problem opening up the GSI file\n\n" + str(ex))
+            logger.exception("An unexpected error has occurred\n\ncreate_CSV_from_ASC()\n\n" + str(ex))
+            tk.messagebox.showerror("Survey Assist", "An unexpected error has occurred\n\ncreate_CSV_from_ASC()\n\n" + str(ex))
+            return
+
+    def create_CSV_from_CRD(self):
+
+        try:
+            crd_file_path = tk.filedialog.askopenfilename(parent=self.master, initialdir=survey_config.todays_dated_directory, title="Please select a "
+                                                                                                                                     ".CRD file",
+                                                          filetypes=[("CRD Files", ".CRD")])
+            if not crd_file_path:  # user cancelled
+                return
+
+            # Create the CSV
+            csv_file = []
+            csv_file.append("POINT,EASTING,NORTHING,ELEVATION\n")
+            comma = ','
+
+            # Get the coordinates from the CRD
+            crd_coordinate_file = CRDCoordinateFile(crd_file_path)
+            coordinate_dict = crd_coordinate_file.coordinate_dictionary
+
+            for point, coordinates in coordinate_dict.items():
+                easting = coordinates['Eastings']
+                northing = coordinates['Northings']
+                elevation = ""
+                try:
+                    elevation = coordinates['Elevation']
+                except Exception:
+                    pass  # elevation may not exist in some coordinate
+                finally:
+
+                    csv_line = ""
+
+                    # add coordinates to the CSV
+
+                    csv_line += point + comma
+                    csv_line += easting + comma
+                    csv_line += northing + comma
+                    csv_line += elevation + '\n'
+
+                    csv_file += csv_line
+
+            # Write out file
+            try:
+                with open("temp_create_csv.csv", "w") as f:
+                    for line in csv_file:
+                        f.write(line)
+            except Exception as ex:
+                tk.messagebox.showerror("Error creating the CSV", str(ex))
+
+            # Launch excel
+            os.system("start EXCEL.EXE temp_create_csv.csv")
+
+        except Exception as ex:
+            print("Problem opening up the GSI file\n\n" + str(ex))
+            logger.exception("An unexpected error has occurred\n\ncreate_CSV_from_CRD()\n\n" + str(ex))
+            tk.messagebox.showerror("Survey Assist", "An unexpected error has occurred\n\ncreate_CSV_from_CRD()\n\n" + str(ex))
+            return
 
     def copy_gps_to_gnss_temp(self):
 
@@ -1140,65 +1225,72 @@ class MenuBar(tk.Frame):
             else:  # cancel the copying of files
                 return
         except Exception as ex:
-            print(ex)
+            print("An unexpected error has occurred\n\ncopy_gps_to_gnss_temp()\n\n" + str(ex))
+            logger.exception("An unexpected error has occurred\n\ncopy_gps_to_gnss_temp()\n\n" + str(ex))
             tk.messagebox.showerror("Copying GPS files", "AN unexpected error has occured.\n\n" + str(ex))
 
     def create_list_of_change_points(self):
-
-        change_point_list_text = ""
-
-        if not MenuBar.filename_path:
-            self.choose_gsi_file()
-
-        if not MenuBar.filename_path:  # no gsi open
-            return
-
-        change_points = gsi.get_change_points()
-        # change_points = []
-
-        # get a list of stations
-        control_points_dict = gsi.get_list_of_control_points(gsi.formatted_lines)
-
-        # # determine change points. First create a point id list
-        # point_id_list = []
-        # for formatted_line in gsi.formatted_lines:
-        #     point_id_list.append(formatted_line['Point_ID'])
-        #
-        # point_id_frequency = Counter(point_id_list)
-        #
-        # # if point_id occurs more than 4 times its probably a change point
-        # for point_id, count in point_id_frequency.items():
-        #     if count > 3:
-        #         if point_id in control_points_dict.values():
-        #             continue  # dont add stations to change point list
-        #         else:
-        #             change_points.append(point_id)
-
-        # determine the change points for each station setup
-        for line_number, control_name in control_points_dict.items():
-            shots_from_station = gsi.get_all_shots_from_a_station_including_setup(control_name, line_number)
-
-            station_change_points = set()
-
-            for formatted_line in shots_from_station.values():
-                if gsi.is_control_point(formatted_line):  # should only ever be one
-                    change_point_list_text += "@" + control_name + '\n'
-                elif formatted_line['Point_ID'] in change_points:
-                    station_change_points.add(formatted_line['Point_ID'])
-
-            # formatted the file to write out
-            for change_point in sorted(station_change_points):
-                change_point_list_text += "   " + change_point + '\n'
-
-        # Write out file
         try:
-            with open("C:\SurveyAssist\change_point_list.txt", "w") as f:
-                f.write(change_point_list_text)
-        except Exception as ex:
-            tk.messagebox.showerror("Error creating the change point list", str(ex))
+            change_point_list_text = ""
 
-        # Launch text file
-        os.startfile("C:\SurveyAssist\change_point_list.txt")
+            if not MenuBar.filename_path:
+                self.choose_gsi_file()
+
+            if not MenuBar.filename_path:  # no gsi open
+                return
+
+            change_points = gsi.get_change_points()
+            # change_points = []
+
+            # get a list of stations
+            control_points_dict = gsi.get_list_of_control_points(gsi.formatted_lines)
+
+            # # determine change points. First create a point id list
+            # point_id_list = []
+            # for formatted_line in gsi.formatted_lines:
+            #     point_id_list.append(formatted_line['Point_ID'])
+            #
+            # point_id_frequency = Counter(point_id_list)
+            #
+            # # if point_id occurs more than 4 times its probably a change point
+            # for point_id, count in point_id_frequency.items():
+            #     if count > 3:
+            #         if point_id in control_points_dict.values():
+            #             continue  # dont add stations to change point list
+            #         else:
+            #             change_points.append(point_id)
+
+            # determine the change points for each station setup
+            for line_number, control_name in control_points_dict.items():
+                shots_from_station = gsi.get_all_shots_from_a_station_including_setup(control_name, line_number)
+
+                station_change_points = set()
+
+                for formatted_line in shots_from_station.values():
+                    if gsi.is_control_point(formatted_line):  # should only ever be one
+                        change_point_list_text += "@" + control_name + '\n'
+                    elif formatted_line['Point_ID'] in change_points:
+                        station_change_points.add(formatted_line['Point_ID'])
+
+                # formatted the file to write out
+                for change_point in sorted(station_change_points):
+                    change_point_list_text += "   " + change_point + '\n'
+
+            # Write out file
+            try:
+                with open("C:\SurveyAssist\change_point_list.txt", "w") as f:
+                    f.write(change_point_list_text)
+            except Exception as ex:
+                tk.messagebox.showerror("Error creating the change point list", str(ex))
+
+            # Launch text file
+            os.startfile("C:\SurveyAssist\change_point_list.txt")
+
+        except Exception as ex:
+            print("Problem opening up the GSI file\n\n" + str(ex))
+            logger.exception("An unexpected error has occurred\n\ncreate_list_of_change_points()\n\n" + str(ex))
+            tk.messagebox.showerror("Survey Assist", "An unexpected error has occurred\n\ncreate_list_of_change_points()\n\n" + str(ex))
+            return
 
     @staticmethod
     def job_diary():
@@ -1211,7 +1303,13 @@ class MenuBar(tk.Frame):
         ConfigDialogWindow(self.master)
 
     def re_display_gsi(self):
-        gui_app.refresh()
+        try:
+            gui_app.refresh()
+        except Exception as ex:
+            print("Problem opening up the GSI file\n\n" + str(ex))
+            logger.exception("An unexpected error has occurred\n\nre_display_gsi()\n\n" + str(ex))
+            tk.messagebox.showerror("Survey Assist", "An unexpected error has occurred\n\nre_display_gsi()\n\n" + str(ex))
+            return
 
     def open_manual(self):
 
@@ -1219,8 +1317,13 @@ class MenuBar(tk.Frame):
 
     @staticmethod
     def clear_query():
-
-        gui_app.list_box.populate(gsi.formatted_lines)
+        try:
+            gui_app.list_box.populate(gsi.formatted_lines)
+        except Exception as ex:
+            print("Problem opening up the GSI file\n\n" + str(ex))
+            logger.exception("An unexpected error has occurred\n\nclear_query()\n\n" + str(ex))
+            tk.messagebox.showerror("Survey Assist", "An unexpected error has occurred\n\nclear_query()\n\n" + str(ex))
+            return
 
     def enable_menus(self):
 
@@ -1890,44 +1993,49 @@ class PointNameWindow:
         self.master.wait_window(self.dialog_window)
 
     def change_point_name(self):
+        try:
+            # set the new target height hte user has entered
+            new_point_name = self.new_point_name_entry.get().strip()
+            print(new_point_name)
 
-        # set the new target height hte user has entered
-        new_point_name = self.new_point_name_entry.get().strip()
-        print(new_point_name)
+            if len(new_point_name) < 16:
 
-        if len(new_point_name) < 16:
+                line_numbers_to_ammend = []
 
-            line_numbers_to_ammend = []
+                # build list of line numbers to amend
+                selected_items = gui_app.list_box.list_box_view.selection()
 
-            # build list of line numbers to amend
-            selected_items = gui_app.list_box.list_box_view.selection()
+                if selected_items:
+                    for selected_item in selected_items:
+                        line_numbers_to_ammend.append(gui_app.list_box.list_box_view.item(selected_item)['values'][0])
 
-            if selected_items:
-                for selected_item in selected_items:
-                    line_numbers_to_ammend.append(gui_app.list_box.list_box_view.item(selected_item)['values'][0])
+                    # update each line to amend with new target height and coordinates
+                    for line_number in line_numbers_to_ammend:
+                        gsi.update_point_name(line_number, new_point_name)
 
-                # update each line to amend with new target height and coordinates
-                for line_number in line_numbers_to_ammend:
-                    gsi.update_point_name(line_number, new_point_name)
+                    if "EDITED" not in MenuBar.filename_path:
+                        amended_filepath = MenuBar.filename_path[:-4] + "_EDITED.gsi"
+                    else:
+                        amended_filepath = MenuBar.filename_path
 
-                if "EDITED" not in MenuBar.filename_path:
-                    amended_filepath = MenuBar.filename_path[:-4] + "_EDITED.gsi"
-                else:
-                    amended_filepath = MenuBar.filename_path
+                    # create a new ammended gsi file
+                    with open(amended_filepath, "w") as gsi_file:
+                        for line in gsi.unformatted_lines:
+                            gsi_file.write(line)
 
-                # create a new ammended gsi file
-                with open(amended_filepath, "w") as gsi_file:
-                    for line in gsi.unformatted_lines:
-                        gsi_file.write(line)
+                    self.dialog_window.destroy()
 
-                self.dialog_window.destroy()
-
-                # rebuild database and GUI
-                MenuBar.filename_path = amended_filepath
-                GUIApplication.refresh()
-        else:
-            # notify user that no lines were selected
-            tk.messagebox.showinfo("INPUT ERROR", "Point names must be less than 15 characters in length.")
+                    # rebuild database and GUI
+                    MenuBar.filename_path = amended_filepath
+                    GUIApplication.refresh()
+            else:
+                # notify user that no lines were selected
+                tk.messagebox.showinfo("INPUT ERROR", "Point names must be less than 15 characters in length.")
+        except Exception as ex:
+            print("Problem opening up the GSI file\n\n" + str(ex))
+            logger.exception("An unexpected error has occurred\n\nchange_point_name()\n\n" + str(ex))
+            tk.messagebox.showerror("Survey Assist", "An unexpected error has occurred\n\nchange_point_name()\n\n" + str(ex))
+            return
 
 
 class PrismConstantUpdate:
@@ -2195,46 +2303,52 @@ class TargetHeightWindow:
 
     def fix_target_height(self):
 
-        # set the new target height hte user has entered
-        new_target_height = self.get_entered_target_height()
+        try:
+            # set the new target height hte user has entered
+            new_target_height = self.get_entered_target_height()
 
-        if new_target_height is not 'ERROR':
+            if new_target_height is not 'ERROR':
 
-            line_numbers_to_ammend = []
+                line_numbers_to_ammend = []
 
-            # build list of line numbers to amend
-            # selected_items = gui_app.list_box_view.selection()
-            selected_items = gui_app.list_box.list_box_view.selection()
+                # build list of line numbers to amend
+                # selected_items = gui_app.list_box_view.selection()
+                selected_items = gui_app.list_box.list_box_view.selection()
 
-            if selected_items:
-                for selected_item in selected_items:
-                    line_numbers_to_ammend.append(gui_app.list_box.list_box_view.item(selected_item)['values'][0])
+                if selected_items:
+                    for selected_item in selected_items:
+                        line_numbers_to_ammend.append(gui_app.list_box.list_box_view.item(selected_item)['values'][0])
 
-                # update each line to amend with new target height and coordinates
-                for line_number in line_numbers_to_ammend:
-                    corrections = self.get_corrections(line_number, new_target_height)
-                    gsi.update_target_height(line_number, corrections)
+                    # update each line to amend with new target height and coordinates
+                    for line_number in line_numbers_to_ammend:
+                        corrections = self.get_corrections(line_number, new_target_height)
+                        gsi.update_target_height(line_number, corrections)
 
-                if "TgtUpdated" not in MenuBar.filename_path:
+                    if "TgtUpdated" not in MenuBar.filename_path:
 
-                    amended_filepath = MenuBar.filename_path[:-4] + "_TgtUpdated.gsi"
+                        amended_filepath = MenuBar.filename_path[:-4] + "_TgtUpdated.gsi"
+                    else:
+                        amended_filepath = MenuBar.filename_path
+
+                    # create a new ammended gsi file
+                    with open(amended_filepath, "w") as gsi_file:
+                        for line in gsi.unformatted_lines:
+                            gsi_file.write(line)
+
+                    self.dialog_window.destroy()
+
+                    # rebuild database and GUI
+                    MenuBar.filename_path = amended_filepath
+                    GUIApplication.refresh()
                 else:
-                    amended_filepath = MenuBar.filename_path
-
-                # create a new ammended gsi file
-                with open(amended_filepath, "w") as gsi_file:
-                    for line in gsi.unformatted_lines:
-                        gsi_file.write(line)
-
-                self.dialog_window.destroy()
-
-                # rebuild database and GUI
-                MenuBar.filename_path = amended_filepath
-                GUIApplication.refresh()
-            else:
-                # notify user that no lines were selected
-                tk.messagebox.showinfo("INPUT ERROR", "Please select a line first that you want to change target "
-                                                      "height")
+                    # notify user that no lines were selected
+                    tk.messagebox.showinfo("INPUT ERROR", "Please select a line first that you want to change target "
+                                                          "height")
+        except Exception as ex:
+            print("Problem opening up the GSI file\n\n" + str(ex))
+            logger.exception("An unexpected error has occurred\n\nfix_target_height()\n\n" + str(ex))
+            tk.messagebox.showerror("Survey Assist", "An unexpected error has occurred\n\nfix_target_height()\n\n" + str(ex))
+            return
 
     def get_corrections(self, line_number, new_target_height):
 
@@ -2329,6 +2443,7 @@ class CompnetUpdateFixedFileWindow:
 
         except Exception as ex:
             print(ex, type(ex))
+            logger.exception("An unexpected error has occurred\n\nupdate_fixed_file()\n\n" + str(ex))
             tk.messagebox.showerror("Error", "Have you selected both files?\n\nIf problem persists, please see "
                                              "Richard.  Check coordinates are MGA56\n\n" + str(ex))
 
@@ -2425,34 +2540,40 @@ class CompnetWeightSTDFileWindow:
         self.dialog_window.lift()  # bring window to the front again
 
     def update_STD_file(self):
+        try:
+            if self.std_file_path != "":
+                updated_std_contents = []
+                weight_dict = {}
 
-        if self.std_file_path != "":
-            updated_std_contents = []
-            weight_dict = {}
+                # build the weighted dictionary
+                weight_dict['Easting'] = self.entry_east.get()
+                weight_dict['Northing'] = self.entry_north.get()
+                weight_dict['Elevation'] = self.entry_elevation.get()
 
-            # build the weighted dictionary
-            weight_dict['Easting'] = self.entry_east.get()
-            weight_dict['Northing'] = self.entry_north.get()
-            weight_dict['Elevation'] = self.entry_elevation.get()
+                std_file = STDCoordinateFile(self.std_file_path)
 
-            std_file = STDCoordinateFile(self.std_file_path)
-
-            try:
-                updated_std_contents = std_file.update_weighting(weight_dict)
-            except InvalidOperation:
-                tkinter.messagebox.showinfo("Update STD File", "Please double check all weightings are a number")
-                self.dialog_window.lift()
+                try:
+                    updated_std_contents = std_file.update_weighting(weight_dict)
+                except InvalidOperation:
+                    tkinter.messagebox.showinfo("Update STD File", "Please double check all weightings are a number")
+                    self.dialog_window.lift()
+                else:
+                    # write out file
+                    with open(self.std_file_path, "w") as std_file:
+                        for line in updated_std_contents:
+                            std_file.write(line)
+                    tkinter.messagebox.showinfo("Update STD File", "STD file has been updated")
+                    self.dialog_window.destroy()
             else:
-                # write out file
-                with open(self.std_file_path, "w") as std_file:
-                    for line in updated_std_contents:
-                        std_file.write(line)
-                tkinter.messagebox.showinfo("Update STD File", "STD file has been updated")
-                self.dialog_window.destroy()
-        else:
-            # user hasn't choosen a file
-            tkinter.messagebox.showinfo("Update STD File", "Please choose an STD file")
-            self.dialog_window.lift()
+                # user hasn't choosen a file
+                tkinter.messagebox.showinfo("Update STD File", "Please choose an STD file")
+                self.dialog_window.lift()
+
+        except Exception as ex:
+            print("Problem opening up the GSI file\n\n" + str(ex))
+            logger.exception("An unexpected error has occurred\n\nupdate_STD_file()\n\n" + str(ex))
+            tk.messagebox.showerror("Survey Assist", "An unexpected error has occurred\n\nupdate_STD_file()\n\n" + str(ex))
+            return
 
 
 class CompnetCompareCRDFWindow:
@@ -2659,8 +2780,10 @@ class CompnetCreateControlOnlyGSI:
             gui_app.status_bar.status['text'] = 'Please choose a GSI File'
 
         except Exception as ex:
-            # most likely incorrect GSI
-            print(ex, type(ex))
+            print("Problem opening up the GSI file\n\n" + str(ex))
+            logger.exception("An unexpected error has occurred\n\nstrip_non_control_shots()\n\n" + str(ex))
+            tk.messagebox.showerror("Survey Assist", "An unexpected error has occurred\n\nstrip_non_control_shots()\n\n" + str(ex))
+            return
 
 
 class CombineGSIFilesWindow:
@@ -2777,6 +2900,7 @@ class CombineGSIFilesWindow:
         except Exception as ex:
 
             print(ex)
+            logger.exception("An unexpected error has occurred\n\nselect_and_combine_gsi_files()\n\n" + str(ex))
             tk.messagebox.showerror("Error", "Error combining files.\n\n" + str(ex))
 
         else:
