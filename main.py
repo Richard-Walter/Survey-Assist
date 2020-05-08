@@ -10,7 +10,6 @@ v1.0 Initial Release
 
 """
 # TODO try catch around the whole program and log error to stop SA from crashing
-# TODO add current tolerance values in the check tolerance dialog with message " these can be change in the settings.ini in the COnfig FIles folder
 import tkinter.messagebox
 import logging.config
 from tkinter import filedialog
@@ -532,11 +531,13 @@ class MenuBar(tk.Frame):
         try:
             errors, error_points = gsi.check_3D_survey(database.conn)
             error_text = "The following points are outside the specified survey tolerance:\n"
+            specified_tolerance_txt = "\n\nThe current tolerance is E:" + survey_config.easting_tolerance + "  N:" + \
+                                      survey_config.northing_tolerance + "  H: " + survey_config.height_tolerance
 
             if not errors:
-                error_text = "Survey is within the specified tolerance.  Well done!"
+                error_text = "Survey is within the specified tolerance.  Well done!" + specified_tolerance_txt
             else:
-                error_text += errors
+                error_text += errors + specified_tolerance_txt
 
             # display error dialog box
             print(error_text)
