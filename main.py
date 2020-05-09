@@ -151,7 +151,7 @@ class MenuBar(tk.Frame):
             MenuBar.filename_path = tk.filedialog.askopenfilename(initialdir=intial_directory, title="Select file", filetypes=[("GSI Files", ".gsi")])
             # survey_config.update(SurveyConfiguration.section_file_directories, 'last_used', os.path.dirname(MenuBar.filename_path))
 
-            if not MenuBar.filename_path:    # user cancelled
+            if not MenuBar.filename_path:  # user cancelled
                 return
 
             GUIApplication.refresh()
@@ -198,12 +198,13 @@ class MenuBar(tk.Frame):
         try:
             # ask user to slect the root dated directory
             dated_directory_path = filedialog.askdirectory(parent=self.master, initialdir=self.monitoring_job_dir, title='Please select the '
-                                                                                                                                 'dated directory')
+                                                                                                                         'dated directory')
             if dated_directory_path:
 
                 # check to see if it has a dated directory structure
                 # check if file is in the edited directory of a dated file format folder
-                if (os.path.isdir(dated_directory_path + '/TS')) & (os.path.isdir(dated_directory_path + '/GPS')) & (os.path.isdir(dated_directory_path + '/OUTPUT')):
+                if (os.path.isdir(dated_directory_path + '/TS')) & (os.path.isdir(dated_directory_path + '/GPS')) & (
+                os.path.isdir(dated_directory_path + '/OUTPUT')):
 
                     survey_config.todays_dated_directory = dated_directory_path
                 else:
@@ -882,7 +883,7 @@ class MenuBar(tk.Frame):
             old_survey_filepath = tk.filedialog.askopenfilename(parent=self.master, initialdir=self.monitoring_job_dir,
                                                                 title="Please choose a similar survey", filetypes=[("GSI Files", ".GSI")])
 
-            if not old_survey_filepath: # user cancelled
+            if not old_survey_filepath:  # user cancelled
                 return
 
             old_survey_gsi = GSI(logger, survey_config)
@@ -1127,8 +1128,9 @@ class MenuBar(tk.Frame):
     def create_CSV_from_CRD(self):
 
         try:
-            crd_file_path = tk.filedialog.askopenfilename(parent=self.master, initialdir=survey_config.todays_dated_directory, title="Please select a "
-                                                                                                                                     ".CRD file",
+            crd_file_path = tk.filedialog.askopenfilename(parent=self.master, initialdir=survey_config.todays_dated_directory,
+                                                          title="Please select a "
+                                                                ".CRD file",
                                                           filetypes=[("CRD Files", ".CRD")])
             if not crd_file_path:  # user cancelled
                 return
@@ -1195,6 +1197,7 @@ class MenuBar(tk.Frame):
 
             confirm_msg = "All GPS files in " + gnss_dir_path + " will be deleted before copying across todays GNSS files.\n\nAre you sure " \
                                                                 "you want to continue?"
+
             if tk.messagebox.askokcancel("Copy GPS files to GNSS Temp", confirm_msg):
 
                 todays_dated_directory = survey_config.todays_dated_directory
@@ -2973,7 +2976,6 @@ class CombineGSIFilesWindow:
         station_set = unsorted_combined_gsi.get_set_of_control_points()
 
         if len(stations_names_dict) != len(station_set):
-            pass
             tk.messagebox.showwarning("WARNING", 'Warning - Duplicate station names detected in the combined gsi!')
 
         # need to sort this by station name

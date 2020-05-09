@@ -82,3 +82,14 @@ Traceback (most recent call last):
   File "C:\Users\Richard\AppData\Local\Programs\Python\Python37-32\lib\tkinter\__init__.py", line 2143, in pack_configure
     + self._options(cnf, kw))
 _tkinter.TclError: bad option "-bd": must be -after, -anchor, -before, -expand, -fill, -in, -ipadx, -ipady, -padx, -pady, or -side
+2020-05-09 10:02:45,092:Survey Assist - v1.0:An unexpected error has occurred
+
+select_and_combine_gsi_files()
+
+'list' object has no attribute 'difference'
+Traceback (most recent call last):
+  File "C:/Users/Richard/PycharmProjects/Survey Assist/main.py", line 2893, in select_and_combine_gsi_files
+    sorted_filecontents = self.sort_alphabetically()
+  File "C:/Users/Richard/PycharmProjects/Survey Assist/main.py", line 2937, in sort_alphabetically
+    duplicate_stations = station_set.difference(stations_names_dict)
+AttributeError: 'list' object has no attribute 'difference'
