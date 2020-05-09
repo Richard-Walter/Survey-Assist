@@ -9,7 +9,7 @@ VERSION HISTORY
 v1.0 Initial Release
 
 """
-
+# TODO known bug - updating tolerances values updates the survey config file but not in the gsi class
 import tkinter.messagebox
 import logging.config
 from tkinter import filedialog
