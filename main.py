@@ -9,7 +9,7 @@ VERSION HISTORY
 v1.0 Initial Release
 
 """
-# TODO known bug - updating tolerances values updates the survey config file but not in the gsi class
+
 import tkinter.messagebox
 import logging.config
 from tkinter import filedialog
@@ -571,7 +571,7 @@ class MenuBar(tk.Frame):
         subject = "Checking Survey Tolerances"
 
         try:
-            errors, error_points = gsi.check_3D_survey(database.conn)
+            errors, error_points = gsi.check_3D_survey(database.conn, survey_config)
             error_text = "The following points are outside the specified survey tolerance:\n"
             specified_tolerance_txt = "\n\nThe current tolerance is E:" + survey_config.easting_tolerance + "  N:" + \
                                       survey_config.northing_tolerance + "  H: " + survey_config.height_tolerance

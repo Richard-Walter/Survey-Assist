@@ -881,7 +881,7 @@ class GSI:
 
         return dialog_text, line_number_errors
 
-    def check_3D_survey(self, conn):
+    def check_3D_survey(self, conn, survey_config):
 
         control_points = self.get_set_of_control_points()
         change_points = self.get_change_points()
@@ -939,13 +939,13 @@ class GSI:
                     north_diff = float(max(northings)) - float(min(northings))
                     height_diff = float(max(elevation)) - float(min(elevation))
 
-                    if east_diff > float(self.survey_config.easting_tolerance):
+                    if east_diff > float(survey_config.easting_tolerance):
                         point_tolerances_errors_dict['Easting'] = 'E='+"{:.3f}".format(round(east_diff, 3)) + 'm  '
 
-                    if north_diff > float(self.survey_config.northing_tolerance):
+                    if north_diff > float(survey_config.northing_tolerance):
                         point_tolerances_errors_dict['Northing'] = 'N='+"{:.3f}".format(round(north_diff, 3)) + 'm  '
 
-                    if height_diff > float(self.survey_config.height_tolerance):
+                    if height_diff > float(survey_config.height_tolerance):
                         point_tolerances_errors_dict['Height'] = 'H='+"{:.3f}".format(round(height_diff, 3)) + 'm'
 
                     # add to error dictionary if errors found:
