@@ -1763,10 +1763,10 @@ class ListBoxFrame(tk.Frame):
         # Add scrollbar
         vsb = ttk.Scrollbar(self.list_box_view, orient='vertical', command=self.list_box_view.yview)
         vsb.pack(side='right', fill='y')
-        hsb = ttk.Scrollbar(self.list_box_view, orient='horizontal', command=self.list_box_view.xview)
-        hsb.pack(side='bottom', fill='x')
+        # hsb = ttk.Scrollbar(self.list_box_view, orient='horizontal', command=self.list_box_view.xview)
+        # hsb.pack(side='bottom', fill='x')
         self.list_box_view.configure(yscrollcommand=vsb.set)
-        self.list_box_view.configure(xscrollcommand=hsb.set)
+        # self.list_box_view.configure(xscrollcommand=hsb.set)
 
         # set column headings
         for column_name in self.treeview_column_names:
