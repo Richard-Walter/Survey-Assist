@@ -4,8 +4,8 @@ from collections import OrderedDict
 
 
 class CoordinateFile:
-    re_pattern_easting = re.compile(r'\b\d{6}\.\d{4}')
-    re_pattern_northing = re.compile(r'\b\d{7}\.\d{4}')
+    re_pattern_easting = re.compile(r'\b\d{6}\.\d{3,4}')
+    re_pattern_northing = re.compile(r'\b\d{7}\.\d{3,4}')
     re_pattern_elevation = re.compile(r'\b\d{1,3}\.\d{3,4}')
     re_pattern_point_crd = re.compile(r'\b\S+\b')
     re_pattern_point_std = re.compile(r'"\S+"')
