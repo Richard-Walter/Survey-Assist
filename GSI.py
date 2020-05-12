@@ -1025,10 +1025,12 @@ class GSI:
 
         except IOError as ex:
             print(ex)
+            self.logger.exception("An unexpected error has occurred\n\nGSI.py export_csv()\n\n" + str(ex))
             tkinter.messagebox.showerror("ERROR", "Please make sure file isnt already opened")
 
         except Exception as ex:
             print(ex)
+            self.logger.exception("An unexpected error has occurred\n\nGSI.py export_csv()\n\n" + str(ex))
             tkinter.messagebox.showerror("ERROR", "Something went wrong exporting CSV.  Contact Richard\n\n" + str(ex))
 
 
