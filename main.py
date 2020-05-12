@@ -1069,7 +1069,7 @@ class MenuBar(tk.Frame):
 
     def combine_gsi_files(self):
 
-        CombineGSIFilesWindow(self)
+        CombineGSIFilesWindow(self.master)
 
     def create_CSV_from_ASC(self):
 
@@ -1439,20 +1439,20 @@ class ConfigDialogWindow:
         tk.Label(self.dialog_window, text="Easting Tolerance: ").grid(row=1, column=0, padx=5, pady=(20, 5), sticky='w')
         self.entry_easting = tk.Entry(self.dialog_window)
         self.entry_easting.insert(tkinter.END, survey_config.easting_tolerance)
-        self.entry_easting.grid(row=1, column=1, padx=5, pady=(20, 5), sticky='w', )
+        self.entry_easting.grid(row=1, column=1, padx=10, pady=(20, 5), sticky='w', )
 
         tk.Label(self.dialog_window, text="Northing Tolerance: ").grid(row=2, column=0, padx=5, pady=5, sticky='w')
         self.entry_northing = tk.Entry(self.dialog_window)
         self.entry_northing.insert(tkinter.END, survey_config.northing_tolerance)
-        self.entry_northing.grid(row=2, column=1, padx=5, pady=5, sticky='w')
+        self.entry_northing.grid(row=2, column=1, padx=10, pady=5, sticky='w')
 
         tk.Label(self.dialog_window, text="Height Tolerance: ").grid(row=3, column=0, padx=5, pady=5, sticky='w')
         self.entry_height = tk.Entry(self.dialog_window)
         self.entry_height.insert(tkinter.END, survey_config.height_tolerance)
-        self.entry_height.grid(row=3, column=1, padx=5, pady=5, sticky='w')
+        self.entry_height.grid(row=3, column=1, padx=10, pady=5, sticky='w')
 
         self.sorted_station_file_lbl = tk.Label(self.dialog_window, text="Sorted station file: ").grid(row=4, column=0,
-                                                                                                       padx=5,
+                                                                                                       padx=10,
                                                                                                        pady=10,
                                                                                                        sticky='w')
         self.sorted_station_file_btn = tk.Button(self.dialog_window, text=os.path.basename(self.sorted_stn_file_path),
@@ -1460,10 +1460,12 @@ class ConfigDialogWindow:
         self.sorted_station_file_btn.grid(row=4, column=1, padx=20, pady=10, sticky='w')
 
         save_b = tk.Button(self.dialog_window, text="Save", width=10, command=self.save)
-        save_b.grid(row=5, column=0, padx=5, pady=20, sticky='nesw')
+        save_b.grid(row=5, column=0, padx=10, pady=20, sticky='nesw')
 
         cancel_b = tk.Button(self.dialog_window, text="Cancel", width=10, command=self.cancel)
         cancel_b.grid(row=5, column=1, padx=20, pady=20, sticky='nesw')
+
+        self.dialog_window.geometry(MainWindow.position_popup(master, 310, 250))
 
     def select_sorted_stn_file(self):
 
@@ -1733,12 +1735,19 @@ class MainWindow(tk.Frame):
 
     @staticmethod
     def position_popup(master, popup_w, popup_h):
+
         offset_x = 20
         offset_y = 20
 
+        master_x = master.winfo_x()
+        master_y = master.winfo_y()
+
+        pop_up_x = master_x + offset_x
+        pop_up_y = master_y + offset_y
+
         master.update_idletasks()
 
-        return '{}x{}+{}+{}'.format(popup_w, popup_h, offset_x, offset_y)
+        return '{}x{}+{}+{}'.format(popup_w, popup_h, pop_up_x, pop_up_y)
 
 
 class ListBoxFrame(tk.Frame):
@@ -2829,6 +2838,7 @@ class CombineGSIFilesWindow:
         self.files_btn.grid(row=6, column=1, sticky='w', columnspan=3, padx=60, pady=(20, 20))
 
         self.dialog_window.geometry(MainWindow.position_popup(master, 320, 280))
+
         # self.dialog_window.attributes('-topmost', 'true')
 
     def enable_config_button(self):
