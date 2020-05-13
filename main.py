@@ -945,17 +945,18 @@ class MenuBar(tk.Frame):
 
                     error_text += 'DIFFERENCES IN PRISM CONSTANT:\n\n'
                     for point, differences_dict in points_pc_diff_dict.items():
-                        error_text += point + '----> current PC: ' + differences_dict['current_pc'] + '  old PC: ' + differences_dict['old_pc'] + '\n'
+                        error_text += ' ' + point + ' ----> current PC: ' + differences_dict['current_pc'] + '  old PC: ' + differences_dict[
+                            'old_pc'] + '\n'
 
                 if points_target_height_diff_dict:
 
                     error_text += '\nDIFFERENCES IN TARGET HEIGHT:\n\n'
                     for point, differences_dict in points_target_height_diff_dict.items():
-                        error_text += point + '---> current height: ' + differences_dict['current_target_height'] + '  old height: ' + \
+                        error_text += ' ' + point + ' ---> current height: ' + differences_dict['current_target_height'] + '  old height: ' + \
                                       differences_dict['old_target_height'] + '\n'
 
                 if diff_points:
-                    error_text += 'The following list of points were not found in the compared survey:\n\n'
+                    error_text += '\nThe following list of points were not found in the compared survey:\n\n'
                     for point in diff_points:
                         error_text += "  " + point + '\n'
 
@@ -964,7 +965,7 @@ class MenuBar(tk.Frame):
                         for line_number in point_line_number_errors:
                             line_number_errors.add(line_number)
 
-                display_text = error_text + '\nThese errors will be highlighted in yellow'
+                display_text = error_text + '\nThese differences will be highlighted in yellow'
 
             else:
                 display_text = all_good_text
