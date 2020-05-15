@@ -13,6 +13,8 @@ KNOWN BUGS
 
 """
 
+# TODO Copy output to dated directory
+
 import tkinter.messagebox
 import logging.config
 from tkinter import filedialog
