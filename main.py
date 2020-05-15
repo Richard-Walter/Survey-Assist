@@ -14,7 +14,6 @@ KNOWN BUGS
 """
 
 # TODO Copy Compnet output to dated directory
-# TODO add choose compnet working directory
 
 import tkinter.messagebox
 import logging.config
@@ -76,6 +75,7 @@ class MenuBar(tk.Frame):
         self.file_sub_menu.add_command(label="Open GSI...", command=self.choose_gsi_file)
         self.file_sub_menu.add_command(label="Create Dated Directory...", command=lambda: self.new_dated_directory(False))
         self.file_sub_menu.add_command(label="Choose Dated Directory...", command=self.choose_dated_directory)
+        self.file_sub_menu.add_command(label="Choose Compnet Job Directory...", command=self.choose_compnet_directory)
         self.file_sub_menu.add_command(label="Create Job Directory...", command=self.new_job_directoy)
         self.file_sub_menu.add_command(label="Import SD Data", command=self.import_sd_data)
         self.file_sub_menu.add_separator()
@@ -213,7 +213,7 @@ class MenuBar(tk.Frame):
                 # check to see if it has a dated directory structure
                 # check if file is in the edited directory of a dated file format folder
                 if (os.path.isdir(dated_directory_path + '/TS')) & (os.path.isdir(dated_directory_path + '/GPS')) & (
-                os.path.isdir(dated_directory_path + '/OUTPUT')):
+                        os.path.isdir(dated_directory_path + '/OUTPUT')):
 
                     survey_config.todays_dated_directory = dated_directory_path
                 else:
@@ -224,6 +224,13 @@ class MenuBar(tk.Frame):
             logger.exception("An unexpected error has occurred\n\nchoose_dated_directory()\n\n" + str(ex))
             tk.messagebox.showerror("Survey Assist", "An unexpected error has occurred\n\nchoose_dated_directory()\n\n" + str(ex))
             return
+
+    def choose_compnet_directory(self):
+
+        compnet_monitoring_dir = os.path.join(survey_config.compnet_data_dir,survey_config.current_year, survey_config.default_survey_type)
+        self.compnet_working_dir = filedialog.askdirectory(parent=self.master, initialdir=compnet_monitoring_dir,
+                                                           title='Please select a compnet job directory')
+
 
     def new_job_directoy(self):
 
@@ -1800,7 +1807,6 @@ class MainWindow(tk.Frame):
 
     @staticmethod
     def position_popup(master, popup_w, popup_h):
-
         offset_x = 20
         offset_y = 20
 
@@ -3600,7 +3606,6 @@ class GUIApplication(tk.Frame):
 
     @staticmethod
     def refresh():
-
         MenuBar.format_gsi_file()
         MenuBar.create_and_populate_database()
         MenuBar.update_gui()
