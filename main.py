@@ -142,6 +142,7 @@ class MenuBar(tk.Frame):
     def choose_gsi_file(self):
 
         try:
+
             if survey_config.todays_dated_directory == "":
                 intial_directory = self.monitoring_job_dir
 
@@ -153,6 +154,8 @@ class MenuBar(tk.Frame):
 
             if not MenuBar.filename_path:  # user cancelled
                 return
+
+            logger.info("OPENING UP A GSI FILE: " + MenuBar.filename_path)
 
             GUIApplication.refresh()
             self.enable_menus()
@@ -3566,17 +3569,17 @@ def main():
 
 
 def configure_logger():
-    logger.setLevel(logging.ERROR)
+    logger.setLevel(logging.INFO)
     formatter = logging.Formatter('%(asctime)s:%(name)s:%(message)s')
 
     # Writes debug messages to the log
     file_handler = logging.FileHandler('Survey Assist.log')
-    file_handler.setLevel(logging.ERROR)
+    file_handler.setLevel(logging.INFO)
     file_handler.setFormatter(formatter)
 
     # Display debug messages to the console
     stream_handler = logging.StreamHandler()
-    stream_handler.setLevel(logging.ERROR)
+    stream_handler.setLevel(logging.INFO)
     stream_handler.setFormatter(formatter)
 
     logger.addHandler(file_handler)

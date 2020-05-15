@@ -460,7 +460,7 @@ class GSI:
                         formatted_line[field_name] = field_value
 
                     self.formatted_lines.append(formatted_line)
-                    self.logger.info('Formatted Line: ' + str(formatted_line))
+                    # self.logger.info('Formatted Line: ' + str(formatted_line))
 
                     stn_setup = False
 
@@ -1129,7 +1129,7 @@ class GSI:
 
 class GSIDatabase:
     DATABASE_NAME = 'GSI_database.db'
-    DATABASE_PATH = 'GSI Files\\GSI_database.db'
+    DATABASE_PATH = 'GSI_database.db'
     TABLE_NAME = 'GSI'
 
     def __init__(self, ):
@@ -1181,7 +1181,7 @@ class GSIDatabase:
         create_table_string = create_table_string.rstrip(', ')
         create_table_string += ")"
 
-        self.logger.info('SQL Create Table query: ' + create_table_string)
+        # self.logger.info('SQL Create Table query: ' + create_table_string)
 
         with self.conn:
             self.conn.execute(create_table_string)
@@ -1206,8 +1206,8 @@ class GSIDatabase:
         question_marks = ', '.join(list('?' * len(self.gsi_word_id_dict)))  # e.g. ?, ?, ?, ?
         sql = 'INSERT INTO {} VALUES ({})'.format(GSIDatabase.TABLE_NAME, question_marks)
 
-        self.logger.info('SQL statement is: {}'.format(sql))
-        self.logger.info('SQL values are: {}'.format(str(values_list)))
+        # self.logger.info('SQL statement is: {}'.format(sql))
+        # self.logger.info('SQL values are: {}'.format(str(values_list)))
 
         # Insert a formatted line of GSI data into database
         with self.conn:
