@@ -13,7 +13,8 @@ KNOWN BUGS
 
 """
 
-# TODO Copy output to dated directory
+# TODO Copy Compnet output to dated directory
+# TODO add choose compnet working directory
 
 import tkinter.messagebox
 import logging.config
@@ -1192,6 +1193,56 @@ class MenuBar(tk.Frame):
             tk.messagebox.showerror("Survey Assist", "An unexpected error has occurred\n\ncreate_CSV_from_CRD()\n\n" + str(ex))
             return
 
+    def copy_compnet_job_to_dated_directory(self):
+
+        # TODO Redo this code below
+        try:
+            if not os.path.exists(survey_config.gnss_temp_dir):
+                os.makedirs(survey_config.gnss_temp_dir)
+
+            gnss_dir_path = tk.filedialog.askdirectory(parent=self.master, initialdir=survey_config.gnss_temp_dir,
+                                                       title="Please choose the temp GNSS job directory")
+
+            if not gnss_dir_path:  # use cancelled the dialog box
+                return
+
+            confirm_msg = "All GPS files in " + gnss_dir_path + " will be deleted before copying across todays GNSS files.\n\nAre you sure " \
+                                                                "you want to continue?"
+
+            if tk.messagebox.askokcancel("Copy GPS files to GNSS Temp", confirm_msg):
+
+                todays_dated_directory = survey_config.todays_dated_directory
+
+                if not todays_dated_directory:
+                    todays_GPS_directory = tk.filedialog.askdirectory(parent=self.master, initialdir=survey_config.root_job_directory,
+                                                                      title="Please choose the GPS directory containing the GPS files you wish to "
+                                                                            "transfer ")
+                else:
+                    todays_GPS_directory = os.path.join(todays_dated_directory, 'GPS')
+
+                if not todays_GPS_directory:
+                    return  # user cancelled
+
+                # remove existing files in the temp directory
+                # for filename in os.listdir(gnss_dir_path):
+                #     filepath = os.path.join(gnss_dir_path, filename)
+                #     os.remove(filepath)
+                shutil.rmtree(gnss_dir_path)
+
+                # copy over GPS files
+                # for file in os.listdir(todays_GPS_directory):
+                #     shutil.copyfile(os.path.join(file, todays_GPS_directory), os.path.join(gnss_dir_path, file))
+                copy_tree(todays_GPS_directory, gnss_dir_path)
+
+                tk.messagebox.showinfo("Copying GPS files", "GPS files successfully copied over.")
+
+            else:  # cancel the copying of files
+                return
+        except Exception as ex:
+            print("An unexpected error has occurred\n\ncopy_gps_to_gnss_temp()\n\n" + str(ex))
+            logger.exception("An unexpected error has occurred\n\ncopy_gps_to_gnss_temp()\n\n" + str(ex))
+            tk.messagebox.showerror("Copying GPS files", "AN unexpected error has occured.\n\n" + str(ex))
+
     def copy_gps_to_gnss_temp(self):
 
         try:
@@ -1199,8 +1250,7 @@ class MenuBar(tk.Frame):
                 os.makedirs(survey_config.gnss_temp_dir)
 
             gnss_dir_path = tk.filedialog.askdirectory(parent=self.master, initialdir=survey_config.gnss_temp_dir,
-                                                       title="Please choose the temp GNSS "
-                                                             "job directory")
+                                                       title="Please choose the temp GNSS job directory")
 
             if not gnss_dir_path:  # use cancelled the dialog box
                 return
@@ -1702,6 +1752,9 @@ class WorkflowBar(tk.Frame):
         self.btn_update_fixed_file.configure(background='#FCF1E1')
         self.btn_weight_std_file = tk.Button(self.frame, text="Weight STD File", command=lambda: gui_app.menu_bar.weight_STD_file())
         self.btn_weight_std_file.configure(background='#FCF1E1')
+        self.btn_copy_job_to_dated_directory = tk.Button(self.frame, text="Copy Job to Dated Directory", command=lambda:
+        gui_app.menu_bar.copy_compnet_job_to_dated_directory())
+        self.btn_copy_job_to_dated_directory.configure(background='#FCF1E1')
         self.btn_csv_from_crd = tk.Button(self.frame, text="Popup CSV from CRD", command=lambda: gui_app.menu_bar.create_CSV_from_CRD())
         self.btn_csv_from_crd.configure(background='#FCF1E1')
 
@@ -1725,6 +1778,7 @@ class WorkflowBar(tk.Frame):
         self.btn_compnet_new_job.pack(padx=5, pady=5, side='left')
         self.btn_update_fixed_file.pack(padx=5, pady=5, side='left')
         self.btn_weight_std_file.pack(padx=5, pady=5, side='left')
+        self.btn_copy_job_to_dated_directory.pack(padx=5, pady=5, side='left')
         self.btn_csv_from_crd.pack(padx=5, pady=5, side='left')
 
         # pack re-display observations
