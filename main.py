@@ -1357,6 +1357,7 @@ class MenuBar(tk.Frame):
 
     @staticmethod
     def client_exit():
+        logger.info("Exiting the application")
         exit()
 
     @staticmethod
