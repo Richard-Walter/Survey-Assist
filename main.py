@@ -8,6 +8,9 @@ VERSION HISTORY
 ---------------
 v1.0 Initial Release
 
+KNOWN BUGS
+-Sometimes a GSI is loaded yet the taskbar says please select a GSI.  You can't delete lines or export csv.
+
 """
 
 import tkinter.messagebox
@@ -559,6 +562,7 @@ class MenuBar(tk.Frame):
     @staticmethod
     def update_gui():
         try:
+
             gui_app.list_box.populate(gsi.formatted_lines)
             gui_app.status_bar.status['text'] = MenuBar.filename_path
         except Exception as ex:
@@ -1357,7 +1361,7 @@ class MenuBar(tk.Frame):
 
     @staticmethod
     def client_exit():
-        logger.info("Exiting the application")
+        # logger.info("Exiting the application")
         exit()
 
     @staticmethod
@@ -1800,6 +1804,9 @@ class ListBoxFrame(tk.Frame):
         self.list_box_view.pack(fill="both", expand=True)
 
     def populate(self, formatted_lines, highlight_lines=[]):
+
+        # re-bind gui in case its been remove e.g. Query results will unbind the deletion of lines
+        self.list_box_view.bind('<Delete>', self.delete_selected_rows)
 
         # Remove any previous data first
         self.list_box_view.delete(*self.list_box_view.get_children())
@@ -3537,6 +3544,7 @@ class GUIApplication(tk.Frame):
 
     @staticmethod
     def refresh():
+
         MenuBar.format_gsi_file()
         MenuBar.create_and_populate_database()
         MenuBar.update_gui()
