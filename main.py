@@ -1213,7 +1213,7 @@ class MenuBar(tk.Frame):
                 self.choose_dated_directory()
 
                 if not survey_config.todays_dated_directory:  # user cancelled
-                    tk.messagebox.showinfo("Copying Compnet Job Files", "A dated directory muts be selected before continuing.")
+                    tk.messagebox.showinfo("Copying Compnet Job Files", "A dated directory must be selected before continuing.")
                     return
 
             # we want to copy the files into a Compnet folder created in the Output directory of the selected dated directory
