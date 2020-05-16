@@ -13,8 +13,6 @@ KNOWN BUGS
 
 """
 
-# TODO Copy Compnet output to dated directory
-
 import tkinter.messagebox
 import logging.config
 from tkinter import filedialog
@@ -227,10 +225,9 @@ class MenuBar(tk.Frame):
 
     def choose_compnet_directory(self):
 
-        compnet_monitoring_dir = os.path.join(survey_config.compnet_data_dir,survey_config.current_year, survey_config.default_survey_type)
+        compnet_monitoring_dir = os.path.join(survey_config.compnet_data_dir, survey_config.current_year, survey_config.default_survey_type)
         self.compnet_working_dir = filedialog.askdirectory(parent=self.master, initialdir=compnet_monitoring_dir,
                                                            title='Please select a compnet job directory')
-
 
     def new_job_directoy(self):
 
@@ -1146,9 +1143,9 @@ class MenuBar(tk.Frame):
     def create_CSV_from_CRD(self):
 
         try:
-            crd_file_path = tk.filedialog.askopenfilename(parent=self.master, initialdir=survey_config.todays_dated_directory,
-                                                          title="Please select a "
-                                                                ".CRD file",
+            initial_directory = os.path.join(survey_config.todays_dated_directory, "OUTPUT")
+            crd_file_path = tk.filedialog.askopenfilename(parent=self.master, initialdir=initial_directory,
+                                                          title="Please select a .CRD file",
                                                           filetypes=[("CRD Files", ".CRD")])
             if not crd_file_path:  # user cancelled
                 return
@@ -1202,53 +1199,50 @@ class MenuBar(tk.Frame):
 
     def copy_compnet_job_to_dated_directory(self):
 
-        # TODO Redo this code below
         try:
-            if not os.path.exists(survey_config.gnss_temp_dir):
-                os.makedirs(survey_config.gnss_temp_dir)
+            # Get user to choose the compnet working directory if not already done so
+            if not self.compnet_working_dir:
+                self.choose_compnet_directory()
 
-            gnss_dir_path = tk.filedialog.askdirectory(parent=self.master, initialdir=survey_config.gnss_temp_dir,
-                                                       title="Please choose the temp GNSS job directory")
+                if not self.compnet_working_dir:    # user cancelled
+                    tk.messagebox.showinfo("Copying Compnet Job Files", "A Compnet job directory must be selected before continuing.")
+                    return
 
-            if not gnss_dir_path:  # use cancelled the dialog box
-                return
+            # Get user to choose the current dated directory if not already done so
+            if not survey_config.todays_dated_directory:
+                self.choose_dated_directory()
 
-            confirm_msg = "All GPS files in " + gnss_dir_path + " will be deleted before copying across todays GNSS files.\n\nAre you sure " \
-                                                                "you want to continue?"
+                if not survey_config.todays_dated_directory:  # user cancelled
+                    tk.messagebox.showinfo("Copying Compnet Job Files", "A dated directory muts be selected before continuing.")
+                    return
 
-            if tk.messagebox.askokcancel("Copy GPS files to GNSS Temp", confirm_msg):
+            # we want to copy the files into a Compnet folder created in the Output directory of the selected dated directory
+            output_dir = os.path.join(survey_config.todays_dated_directory, 'OUTPUT')
+            dest_compnet_fpath = os.path.join(output_dir, "COMPNET")
 
-                todays_dated_directory = survey_config.todays_dated_directory
+            confirm_msg = "All files in the compnet job at " + self.compnet_working_dir + " will be copied over to the following directory: \n\n" +\
+                          dest_compnet_fpath + "\n\nAre you sure you want to continue?"
 
-                if not todays_dated_directory:
-                    todays_GPS_directory = tk.filedialog.askdirectory(parent=self.master, initialdir=survey_config.root_job_directory,
-                                                                      title="Please choose the GPS directory containing the GPS files you wish to "
-                                                                            "transfer ")
-                else:
-                    todays_GPS_directory = os.path.join(todays_dated_directory, 'GPS')
+            if tk.messagebox.askokcancel("Copying Compnet Job Files", confirm_msg):
 
-                if not todays_GPS_directory:
-                    return  # user cancelled
+                os.makedirs(os.path.dirname(dest_compnet_fpath), exist_ok=True)
+                copy_tree(self.compnet_working_dir, dest_compnet_fpath)
 
-                # remove existing files in the temp directory
-                # for filename in os.listdir(gnss_dir_path):
-                #     filepath = os.path.join(gnss_dir_path, filename)
-                #     os.remove(filepath)
-                shutil.rmtree(gnss_dir_path)
+                # we also want to copy the CRD file to the OUTPUT folder
+                for basename in os.listdir(dest_compnet_fpath):
+                    if basename.endswith('.CRD'):
+                        pathname = os.path.join(dest_compnet_fpath, basename)
+                        if os.path.isfile(pathname):
+                            shutil.copy2(pathname, output_dir)
 
-                # copy over GPS files
-                # for file in os.listdir(todays_GPS_directory):
-                #     shutil.copyfile(os.path.join(file, todays_GPS_directory), os.path.join(gnss_dir_path, file))
-                copy_tree(todays_GPS_directory, gnss_dir_path)
-
-                tk.messagebox.showinfo("Copying GPS files", "GPS files successfully copied over.")
+                tk.messagebox.showinfo("Copying Compnet Job Files", "Compnet job files successfully copied over.")
 
             else:  # cancel the copying of files
                 return
         except Exception as ex:
-            print("An unexpected error has occurred\n\ncopy_gps_to_gnss_temp()\n\n" + str(ex))
-            logger.exception("An unexpected error has occurred\n\ncopy_gps_to_gnss_temp()\n\n" + str(ex))
-            tk.messagebox.showerror("Copying GPS files", "AN unexpected error has occured.\n\n" + str(ex))
+            print("An unexpected error has occurred\n\ncopy_compnet_job_to_dated_directory()\n\n" + str(ex))
+            logger.exception("An unexpected error has occurred\n\ncopy_compnet_job_to_dated_directory()\n\n" + str(ex))
+            tk.messagebox.showerror("Copying Compnet Job Files", "AN unexpected error has occured.\n\n" + str(ex))
 
     def copy_gps_to_gnss_temp(self):
 
@@ -1760,7 +1754,7 @@ class WorkflowBar(tk.Frame):
         self.btn_weight_std_file = tk.Button(self.frame, text="Weight STD File", command=lambda: gui_app.menu_bar.weight_STD_file())
         self.btn_weight_std_file.configure(background='#FCF1E1')
         self.btn_copy_job_to_dated_directory = tk.Button(self.frame, text="Copy Job to Dated Directory", command=lambda:
-        gui_app.menu_bar.copy_compnet_job_to_dated_directory())
+                                                        gui_app.menu_bar.copy_compnet_job_to_dated_directory())
         self.btn_copy_job_to_dated_directory.configure(background='#FCF1E1')
         self.btn_csv_from_crd = tk.Button(self.frame, text="Popup CSV from CRD", command=lambda: gui_app.menu_bar.create_CSV_from_CRD())
         self.btn_csv_from_crd.configure(background='#FCF1E1')
