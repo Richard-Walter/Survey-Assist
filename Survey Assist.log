@@ -106,3 +106,15 @@ Traceback (most recent call last):
   File "C:\Users\Richard\PycharmProjects\Survey Assist\utilities.py", line 42, in angle_DMS_2_decimal
     return float(angle_deg) + float(angle_min) / 60 + float(angle_sec) / (60 * 60)
 ValueError: could not convert string to float: 
+2020-05-18 19:17:54,657:Survey Assist - v1.0:Started Application
+2020-05-18 19:18:00,877:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/Downloads/890MR 150520.GSI
+2020-05-18 19:18:21,849:Survey Assist - v1.0:Started Application
+2020-05-18 19:18:28,471:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/Downloads/890MR 150520.GSI
+2020-05-18 19:20:15,112:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/Downloads/890MR 150520.GSI
+2020-05-18 19:22:06,162:Survey Assist - v1.0:Started Application
+2020-05-18 19:22:11,394:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/Downloads/890MR 150520.GSI
+2020-05-18 19:23:04,002:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/Downloads/890MR 150520.GSI
+2020-05-18 19:23:14,189:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/Downloads/890MR 150520.GSI
+2020-05-18 19:27:06,049:Survey Assist - v1.0:Started Application
+2020-05-18 19:27:10,798:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/Downloads/890MR 150520.GSI
+2020-05-18 19:28:04,189:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/PycharmProjects/Survey Assist/Test Files/GSI Files/3D MR_120819_3D error change_EDITED.gsi

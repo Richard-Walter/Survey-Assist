@@ -510,6 +510,16 @@ class GSI:
                 minutes = angle[-7:-5]
                 degrees = angle[:-7]
 
+        # if degrees is "":
+        #     degrees = '000'
+        # if minutes is "":
+        #     minutes = '00'
+        # if seconds is "":
+        #     if precision =='4dp':
+        #         seconds = '00.0'
+        #     else:
+        #         seconds = '00'
+
         return '{}° {}\' {}"'.format(degrees.zfill(3), minutes, seconds)
 
     @staticmethod
