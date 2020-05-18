@@ -13,8 +13,8 @@ KNOWN BUGS
 
 """
 
-# TODO FORMAT GSI when angles are close to or at 0°
-# TODO Display message before allowing user to enter in new target height
+# TODO FORMAT GSI when angles are close to or at 0°.  See email
+# TODO Display message before allowing user to enter in new target height.  See email
 
 import tkinter.messagebox
 import logging.config
@@ -274,12 +274,13 @@ class MenuBar(tk.Frame):
         # check to see if survey files from today were found
         if not sd_card.get_list_all_todays_files():
 
-            user_answer = tk.messagebox.askyesnocancel("IMPORT SD DATA", "Couldn't find any survey files with todays date.  Please make sure you "
-                                                                         "have inserted the SD Card into your computer and your SD card path in user_settings is correct."
+            user_answer = tk.messagebox.askyesnocancel("IMPORT SD DATA", "Couldn't find any survey files with todays date."
                                                                          "\n\nAre you trying to import a rail survey?\n\n"
                                                                          "YES           -  IMPORT RAIL SURVEY\n"
                                                                          "NO            - IMPORT FILES MANUALLY\n"
-                                                                         "CANCEL    - INSERT SD CARD AND TRY_AGAIN")
+                                                                         "CANCEL    - INSERT SD CARD AND TRY_AGAIN\n\n"
+                                                                         "Otherwise, please make sure you have inserted the SD Card into your"
+                                                                         " computer, and check your SD card path in user_settings.ini is correct.")
 
             if user_answer is None:  # user selected cancel
 
@@ -433,6 +434,10 @@ class MenuBar(tk.Frame):
 
                 # open up explorer
                 os.startfile('c:')
+
+            else:
+                # Display message to user that the files have transferred over and can remove SD card
+                tk.messagebox.showinfo("COPYING SD DATA", "SD Card transfer is complete.  It is now safe to remove the SD card.")
         else:
             # user wants to transfer files over manually.
             # open up explorer
@@ -1207,7 +1212,7 @@ class MenuBar(tk.Frame):
             if not self.compnet_working_dir:
                 self.choose_compnet_directory()
 
-                if not self.compnet_working_dir:    # user cancelled
+                if not self.compnet_working_dir:  # user cancelled
                     tk.messagebox.showinfo("Copying Compnet Job Files", "A Compnet job directory must be selected before continuing.")
                     return
 
@@ -1223,7 +1228,7 @@ class MenuBar(tk.Frame):
             output_dir = os.path.join(survey_config.todays_dated_directory, 'OUTPUT')
             dest_compnet_fpath = os.path.join(output_dir, "COMPNET")
 
-            confirm_msg = "All files in the compnet job at " + self.compnet_working_dir + " will be copied over to the following directory: \n\n" +\
+            confirm_msg = "All files in the compnet job at " + self.compnet_working_dir + " will be copied over to the following directory: \n\n" + \
                           dest_compnet_fpath + "\n\nAre you sure you want to continue?"
 
             if tk.messagebox.askokcancel("Copying Compnet Job Files", confirm_msg):
@@ -1774,7 +1779,7 @@ class WorkflowBar(tk.Frame):
         self.btn_weight_std_file = tk.Button(self.frame, text="Weight STD File", command=lambda: gui_app.menu_bar.weight_STD_file())
         self.btn_weight_std_file.configure(background='#FCF1E1')
         self.btn_copy_job_to_dated_directory = tk.Button(self.frame, text="Copy Job to Dated Directory", command=lambda:
-                                                        gui_app.menu_bar.copy_compnet_job_to_dated_directory())
+        gui_app.menu_bar.copy_compnet_job_to_dated_directory())
         self.btn_copy_job_to_dated_directory.configure(background='#FCF1E1')
         self.btn_csv_from_crd = tk.Button(self.frame, text="Popup CSV from CRD", command=lambda: gui_app.menu_bar.create_CSV_from_CRD())
         self.btn_csv_from_crd.configure(background='#FCF1E1')
@@ -1807,9 +1812,8 @@ class WorkflowBar(tk.Frame):
         self.btn_csv_from_crd.pack(padx=5, pady=5, side='left')
 
         # pack job tracker and re-display observations
-        self.btn_re_display_gsi.pack(padx=(5,10), pady=5, side='right')
+        self.btn_re_display_gsi.pack(padx=(5, 10), pady=5, side='right')
         self.btn_job_tracker.pack(padx=5, pady=5, side='right')
-
 
     def show_workflow_bar(self):
         self.frame.pack(side='top', anchor=tk.W, fill=tk.X)
