@@ -13,6 +13,9 @@ KNOWN BUGS
 
 """
 
+# TODO FORMAT GSI when angles are close to or at 0°
+# TODO Display message before allowing user to enter in new target height
+
 import tkinter.messagebox
 import logging.config
 from tkinter import filedialog
@@ -1375,9 +1378,26 @@ class MenuBar(tk.Frame):
             tk.messagebox.showerror("Survey Assist", "An unexpected error has occurred\n\nre_display_gsi()\n\n" + str(ex))
             return
 
-    def open_manual(self):
+    def btn_job_tracker(self):
 
-        os.startfile("Survey Assist Manual.docx")
+        try:
+            self.job_tracker_filepath = os.path.join(survey_config.root_job_directory, survey_config.current_year, survey_config.job_tracker_filename)
+            os.startfile(self.job_tracker_filepath)
+
+        except FileNotFoundError as ex:
+            print("Couldn't find the Job Tracker Spreadsheet:\n\n" + self.job_tracker_filepath)
+            logger.exception("An unexpected error has occurred\n\nbtn_job_tracker()\n\n" + str(ex))
+            tk.messagebox.showerror("Survey Assist", "Couldn't find the Job Tracker Spreadsheet:\n\n" + self.job_tracker_filepath)
+            return
+
+    def open_manual(self):
+        try:
+            os.startfile("Survey Assist Manual.docx")
+        except Exception as ex:
+            print("Problem opening up Manual\n\n" + str(ex))
+            logger.exception("An unexpected error has occurred\n\nopen_manual()\n\n" + str(ex))
+            tk.messagebox.showerror("Survey Assist", "An unexpected error has occurred\n\nopen_manual()\n\n" + str(ex))
+            return
 
     @staticmethod
     def clear_query():
@@ -1724,7 +1744,7 @@ class WorkflowBar(tk.Frame):
         self.frame.configure(background='#FFDEAC')
 
         # new job workflow
-        self.workflow_lbl = tk.Label(self.frame, text='NEW JOB WORKFLOW:')
+        self.workflow_lbl = tk.Label(self.frame, text='NEW JOB:')
         self.workflow_lbl.configure(background='#FFDEAC')
         self.btn_diary = tk.Button(self.frame, text="Job Diary", command=MenuBar.job_diary)
         self.btn_diary.configure(background='#FCF1E1')
@@ -1745,7 +1765,7 @@ class WorkflowBar(tk.Frame):
         self.btn_export_csv.configure(background='#FCF1E1')
 
         # Compnet workflow
-        self.compnet_workflow_lbl = tk.Label(self.frame, text='COMPNET WORKFLOW:')
+        self.compnet_workflow_lbl = tk.Label(self.frame, text='COMPNET:')
         self.compnet_workflow_lbl.configure(background='#FFDEAC')
         self.btn_compnet_new_job = tk.Button(self.frame, text="Setup New Job", command=lambda: gui_app.menu_bar.create_compnet_job_folder())
         self.btn_compnet_new_job.configure(background='#FCF1E1')
@@ -1758,6 +1778,10 @@ class WorkflowBar(tk.Frame):
         self.btn_copy_job_to_dated_directory.configure(background='#FCF1E1')
         self.btn_csv_from_crd = tk.Button(self.frame, text="Popup CSV from CRD", command=lambda: gui_app.menu_bar.create_CSV_from_CRD())
         self.btn_csv_from_crd.configure(background='#FCF1E1')
+
+        # Job Tracker
+        self.btn_job_tracker = tk.Button(self.frame, text="Job Tracker", command=lambda: gui_app.menu_bar.btn_job_tracker())
+        self.btn_job_tracker.configure(background='#FCF1E1')
 
         # Redisplay observations button
         self.btn_re_display_gsi = tk.Button(self.frame, text="Re-display GSI", command=lambda: gui_app.menu_bar.re_display_gsi())
@@ -1775,15 +1799,17 @@ class WorkflowBar(tk.Frame):
         self.btn_export_csv.pack(padx=5, pady=5, side='left')
 
         # pack compnet workflow
-        self.compnet_workflow_lbl.pack(padx=(60, 2), pady=5, side='left')
+        self.compnet_workflow_lbl.pack(padx=(30, 2), pady=5, side='left')
         self.btn_compnet_new_job.pack(padx=5, pady=5, side='left')
         self.btn_update_fixed_file.pack(padx=5, pady=5, side='left')
         self.btn_weight_std_file.pack(padx=5, pady=5, side='left')
         self.btn_copy_job_to_dated_directory.pack(padx=5, pady=5, side='left')
         self.btn_csv_from_crd.pack(padx=5, pady=5, side='left')
 
-        # pack re-display observations
-        self.btn_re_display_gsi.pack(padx=20, pady=5, side='right')
+        # pack job tracker and re-display observations
+        self.btn_re_display_gsi.pack(padx=(5,10), pady=5, side='right')
+        self.btn_job_tracker.pack(padx=5, pady=5, side='right')
+
 
     def show_workflow_bar(self):
         self.frame.pack(side='top', anchor=tk.W, fill=tk.X)

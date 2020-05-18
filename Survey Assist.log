@@ -17,3 +17,49 @@
 2020-05-16 10:52:11,366:Survey Assist - v1.0:Started Application
 2020-05-16 10:52:37,362:Survey Assist - v1.0:Started Application
 2020-05-16 10:53:02,128:Survey Assist - v1.0:Started Application
+2020-05-18 15:31:51,230:Survey Assist - v1.0:Started Application
+2020-05-18 15:34:04,278:Survey Assist - v1.0:Started Application
+2020-05-18 15:34:22,100:Survey Assist - v1.0:Started Application
+2020-05-18 15:38:38,204:Survey Assist - v1.0:Started Application
+2020-05-18 15:52:58,248:Survey Assist - v1.0:Started Application
+2020-05-18 15:54:23,321:Survey Assist - v1.0:Started Application
+2020-05-18 15:54:41,056:Survey Assist - v1.0:Started Application
+2020-05-18 15:54:43,453:Survey Assist - v1.0:An unexpected error has occurred
+
+btn_job_tracker()
+
+[WinError 2] The system cannot find the file specified: 'C:\\Users\\Richard\\PycharmProjects\\Survey Assist\\Test Files\\Survey Data\\2020\\Job Tracker Digital System.xlsm'
+Traceback (most recent call last):
+  File "C:/Users/Richard/PycharmProjects/Survey Assist/main.py", line 1385, in btn_job_tracker
+    os.startfile(job_tracker_filepath)
+FileNotFoundError: [WinError 2] The system cannot find the file specified: 'C:\\Users\\Richard\\PycharmProjects\\Survey Assist\\Test Files\\Survey Data\\2020\\Job Tracker Digital System.xlsm'
+2020-05-18 15:55:52,856:Survey Assist - v1.0:Started Application
+2020-05-18 15:55:55,034:Survey Assist - v1.0:An unexpected error has occurred
+
+btn_job_tracker()
+
+[WinError 2] The system cannot find the file specified: 'C:\\Users\\Richard\\PycharmProjects\\Survey Assist\\Test Files\\Survey Data\\2020\\Job Tracker Digital System.xlsm'
+Traceback (most recent call last):
+  File "C:/Users/Richard/PycharmProjects/Survey Assist/main.py", line 1385, in btn_job_tracker
+    os.startfile(job_tracker_filepath)
+FileNotFoundError: [WinError 2] The system cannot find the file specified: 'C:\\Users\\Richard\\PycharmProjects\\Survey Assist\\Test Files\\Survey Data\\2020\\Job Tracker Digital System.xlsm'
+2020-05-18 15:56:43,124:Survey Assist - v1.0:Started Application
+2020-05-18 15:56:45,002:Survey Assist - v1.0:An unexpected error has occurred
+
+btn_job_tracker()
+
+[WinError 2] The system cannot find the file specified: 'C:\\Users\\Richard\\PycharmProjects\\Survey Assist\\Test Files\\Survey Data\\2020\\Job Tracker Digital System.xlsm'
+Traceback (most recent call last):
+  File "C:/Users/Richard/PycharmProjects/Survey Assist/main.py", line 1385, in btn_job_tracker
+    os.startfile(self.job_tracker_filepath)
+FileNotFoundError: [WinError 2] The system cannot find the file specified: 'C:\\Users\\Richard\\PycharmProjects\\Survey Assist\\Test Files\\Survey Data\\2020\\Job Tracker Digital System.xlsm'
+2020-05-18 15:57:16,669:Survey Assist - v1.0:Started Application
+2020-05-18 15:57:27,001:Survey Assist - v1.0:An unexpected error has occurred
+
+btn_job_tracker()
+
+[WinError 2] The system cannot find the file specified: 'C:\\Users\\Richard\\PycharmProjects\\Survey Assist\\Test Files\\Survey Data\\2020\\Job Tracker Digital System.xlsm'
+Traceback (most recent call last):
+  File "C:/Users/Richard/PycharmProjects/Survey Assist/main.py", line 1385, in btn_job_tracker
+    os.startfile(self.job_tracker_filepath)
+FileNotFoundError: [WinError 2] The system cannot find the file specified: 'C:\\Users\\Richard\\PycharmProjects\\Survey Assist\\Test Files\\Survey Data\\2020\\Job Tracker Digital System.xlsm'

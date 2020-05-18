@@ -68,6 +68,7 @@ class SurveyConfiguration:
         self.todays_dated_directory = ""
         self.current_rail_monitoring_file_name = self.config_parser.get(SurveyConfiguration.section_file_directories,
                                                                         'current_rail_monitoring_file_name')
+        self.job_tracker_filename = self.config_parser.get(SurveyConfiguration.section_file_directories, 'job_tracker_filename')
 
     def update(self, section, key, value):
         self.config_parser.set(section, key, value)
@@ -96,7 +97,7 @@ class UserConfiguration:
 
         except Exception:
 
-            # Copy over default copy of settings in case new settings have been added in python
+            # Copy over default user settings if we have a new user
             shutil.copy(UserConfiguration.default_user_settings_path, UserConfiguration.user_settings_file_path)
             self.user_sd_root = self.config_parser.get(UserConfiguration.section_file_directories, 'user_sd_root')
             self.usb_root = self.config_parser.get(UserConfiguration.section_file_directories, 'usb_root')
