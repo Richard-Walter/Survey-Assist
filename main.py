@@ -13,6 +13,7 @@ KNOWN BUGS
 
 """
 
+# TODO add ability to update station height
 # TODO FORMAT GSI when angles are close to or at 0°.  See email
 # TODO Display message before allowing user to enter in new target height.  See email
 
