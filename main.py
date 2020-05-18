@@ -15,7 +15,6 @@ KNOWN BUGS
 
 # TODO add ability to update station height
 # TODO FORMAT GSI when angles are close to or at 0°.  See email
-# TODO Display message before allowing user to enter in new target height.  See email
 
 import tkinter.messagebox
 import logging.config
@@ -2428,7 +2427,15 @@ class TargetHeightWindow:
 
                 if selected_items:
                     for selected_item in selected_items:
-                        line_numbers_to_ammend.append(gui_app.list_box.list_box_view.item(selected_item)['values'][0])
+                        line_number = gui_app.list_box.list_box_view.item(selected_item)['values'][0]
+
+                        # Check to make sure that the selected line is not a STN setup
+                        if gsi.is_control_point(gsi.get_formatted_line(line_number)):
+                            tk.messagebox.showinfo("Update Target Height", "Please select a line that contains a target "
+                                                                           "height, NOT a station height.")
+                            return
+
+                        line_numbers_to_ammend.append(line_number)
 
                     # update each line to amend with new target height and coordinates
                     for line_number in line_numbers_to_ammend:
@@ -2472,8 +2479,7 @@ class TargetHeightWindow:
             old_height = float(formatted_line['Elevation'])
         except ValueError:
             tk.messagebox.showinfo("TARGET HEIGHT SELECTION ERROR", "Please select a line that contains a target "
-                                                                    "height. "
-                                                                    "If problem persists, please see Richard")
+                                                                    "height. If problem persists, please see Richard")
 
         if old_tgt_height == '':
             old_tgt_height = 0.000

@@ -81,3 +81,28 @@ Traceback (most recent call last):
   File "C:/Users/Richard/PycharmProjects/Survey Assist/main.py", line 1390, in btn_job_tracker
     os.startfile(self.job_tracker_filepath)
 FileNotFoundError: [WinError 2] The system cannot find the file specified: 'C:\\Users\\Richard\\PycharmProjects\\Survey Assist\\Test Files\\Survey Data\\2020\\Job Tracker Digital System.xlsm'
+2020-05-18 16:38:53,117:Survey Assist - v1.0:Started Application
+2020-05-18 16:39:02,532:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/PycharmProjects/Survey Assist/Test Files/Survey Data/2020/MONITORING/A9 ARTC/200515/ARTC_903_MON_V2_TS60_150520_EDITED_Sorted_PCUpdated.gsi
+2020-05-18 16:40:20,673:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/PycharmProjects/Survey Assist/Test Files/Survey Data/2020/MONITORING/A9 ARTC/200503/ARTC_903_MON_V2_MS60_030520_EDITED_PCUpdated_Sorted.gsi
+2020-05-18 16:40:47,216:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/PycharmProjects/Survey Assist/Test Files/GSI Files/ARTC_903_compnet 240220.GSI
+2020-05-18 19:08:14,654:Survey Assist - v1.0:Started Application
+2020-05-18 19:08:41,955:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/Downloads/890MR 150520.GSI
+2020-05-18 19:09:14,900:Survey Assist - v1.0:Started Application
+2020-05-18 19:09:22,424:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/Downloads/890MR 150520.GSI
+2020-05-18 19:11:19,313:Survey Assist - v1.0:Started Application
+2020-05-18 19:11:30,034:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/Downloads/890MR 150520.GSI
+2020-05-18 19:11:47,816:Survey Assist - v1.0:An unexpected error has occurred
+
+check_FLFR()
+
+could not convert string to float: 
+Traceback (most recent call last):
+  File "C:/Users/Richard/PycharmProjects/Survey Assist/main.py", line 678, in check_FLFR
+    analysed_lines = self.anaylseFLFR(copy.deepcopy(obs_from_station_dict))
+  File "C:/Users/Richard/PycharmProjects/Survey Assist/main.py", line 780, in anaylseFLFR
+    obs_line_2_field_value = get_numerical_value_from_string(obs_line_2_field_value_str, field_type, precision)
+  File "C:\Users\Richard\PycharmProjects\Survey Assist\utilities.py", line 83, in get_numerical_value_from_string
+    return angle_DMS_2_decimal(angle_deg, angle_min, angle_sec)
+  File "C:\Users\Richard\PycharmProjects\Survey Assist\utilities.py", line 42, in angle_DMS_2_decimal
+    return float(angle_deg) + float(angle_min) / 60 + float(angle_sec) / (60 * 60)
+ValueError: could not convert string to float: 
