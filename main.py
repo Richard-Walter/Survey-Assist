@@ -13,8 +13,9 @@ KNOWN BUGS
 
 """
 
-# TODO add ability to update station height
+# TODO add ability to update station height see email
 # TODO FORMAT GSI when angles are close to or at 0°.  See email
+# TODO add space on workflow bar between popupcsv and job tracker
 
 import tkinter.messagebox
 import logging.config
