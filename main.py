@@ -15,7 +15,7 @@ KNOWN BUGS
 
 # TODO add ability to update station height see email
 # TODO FORMAT GSI when angles are close to or at 0°.  See email
-# TODO add space on workflow bar between popupcsv and job tracker
+
 
 import tkinter.messagebox
 import logging.config
@@ -137,6 +137,9 @@ class MenuBar(tk.Frame):
         self.utility_sub_menu.add_command(label="Create printable list of change points", command=self.create_list_of_change_points)
 
         self.menu_bar.add_cascade(label="Utilities", menu=self.utility_sub_menu)
+
+        # Job Tracker
+        self.menu_bar.add_command(label="Job Tracker", command=self.job_tracker)
 
         # Help menu
         self.help_sub_menu = tk.Menu(self.menu_bar, tearoff=0)
@@ -1384,7 +1387,7 @@ class MenuBar(tk.Frame):
             tk.messagebox.showerror("Survey Assist", "An unexpected error has occurred\n\nre_display_gsi()\n\n" + str(ex))
             return
 
-    def btn_job_tracker(self):
+    def job_tracker(self):
 
         try:
             self.job_tracker_filepath = os.path.join(survey_config.root_job_directory, survey_config.current_year, survey_config.job_tracker_filename)
@@ -1780,14 +1783,10 @@ class WorkflowBar(tk.Frame):
         self.btn_weight_std_file = tk.Button(self.frame, text="Weight STD File", command=lambda: gui_app.menu_bar.weight_STD_file())
         self.btn_weight_std_file.configure(background='#FCF1E1')
         self.btn_copy_job_to_dated_directory = tk.Button(self.frame, text="Copy Job to Dated Directory", command=lambda:
-        gui_app.menu_bar.copy_compnet_job_to_dated_directory())
+                                                        gui_app.menu_bar.copy_compnet_job_to_dated_directory())
         self.btn_copy_job_to_dated_directory.configure(background='#FCF1E1')
         self.btn_csv_from_crd = tk.Button(self.frame, text="Popup CSV from CRD", command=lambda: gui_app.menu_bar.create_CSV_from_CRD())
         self.btn_csv_from_crd.configure(background='#FCF1E1')
-
-        # Job Tracker
-        self.btn_job_tracker = tk.Button(self.frame, text="Job Tracker", command=lambda: gui_app.menu_bar.btn_job_tracker())
-        self.btn_job_tracker.configure(background='#FCF1E1')
 
         # Redisplay observations button
         self.btn_re_display_gsi = tk.Button(self.frame, text="Re-display GSI", command=lambda: gui_app.menu_bar.re_display_gsi())
@@ -1805,16 +1804,15 @@ class WorkflowBar(tk.Frame):
         self.btn_export_csv.pack(padx=5, pady=5, side='left')
 
         # pack compnet workflow
-        self.compnet_workflow_lbl.pack(padx=(30, 2), pady=5, side='left')
+        self.compnet_workflow_lbl.pack(padx=(25, 2), pady=5, side='left')
         self.btn_compnet_new_job.pack(padx=5, pady=5, side='left')
         self.btn_update_fixed_file.pack(padx=5, pady=5, side='left')
         self.btn_weight_std_file.pack(padx=5, pady=5, side='left')
         self.btn_copy_job_to_dated_directory.pack(padx=5, pady=5, side='left')
         self.btn_csv_from_crd.pack(padx=5, pady=5, side='left')
 
-        # pack job tracker and re-display observations
-        self.btn_re_display_gsi.pack(padx=(5, 10), pady=5, side='right')
-        self.btn_job_tracker.pack(padx=5, pady=5, side='right')
+        # pack re-display observations
+        self.btn_re_display_gsi.pack(padx=(30, 5), pady=5, side='right')
 
     def show_workflow_bar(self):
         self.frame.pack(side='top', anchor=tk.W, fill=tk.X)
