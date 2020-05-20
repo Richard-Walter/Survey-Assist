@@ -14,7 +14,7 @@ KNOWN BUGS
 """
 
 # TODO add ability to update station height see email
-# TODO FORMAT GSI when angles are close to or at 0°.  See email
+# TODO FORMAT GSI anlges - check FLFR 4dp format and CHeck differences for 3DP are correct
 
 
 import tkinter.messagebox
@@ -670,7 +670,7 @@ class MenuBar(tk.Frame):
 
             error_line_number_list = []
             dialog_text_set = set()
-            dialog_text = "\n"
+
             formatted_gsi_lines_analysis = []
 
             for gsi_line_number, line in enumerate(gsi.formatted_lines, start=0):

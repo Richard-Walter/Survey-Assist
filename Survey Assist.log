@@ -124,3 +124,50 @@ ValueError: could not convert string to float:
 2020-05-20 16:06:57,775:Survey Assist - v1.0:Started Application
 2020-05-20 16:07:24,059:Survey Assist - v1.0:Started Application
 2020-05-20 16:09:30,217:Survey Assist - v1.0:Started Application
+2020-05-20 16:12:02,987:Survey Assist - v1.0:Started Application
+2020-05-20 16:12:59,132:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/rjwal_000/Downloads/890MR 150520.GSI
+2020-05-20 16:13:04,023:Survey Assist - v1.0:An unexpected error has occurred
+
+check_FLFR()
+
+could not convert string to float: 
+Traceback (most recent call last):
+  File "C:/Users/rjwal_000/PycharmProjects/Survey Assist/main.py", line 681, in check_FLFR
+    analysed_lines = self.anaylseFLFR(copy.deepcopy(obs_from_station_dict))
+  File "C:/Users/rjwal_000/PycharmProjects/Survey Assist/main.py", line 783, in anaylseFLFR
+    obs_line_2_field_value = get_numerical_value_from_string(obs_line_2_field_value_str, field_type, precision)
+  File "C:\Users\rjwal_000\PycharmProjects\Survey Assist\utilities.py", line 83, in get_numerical_value_from_string
+    return angle_DMS_2_decimal(angle_deg, angle_min, angle_sec)
+  File "C:\Users\rjwal_000\PycharmProjects\Survey Assist\utilities.py", line 42, in angle_DMS_2_decimal
+    return float(angle_deg) + float(angle_min) / 60 + float(angle_sec) / (60 * 60)
+ValueError: could not convert string to float: 
+2020-05-20 16:21:23,430:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/rjwal_000/PycharmProjects/Survey Assist/Test Files/GSI Files/HCCL 030719.GSI
+2020-05-20 16:23:54,508:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/rjwal_000/PycharmProjects/Survey Assist/Test Files/GSI Files/2D Survey MR050819.GSI
+2020-05-20 16:24:02,586:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/rjwal_000/Downloads/890MR 150520.GSI
+2020-05-20 16:24:09,321:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/rjwal_000/PycharmProjects/Survey Assist/Test Files/Survey Data/2020/MONITORING/A9 ARTC/200515/ARTC_903_MON_V2_TS60_150520_EDITED_Sorted.gsi
+2020-05-20 16:24:21,617:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/rjwal_000/PycharmProjects/Survey Assist/Test Files/GSI Files/HCCUL180219.GSI
+2020-05-20 16:32:15,789:Survey Assist - v1.0:Started Application
+2020-05-20 16:32:24,367:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/rjwal_000/PycharmProjects/Survey Assist/Test Files/GSI Files/HCCUL180219.GSI
+2020-05-20 16:32:40,900:Survey Assist - v1.0:Started Application
+2020-05-20 16:32:45,742:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/rjwal_000/PycharmProjects/Survey Assist/Test Files/GSI Files/HCCUL180219.GSI
+2020-05-20 16:33:11,192:Survey Assist - v1.0:Started Application
+2020-05-20 16:33:15,617:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/rjwal_000/PycharmProjects/Survey Assist/Test Files/GSI Files/HCCUL180219.GSI
+2020-05-20 16:34:32,144:Survey Assist - v1.0:Started Application
+2020-05-20 16:34:36,804:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/rjwal_000/PycharmProjects/Survey Assist/Test Files/GSI Files/HCCUL180219.GSI
+2020-05-20 16:38:20,366:Survey Assist - v1.0:Started Application
+2020-05-20 16:38:27,555:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/rjwal_000/PycharmProjects/Survey Assist/Test Files/GSI Files/HCCUL180219.GSI
+2020-05-20 16:38:54,505:Survey Assist - v1.0:Started Application
+2020-05-20 16:38:59,321:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/rjwal_000/PycharmProjects/Survey Assist/Test Files/GSI Files/HCCUL180219.GSI
+2020-05-20 16:45:21,018:Survey Assist - v1.0:Started Application
+2020-05-20 16:45:25,554:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/rjwal_000/PycharmProjects/Survey Assist/Test Files/GSI Files/HCCUL180219.GSI
+2020-05-20 16:45:47,414:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/rjwal_000/Downloads/890MR 150520.GSI
+2020-05-20 16:46:14,747:Survey Assist - v1.0:Started Application
+2020-05-20 16:46:18,930:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/rjwal_000/PycharmProjects/Survey Assist/Test Files/GSI Files/HCCUL180219.GSI
+2020-05-20 16:46:35,523:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/rjwal_000/PycharmProjects/Survey Assist/Test Files/GSI Files/HCCL 030719.GSI
+2020-05-20 16:47:32,851:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/rjwal_000/Downloads/890MR 150520.GSI
+2020-05-20 16:50:22,273:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/rjwal_000/PycharmProjects/Survey Assist/Test Files/GSI Files/HCCL 030719.GSI
+2020-05-20 16:52:49,372:Survey Assist - v1.0:Started Application
+2020-05-20 16:52:58,477:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/rjwal_000/Downloads/890MR 150520.GSI
+2020-05-20 16:54:39,711:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/rjwal_000/Downloads/Raumer fix 150520_Sorted.gsi
+2020-05-20 16:55:11,867:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/rjwal_000/Downloads/890MR 150520.GSI
+2020-05-20 16:55:39,117:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/rjwal_000/Downloads/Raumer fix 150520_Sorted.gsi
