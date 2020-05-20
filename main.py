@@ -14,8 +14,6 @@ KNOWN BUGS
 """
 
 # TODO add ability to update station height see email
-# TODO FORMAT GSI anlges - check FLFR 4dp format and CHeck differences for 3DP are correct
-
 
 import tkinter.messagebox
 import logging.config
@@ -781,10 +779,14 @@ class MenuBar(tk.Frame):
                             obs_line_1_field_value = get_numerical_value_from_string(obs_line_1_field_value_str, field_type, precision)
 
                             obs_line_2_field_value = get_numerical_value_from_string(obs_line_2_field_value_str, field_type, precision)
-                            angular_diff = decimalize_value(angular_difference(obs_line_1_field_value,
-                                                                               obs_line_2_field_value, 180), precision)
+                            if key is 'Horizontal_Angle':
+                                angular_diff = decimalize_value(angular_difference(obs_line_1_field_value, obs_line_2_field_value, 180), '3dp')
+                            else:  # key is vertical angle:
+                                obs_angular_diff = angular_difference(obs_line_2_field_value, obs_line_1_field_value, 0)
+                                angular_diff = decimalize_value(angular_difference(obs_angular_diff, -360.00, 0), '3dp')
+
                             angle_dms = angle_decimal2DMS(angular_diff)
-                            obs_line_2_dict[key] = GSI.format_angles(angle_dms, precision)
+                            obs_line_2_dict[key] = GSI.format_angles(angle_dms, '3dp')  # make 3dp precision for 4dp shots so it formats correctly
 
                         elif key == 'Prism_Constant':
                             obs_line_2_dict[key] = str(int(obs_line_1_dict[key]) - int(obs_line_1_dict[key]))
@@ -1783,7 +1785,7 @@ class WorkflowBar(tk.Frame):
         self.btn_weight_std_file = tk.Button(self.frame, text="Weight STD File", command=lambda: gui_app.menu_bar.weight_STD_file())
         self.btn_weight_std_file.configure(background='#FCF1E1')
         self.btn_copy_job_to_dated_directory = tk.Button(self.frame, text="Copy Job to Dated Directory", command=lambda:
-                                                        gui_app.menu_bar.copy_compnet_job_to_dated_directory())
+        gui_app.menu_bar.copy_compnet_job_to_dated_directory())
         self.btn_copy_job_to_dated_directory.configure(background='#FCF1E1')
         self.btn_csv_from_crd = tk.Button(self.frame, text="Popup CSV from CRD", command=lambda: gui_app.menu_bar.create_CSV_from_CRD())
         self.btn_csv_from_crd.configure(background='#FCF1E1')

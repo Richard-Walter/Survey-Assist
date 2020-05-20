@@ -420,15 +420,15 @@ class GSI:
 
                         # Strip off unnecessary digits and spaces to make the number readable
                         field_value = field[7:].rstrip().lstrip('0')
-                        # for format angles pass the non-stripped value
-                        not_stripped_field_value = field[7:]
+                        # special format for angles
+                        angle_field_value = field[7:-1].rstrip()    # remove blank spaces and last element which is always a zero for some reason
 
                         # apply special formatting rules to particular fields
                         if two_digit_id == '19':
                             field_value = self.format_timestamp(field_value)
 
                         elif two_digit_id in ('21', '22'):  # horizontal or vertical angles
-                            field_value = self.format_angles(not_stripped_field_value, self.survey_config.precision_value)
+                            field_value = self.format_angles(angle_field_value, self.survey_config.precision_value)
 
                         elif two_digit_id == '51':
                             field_value = self.format_prism_constant(field_value)
@@ -494,36 +494,23 @@ class GSI:
     @staticmethod
     def format_angles(angle, precision):
 
-        angle = angle.strip()
-
         degrees = '000'
         minutes = '00'
         seconds = '00'
 
         if precision == '3dp':
 
-            # STN setups don't require to format angles.  just re
             if len(angle) != 0:
-                seconds = angle[-3:-1]
-                minutes = angle[-5:-3]
-                degrees = angle[-8:-5]
+                seconds = angle[-2:]
+                minutes = angle[-4:-2]
+                degrees = angle[-7:-4]
 
         else:  # survey is 4 dp
 
             if len(angle) != 3:
-                seconds = angle[-5:-1]
-                minutes = angle[-7:-5]
-                degrees = angle[-10:-7]
-
-        # if degrees is "":
-        #     degrees = '000'
-        # if minutes is "":
-        #     minutes = '00'
-        # if seconds is "":
-        #     if precision =='4dp':
-        #         seconds = '00.0'
-        #     else:
-        #         seconds = '00'
+                seconds = angle[-4:]
+                minutes = angle[-6:-4]
+                degrees = angle[-9:-6]
 
         return '{}° {}\' {}"'.format(degrees.zfill(3), minutes, seconds)
 

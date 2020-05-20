@@ -34,7 +34,7 @@ def angle_decimal2DMS(in_deg):
     min, sec = divmod(in_deg * 3600, 60)
     deg, min = divmod(min, 60)
 
-    return '{0:02d}'.format(int(deg)) + '{0:02d}'.format(int(min)) + '{0:03d}'.format(int(sec))
+    return '{0:03d}'.format(int(deg)) + '{0:02d}'.format(int(min)) + '{0:02d}'.format(int(sec))
 
 
 def angle_DMS_2_decimal(angle_deg, angle_min, angle_sec):
