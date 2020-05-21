@@ -12,7 +12,7 @@ KNOWN BUGS
 -Sometimes a GSI is loaded yet the taskbar says please select a GSI.  You can't delete lines or export csv.
 
 """
-
+# TODO Fix dight difference when changing target height - need to take into account positive and negative when writing out unfromatted GSI
 # TODO add ability to update station height see email
 
 import tkinter.messagebox
@@ -2428,14 +2428,68 @@ class PrismConstantUpdate:
 
             return corrections_dict
 
+class ChangeHeightWindow:
 
-class TargetHeightWindow:
+    def __init__(self):
+
+        self.precision = survey_config.precision_value
+
+    def get_target_height_corrections(self, line_number, new_target_height):
+
+        # update target height and Z coordinate for this line
+        formatted_line = gsi.get_formatted_line(line_number)
+
+        new_target_height = float(new_target_height)
+        old_tgt_height = formatted_line['Target_Height']
+
+        old_elevation = float(formatted_line['Elevation'])
+
+        if old_tgt_height == '':
+            old_tgt_height = 0.000
+        elif old_tgt_height == '0':
+            old_tgt_height = 0.000
+        else:
+            old_tgt_height = float(old_tgt_height)
+
+        target_height_difference = new_target_height - old_tgt_height
+        new_elevation = old_elevation - target_height_difference
+
+        old_height_difference = float(formatted_line['Height_Diff'])
+        new_height_difference = old_height_difference - target_height_difference
+
+        new_height_difference = str(decimalize_value(new_height_difference, '3dp'))
+        new_elevation = str(decimalize_value(new_elevation, self.precision))
+        new_target_height = str(decimalize_value(new_target_height, '3dp'))
+
+        return {'33': new_height_difference, '83': new_elevation, '87': new_target_height}
+
+    @staticmethod
+    def get_entered_height(entry_widget):  # e.g. self.new_target_height_entry
+
+        # Check to see if number was entered correctly
+        entered_target_height = "ERROR"
+
+        try:
+            entered_target_height = round(float(entry_widget.get()), 3)
+
+        except ValueError:
+
+            # Ask user to re-enter a a numerical target height
+            tk.messagebox.showerror("INPUT ERROR", "Please enter a valid number to 3 decimal places")
+
+        else:
+            print(entered_target_height)
+
+        return entered_target_height
+
+
+class TargetHeightWindow(ChangeHeightWindow):
 
     def __init__(self, master):
 
-        self.master = master
+        super().__init__()
 
-        self.precision = survey_config.precision_value
+        self.master = master
 
         # create target height input dialog box
         self.dialog_window = tk.Toplevel(self.master)
@@ -2456,7 +2510,8 @@ class TargetHeightWindow:
 
         try:
             # set the new target height hte user has entered
-            new_target_height = self.get_entered_target_height()
+            new_target_height = self.get_entered_height(self.new_target_height_entry)
+            self.dialog_window.destroy()
 
             if new_target_height is not 'ERROR':
 
@@ -2480,7 +2535,7 @@ class TargetHeightWindow:
 
                     # update each line to amend with new target height and coordinates
                     for line_number in line_numbers_to_ammend:
-                        corrections = self.get_corrections(line_number, new_target_height)
+                        corrections = self.get_target_height_corrections(line_number, new_target_height)
                         gsi.update_target_height(line_number, corrections)
 
                     if "TgtUpdated" not in MenuBar.filename_path:
@@ -2494,80 +2549,30 @@ class TargetHeightWindow:
                         for line in gsi.unformatted_lines:
                             gsi_file.write(line)
 
-                    self.dialog_window.destroy()
+                    # self.dialog_window.destroy()
 
                     # rebuild database and GUI
                     MenuBar.filename_path = amended_filepath
                     GUIApplication.refresh()
                 else:
                     # notify user that no lines were selected
-                    tk.messagebox.showinfo("INPUT ERROR", "Please select a line first that you want to change target "
-                                                          "height")
+                    tk.messagebox.showinfo("INPUT ERROR", "Please select a line first that you want to change target height")
         except Exception as ex:
             print("Problem fixing target height\n\n" + str(ex))
             logger.exception("An unexpected error has occurred\n\nfix_target_height()\n\n" + str(ex))
             tk.messagebox.showerror("Survey Assist", "An unexpected error has occurred\n\nfix_target_height()\n\n" + str(ex))
             return
 
-    def get_corrections(self, line_number, new_target_height):
 
-        # update target height and Z coordinate for this line
-        formatted_line = gsi.get_formatted_line(line_number)
-
-        new_target_height = float(new_target_height)
-        old_tgt_height = formatted_line['Target_Height']
-        try:
-            old_height = float(formatted_line['Elevation'])
-        except ValueError:
-            tk.messagebox.showinfo("TARGET HEIGHT SELECTION ERROR", "Please select a line that contains a target "
-                                                                    "height. If problem persists, please see Richard")
-
-        if old_tgt_height == '':
-            old_tgt_height = 0.000
-        elif old_tgt_height == '0':
-            old_tgt_height = float(0.000)
-        else:
-            old_tgt_height = float(old_tgt_height)
-
-        new_height = old_height - (new_target_height - old_tgt_height)
-
-        old_height = str(decimalize_value(old_height, self.precision))
-        new_height = str(decimalize_value(new_height, self.precision))
-        old_tgt_height = str(decimalize_value(old_tgt_height, '3dp'))  # target height is always 3dp
-        new_target_height = str(decimalize_value(new_target_height, '3dp'))
-
-        return {'83': new_height, '87': new_target_height}
-
-    def get_entered_target_height(self):
-
-        # Check to see if number was entered correctly
-        entered_target_height = "ERROR"
-
-        try:
-            entered_target_height = round(float(self.new_target_height_entry.get()), 3)
-
-        except ValueError:
-
-            # Ask user to re-enter a a numerical target height
-            tk.messagebox.showerror("INPUT ERROR", "Please enter a valid number to 3 decimal places")
-
-        else:
-            print(entered_target_height)
-
-        self.dialog_window.destroy()
-
-        return entered_target_height
-
-
-class StationHeightWindow:
+class StationHeightWindow(ChangeHeightWindow):
 
     def __init__(self, master):
+
+        super().__init__()
 
         self.subsequent_station_setups = []
 
         self.master = master
-
-        self.precision = survey_config.precision_value
 
         # create station height input dialog box
         self.dialog_window = tk.Toplevel(self.master)
@@ -2587,7 +2592,7 @@ class StationHeightWindow:
 
         try:
             # set the new target height that the user has entered
-            new_station_height = self.get_entered_station_height()
+            new_station_height = self.get_entered_height()
 
             # Get user selected line number - should only be one selected line when updating station height
             selected_line = gui_app.list_box.list_box_view.selection()[0]
@@ -2653,55 +2658,6 @@ class StationHeightWindow:
             logger.exception("An unexpected error has occurred\n\nupdate_station_height()\n\n" + str(ex))
             tk.messagebox.showerror("Survey Assist", "An unexpected error has occurred\n\nupdate_station_height()\n\n" + str(ex))
             return
-
-    def get_corrections(self, line_number, new_target_height):
-
-        # update target height and Z coordinate for this line
-        formatted_line = gsi.get_formatted_line(line_number)
-
-        new_target_height = float(new_target_height)
-        old_tgt_height = formatted_line['Target_Height']
-        try:
-            old_height = float(formatted_line['Elevation'])
-        except ValueError:
-            tk.messagebox.showinfo("TARGET HEIGHT SELECTION ERROR", "Please select a line that contains a target "
-                                                                    "height. If problem persists, please see Richard")
-
-        if old_tgt_height == '':
-            old_tgt_height = 0.000
-        elif old_tgt_height == '0':
-            old_tgt_height = float(0.000)
-        else:
-            old_tgt_height = float(old_tgt_height)
-
-        new_height = old_height - (new_target_height - old_tgt_height)
-
-        old_height = str(decimalize_value(old_height, self.precision))
-        new_height = str(decimalize_value(new_height, self.precision))
-        old_tgt_height = str(decimalize_value(old_tgt_height, '3dp'))  # target height is always 3dp
-        new_target_height = str(decimalize_value(new_target_height, '3dp'))
-
-        return {'83': new_height, '87': new_target_height}
-
-    def get_entered_station_height(self):
-
-        # Check to see if number was entered correctly
-        entered_target_height = "ERROR"
-
-        try:
-            entered_target_height = round(float(self.new_station_height_entry.get()), 3)
-
-        except ValueError:
-
-            # Ask user to re-enter a a numerical target height
-            tk.messagebox.showerror("INPUT ERROR", "Please enter a valid number to 3 decimal places")
-
-        else:
-            print(entered_target_height)
-
-        self.dialog_window.destroy()
-
-        return entered_target_height
 
 
 class CompnetUpdateFixedFileWindow:

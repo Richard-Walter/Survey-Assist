@@ -282,3 +282,120 @@ TypeError: unsupported operand type(s) for *: 'float' and 'decimal.Decimal'
 2020-05-21 12:47:49,014:Survey Assist - v1.0:Started Application
 2020-05-21 12:47:53,469:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/Downloads/890MR 150520.GSI
 2020-05-21 12:48:06,625:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/Downloads/Raumer fix 150520_Sorted.gsi
+2020-05-21 14:39:46,998:Survey Assist - v1.0:Started Application
+2020-05-21 14:39:52,688:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/Downloads/890MR 150520.GSI
+2020-05-21 15:15:03,366:Survey Assist - v1.0:Started Application
+2020-05-21 15:15:07,703:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/Downloads/890MR 150520.GSI
+2020-05-21 15:15:19,814:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/PycharmProjects/Survey Assist/Test Files/GSI Files/2D Survey MR050819_TgtUpdated.gsi
+2020-05-21 15:28:39,610:Survey Assist - v1.0:Started Application
+2020-05-21 15:28:44,296:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/Downloads/TEST Target Height Test.GSI
+2020-05-21 15:30:28,488:Survey Assist - v1.0:An unexpected error has occurred
+
+get_target_height_corrections()
+
+unsupported operand type(s) for -: 'str' and 'str'
+Traceback (most recent call last):
+  File "C:/Users/Richard/PycharmProjects/Survey Assist/main.py", line 2446, in get_target_height_corrections
+    new_height_difference = old_height_difference-old_tgt_height
+TypeError: unsupported operand type(s) for -: 'str' and 'str'
+2020-05-21 15:30:32,538:Survey Assist - v1.0:An unexpected error has occurred
+
+fix_target_height()
+
+'NoneType' object has no attribute 'items'
+Traceback (most recent call last):
+  File "C:/Users/Richard/PycharmProjects/Survey Assist/main.py", line 2545, in fix_target_height
+    gsi.update_target_height(line_number, corrections)
+  File "C:\Users\Richard\PycharmProjects\Survey Assist\GSI.py", line 57, in update_target_height
+    for field_id, new_value in corrections.items():
+AttributeError: 'NoneType' object has no attribute 'items'
+2020-05-21 15:32:09,910:Survey Assist - v1.0:Started Application
+2020-05-21 15:32:14,626:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/Downloads/TEST Target Height Test.GSI
+2020-05-21 15:32:23,734:Survey Assist - v1.0:An unexpected error has occurred
+
+fix_target_height()
+
+unsupported operand type(s) for -: 'str' and 'str'
+Traceback (most recent call last):
+  File "C:/Users/Richard/PycharmProjects/Survey Assist/main.py", line 2536, in fix_target_height
+    corrections = self.get_target_height_corrections(line_number, new_target_height)
+  File "C:/Users/Richard/PycharmProjects/Survey Assist/main.py", line 2445, in get_target_height_corrections
+    new_height_difference = old_height_difference-old_tgt_height
+TypeError: unsupported operand type(s) for -: 'str' and 'str'
+2020-05-21 15:34:45,171:Survey Assist - v1.0:Started Application
+2020-05-21 15:34:48,906:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/Downloads/TEST Target Height Test.GSI
+2020-05-21 15:34:56,617:Survey Assist - v1.0:An unexpected error has occurred
+
+fix_target_height()
+
+'float' object has no attribute 'replace'
+Traceback (most recent call last):
+  File "C:/Users/Richard/PycharmProjects/Survey Assist/main.py", line 2538, in fix_target_height
+    gsi.update_target_height(line_number, corrections)
+  File "C:\Users\Richard\PycharmProjects\Survey Assist\GSI.py", line 69, in update_target_height
+    new_value = new_value.replace(".", "")
+AttributeError: 'float' object has no attribute 'replace'
+2020-05-21 15:39:06,776:Survey Assist - v1.0:Started Application
+2020-05-21 15:39:10,188:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/Downloads/TEST Target Height Test.GSI
+2020-05-21 15:41:03,188:Survey Assist - v1.0:Started Application
+2020-05-21 15:41:07,187:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/Downloads/890MR 150520.GSI
+2020-05-21 15:41:10,047:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/Downloads/TEST Target Height Test.GSI
+2020-05-21 15:53:04,424:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/PycharmProjects/Survey Assist/Test Files/GSI Files/HCCL 030719.GSI
+2020-05-21 15:59:03,846:Survey Assist - v1.0:Started Application
+2020-05-21 15:59:10,907:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/Downloads/Raumer fix 150520.gsi
+2020-05-21 15:59:10,908:Survey Assist - v1.0:Error has occurred. 
+Traceback (most recent call last):
+  File "C:/Users/Richard/PycharmProjects/Survey Assist/main.py", line 537, in format_gsi_file
+    gsi.format_gsi(MenuBar.filename_path)
+  File "C:\Users\Richard\PycharmProjects\Survey Assist\GSI.py", line 460, in format_gsi
+    field_value = field_value.insert(0, algebraic_sign)
+AttributeError: 'str' object has no attribute 'insert'
+2020-05-21 16:00:24,770:Survey Assist - v1.0:Started Application
+2020-05-21 16:00:33,016:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/Downloads/Raumer fix 150520.gsi
+2020-05-21 16:00:47,688:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/PycharmProjects/Survey Assist/Test Files/GSI Files/HCCL 030719.GSI
+2020-05-21 16:01:08,094:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/Downloads/890MR 150520.GSI
+2020-05-21 16:30:39,641:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/Downloads/TEST Target Height Test_TgtUpdated.gsi
+2020-05-21 16:31:35,488:Survey Assist - v1.0:Started Application
+2020-05-21 16:31:41,266:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/Downloads/TEST Target Height Test_TgtUpdated.gsi
+2020-05-21 16:35:03,544:Survey Assist - v1.0:Started Application
+2020-05-21 16:35:13,094:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/Downloads/TEST Target Height Test.GSI
+2020-05-21 16:36:06,678:Survey Assist - v1.0:Started Application
+2020-05-21 16:36:12,406:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/Downloads/TEST Target Height Test.GSI
+2020-05-21 16:36:28,908:Survey Assist - v1.0:An unexpected error has occurred
+
+fix_target_height()
+
+'NoneType' object has no attribute 'group'
+Traceback (most recent call last):
+  File "C:/Users/Richard/PycharmProjects/Survey Assist/main.py", line 2539, in fix_target_height
+    gsi.update_target_height(line_number, corrections)
+  File "C:\Users\Richard\PycharmProjects\Survey Assist\GSI.py", line 66, in update_target_height
+    prefix = re_pattern.search(org_field_value).group()
+AttributeError: 'NoneType' object has no attribute 'group'
+2020-05-21 16:38:51,227:Survey Assist - v1.0:An unexpected error has occurred
+
+fix_target_height()
+
+'NoneType' object has no attribute 'group'
+Traceback (most recent call last):
+  File "C:/Users/Richard/PycharmProjects/Survey Assist/main.py", line 2539, in fix_target_height
+    gsi.update_target_height(line_number, corrections)
+  File "C:\Users\Richard\PycharmProjects\Survey Assist\GSI.py", line 66, in update_target_height
+    prefix = re_pattern.search(org_field_value).group()
+AttributeError: 'NoneType' object has no attribute 'group'
+2020-05-21 16:38:57,979:Survey Assist - v1.0:Started Application
+2020-05-21 16:39:06,109:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/Downloads/TEST Target Height Test.GSI
+2020-05-21 16:40:56,345:Survey Assist - v1.0:Started Application
+2020-05-21 16:41:00,406:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/Downloads/TEST Target Height Test.GSI
+2020-05-21 16:50:57,281:Survey Assist - v1.0:Started Application
+2020-05-21 16:51:01,814:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/Downloads/TEST Target Height Test.GSI
+2020-05-21 16:53:09,047:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/PycharmProjects/Survey Assist/Test Files/GSI Files/HCCL 030719.GSI
+2020-05-21 17:05:47,809:Survey Assist - v1.0:Started Application
+2020-05-21 17:05:53,376:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/Downloads/TEST Target Height Test.GSI
+2020-05-21 17:10:12,250:Survey Assist - v1.0:Started Application
+2020-05-21 17:10:16,219:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/Downloads/TEST Target Height Test.GSI
+2020-05-21 17:11:46,898:Survey Assist - v1.0:Started Application
+2020-05-21 17:11:50,985:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/Downloads/TEST Target Height Test.GSI
+2020-05-21 17:17:34,739:Survey Assist - v1.0:Started Application
+2020-05-21 17:17:39,406:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/Downloads/TEST Target Height Test.GSI
+2020-05-21 17:19:39,718:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/PycharmProjects/Survey Assist/Test Files/GSI Files/HCCL 030719.GSI

@@ -50,7 +50,7 @@ class GSI:
 
     def update_target_height(self, line_number, corrections):
 
-        # corrections takes the form of a dictionary e.g. {'83': new_height, '87': new_target_height}
+        # corrections takes the form of a dictionary e.g. {'33': new_height_difference, '83': new_elevation, '87': new_target_height}
 
         unformatted_line = self.get_unformatted_line(line_number)
 
@@ -61,8 +61,8 @@ class GSI:
 
             org_field_value = match.group()
 
-            # Lets build the new field value.First lets build the prefix e.g.87..10+  or 83
-            re_pattern = re.compile(r'\d{2}..\d{2}\+')
+            # Lets build the new field value.First lets build the prefix e.g.87..10+  or 83 or 33
+            re_pattern = re.compile(r'\d{2}..\d{2}[\+,-]')
             prefix = re_pattern.search(org_field_value).group()
 
             # remove the decimal from the new value  e.g. 1.543 -> 1543
@@ -73,6 +73,16 @@ class GSI:
                 new_value = new_value[:-1] + '.' + new_value[-1:]
                 # There are 18 chars in the suffix so we need to fill the new value with leading zeros
                 new_field_value_suffix = new_value.zfill(18)
+
+            elif prefix[:2] == '33':    # we need to add the sign to the prefix for height difference
+
+                algebraic_sign = '+'
+                if new_value[0] == '-':    # positive numbers don't contain a '+'
+                    algebraic_sign = '-'
+                    new_value = new_value[1:]  # remove the sign + or -
+                prefix = prefix[:-1] + algebraic_sign
+
+                new_field_value_suffix = new_value.zfill(16)
             else:
                 # There are 16 chars in the suffix so we need to fill the new value with leading zeros
                 new_field_value_suffix = new_value.zfill(16)
@@ -437,7 +447,7 @@ class GSI:
                         elif two_digit_id in ('31', '32', '33', '81', '82', '83', '84', '85', '86', '87', '88'):
 
                             if two_digit_id == '87':
-                                # always format target height to e decimal places, even for 4dp precision
+                                # always format target height to 3 decimal places, even for 4dp precision
                                 field_value = self.format_number(field_value, '3dp')
                             else:
                                 field_value = self.format_number(field_value, self.survey_config.precision_value)
@@ -453,6 +463,11 @@ class GSI:
                             # set target height to 0 rather than empty string if line is not a station setup
                             elif two_digit_id == '87' and field_value == "" and not stn_setup:
                                 field_value = '0.000'
+
+                            # Height difference may contain a poistive or negative
+                            if two_digit_id == "33":
+                                algebraic_sign = field[6]
+                                field_value = algebraic_sign + field_value
 
                         elif field_value == "":
 
