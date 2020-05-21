@@ -12,7 +12,7 @@ KNOWN BUGS
 -Sometimes a GSI is loaded yet the taskbar says please select a GSI.  You can't delete lines or export csv.
 
 """
-# TODO Fix dight difference when changing target height - need to take into account positive and negative when writing out unfromatted GSI
+# TODO add UID to formatted lines and database???
 # TODO add ability to update station height see email
 
 import tkinter.messagebox
