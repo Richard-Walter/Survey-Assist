@@ -2579,7 +2579,7 @@ class StationHeightWindow(ChangeHeightWindow):
 
         self.lbl = tk.Label(self.dialog_window, text="Enter new station height for this setup:  ")
         self.new_station_height_entry = tk.Entry(self.dialog_window)
-        self.btn1 = tk.Button(self.dialog_window, text="UPDATE", command=self.update_station_height)
+        self.btn1 = tk.Button(self.dialog_window, text="UPDATE", command=self.change_station_height)
 
         self.lbl.grid(row=0, column=1, padx=(20, 2), pady=20)
         self.new_station_height_entry.grid(row=0, column=2, padx=(2, 2), pady=20)
@@ -2588,37 +2588,48 @@ class StationHeightWindow(ChangeHeightWindow):
         self.new_station_height_entry.focus()
         self.master.wait_window(self.dialog_window)
 
-    def update_station_height(self):
+    def change_station_height(self):
 
         try:
             new_station_height = self.get_entered_height(self.new_station_height_entry)
             self.dialog_window.destroy()
 
+
             # Get user selected line number - should only be one selected line when updating station height
             selected_line = gui_app.list_box.list_box_view.selection()[0]
-            stn_height_changed_line_number = gui_app.list_box.list_box_view.item(selected_line)['values'][0]
+            stn_line_number = gui_app.list_box.list_box_view.item(selected_line)['values'][0]
+
+            station_formatted_line = gsi.get_formatted_line(stn_line_number)
 
             # Create a list of subsequent station setups that will need updating
-            for formatted_line in gsi.formatted_lines[stn_height_changed_line_number:]:   # don't include the current one
+            for formatted_line in gsi.formatted_lines[stn_line_number:]:   # don't include the current one
                 if gsi.is_control_point(formatted_line):
                     self.subsequent_station_setups.append(formatted_line['Point_ID'])
 
             print(self.subsequent_station_setups)
 
             # Determine difference in station height from old to new
-            old_stn_height = float(gsi.get_formatted_line(stn_height_changed_line_number)['STN_Height'])
+            old_stn_height = float(station_formatted_line['STN_Height'])
             stn_height_diff = round(new_station_height - old_stn_height, 3)
             print(stn_height_diff)
 
             if new_station_height is not 'ERROR':
 
-                # TODO  get all shots including station
+                # get all shots including station
+                station_shots_dict = gsi.get_all_shots_from_a_station_including_setup(station_formatted_line['Point_ID'], stn_line_number-1)
+
+                for formatted_line in station_shots_dict.values():
+
+                    if gsi.is_control_point(formatted_line):    # should be a station but double check
+                        gsi.update_station_height(stn_line_number, new_station_height )
+                    else:
+                        raise Exception("Error changing station height")
+
+                # TODO  add update_station_height in GSI
                 # TODO  update station height
                 # TODO  update all target heights from this station
                 # TODO  if point_ID is in the the list of subsequent station, add coordinates to average
                 # TODO  update next station and its targets
-
-
 
                 line_numbers_to_ammend = []
 
