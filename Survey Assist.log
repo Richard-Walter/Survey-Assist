@@ -399,3 +399,20 @@ AttributeError: 'NoneType' object has no attribute 'group'
 2020-05-21 17:17:34,739:Survey Assist - v1.0:Started Application
 2020-05-21 17:17:39,406:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/Downloads/TEST Target Height Test.GSI
 2020-05-21 17:19:39,718:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/PycharmProjects/Survey Assist/Test Files/GSI Files/HCCL 030719.GSI
+2020-05-21 17:23:20,445:Survey Assist - v1.0:Started Application
+2020-05-21 17:23:52,672:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/Downloads/890MR 150520.GSI
+2020-05-21 17:30:45,007:Survey Assist - v1.0:Started Application
+2020-05-21 17:30:57,720:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/Downloads/890MR 150520.GSI
+2020-05-21 17:31:13,739:Survey Assist - v1.0:An unexpected error has occurred
+
+update_station_height()
+
+get_entered_height() missing 1 required positional argument: 'entry_widget'
+Traceback (most recent call last):
+  File "C:/Users/Richard/PycharmProjects/Survey Assist/main.py", line 2595, in update_station_height
+    new_station_height = self.get_entered_height()
+TypeError: get_entered_height() missing 1 required positional argument: 'entry_widget'
+2020-05-21 17:32:37,245:Survey Assist - v1.0:Started Application
+2020-05-21 17:32:40,718:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/Downloads/890MR 150520.GSI
+2020-05-21 17:33:42,166:Survey Assist - v1.0:Started Application
+2020-05-21 17:33:45,781:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/Downloads/890MR 150520.GSI

@@ -2509,7 +2509,7 @@ class TargetHeightWindow(ChangeHeightWindow):
     def fix_target_height(self):
 
         try:
-            # set the new target height hte user has entered
+            # set the new target height the user has entered
             new_target_height = self.get_entered_height(self.new_target_height_entry)
             self.dialog_window.destroy()
 
@@ -2591,24 +2591,34 @@ class StationHeightWindow(ChangeHeightWindow):
     def update_station_height(self):
 
         try:
-            # set the new target height that the user has entered
-            new_station_height = self.get_entered_height()
+            new_station_height = self.get_entered_height(self.new_station_height_entry)
+            self.dialog_window.destroy()
 
             # Get user selected line number - should only be one selected line when updating station height
             selected_line = gui_app.list_box.list_box_view.selection()[0]
             stn_height_changed_line_number = gui_app.list_box.list_box_view.item(selected_line)['values'][0]
 
             # Create a list of subsequent station setups that will need updating
-            for formatted_line in gsi.formatted_lines[stn_height_changed_line_number-1:]:
+            for formatted_line in gsi.formatted_lines[stn_height_changed_line_number:]:   # don't include the current one
                 if gsi.is_control_point(formatted_line):
                     self.subsequent_station_setups.append(formatted_line['Point_ID'])
 
+            print(self.subsequent_station_setups)
+
             # Determine difference in station height from old to new
             old_stn_height = float(gsi.get_formatted_line(stn_height_changed_line_number)['STN_Height'])
-            sth_height_diff = round(new_station_height - old_stn_height, 3)
-            print(sth_height_diff)
+            stn_height_diff = round(new_station_height - old_stn_height, 3)
+            print(stn_height_diff)
 
             if new_station_height is not 'ERROR':
+
+                # TODO  get all shots including station
+                # TODO  update station height
+                # TODO  update all target heights from this station
+                # TODO  if point_ID is in the the list of subsequent station, add coordinates to average
+                # TODO  update next station and its targets
+
+
 
                 line_numbers_to_ammend = []
 
