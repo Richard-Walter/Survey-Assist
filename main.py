@@ -2504,7 +2504,7 @@ class TargetHeightWindow:
                     tk.messagebox.showinfo("INPUT ERROR", "Please select a line first that you want to change target "
                                                           "height")
         except Exception as ex:
-            print("Problem opening up the GSI file\n\n" + str(ex))
+            print("Problem fixing target height\n\n" + str(ex))
             logger.exception("An unexpected error has occurred\n\nfix_target_height()\n\n" + str(ex))
             tk.messagebox.showerror("Survey Assist", "An unexpected error has occurred\n\nfix_target_height()\n\n" + str(ex))
             return
@@ -2598,7 +2598,10 @@ class StationHeightWindow:
                 if gsi.is_control_point(formatted_line):
                     self.subsequent_station_setups.append(formatted_line['Point_ID'])
 
-
+            # Determine difference in station height from old to new
+            old_stn_height = float(gsi.get_formatted_line(stn_height_changed_line_number)['STN_Height'])
+            sth_height_diff = round(new_station_height - old_stn_height, 3)
+            print(sth_height_diff)
 
             if new_station_height is not 'ERROR':
 
@@ -2646,9 +2649,9 @@ class StationHeightWindow:
                     tk.messagebox.showinfo("INPUT ERROR", "Please select a line first that you want to change target "
                                                           "height")
         except Exception as ex:
-            print("Problem opening up the GSI file\n\n" + str(ex))
-            logger.exception("An unexpected error has occurred\n\nfix_target_height()\n\n" + str(ex))
-            tk.messagebox.showerror("Survey Assist", "An unexpected error has occurred\n\nfix_target_height()\n\n" + str(ex))
+            print("Problem updating station height\n\n" + str(ex))
+            logger.exception("An unexpected error has occurred\n\nupdate_station_height()\n\n" + str(ex))
+            tk.messagebox.showerror("Survey Assist", "An unexpected error has occurred\n\nupdate_station_height()\n\n" + str(ex))
             return
 
     def get_corrections(self, line_number, new_target_height):

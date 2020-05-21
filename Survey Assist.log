@@ -277,3 +277,8 @@ TypeError: unsupported operand type(s) for *: 'float' and 'decimal.Decimal'
 2020-05-21 11:43:17,047:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/PycharmProjects/Survey Assist/Test Files/GSI Files/2D Survey MR050819_PCUpdated.gsi
 2020-05-21 11:46:28,336:Survey Assist - v1.0:Started Application
 2020-05-21 11:46:35,595:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/Downloads/890MR 150520.GSI
+2020-05-21 12:46:32,634:Survey Assist - v1.0:Started Application
+2020-05-21 12:46:35,953:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/Downloads/890MR 150520.GSI
+2020-05-21 12:47:49,014:Survey Assist - v1.0:Started Application
+2020-05-21 12:47:53,469:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/Downloads/890MR 150520.GSI
+2020-05-21 12:48:06,625:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/Downloads/Raumer fix 150520_Sorted.gsi
