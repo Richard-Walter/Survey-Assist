@@ -2563,6 +2563,8 @@ class StationHeightWindow:
 
     def __init__(self, master):
 
+        self.subsequent_station_setups = []
+
         self.master = master
 
         self.precision = survey_config.precision_value
@@ -2579,16 +2581,26 @@ class StationHeightWindow:
         self.btn1.grid(row=0, column=3, padx=(10, 20), pady=20)
 
         self.new_station_height_entry.focus()
-
         self.master.wait_window(self.dialog_window)
 
     def update_station_height(self):
 
         try:
-            # set the new target height hte user has entered
-            new_target_height = self.get_entered_target_height()
+            # set the new target height that the user has entered
+            new_station_height = self.get_entered_station_height()
 
-            if new_target_height is not 'ERROR':
+            # Get user selected line number - should only be one selected line when updating station height
+            selected_line = gui_app.list_box.list_box_view.selection()[0]
+            stn_height_changed_line_number = gui_app.list_box.list_box_view.item(selected_line)['values'][0]
+
+            # Create a list of subsequent station setups that will need updating
+            for formatted_line in gsi.formatted_lines[stn_height_changed_line_number-1:]:
+                if gsi.is_control_point(formatted_line):
+                    self.subsequent_station_setups.append(formatted_line['Point_ID'])
+
+
+
+            if new_station_height is not 'ERROR':
 
                 line_numbers_to_ammend = []
 
@@ -2610,7 +2622,7 @@ class StationHeightWindow:
 
                     # update each line to amend with new target height and coordinates
                     for line_number in line_numbers_to_ammend:
-                        corrections = self.get_corrections(line_number, new_target_height)
+                        corrections = self.get_corrections(line_number, new_station_height)
                         gsi.update_target_height(line_number, corrections)
 
                     if "TgtUpdated" not in MenuBar.filename_path:
@@ -2668,7 +2680,7 @@ class StationHeightWindow:
 
         return {'83': new_height, '87': new_target_height}
 
-    def get_entered_target_height(self):
+    def get_entered_station_height(self):
 
         # Check to see if number was entered correctly
         entered_target_height = "ERROR"
