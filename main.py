@@ -94,6 +94,7 @@ class MenuBar(tk.Frame):
         self.edit_sub_menu.add_command(label="Delete all 2D Orientation Shots", command=self.delete_orientation_shots)
         self.edit_sub_menu.add_command(label="Change point name...", command=self.change_point_name)
         self.edit_sub_menu.add_command(label="Change target height...", command=self.change_target_height)
+        self.edit_sub_menu.add_command(label="Change station height...", command=self.change_station_height)
         self.edit_sub_menu.add_separator()
         self.edit_sub_menu.add_command(label="(BETA) Prism Constant - Fix single...", command=self.prism_constant_update_manually)
         self.edit_sub_menu.add_command(label="(BETA) Prism Constant - Fix batch ...", command=self.prism_constant_update_batch)
@@ -859,7 +860,46 @@ class MenuBar(tk.Frame):
         self.check_3d_survey()
 
     def change_target_height(self):
+
+        selected_items = gui_app.list_box.list_box_view.selection()
+
+        if not selected_items:
+            # no lines selected
+            tkinter.messagebox.showinfo("Updating Target Height", "Please select at least one line to update")
+            return
+
+        for selected_item in selected_items:
+            line_number = gui_app.list_box.list_box_view.item(selected_item)['values'][0]
+
+            # Check to make sure that the selected line is not a STN setup
+            if gsi.is_control_point(gsi.get_formatted_line(line_number)):
+                tk.messagebox.showinfo("Updating Target Heightt", "Please select a line that contains a target height, NOT a station height")
+                return
+
         TargetHeightWindow(self.master)
+
+    def change_station_height(self):
+
+        # Check that only 1 line is selected and that it is a station height
+        selected_items = gui_app.list_box.list_box_view.selection()
+
+        for selected_item in selected_items:
+            line_number = gui_app.list_box.list_box_view.item(selected_item)['values'][0]
+
+            # Check to make sure that the selected line is a STN setup
+            if not gsi.is_control_point(gsi.get_formatted_line(line_number)):
+                tk.messagebox.showinfo("Updating Station Height", "Please select a line that contains only station setup")
+                return
+
+        if len(selected_items)>1:
+            tkinter.messagebox.showinfo("Updating Station Height", "Please select only ONE station height to update at a time")
+            return
+        elif not selected_items:
+            # no lines selected
+            tkinter.messagebox.showinfo("Updating Station Height", "Please select at least one line to update")
+            return
+
+        StationHeightWindow(self.master)
 
     def change_point_name(self):
         PointNameWindow(self.master)
@@ -876,7 +916,7 @@ class MenuBar(tk.Frame):
                     line_numbers_to_ammend.append(gui_app.list_box.list_box_view.item(selected_item)['values'][0])
             else:
                 # no lines selected
-                tkinter.messagebox.showinfo("Updateing Prism Constant", "Please select at least one line to update")
+                tkinter.messagebox.showinfo("Updating Prism Constant", "Please select at least one line to update")
                 return
 
             pcu = PrismConstantUpdate(self.master, line_numbers_to_ammend)
@@ -2505,6 +2545,136 @@ class TargetHeightWindow:
 
         try:
             entered_target_height = round(float(self.new_target_height_entry.get()), 3)
+
+        except ValueError:
+
+            # Ask user to re-enter a a numerical target height
+            tk.messagebox.showerror("INPUT ERROR", "Please enter a valid number to 3 decimal places")
+
+        else:
+            print(entered_target_height)
+
+        self.dialog_window.destroy()
+
+        return entered_target_height
+
+
+class StationHeightWindow:
+
+    def __init__(self, master):
+
+        self.master = master
+
+        self.precision = survey_config.precision_value
+
+        # create station height input dialog box
+        self.dialog_window = tk.Toplevel(self.master)
+
+        self.lbl = tk.Label(self.dialog_window, text="Enter new station height for this setup:  ")
+        self.new_station_height_entry = tk.Entry(self.dialog_window)
+        self.btn1 = tk.Button(self.dialog_window, text="UPDATE", command=self.update_station_height)
+
+        self.lbl.grid(row=0, column=1, padx=(20, 2), pady=20)
+        self.new_station_height_entry.grid(row=0, column=2, padx=(2, 2), pady=20)
+        self.btn1.grid(row=0, column=3, padx=(10, 20), pady=20)
+
+        self.new_station_height_entry.focus()
+
+        self.master.wait_window(self.dialog_window)
+
+    def update_station_height(self):
+
+        try:
+            # set the new target height hte user has entered
+            new_target_height = self.get_entered_target_height()
+
+            if new_target_height is not 'ERROR':
+
+                line_numbers_to_ammend = []
+
+                # build list of line numbers to amend
+                # selected_items = gui_app.list_box_view.selection()
+                selected_items = gui_app.list_box.list_box_view.selection()
+
+                if selected_items:
+                    for selected_item in selected_items:
+                        line_number = gui_app.list_box.list_box_view.item(selected_item)['values'][0]
+
+                        # Check to make sure that the selected line is not a STN setup
+                        if gsi.is_control_point(gsi.get_formatted_line(line_number)):
+                            tk.messagebox.showinfo("Update Target Height", "Please select a line that contains a target "
+                                                                           "height, NOT a station height.")
+                            return
+
+                        line_numbers_to_ammend.append(line_number)
+
+                    # update each line to amend with new target height and coordinates
+                    for line_number in line_numbers_to_ammend:
+                        corrections = self.get_corrections(line_number, new_target_height)
+                        gsi.update_target_height(line_number, corrections)
+
+                    if "TgtUpdated" not in MenuBar.filename_path:
+
+                        amended_filepath = MenuBar.filename_path[:-4] + "_TgtUpdated.gsi"
+                    else:
+                        amended_filepath = MenuBar.filename_path
+
+                    # create a new ammended gsi file
+                    with open(amended_filepath, "w") as gsi_file:
+                        for line in gsi.unformatted_lines:
+                            gsi_file.write(line)
+
+                    self.dialog_window.destroy()
+
+                    # rebuild database and GUI
+                    MenuBar.filename_path = amended_filepath
+                    GUIApplication.refresh()
+                else:
+                    # notify user that no lines were selected
+                    tk.messagebox.showinfo("INPUT ERROR", "Please select a line first that you want to change target "
+                                                          "height")
+        except Exception as ex:
+            print("Problem opening up the GSI file\n\n" + str(ex))
+            logger.exception("An unexpected error has occurred\n\nfix_target_height()\n\n" + str(ex))
+            tk.messagebox.showerror("Survey Assist", "An unexpected error has occurred\n\nfix_target_height()\n\n" + str(ex))
+            return
+
+    def get_corrections(self, line_number, new_target_height):
+
+        # update target height and Z coordinate for this line
+        formatted_line = gsi.get_formatted_line(line_number)
+
+        new_target_height = float(new_target_height)
+        old_tgt_height = formatted_line['Target_Height']
+        try:
+            old_height = float(formatted_line['Elevation'])
+        except ValueError:
+            tk.messagebox.showinfo("TARGET HEIGHT SELECTION ERROR", "Please select a line that contains a target "
+                                                                    "height. If problem persists, please see Richard")
+
+        if old_tgt_height == '':
+            old_tgt_height = 0.000
+        elif old_tgt_height == '0':
+            old_tgt_height = float(0.000)
+        else:
+            old_tgt_height = float(old_tgt_height)
+
+        new_height = old_height - (new_target_height - old_tgt_height)
+
+        old_height = str(decimalize_value(old_height, self.precision))
+        new_height = str(decimalize_value(new_height, self.precision))
+        old_tgt_height = str(decimalize_value(old_tgt_height, '3dp'))  # target height is always 3dp
+        new_target_height = str(decimalize_value(new_target_height, '3dp'))
+
+        return {'83': new_height, '87': new_target_height}
+
+    def get_entered_target_height(self):
+
+        # Check to see if number was entered correctly
+        entered_target_height = "ERROR"
+
+        try:
+            entered_target_height = round(float(self.new_station_height_entry.get()), 3)
 
         except ValueError:
 
