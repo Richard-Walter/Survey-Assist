@@ -124,6 +124,34 @@ class GSI:
         # update the raw gsi lines
         self.unformatted_lines[stn_line_number - 1] = unformatted_line
 
+    def update_station_elevation(self, stn_line_number, new_stn_elevation):
+
+        unformatted_line = self.get_unformatted_line(stn_line_number)
+
+        re_pattern = re.compile(GSI.REGULAR_EXPRESSION_LOOKUP['83'])
+        match = re_pattern.search(unformatted_line)
+
+        org_field_value = match.group()
+
+        # Lets build the new field value.First lets build the prefix e.g. 83..00+
+        re_pattern = re.compile(r'\d{2}..\d{2}[\+-]')
+        prefix = re_pattern.search(org_field_value).group()
+
+        # remove the decimal from the new value  e.g. 0.413->0413
+        new_stn_elevation = new_stn_elevation.replace(".", "")
+
+        # There are 16 chars in the suffix so we need to fill the new value with leading zeros
+        new_field_value_suffix = new_stn_elevation.zfill(16)
+
+        # lets combine the prefix with the suffix to create the new field value to replace the old one
+        new_field_value = prefix + new_field_value_suffix
+
+        # now replace the old value with the new one
+        unformatted_line = unformatted_line.replace(org_field_value, new_field_value)
+
+        # update the raw gsi lines
+        self.unformatted_lines[stn_line_number - 1] = unformatted_line
+
     def update_point_name(self, line_number, new_point_name):
 
         unformatted_line = self.get_unformatted_line(line_number)

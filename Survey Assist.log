@@ -1,603 +1,110 @@
-2020-05-16 08:06:01,777:Survey Assist - v1.0:Started Application
-2020-05-16 08:28:32,544:Survey Assist - v1.0:Started Application
-2020-05-16 08:33:38,418:Survey Assist - v1.0:Started Application
-2020-05-16 08:35:59,780:Survey Assist - v1.0:Started Application
-2020-05-16 09:09:05,106:Survey Assist - v1.0:Started Application
-2020-05-16 09:17:56,337:Survey Assist - v1.0:Started Application
-2020-05-16 09:18:56,751:Survey Assist - v1.0:Started Application
-2020-05-16 09:22:43,879:Survey Assist - v1.0:Started Application
-2020-05-16 10:37:27,321:Survey Assist - v1.0:Started Application
-2020-05-16 10:39:26,643:Survey Assist - v1.0:Started Application
-2020-05-16 10:41:54,155:Survey Assist - v1.0:Started Application
-2020-05-16 10:45:46,335:Survey Assist - v1.0:Started Application
-2020-05-16 10:46:37,352:Survey Assist - v1.0:Started Application
-2020-05-16 10:47:23,188:Survey Assist - v1.0:Started Application
-2020-05-16 10:48:15,116:Survey Assist - v1.0:Started Application
-2020-05-16 10:50:11,737:Survey Assist - v1.0:Started Application
-2020-05-16 10:52:11,366:Survey Assist - v1.0:Started Application
-2020-05-16 10:52:37,362:Survey Assist - v1.0:Started Application
-2020-05-16 10:53:02,128:Survey Assist - v1.0:Started Application
-2020-05-18 15:31:51,230:Survey Assist - v1.0:Started Application
-2020-05-18 15:34:04,278:Survey Assist - v1.0:Started Application
-2020-05-18 15:34:22,100:Survey Assist - v1.0:Started Application
-2020-05-18 15:38:38,204:Survey Assist - v1.0:Started Application
-2020-05-18 15:52:58,248:Survey Assist - v1.0:Started Application
-2020-05-18 15:54:23,321:Survey Assist - v1.0:Started Application
-2020-05-18 15:54:41,056:Survey Assist - v1.0:Started Application
-2020-05-18 15:54:43,453:Survey Assist - v1.0:An unexpected error has occurred
+2020-05-22 15:01:49,518:Survey Assist - v1.0:Started Application
 
-btn_job_tracker()
+2020-05-22 15:01:53,879:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/Downloads/890MR 150520.GSI
+2020-05-22 15:04:34,728:Survey Assist - v1.0:Started Application
 
-[WinError 2] The system cannot find the file specified: 'C:\\Users\\Richard\\PycharmProjects\\Survey Assist\\Test Files\\Survey Data\\2020\\Job Tracker Digital System.xlsm'
-Traceback (most recent call last):
-  File "C:/Users/Richard/PycharmProjects/Survey Assist/main.py", line 1385, in btn_job_tracker
-    os.startfile(job_tracker_filepath)
-FileNotFoundError: [WinError 2] The system cannot find the file specified: 'C:\\Users\\Richard\\PycharmProjects\\Survey Assist\\Test Files\\Survey Data\\2020\\Job Tracker Digital System.xlsm'
-2020-05-18 15:55:52,856:Survey Assist - v1.0:Started Application
-2020-05-18 15:55:55,034:Survey Assist - v1.0:An unexpected error has occurred
-
-btn_job_tracker()
-
-[WinError 2] The system cannot find the file specified: 'C:\\Users\\Richard\\PycharmProjects\\Survey Assist\\Test Files\\Survey Data\\2020\\Job Tracker Digital System.xlsm'
-Traceback (most recent call last):
-  File "C:/Users/Richard/PycharmProjects/Survey Assist/main.py", line 1385, in btn_job_tracker
-    os.startfile(job_tracker_filepath)
-FileNotFoundError: [WinError 2] The system cannot find the file specified: 'C:\\Users\\Richard\\PycharmProjects\\Survey Assist\\Test Files\\Survey Data\\2020\\Job Tracker Digital System.xlsm'
-2020-05-18 15:56:43,124:Survey Assist - v1.0:Started Application
-2020-05-18 15:56:45,002:Survey Assist - v1.0:An unexpected error has occurred
-
-btn_job_tracker()
-
-[WinError 2] The system cannot find the file specified: 'C:\\Users\\Richard\\PycharmProjects\\Survey Assist\\Test Files\\Survey Data\\2020\\Job Tracker Digital System.xlsm'
-Traceback (most recent call last):
-  File "C:/Users/Richard/PycharmProjects/Survey Assist/main.py", line 1385, in btn_job_tracker
-    os.startfile(self.job_tracker_filepath)
-FileNotFoundError: [WinError 2] The system cannot find the file specified: 'C:\\Users\\Richard\\PycharmProjects\\Survey Assist\\Test Files\\Survey Data\\2020\\Job Tracker Digital System.xlsm'
-2020-05-18 15:57:16,669:Survey Assist - v1.0:Started Application
-2020-05-18 15:57:27,001:Survey Assist - v1.0:An unexpected error has occurred
-
-btn_job_tracker()
-
-[WinError 2] The system cannot find the file specified: 'C:\\Users\\Richard\\PycharmProjects\\Survey Assist\\Test Files\\Survey Data\\2020\\Job Tracker Digital System.xlsm'
-Traceback (most recent call last):
-  File "C:/Users/Richard/PycharmProjects/Survey Assist/main.py", line 1385, in btn_job_tracker
-    os.startfile(self.job_tracker_filepath)
-FileNotFoundError: [WinError 2] The system cannot find the file specified: 'C:\\Users\\Richard\\PycharmProjects\\Survey Assist\\Test Files\\Survey Data\\2020\\Job Tracker Digital System.xlsm'
-2020-05-18 16:00:32,508:Survey Assist - v1.0:Started Application
-2020-05-18 16:03:32,865:Survey Assist - v1.0:Started Application
-2020-05-18 16:05:37,166:Survey Assist - v1.0:Started Application
-2020-05-18 16:06:01,811:Survey Assist - v1.0:Started Application
-2020-05-18 16:06:12,302:Survey Assist - v1.0:Started Application
-2020-05-18 16:06:38,655:Survey Assist - v1.0:Started Application
-2020-05-18 16:07:29,943:Survey Assist - v1.0:Started Application
-2020-05-18 16:09:55,494:Survey Assist - v1.0:Started Application
-2020-05-18 16:10:39,414:Survey Assist - v1.0:Started Application
-2020-05-18 16:11:10,375:Survey Assist - v1.0:An unexpected error has occurred
-
-btn_job_tracker()
-
-[WinError 2] The system cannot find the file specified: 'C:\\Users\\Richard\\PycharmProjects\\Survey Assist\\Test Files\\Survey Data\\2020\\Job Tracker Digital System.xlsm'
-Traceback (most recent call last):
-  File "C:/Users/Richard/PycharmProjects/Survey Assist/main.py", line 1390, in btn_job_tracker
-    os.startfile(self.job_tracker_filepath)
-FileNotFoundError: [WinError 2] The system cannot find the file specified: 'C:\\Users\\Richard\\PycharmProjects\\Survey Assist\\Test Files\\Survey Data\\2020\\Job Tracker Digital System.xlsm'
-2020-05-18 16:38:53,117:Survey Assist - v1.0:Started Application
-2020-05-18 16:39:02,532:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/PycharmProjects/Survey Assist/Test Files/Survey Data/2020/MONITORING/A9 ARTC/200515/ARTC_903_MON_V2_TS60_150520_EDITED_Sorted_PCUpdated.gsi
-2020-05-18 16:40:20,673:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/PycharmProjects/Survey Assist/Test Files/Survey Data/2020/MONITORING/A9 ARTC/200503/ARTC_903_MON_V2_MS60_030520_EDITED_PCUpdated_Sorted.gsi
-2020-05-18 16:40:47,216:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/PycharmProjects/Survey Assist/Test Files/GSI Files/ARTC_903_compnet 240220.GSI
-2020-05-18 19:08:14,654:Survey Assist - v1.0:Started Application
-2020-05-18 19:08:41,955:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/Downloads/890MR 150520.GSI
-2020-05-18 19:09:14,900:Survey Assist - v1.0:Started Application
-2020-05-18 19:09:22,424:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/Downloads/890MR 150520.GSI
-2020-05-18 19:11:19,313:Survey Assist - v1.0:Started Application
-2020-05-18 19:11:30,034:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/Downloads/890MR 150520.GSI
-2020-05-18 19:11:47,816:Survey Assist - v1.0:An unexpected error has occurred
-
-check_FLFR()
-
-could not convert string to float: 
-Traceback (most recent call last):
-  File "C:/Users/Richard/PycharmProjects/Survey Assist/main.py", line 678, in check_FLFR
-    analysed_lines = self.anaylseFLFR(copy.deepcopy(obs_from_station_dict))
-  File "C:/Users/Richard/PycharmProjects/Survey Assist/main.py", line 780, in anaylseFLFR
-    obs_line_2_field_value = get_numerical_value_from_string(obs_line_2_field_value_str, field_type, precision)
-  File "C:\Users\Richard\PycharmProjects\Survey Assist\utilities.py", line 83, in get_numerical_value_from_string
-    return angle_DMS_2_decimal(angle_deg, angle_min, angle_sec)
-  File "C:\Users\Richard\PycharmProjects\Survey Assist\utilities.py", line 42, in angle_DMS_2_decimal
-    return float(angle_deg) + float(angle_min) / 60 + float(angle_sec) / (60 * 60)
-ValueError: could not convert string to float: 
-2020-05-18 19:17:54,657:Survey Assist - v1.0:Started Application
-2020-05-18 19:18:00,877:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/Downloads/890MR 150520.GSI
-2020-05-18 19:18:21,849:Survey Assist - v1.0:Started Application
-2020-05-18 19:18:28,471:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/Downloads/890MR 150520.GSI
-2020-05-18 19:20:15,112:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/Downloads/890MR 150520.GSI
-2020-05-18 19:22:06,162:Survey Assist - v1.0:Started Application
-2020-05-18 19:22:11,394:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/Downloads/890MR 150520.GSI
-2020-05-18 19:23:04,002:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/Downloads/890MR 150520.GSI
-2020-05-18 19:23:14,189:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/Downloads/890MR 150520.GSI
-2020-05-18 19:27:06,049:Survey Assist - v1.0:Started Application
-2020-05-18 19:27:10,798:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/Downloads/890MR 150520.GSI
-2020-05-18 19:28:04,189:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/PycharmProjects/Survey Assist/Test Files/GSI Files/3D MR_120819_3D error change_EDITED.gsi
-2020-05-19 15:56:53,383:Survey Assist - v1.0:Started Application
-2020-05-20 17:02:11,900:Survey Assist - v1.0:Started Application
-2020-05-20 17:02:33,607:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/PycharmProjects/Survey Assist/Test Files/GSI Files/HCCUL180219.GSI
-2020-05-20 17:02:54,732:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/PycharmProjects/Survey Assist/Test Files/GSI Files/HCCL 030719.GSI
-2020-05-20 17:04:16,843:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/PycharmProjects/Survey Assist/Test Files/GSI Files/ARTC_903_compnet 240220.GSI
-2020-05-20 18:26:27,272:Survey Assist - v1.0:Started Application
-2020-05-20 18:26:37,311:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/Downloads/HCCL 030719.GSI
-2020-05-20 18:35:06,073:Survey Assist - v1.0:Started Application
-2020-05-20 18:35:12,686:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/Downloads/HCCL 030719.GSI
-2020-05-20 18:51:13,634:Survey Assist - v1.0:Started Application
-2020-05-20 18:51:21,529:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/Downloads/HCCL 030719.GSI
-2020-05-20 18:51:36,312:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/PycharmProjects/Survey Assist/Test Files/GSI Files/HCCL 030719.GSI
-2020-05-20 18:52:02,921:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/PycharmProjects/Survey Assist/Test Files/GSI Files/3D MR_120819_3D error change_EDITED.gsi
-2020-05-20 18:52:25,785:Survey Assist - v1.0:Started Application
-2020-05-20 18:52:43,952:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/Downloads/HCCL 030719.GSI
-2020-05-20 18:59:37,366:Survey Assist - v1.0:Started Application
-2020-05-20 18:59:44,904:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/Downloads/HCCL 030719.GSI
-2020-05-20 19:01:52,115:Survey Assist - v1.0:Started Application
-2020-05-20 19:01:55,920:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/Downloads/HCCL 030719.GSI
-2020-05-20 19:03:57,740:Survey Assist - v1.0:Started Application
-2020-05-20 19:04:01,993:Survey Assist - v1.0:Started Application
-2020-05-20 19:04:05,389:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/Downloads/HCCL 030719.GSI
-2020-05-20 19:04:12,326:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/Downloads/HCCUL180219.GSI
-2020-05-20 19:04:32,951:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/Downloads/HCCL 030719.GSI
-2020-05-20 19:21:58,805:Survey Assist - v1.0:Started Application
-2020-05-20 19:22:05,842:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/Downloads/HCCL 030719.GSI
-2020-05-20 19:28:43,467:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/Downloads/HCCUL180219.GSI
-2020-05-20 19:42:16,778:Survey Assist - v1.0:Started Application
-2020-05-20 19:42:20,654:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/Downloads/HCCL 030719.GSI
-2020-05-20 19:42:24,274:Survey Assist - v1.0:An unexpected error has occurred
-
-check_FLFR()
-
-angular_difference() missing 1 required positional argument: 'angle'
-Traceback (most recent call last):
-  File "C:/Users/Richard/PycharmProjects/Survey Assist/main.py", line 681, in check_FLFR
-    analysed_lines = self.anaylseFLFR(copy.deepcopy(obs_from_station_dict))
-  File "C:/Users/Richard/PycharmProjects/Survey Assist/main.py", line 787, in anaylseFLFR
-    angular_diff = decimalize_value(angular_difference(obs_line_2_field_value, obs_line_1_field_value), precision)
-TypeError: angular_difference() missing 1 required positional argument: 'angle'
-2020-05-20 19:42:56,315:Survey Assist - v1.0:Started Application
-2020-05-20 19:42:59,608:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/Downloads/HCCL 030719.GSI
-2020-05-20 19:43:40,322:Survey Assist - v1.0:Started Application
-2020-05-20 19:43:45,342:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/Downloads/HCCL 030719.GSI
-2020-05-20 19:48:35,760:Survey Assist - v1.0:Started Application
-2020-05-20 19:48:39,530:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/Downloads/HCCL 030719.GSI
-2020-05-20 19:48:43,427:Survey Assist - v1.0:An unexpected error has occurred
-
-check_FLFR()
-
-unsupported operand type(s) for *: 'float' and 'decimal.Decimal'
-Traceback (most recent call last):
-  File "C:/Users/Richard/PycharmProjects/Survey Assist/main.py", line 681, in check_FLFR
-    analysed_lines = self.anaylseFLFR(copy.deepcopy(obs_from_station_dict))
-  File "C:/Users/Richard/PycharmProjects/Survey Assist/main.py", line 788, in anaylseFLFR
-    angular_diff = decimalize_value(angular_difference(obs_angular_diff, '360', 0), precision)
-  File "C:\Users\Richard\PycharmProjects\Survey Assist\utilities.py", line 46, in angular_difference
-    rad_a = deg2rad(angle_1)
-  File "C:\Users\Richard\PycharmProjects\Survey Assist\utilities.py", line 29, in deg2rad
-    radians = math.pi * degrees / 180
-TypeError: unsupported operand type(s) for *: 'float' and 'decimal.Decimal'
-2020-05-20 19:49:11,517:Survey Assist - v1.0:Started Application
-2020-05-20 19:49:15,420:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/Downloads/HCCL 030719.GSI
-2020-05-20 19:49:17,586:Survey Assist - v1.0:An unexpected error has occurred
-
-check_FLFR()
-
-unsupported operand type(s) for *: 'float' and 'decimal.Decimal'
-Traceback (most recent call last):
-  File "C:/Users/Richard/PycharmProjects/Survey Assist/main.py", line 681, in check_FLFR
-    analysed_lines = self.anaylseFLFR(copy.deepcopy(obs_from_station_dict))
-  File "C:/Users/Richard/PycharmProjects/Survey Assist/main.py", line 788, in anaylseFLFR
-    angular_diff = decimalize_value(angular_difference(obs_angular_diff, 360, 0), precision)
-  File "C:\Users\Richard\PycharmProjects\Survey Assist\utilities.py", line 46, in angular_difference
-    rad_a = deg2rad(angle_1)
-  File "C:\Users\Richard\PycharmProjects\Survey Assist\utilities.py", line 29, in deg2rad
-    radians = math.pi * degrees / 180
-TypeError: unsupported operand type(s) for *: 'float' and 'decimal.Decimal'
-2020-05-20 19:49:59,571:Survey Assist - v1.0:Started Application
-2020-05-20 19:50:02,608:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/Downloads/HCCL 030719.GSI
-2020-05-20 19:50:54,252:Survey Assist - v1.0:Started Application
-2020-05-20 19:50:57,951:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/Downloads/HCCL 030719.GSI
-2020-05-20 19:51:00,954:Survey Assist - v1.0:An unexpected error has occurred
-
-check_FLFR()
-
-unsupported operand type(s) for *: 'float' and 'decimal.Decimal'
-Traceback (most recent call last):
-  File "C:/Users/Richard/PycharmProjects/Survey Assist/main.py", line 681, in check_FLFR
-    analysed_lines = self.anaylseFLFR(copy.deepcopy(obs_from_station_dict))
-  File "C:/Users/Richard/PycharmProjects/Survey Assist/main.py", line 788, in anaylseFLFR
-    angular_diff = decimalize_value(angular_difference(obs_angular_diff, 360.0000, 0), precision)
-  File "C:\Users\Richard\PycharmProjects\Survey Assist\utilities.py", line 46, in angular_difference
-    rad_a = deg2rad(angle_1)
-  File "C:\Users\Richard\PycharmProjects\Survey Assist\utilities.py", line 29, in deg2rad
-    radians = math.pi * degrees / 180
-TypeError: unsupported operand type(s) for *: 'float' and 'decimal.Decimal'
-2020-05-20 19:52:28,774:Survey Assist - v1.0:Started Application
-2020-05-20 19:52:32,029:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/Downloads/HCCL 030719.GSI
-2020-05-20 19:54:11,918:Survey Assist - v1.0:Started Application
-2020-05-20 19:54:16,279:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/Downloads/HCCL 030719.GSI
-2020-05-20 19:56:01,602:Survey Assist - v1.0:Started Application
-2020-05-20 19:56:04,920:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/Downloads/HCCL 030719.GSI
-2020-05-20 19:59:13,306:Survey Assist - v1.0:Started Application
-2020-05-20 19:59:17,358:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/Downloads/HCCL 030719.GSI
-2020-05-20 20:00:46,552:Survey Assist - v1.0:Started Application
-2020-05-20 20:00:52,650:Survey Assist - v1.0:Started Application
-2020-05-20 20:00:56,374:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/Downloads/HCCL 030719.GSI
-2020-05-20 20:02:59,115:Survey Assist - v1.0:Started Application
-2020-05-20 20:03:01,826:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/Downloads/HCCL 030719.GSI
-2020-05-20 20:04:11,013:Survey Assist - v1.0:Started Application
-2020-05-20 20:04:14,717:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/Downloads/HCCL 030719.GSI
-2020-05-20 20:05:04,584:Survey Assist - v1.0:Started Application
-2020-05-20 20:05:07,514:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/Downloads/HCCL 030719.GSI
-2020-05-20 20:06:53,654:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/Downloads/HCCL 030719.GSI
-2020-05-20 20:07:05,562:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/PycharmProjects/Survey Assist/Test Files/GSI Files/HCCL 030719.GSI
-2020-05-20 20:10:08,326:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/Downloads/HCCL 030719.GSI
-2020-05-20 20:12:13,379:Survey Assist - v1.0:Started Application
-2020-05-20 20:12:16,764:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/Downloads/HCCL 030719.GSI
-2020-05-20 20:12:27,107:Survey Assist - v1.0:Started Application
-2020-05-20 20:12:31,795:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/Downloads/HCCL 030719.GSI
-2020-05-20 20:15:25,150:Survey Assist - v1.0:Started Application
-2020-05-20 20:15:28,280:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/Downloads/HCCL 030719.GSI
-2020-05-20 20:15:53,857:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/Downloads/HCCL 030719.GSI
-2020-05-20 20:15:57,326:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/Downloads/HCCUL180219.GSI
-2020-05-20 20:16:16,186:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/Downloads/HCCL 030719.GSI
-2020-05-20 20:17:10,168:Survey Assist - v1.0:Started Application
-2020-05-20 20:17:16,296:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/Downloads/HCCL 030719.GSI
-2020-05-20 20:26:55,815:Survey Assist - v1.0:Started Application
-2020-05-20 20:27:00,452:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/Downloads/HCCL 030719.GSI
-2020-05-20 20:28:55,664:Survey Assist - v1.0:Started Application
-2020-05-20 20:28:58,483:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/Downloads/HCCL 030719.GSI
-2020-05-20 20:29:12,373:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/Downloads/HCCUL180219.GSI
-2020-05-20 20:29:33,904:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/PycharmProjects/Survey Assist/Test Files/GSI Files/HCCL 030719.GSI
-2020-05-20 20:30:23,796:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/Downloads/890MR 150520.GSI
-2020-05-20 20:30:58,999:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/Downloads/890MR 150520_EDITED.GSI
-2020-05-20 20:31:12,811:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/PycharmProjects/Survey Assist/Test Files/GSI Files/ARTC_903_compnet 240220.GSI
-2020-05-21 10:52:56,499:Survey Assist - v1.0:Started Application
-2020-05-21 10:53:03,548:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/PycharmProjects/Survey Assist/Test Files/GSI Files/2D Survey MR050819.GSI
-2020-05-21 10:54:42,311:Survey Assist - v1.0:Started Application
-2020-05-21 10:55:15,117:Survey Assist - v1.0:Started Application
-2020-05-21 10:55:20,188:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/PycharmProjects/Survey Assist/Test Files/GSI Files/3D MR_120819_3D error change_EDITED.gsi
-2020-05-21 10:57:32,930:Survey Assist - v1.0:Started Application
-2020-05-21 10:57:54,391:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/PycharmProjects/Survey Assist/Test Files/GSI Files/3D MR_120819_3D error change.gsi
-2020-05-21 11:10:24,348:Survey Assist - v1.0:Started Application
-2020-05-21 11:10:28,453:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/PycharmProjects/Survey Assist/Test Files/GSI Files/2D Survey MR050819.GSI
-2020-05-21 11:12:17,210:Survey Assist - v1.0:Started Application
-2020-05-21 11:12:21,109:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/PycharmProjects/Survey Assist/Test Files/GSI Files/2D Survey MR050819.GSI
-2020-05-21 11:13:34,417:Survey Assist - v1.0:Started Application
-2020-05-21 11:13:38,204:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/PycharmProjects/Survey Assist/Test Files/GSI Files/2D Survey MR050819.GSI
-2020-05-21 11:14:07,984:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/PycharmProjects/Survey Assist/Test Files/GSI Files/2D Survey MR050819.GSI
-2020-05-21 11:16:08,051:Survey Assist - v1.0:Started Application
-2020-05-21 11:16:13,157:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/PycharmProjects/Survey Assist/Test Files/GSI Files/2D Survey MR050819.GSI
-2020-05-21 11:16:57,462:Survey Assist - v1.0:Started Application
-2020-05-21 11:17:00,453:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/PycharmProjects/Survey Assist/Test Files/GSI Files/2D Survey MR050819.GSI
-2020-05-21 11:43:13,311:Survey Assist - v1.0:Started Application
-2020-05-21 11:43:17,047:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/PycharmProjects/Survey Assist/Test Files/GSI Files/2D Survey MR050819_PCUpdated.gsi
-2020-05-21 11:46:28,336:Survey Assist - v1.0:Started Application
-2020-05-21 11:46:35,595:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/Downloads/890MR 150520.GSI
-2020-05-21 12:46:32,634:Survey Assist - v1.0:Started Application
-2020-05-21 12:46:35,953:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/Downloads/890MR 150520.GSI
-2020-05-21 12:47:49,014:Survey Assist - v1.0:Started Application
-2020-05-21 12:47:53,469:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/Downloads/890MR 150520.GSI
-2020-05-21 12:48:06,625:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/Downloads/Raumer fix 150520_Sorted.gsi
-2020-05-21 14:39:46,998:Survey Assist - v1.0:Started Application
-2020-05-21 14:39:52,688:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/Downloads/890MR 150520.GSI
-2020-05-21 15:15:03,366:Survey Assist - v1.0:Started Application
-2020-05-21 15:15:07,703:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/Downloads/890MR 150520.GSI
-2020-05-21 15:15:19,814:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/PycharmProjects/Survey Assist/Test Files/GSI Files/2D Survey MR050819_TgtUpdated.gsi
-2020-05-21 15:28:39,610:Survey Assist - v1.0:Started Application
-2020-05-21 15:28:44,296:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/Downloads/TEST Target Height Test.GSI
-2020-05-21 15:30:28,488:Survey Assist - v1.0:An unexpected error has occurred
-
-get_target_height_corrections()
-
-unsupported operand type(s) for -: 'str' and 'str'
-Traceback (most recent call last):
-  File "C:/Users/Richard/PycharmProjects/Survey Assist/main.py", line 2446, in get_target_height_corrections
-    new_height_difference = old_height_difference-old_tgt_height
-TypeError: unsupported operand type(s) for -: 'str' and 'str'
-2020-05-21 15:30:32,538:Survey Assist - v1.0:An unexpected error has occurred
-
-fix_target_height()
-
-'NoneType' object has no attribute 'items'
-Traceback (most recent call last):
-  File "C:/Users/Richard/PycharmProjects/Survey Assist/main.py", line 2545, in fix_target_height
-    gsi.update_target_height(line_number, corrections)
-  File "C:\Users\Richard\PycharmProjects\Survey Assist\GSI.py", line 57, in update_target_height
-    for field_id, new_value in corrections.items():
-AttributeError: 'NoneType' object has no attribute 'items'
-2020-05-21 15:32:09,910:Survey Assist - v1.0:Started Application
-2020-05-21 15:32:14,626:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/Downloads/TEST Target Height Test.GSI
-2020-05-21 15:32:23,734:Survey Assist - v1.0:An unexpected error has occurred
-
-fix_target_height()
-
-unsupported operand type(s) for -: 'str' and 'str'
-Traceback (most recent call last):
-  File "C:/Users/Richard/PycharmProjects/Survey Assist/main.py", line 2536, in fix_target_height
-    corrections = self.get_target_height_corrections(line_number, new_target_height)
-  File "C:/Users/Richard/PycharmProjects/Survey Assist/main.py", line 2445, in get_target_height_corrections
-    new_height_difference = old_height_difference-old_tgt_height
-TypeError: unsupported operand type(s) for -: 'str' and 'str'
-2020-05-21 15:34:45,171:Survey Assist - v1.0:Started Application
-2020-05-21 15:34:48,906:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/Downloads/TEST Target Height Test.GSI
-2020-05-21 15:34:56,617:Survey Assist - v1.0:An unexpected error has occurred
-
-fix_target_height()
-
-'float' object has no attribute 'replace'
-Traceback (most recent call last):
-  File "C:/Users/Richard/PycharmProjects/Survey Assist/main.py", line 2538, in fix_target_height
-    gsi.update_target_height(line_number, corrections)
-  File "C:\Users\Richard\PycharmProjects\Survey Assist\GSI.py", line 69, in update_target_height
-    new_value = new_value.replace(".", "")
-AttributeError: 'float' object has no attribute 'replace'
-2020-05-21 15:39:06,776:Survey Assist - v1.0:Started Application
-2020-05-21 15:39:10,188:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/Downloads/TEST Target Height Test.GSI
-2020-05-21 15:41:03,188:Survey Assist - v1.0:Started Application
-2020-05-21 15:41:07,187:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/Downloads/890MR 150520.GSI
-2020-05-21 15:41:10,047:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/Downloads/TEST Target Height Test.GSI
-2020-05-21 15:53:04,424:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/PycharmProjects/Survey Assist/Test Files/GSI Files/HCCL 030719.GSI
-2020-05-21 15:59:03,846:Survey Assist - v1.0:Started Application
-2020-05-21 15:59:10,907:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/Downloads/Raumer fix 150520.gsi
-2020-05-21 15:59:10,908:Survey Assist - v1.0:Error has occurred. 
-Traceback (most recent call last):
-  File "C:/Users/Richard/PycharmProjects/Survey Assist/main.py", line 537, in format_gsi_file
-    gsi.format_gsi(MenuBar.filename_path)
-  File "C:\Users\Richard\PycharmProjects\Survey Assist\GSI.py", line 460, in format_gsi
-    field_value = field_value.insert(0, algebraic_sign)
-AttributeError: 'str' object has no attribute 'insert'
-2020-05-21 16:00:24,770:Survey Assist - v1.0:Started Application
-2020-05-21 16:00:33,016:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/Downloads/Raumer fix 150520.gsi
-2020-05-21 16:00:47,688:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/PycharmProjects/Survey Assist/Test Files/GSI Files/HCCL 030719.GSI
-2020-05-21 16:01:08,094:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/Downloads/890MR 150520.GSI
-2020-05-21 16:30:39,641:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/Downloads/TEST Target Height Test_TgtUpdated.gsi
-2020-05-21 16:31:35,488:Survey Assist - v1.0:Started Application
-2020-05-21 16:31:41,266:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/Downloads/TEST Target Height Test_TgtUpdated.gsi
-2020-05-21 16:35:03,544:Survey Assist - v1.0:Started Application
-2020-05-21 16:35:13,094:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/Downloads/TEST Target Height Test.GSI
-2020-05-21 16:36:06,678:Survey Assist - v1.0:Started Application
-2020-05-21 16:36:12,406:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/Downloads/TEST Target Height Test.GSI
-2020-05-21 16:36:28,908:Survey Assist - v1.0:An unexpected error has occurred
-
-fix_target_height()
-
-'NoneType' object has no attribute 'group'
-Traceback (most recent call last):
-  File "C:/Users/Richard/PycharmProjects/Survey Assist/main.py", line 2539, in fix_target_height
-    gsi.update_target_height(line_number, corrections)
-  File "C:\Users\Richard\PycharmProjects\Survey Assist\GSI.py", line 66, in update_target_height
-    prefix = re_pattern.search(org_field_value).group()
-AttributeError: 'NoneType' object has no attribute 'group'
-2020-05-21 16:38:51,227:Survey Assist - v1.0:An unexpected error has occurred
-
-fix_target_height()
-
-'NoneType' object has no attribute 'group'
-Traceback (most recent call last):
-  File "C:/Users/Richard/PycharmProjects/Survey Assist/main.py", line 2539, in fix_target_height
-    gsi.update_target_height(line_number, corrections)
-  File "C:\Users\Richard\PycharmProjects\Survey Assist\GSI.py", line 66, in update_target_height
-    prefix = re_pattern.search(org_field_value).group()
-AttributeError: 'NoneType' object has no attribute 'group'
-2020-05-21 16:38:57,979:Survey Assist - v1.0:Started Application
-2020-05-21 16:39:06,109:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/Downloads/TEST Target Height Test.GSI
-2020-05-21 16:40:56,345:Survey Assist - v1.0:Started Application
-2020-05-21 16:41:00,406:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/Downloads/TEST Target Height Test.GSI
-2020-05-21 16:50:57,281:Survey Assist - v1.0:Started Application
-2020-05-21 16:51:01,814:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/Downloads/TEST Target Height Test.GSI
-2020-05-21 16:53:09,047:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/PycharmProjects/Survey Assist/Test Files/GSI Files/HCCL 030719.GSI
-2020-05-21 17:05:47,809:Survey Assist - v1.0:Started Application
-2020-05-21 17:05:53,376:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/Downloads/TEST Target Height Test.GSI
-2020-05-21 17:10:12,250:Survey Assist - v1.0:Started Application
-2020-05-21 17:10:16,219:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/Downloads/TEST Target Height Test.GSI
-2020-05-21 17:11:46,898:Survey Assist - v1.0:Started Application
-2020-05-21 17:11:50,985:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/Downloads/TEST Target Height Test.GSI
-2020-05-21 17:17:34,739:Survey Assist - v1.0:Started Application
-2020-05-21 17:17:39,406:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/Downloads/TEST Target Height Test.GSI
-2020-05-21 17:19:39,718:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/PycharmProjects/Survey Assist/Test Files/GSI Files/HCCL 030719.GSI
-2020-05-21 17:23:20,445:Survey Assist - v1.0:Started Application
-2020-05-21 17:23:52,672:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/Downloads/890MR 150520.GSI
-2020-05-21 17:30:45,007:Survey Assist - v1.0:Started Application
-2020-05-21 17:30:57,720:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/Downloads/890MR 150520.GSI
-2020-05-21 17:31:13,739:Survey Assist - v1.0:An unexpected error has occurred
+2020-05-22 15:04:39,409:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/Downloads/890MR 150520.GSI
+2020-05-22 15:04:52,040:Survey Assist - v1.0:An unexpected error has occurred
 
 update_station_height()
 
-get_entered_height() missing 1 required positional argument: 'entry_widget'
+5
 Traceback (most recent call last):
-  File "C:/Users/Richard/PycharmProjects/Survey Assist/main.py", line 2595, in update_station_height
-    new_station_height = self.get_entered_height()
-TypeError: get_entered_height() missing 1 required positional argument: 'entry_widget'
-2020-05-21 17:32:37,245:Survey Assist - v1.0:Started Application
-2020-05-21 17:32:40,718:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/Downloads/890MR 150520.GSI
-2020-05-21 17:33:42,166:Survey Assist - v1.0:Started Application
-2020-05-21 17:33:45,781:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/Downloads/890MR 150520.GSI
-2020-05-21 17:44:44,257:Survey Assist - v1.0:Started Application
-2020-05-21 17:44:49,360:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/Downloads/890MR 150520.GSI
-2020-05-21 17:56:38,891:Survey Assist - v1.0:Started Application
-2020-05-21 17:56:41,484:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/Downloads/890MR 150520.GSI
-2020-05-21 17:58:11,017:Survey Assist - v1.0:Started Application
-2020-05-21 17:58:14,376:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/Downloads/890MR 150520.GSI
-2020-05-22 09:13:25,848:Survey Assist - v1.0:Started Application
-2020-05-22 09:13:33,643:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/PycharmProjects/Survey Assist/Test Files/GSI Files/HCCL 030719.GSI
-2020-05-22 09:19:08,719:Survey Assist - v1.0:Started Application
-2020-05-22 09:19:11,987:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/PycharmProjects/Survey Assist/Test Files/GSI Files/2D Survey MR050819.GSI
-2020-05-22 09:20:13,157:Survey Assist - v1.0:An unexpected error has occurred
+  File "C:/Users/Richard/PycharmProjects/Survey Assist/main.py", line 2607, in change_station_height
+    self.subsequent_station_setups[line_number].add(formatted_line['Point_ID'])
+KeyError: 5
+2020-05-22 15:07:35,580:Survey Assist - v1.0:Started Application
+
+2020-05-22 15:07:39,159:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/Downloads/890MR 150520.GSI
+2020-05-22 15:07:54,311:Survey Assist - v1.0:An unexpected error has occurred
+
+update_station_height()
+
+descriptor 'get' for 'dict' objects doesn't apply to 'str' object
+Traceback (most recent call last):
+  File "C:/Users/Richard/PycharmProjects/Survey Assist/main.py", line 2650, in change_station_height
+    prev_averaged_coordinates = new_stn_coordinates.get(point_id) # retrieve previous average coordinates if they exist
+TypeError: descriptor 'get' for 'dict' objects doesn't apply to 'str' object
+2020-05-22 15:11:51,381:Survey Assist - v1.0:An unexpected error has occurred
+
+update_station_height()
+
+descriptor 'get' for 'dict' objects doesn't apply to 'str' object
+Traceback (most recent call last):
+  File "C:/Users/Richard/PycharmProjects/Survey Assist/main.py", line 2650, in change_station_height
+    prev_averaged_coordinates = new_stn_coordinates.get(point_id) # retrieve previous average coordinates if they exist
+TypeError: descriptor 'get' for 'dict' objects doesn't apply to 'str' object
+2020-05-22 15:15:39,686:Survey Assist - v1.0:Started Application
+
+2020-05-22 15:15:44,206:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/Downloads/890MR 150520.GSI
+2020-05-22 15:16:30,552:Survey Assist - v1.0:An unexpected error has occurred
+
+update_station_height()
+
+'STN04'
+Traceback (most recent call last):
+  File "C:/Users/Richard/PycharmProjects/Survey Assist/main.py", line 2659, in change_station_height
+    new_stn_elevation = new_stn_coordinates[station][2]
+KeyError: 'STN04'
+2020-05-22 15:18:34,381:Survey Assist - v1.0:Started Application
+
+2020-05-22 15:18:40,348:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/Downloads/890MR 150520.GSI
+2020-05-22 15:41:57,180:Survey Assist - v1.0:Started Application
+
+2020-05-22 15:42:01,409:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/Downloads/890MR 150520.GSI
+2020-05-22 16:20:01,240:Survey Assist - v1.0:Started Application
+
+2020-05-22 16:20:06,128:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/Downloads/890MR 150520.GSI
+2020-05-22 16:21:05,489:Survey Assist - v1.0:An unexpected error has occurred
+
+update_station_height()
+
+'STN04'
+Traceback (most recent call last):
+  File "C:/Users/Richard/PycharmProjects/Survey Assist/main.py", line 2660, in change_station_height
+    stn_coordinates = self.new_stn_coordinates[station]
+KeyError: 'STN04'
+2020-05-22 16:25:37,819:Survey Assist - v1.0:Started Application
+
+2020-05-22 16:25:43,455:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/Downloads/890MR 150520.GSI
+2020-05-22 16:27:19,875:Survey Assist - v1.0:Started Application
+
+2020-05-22 16:27:25,659:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/Downloads/890MR 150520.GSI
+2020-05-22 16:29:13,391:Survey Assist - v1.0:Started Application
+
+2020-05-22 16:29:18,207:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/Downloads/890MR 150520.GSI
+2020-05-22 16:29:25,135:Survey Assist - v1.0:An unexpected error has occurred
 
 update_station_height()
 
 'NoneType' object has no attribute 'group'
 Traceback (most recent call last):
-  File "C:/Users/Richard/PycharmProjects/Survey Assist/main.py", line 2623, in change_station_height
-    gsi.update_station_height(stn_line_number, new_station_height)
-  File "C:\Users\Richard\PycharmProjects\Survey Assist\GSI.py", line 106, in update_station_height
+  File "C:/Users/Richard/PycharmProjects/Survey Assist/main.py", line 2663, in change_station_height
+    gsi.update_station_elevation(line_number, new_stn_elevation)
+  File "C:\Users\Richard\PycharmProjects\Survey Assist\GSI.py", line 134, in update_station_elevation
     org_field_value = match.group()
 AttributeError: 'NoneType' object has no attribute 'group'
-2020-05-22 09:31:32,291:Survey Assist - v1.0:Started Application
-2020-05-22 09:31:35,551:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/PycharmProjects/Survey Assist/Test Files/GSI Files/2D Survey MR050819.GSI
-2020-05-22 09:32:46,417:Survey Assist - v1.0:Started Application
-2020-05-22 09:32:51,143:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/PycharmProjects/Survey Assist/Test Files/GSI Files/2D Survey MR050819.GSI
-2020-05-22 09:32:56,456:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/PycharmProjects/Survey Assist/Test Files/GSI Files/2D Survey MR050819.GSI
-2020-05-22 09:33:50,427:Survey Assist - v1.0:An unexpected error has occurred
+2020-05-22 16:30:04,125:Survey Assist - v1.0:Started Application
+
+2020-05-22 16:30:08,018:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/Downloads/890MR 150520.GSI
+2020-05-22 16:32:31,578:Survey Assist - v1.0:An unexpected error has occurred
 
 update_station_height()
 
-'float' object has no attribute 'replace'
+'STN04'
 Traceback (most recent call last):
-  File "C:/Users/Richard/PycharmProjects/Survey Assist/main.py", line 2623, in change_station_height
-    gsi.update_station_height(stn_line_number, new_station_height)
-  File "C:\Users\Richard\PycharmProjects\Survey Assist\GSI.py", line 113, in update_station_height
-    new_station_height = new_station_height.replace(".", "")
-AttributeError: 'float' object has no attribute 'replace'
-2020-05-22 09:35:29,578:Survey Assist - v1.0:Started Application
-2020-05-22 09:35:32,878:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/PycharmProjects/Survey Assist/Test Files/GSI Files/2D Survey MR050819.GSI
-2020-05-22 09:39:15,363:Survey Assist - v1.0:Started Application
-2020-05-22 09:39:20,628:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/PycharmProjects/Survey Assist/Test Files/GSI Files/2D Survey MR050819.GSI
-2020-05-22 10:11:48,565:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/Downloads/890MR 150520.GSI
-2020-05-22 10:12:07,143:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/Downloads/Raumer fix 150520.gsi
-2020-05-22 10:15:58,816:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/Downloads/TEST Target Height Test.GSI
-2020-05-22 10:26:22,870:Survey Assist - v1.0:Started Application
-2020-05-22 10:26:28,676:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/Downloads/TEST Target Height Test.GSI
-2020-05-22 10:46:28,986:Survey Assist - v1.0:Started Application
-2020-05-22 10:46:34,519:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/Downloads/TEST Target Height Test.GSI
-2020-05-22 10:46:47,165:Survey Assist - v1.0:An unexpected error has occurred
+  File "C:/Users/Richard/PycharmProjects/Survey Assist/main.py", line 2660, in change_station_height
+    stn_coordinates = self.new_stn_coordinates[station]
+KeyError: 'STN04'
+2020-05-22 16:34:29,411:Survey Assist - v1.0:Started Application
+
+2020-05-22 16:34:37,393:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/Downloads/890MR 150520.GSI
+2020-05-22 16:35:10,412:Survey Assist - v1.0:An unexpected error has occurred
 
 update_station_height()
 
-'NoneType' object has no attribute 'group'
+'STN04'
 Traceback (most recent call last):
-  File "C:/Users/Richard/PycharmProjects/Survey Assist/main.py", line 2627, in change_station_height
-    gsi.update_station_height(line_number, str(new_station_height))
-  File "C:\Users\Richard\PycharmProjects\Survey Assist\GSI.py", line 106, in update_station_height
-    org_field_value = match.group()
-AttributeError: 'NoneType' object has no attribute 'group'
-2020-05-22 10:48:45,234:Survey Assist - v1.0:An unexpected error has occurred
-
-update_station_height()
-
-'NoneType' object has no attribute 'group'
-Traceback (most recent call last):
-  File "C:/Users/Richard/PycharmProjects/Survey Assist/main.py", line 2627, in change_station_height
-    gsi.update_station_height(line_number, str(new_station_height))
-  File "C:\Users\Richard\PycharmProjects\Survey Assist\GSI.py", line 106, in update_station_height
-    org_field_value = match.group()
-AttributeError: 'NoneType' object has no attribute 'group'
-2020-05-22 10:50:38,071:Survey Assist - v1.0:An unexpected error has occurred
-
-update_station_height()
-
-'NoneType' object has no attribute 'group'
-Traceback (most recent call last):
-  File "C:/Users/Richard/PycharmProjects/Survey Assist/main.py", line 2627, in change_station_height
-    gsi.update_station_height(line_number, str(new_station_height))
-  File "C:\Users\Richard\PycharmProjects\Survey Assist\GSI.py", line 106, in update_station_height
-    org_field_value = match.group()
-AttributeError: 'NoneType' object has no attribute 'group'
-2020-05-22 10:53:14,570:Survey Assist - v1.0:Started Application
-2020-05-22 10:53:18,894:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/Downloads/TEST Target Height Test.GSI
-2020-05-22 10:54:07,786:Survey Assist - v1.0:An unexpected error has occurred
-
-update_station_height()
-
-could not convert string to float: 
-Traceback (most recent call last):
-  File "C:/Users/Richard/PycharmProjects/Survey Assist/main.py", line 2630, in change_station_height
-    old_point_elevation = float(station_formatted_line['Elevation'])
-ValueError: could not convert string to float: 
-2020-05-22 10:55:36,320:Survey Assist - v1.0:Started Application
-2020-05-22 10:55:39,971:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/Downloads/TEST Target Height Test.GSI
-2020-05-22 10:59:50,924:Survey Assist - v1.0:Started Application
-2020-05-22 10:59:54,409:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/Downloads/TEST Target Height Test.GSI
-2020-05-22 11:01:20,176:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/Downloads/TEST Target Height Test.GSI
-2020-05-22 11:01:56,644:Survey Assist - v1.0:Started Application
-2020-05-22 11:02:00,503:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/Downloads/TEST Target Height Test.GSI
-2020-05-22 11:05:27,418:Survey Assist - v1.0:Started Application
-2020-05-22 11:05:30,675:Survey Assist - v1.0:Started Application
-2020-05-22 11:05:35,190:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/Downloads/TEST Target Height Test.GSI
-2020-05-22 11:08:01,546:Survey Assist - v1.0:Started Application
-2020-05-22 11:08:50,675:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/Downloads/TEST Target Height Test.GSI
-2020-05-22 11:09:07,542:Survey Assist - v1.0:An unexpected error has occurred
-
-update_station_height()
-
-unsupported operand type(s) for -: 'float' and 'str'
-Traceback (most recent call last):
-  File "C:/Users/Richard/PycharmProjects/Survey Assist/main.py", line 2632, in change_station_height
-    new_point_elevation = old_point_elevation-stn_height_diff
-TypeError: unsupported operand type(s) for -: 'float' and 'str'
-2020-05-22 11:10:43,989:Survey Assist - v1.0:Started Application
-2020-05-22 11:10:49,269:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/Downloads/TEST Target Height Test.GSI
-2020-05-22 11:12:51,014:Survey Assist - v1.0:An unexpected error has occurred
-
-update_station_height()
-
-unsupported operand type(s) for -: 'float' and 'str'
-Traceback (most recent call last):
-  File "C:/Users/Richard/PycharmProjects/Survey Assist/main.py", line 2632, in change_station_height
-    new_point_elevation = old_point_elevation-stn_height_diff
-TypeError: unsupported operand type(s) for -: 'float' and 'str'
-2020-05-22 11:15:05,554:Survey Assist - v1.0:Started Application
-2020-05-22 11:15:09,222:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/Downloads/TEST Target Height Test.GSI
-2020-05-22 11:19:53,504:Survey Assist - v1.0:Started Application
-2020-05-22 11:19:57,284:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/Downloads/TEST Target Height Test.GSI
-2020-05-22 11:21:23,096:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/Downloads/TEST Target Height Test.GSI
-2020-05-22 11:21:45,870:Survey Assist - v1.0:Started Application
-2020-05-22 11:21:50,096:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/Downloads/TEST Target Height Test.GSI
-2020-05-22 11:28:06,003:Survey Assist - v1.0:Started Application
-2020-05-22 11:28:09,425:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/Downloads/TEST Target Height Test.GSI
-2020-05-22 11:30:38,566:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/PycharmProjects/Survey Assist/Test Files/GSI Files/HCCL 030719.GSI
-2020-05-22 11:34:50,512:Survey Assist - v1.0:Started Application
-2020-05-22 11:34:57,721:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/PycharmProjects/Survey Assist/Test Files/GSI Files/HCCL 030719_STNUpdated.gsi
-2020-05-22 11:35:54,423:Survey Assist - v1.0:Started Application
-2020-05-22 11:36:00,207:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/Downloads/890MR 150520.GSI
-2020-05-22 11:36:12,049:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/Downloads/Raumer fix 150520.gsi
-2020-05-22 11:36:32,690:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/Downloads/890MR 150520.GSI
-2020-05-22 11:41:35,159:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/Downloads/890MR 150520.GSI
-2020-05-22 11:42:08,033:Survey Assist - v1.0:Started Application
-2020-05-22 11:42:14,112:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/Downloads/890MR 150520.GSI
-2020-05-22 11:43:45,566:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/Downloads/TEST Target Height Test.GSI
-2020-05-22 11:46:26,270:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/Downloads/890MR 150520.GSI
-2020-05-22 12:02:13,984:Survey Assist - v1.0:Started Application
-2020-05-22 12:02:18,941:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/Downloads/TEST Target Height Test.GSI
-2020-05-22 12:04:58,920:Survey Assist - v1.0:Started Application
-2020-05-22 12:05:06,817:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/Downloads/890MR 150520.GSI
-2020-05-22 12:47:41,636:Survey Assist - v1.0:Started Application
-2020-05-22 12:47:45,661:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/Downloads/890MR 150520_STNUpdated.gsi
-2020-05-22 12:47:52,316:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/Downloads/890MR 150520.GSI
-2020-05-22 12:53:09,382:Survey Assist - v1.0:An unexpected error has occurred
-
-update_station_height()
-
-can only concatenate list (not "str") to list
-Traceback (most recent call last):
-  File "C:/Users/Richard/PycharmProjects/Survey Assist/main.py", line 2654, in change_station_height
-    new_stn_coordinates[point_id] = [point_easting, point_northing, new_point_elevation]
-  File "C:\Users\Richard\PycharmProjects\Survey Assist\utilities.py", line 17, in average_coordinates
-    average_easting = (coord_list_1[0] + coord_list_2[0]) / 2.0
-TypeError: can only concatenate list (not "str") to list
-2020-05-22 12:55:38,441:Survey Assist - v1.0:Started Application
-2020-05-22 12:56:43,779:Survey Assist - v1.0:Started Application
-2020-05-22 12:56:53,144:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/Downloads/890MR 150520.GSI
-2020-05-22 12:59:59,220:Survey Assist - v1.0:An unexpected error has occurred
-
-update_station_height()
-
-can only concatenate list (not "float") to list
-Traceback (most recent call last):
-  File "C:/Users/Richard/PycharmProjects/Survey Assist/main.py", line 2653, in change_station_height
-    float(point_northing), float(new_point_elevation)])
-  File "C:\Users\Richard\PycharmProjects\Survey Assist\utilities.py", line 17, in average_coordinates
-    average_easting = (coord_list_1[0] + coord_list_2[0]) / 2.0
-TypeError: can only concatenate list (not "float") to list
-2020-05-22 13:01:50,840:Survey Assist - v1.0:Started Application
-2020-05-22 13:01:55,675:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/Downloads/890MR 150520.GSI
-2020-05-22 13:03:14,823:Survey Assist - v1.0:Started Application
-2020-05-22 13:03:20,378:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/Downloads/890MR 150520_EDITED.GSI
-2020-05-22 13:04:14,031:Survey Assist - v1.0:Started Application
-2020-05-22 13:04:18,519:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/Downloads/890MR 150520_EDITED.GSI
-2020-05-22 13:05:22,889:Survey Assist - v1.0:Started Application
-2020-05-22 13:05:29,253:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/Downloads/890MR 150520_EDITED.GSI
+  File "C:/Users/Richard/PycharmProjects/Survey Assist/main.py", line 2660, in change_station_height
+    stn_coordinates = self.new_stn_coordinates[station]
+KeyError: 'STN04'

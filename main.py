@@ -890,7 +890,7 @@ class MenuBar(tk.Frame):
                 tk.messagebox.showinfo("Updating Station Height", "Please select a line that contains only station setup")
                 return
 
-        if len(selected_items)>1:
+        if len(selected_items) > 1:
             tkinter.messagebox.showinfo("Updating Station Height", "Please select only ONE station height to update at a time")
             return
         elif not selected_items:
@@ -2427,6 +2427,7 @@ class PrismConstantUpdate:
 
             return corrections_dict
 
+
 class ChangeHeightWindow:
 
     def __init__(self):
@@ -2569,8 +2570,8 @@ class StationHeightWindow(ChangeHeightWindow):
 
         super().__init__()
 
-        self.subsequent_station_setups = []
-
+        self.subsequent_station_setups = {}
+        self.new_stn_coordinates = OrderedDict()
         self.master = master
 
         # create station height input dialog box
@@ -2589,8 +2590,6 @@ class StationHeightWindow(ChangeHeightWindow):
 
     def change_station_height(self):
 
-        new_stn_coordinates = {}
-
         try:
             new_station_height = self.get_entered_height(self.new_station_height_entry)
             self.dialog_window.destroy()
@@ -2602,11 +2601,11 @@ class StationHeightWindow(ChangeHeightWindow):
             station_formatted_line = gsi.get_formatted_line(stn_line_number)
 
             # Create a list of subsequent station setups that will need updating
-            for formatted_line in gsi.formatted_lines[stn_line_number:]:   # don't include the current one
+            for gsi_line_number, formatted_line in enumerate(gsi.formatted_lines[stn_line_number:], start=1):  # don't include the current one
                 if gsi.is_control_point(formatted_line):
-                    self.subsequent_station_setups.append(formatted_line['Point_ID'])
+                    self.subsequent_station_setups[gsi_line_number+1] = formatted_line['Point_ID']
 
-            print(self.subsequent_station_setups)
+            print(self.subsequent_station_setups.values())
 
             # Determine difference in station height from old to new
             old_stn_height = float(station_formatted_line['STN_Height'])
@@ -2622,20 +2621,20 @@ class StationHeightWindow(ChangeHeightWindow):
             if new_station_height is not 'ERROR':
 
                 # get all shots including station
-                station_shots_dict = gsi.get_all_shots_from_a_station_including_setup(station_formatted_line['Point_ID'], stn_line_number-1)
+                station_shots_dict = gsi.get_all_shots_from_a_station_including_setup(station_formatted_line['Point_ID'], stn_line_number - 1)
 
                 for gsi_line_number, formatted_line in station_shots_dict.items():
-                    formatted_line_number = gsi_line_number+1
+                    formatted_line_number = gsi_line_number + 1
                     point_id = formatted_line['Point_ID']
                     point_easting = formatted_line['Easting']
                     point_northing = formatted_line['Northing']
                     point_elevation = formatted_line['Elevation']
 
-                    if gsi.is_control_point(formatted_line):    # should be a station but double check
+                    if gsi.is_control_point(formatted_line):  # should be a station but double check
                         gsi.update_station_height(formatted_line_number, str(new_station_height))
-                    else:   # update the elevation and height difference
+                    else:  # update the elevation and height difference
                         old_point_elevation = float(formatted_line['Elevation'])
-                        new_point_elevation = old_point_elevation+float(stn_height_diff)
+                        new_point_elevation = old_point_elevation + float(stn_height_diff)
                         new_point_elevation = str(decimalize_value(new_point_elevation, self.precision))
                         gsi.update_elevation(formatted_line_number, new_point_elevation)
 
@@ -2645,19 +2644,28 @@ class StationHeightWindow(ChangeHeightWindow):
                         gsi.update_height_diff(formatted_line_number, height_diff)
 
                         # add point_ID coordinates to a list to average
-                        if point_id in self.subsequent_station_setups:
+                        if point_id in self.subsequent_station_setups.values():
 
-                            prev_averaged_coordinates = new_stn_coordinates.get(point_id) # retrieve previous average coordinates if they exist
+                            prev_averaged_coordinates = self.new_stn_coordinates.get(point_id)  # retrieve previous average coordinates if they exist
                             if prev_averaged_coordinates:
-                                new_stn_coordinates[point_id] = average_coordinates(prev_averaged_coordinates, [float(point_easting),
-                                                                                      float(point_northing), float(new_point_elevation)])
+                                self.new_stn_coordinates[point_id] = average_coordinates(prev_averaged_coordinates, [float(point_easting),
+                                                                                                                     float(point_northing),
+                                                                                                                     float(new_point_elevation)])
                             else:
-                                new_stn_coordinates[point_id] = [float(point_easting), float(point_northing), float(new_point_elevation)]
+                                self.new_stn_coordinates[point_id] = [float(point_easting), float(point_northing), float(new_point_elevation)]
 
-                print("done")
+                # Since we have updated subsequent station elevations, then we need to update all shots from those stations
+                for line_number, station in self.subsequent_station_setups.items():
+                    # first update station elevation to the new value
+                    stn_coordinates = self.new_stn_coordinates[station]
+                    new_stn_elevation = stn_coordinates[2]
+                    new_stn_elevation = str(decimalize_value(new_stn_elevation, self.precision))
+                    gsi.update_station_elevation(line_number-1, new_stn_elevation)
 
-                # TODO  if point_ID is in the the list of subsequent station, add coordinates to average
-                # TODO  update next station and its targets
+                    # now update all shots from this station
+                    updated_coordintates_dict = self.update_all_shot_elevations_from_station(line_number, station, float(stn_height_diff))
+
+                    # TODO update new station coordinate dictionary
 
                 if "STNUpdated" not in MenuBar.filename_path:
 
@@ -2677,12 +2685,37 @@ class StationHeightWindow(ChangeHeightWindow):
                 GUIApplication.refresh()
             else:
                 # User entered an incorrect station height.  Try again
-               return
+                return
         except Exception as ex:
             print("Problem updating station height\n\n" + str(ex))
             logger.exception("An unexpected error has occurred\n\nupdate_station_height()\n\n" + str(ex))
             tk.messagebox.showerror("Survey Assist", "An unexpected error has occurred\n\nupdate_station_height()\n\n" + str(ex))
             return
+
+    def update_all_shot_elevations_from_station(self, line_number, station, elevation_diff):
+
+        change_coordinates_dict = OrderedDict()
+
+        # get all shots including station
+        station_shots_dict = gsi.get_all_shots_from_a_station_including_setup(station, line_number - 1)
+
+        for gsi_line_number, formatted_line in station_shots_dict.items():
+            formatted_line_number = gsi_line_number + 1
+            point_easting = formatted_line['Easting']
+            point_northing = formatted_line['Northing']
+
+            if gsi.is_control_point(formatted_line):  # we dont update the elevation for a station setup
+                continue
+            else:  # update the elevation
+                old_point_elevation = float(formatted_line['Elevation'])
+                new_point_elevation = old_point_elevation + elevation_diff
+                new_point_elevation = str(decimalize_value(new_point_elevation, self.precision))
+                gsi.update_elevation(formatted_line_number, new_point_elevation)
+
+                # add new coordinates to change dictionary
+                change_coordinates_dict[formatted_line_number] = [point_easting, point_northing, new_point_elevation]
+
+        return change_coordinates_dict
 
 
 class CompnetUpdateFixedFileWindow:
@@ -3852,7 +3885,7 @@ def configure_logger():
 
     logger.addHandler(file_handler)
     logger.addHandler(stream_handler)
-    logger.info('Started Application')
+    logger.info('Started Application\n')
 
 
 if __name__ == "__main__":
