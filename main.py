@@ -2589,6 +2589,8 @@ class StationHeightWindow(ChangeHeightWindow):
 
     def change_station_height(self):
 
+        new_stn_coordinates = {}
+
         try:
             new_station_height = self.get_entered_height(self.new_station_height_entry)
             self.dialog_window.destroy()
@@ -2624,6 +2626,10 @@ class StationHeightWindow(ChangeHeightWindow):
 
                 for gsi_line_number, formatted_line in station_shots_dict.items():
                     formatted_line_number = gsi_line_number+1
+                    point_id = formatted_line['Point_ID']
+                    point_easting = formatted_line['Easting']
+                    point_northing = formatted_line['Northing']
+                    point_elevation = formatted_line['Elevation']
 
                     if gsi.is_control_point(formatted_line):    # should be a station but double check
                         gsi.update_station_height(formatted_line_number, str(new_station_height))
@@ -2637,6 +2643,16 @@ class StationHeightWindow(ChangeHeightWindow):
                         height_diff = old_height_diff + float(stn_height_diff)
                         height_diff = str(decimalize_value(height_diff, self.precision))
                         gsi.update_height_diff(formatted_line_number, height_diff)
+
+                        # add point_ID coordinates to a list to average
+                        if point_id in self.subsequent_station_setups:
+
+                            prev_averaged_coordinates = new_stn_coordinates.get(point_id) # retrieve previous average coordinates if they exist
+                            if prev_averaged_coordinates:
+                                new_stn_coordinates[point_id] = average_coordinates(prev_averaged_coordinates, [float(point_easting),
+                                                                                      float(point_northing), float(new_point_elevation)])
+                            else:
+                                new_stn_coordinates[point_id] = [float(point_easting), float(point_northing), float(new_point_elevation)]
 
                 print("done")
 

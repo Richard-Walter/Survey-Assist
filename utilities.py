@@ -13,6 +13,14 @@ FIELD_TYPE_FLOAT = 'float'
 FIELD_TYPE_NUMBER = 'number'
 
 
+def average_coordinates(coord_list_1, coord_list_2):
+    average_easting = (coord_list_1[0] + coord_list_2[0]) / 2.0
+    average_northing = (coord_list_1[1] + coord_list_2[1]) / 2.0
+    average_elevation = (coord_list_1[2] + coord_list_2[2]) / 2.0
+
+    return [average_easting, average_northing, average_elevation]
+
+
 def decimalize_value(in_value, precision):
     if precision == '4dp':
         return Decimal(in_value).quantize(Decimal('1.0000'))
@@ -97,7 +105,6 @@ def get_calendar(locale, fwday):
 class CustomDialogBox:
 
     def __init__(self, master, msg):
-
         super().__init__()
 
         self.top = tk.Toplevel(master)
@@ -120,6 +127,7 @@ class CustomDialogBox:
         self.scrolled_text.insert('insert', msg)
 
         master.wait_window(self.top)
+
 
 class Today:
     todays_date = datetime.datetime.today().strftime('%y%m%d')

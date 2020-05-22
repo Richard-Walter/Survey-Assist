@@ -561,3 +561,43 @@ TypeError: unsupported operand type(s) for -: 'float' and 'str'
 2020-05-22 11:42:14,112:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/Downloads/890MR 150520.GSI
 2020-05-22 11:43:45,566:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/Downloads/TEST Target Height Test.GSI
 2020-05-22 11:46:26,270:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/Downloads/890MR 150520.GSI
+2020-05-22 12:02:13,984:Survey Assist - v1.0:Started Application
+2020-05-22 12:02:18,941:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/Downloads/TEST Target Height Test.GSI
+2020-05-22 12:04:58,920:Survey Assist - v1.0:Started Application
+2020-05-22 12:05:06,817:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/Downloads/890MR 150520.GSI
+2020-05-22 12:47:41,636:Survey Assist - v1.0:Started Application
+2020-05-22 12:47:45,661:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/Downloads/890MR 150520_STNUpdated.gsi
+2020-05-22 12:47:52,316:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/Downloads/890MR 150520.GSI
+2020-05-22 12:53:09,382:Survey Assist - v1.0:An unexpected error has occurred
+
+update_station_height()
+
+can only concatenate list (not "str") to list
+Traceback (most recent call last):
+  File "C:/Users/Richard/PycharmProjects/Survey Assist/main.py", line 2654, in change_station_height
+    new_stn_coordinates[point_id] = [point_easting, point_northing, new_point_elevation]
+  File "C:\Users\Richard\PycharmProjects\Survey Assist\utilities.py", line 17, in average_coordinates
+    average_easting = (coord_list_1[0] + coord_list_2[0]) / 2.0
+TypeError: can only concatenate list (not "str") to list
+2020-05-22 12:55:38,441:Survey Assist - v1.0:Started Application
+2020-05-22 12:56:43,779:Survey Assist - v1.0:Started Application
+2020-05-22 12:56:53,144:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/Downloads/890MR 150520.GSI
+2020-05-22 12:59:59,220:Survey Assist - v1.0:An unexpected error has occurred
+
+update_station_height()
+
+can only concatenate list (not "float") to list
+Traceback (most recent call last):
+  File "C:/Users/Richard/PycharmProjects/Survey Assist/main.py", line 2653, in change_station_height
+    float(point_northing), float(new_point_elevation)])
+  File "C:\Users\Richard\PycharmProjects\Survey Assist\utilities.py", line 17, in average_coordinates
+    average_easting = (coord_list_1[0] + coord_list_2[0]) / 2.0
+TypeError: can only concatenate list (not "float") to list
+2020-05-22 13:01:50,840:Survey Assist - v1.0:Started Application
+2020-05-22 13:01:55,675:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/Downloads/890MR 150520.GSI
+2020-05-22 13:03:14,823:Survey Assist - v1.0:Started Application
+2020-05-22 13:03:20,378:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/Downloads/890MR 150520_EDITED.GSI
+2020-05-22 13:04:14,031:Survey Assist - v1.0:Started Application
+2020-05-22 13:04:18,519:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/Downloads/890MR 150520_EDITED.GSI
+2020-05-22 13:05:22,889:Survey Assist - v1.0:Started Application
+2020-05-22 13:05:29,253:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/Downloads/890MR 150520_EDITED.GSI
