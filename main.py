@@ -93,7 +93,7 @@ class MenuBar(tk.Frame):
         self.edit_sub_menu.add_command(label="Delete all 2D Orientation Shots", command=self.delete_orientation_shots)
         self.edit_sub_menu.add_command(label="Change point name...", command=self.change_point_name)
         self.edit_sub_menu.add_command(label="Change target height...", command=self.change_target_height)
-        self.edit_sub_menu.add_command(label="Change station height...", command=self.change_station_height)
+        self.edit_sub_menu.add_command(label="(BETA) Change station height...", command=self.change_station_height)
         self.edit_sub_menu.add_separator()
         self.edit_sub_menu.add_command(label="(BETA) Prism Constant - Fix single...", command=self.prism_constant_update_manually)
         self.edit_sub_menu.add_command(label="(BETA) Prism Constant - Fix batch ...", command=self.prism_constant_update_batch)
@@ -2675,7 +2675,8 @@ class StationHeightWindow(ChangeHeightWindow):
 
                         if point_id in self.subsequent_station_setups.values():
 
-                            # TODO only average coordinates from each setup -
+                            # TODO get rid of averaging for now
+                            # TODO STN04 not updating properly
                             prev_averaged_coordinates = self.new_stn_coordinates.get(point_id)  # retrieve previous average coordinates if they exist
                             if prev_averaged_coordinates:
                                 self.new_stn_coordinates[point_id] = average_coordinates(prev_averaged_coordinates, [float(point_easting),
