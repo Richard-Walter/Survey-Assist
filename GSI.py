@@ -30,7 +30,7 @@ class GSI:
                                              ('22', r''), ('31', r'31..\d\d\+\d*\.?\d?'), ('32', r'32..\d\d\+\d*\.?\d?'),
                                              ('33', r'33..\d\d[\+-]\d*\.?\d?'), ('51', r'51.{4}\+\d*\+\d{3}'),
                                              ('81', r'81..00\+\d*\.?\d?'), ('82', r'82..00\+\d*\.?\d?'), ('83', r'83..00\+\d*\.?\d?'),
-                                             ('84', r'84..\d\d[\+-]\d*\.?\d?'), ('85', r'85..\d\d[\+-]\d*\.?\d?'), ('86', r'86..\d\d[\+-]\d*\.?\d?'),
+                                             ('84', r'84..\d\d[\+-]\d*\.?\d?'), ('85', r'85..\d\d[\+-]\d*\.?\d?'), ('86', r'86..[\+-]\d*\.?\d?'),
                                              ('87', r'87\.{2}\d{2}\+\d+'), ('88', r'88..\d\d[\+-]\d*\.?\d?')])
 
     # PRISM CONSTANTS
@@ -128,13 +128,13 @@ class GSI:
 
         unformatted_line = self.get_unformatted_line(stn_line_number)
 
-        re_pattern = re.compile(GSI.REGULAR_EXPRESSION_LOOKUP['83'])
+        re_pattern = re.compile(GSI.REGULAR_EXPRESSION_LOOKUP['86'])
         match = re_pattern.search(unformatted_line)
 
         org_field_value = match.group()
 
-        # Lets build the new field value.First lets build the prefix e.g. 83..00+
-        re_pattern = re.compile(r'\d{2}..\d{2}[\+-]')
+        # Lets build the new field value.First lets build the prefix e.g. 86..+
+        re_pattern = re.compile(r'\d{2}..[\+-]')
         prefix = re_pattern.search(org_field_value).group()
 
         # remove the decimal from the new value  e.g. 0.413->0413

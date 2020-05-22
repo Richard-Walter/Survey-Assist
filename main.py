@@ -2525,6 +2525,7 @@ class TargetHeightWindow(ChangeHeightWindow):
                     # rebuild database and GUI
                     MenuBar.filename_path = amended_filepath
                     GUIApplication.refresh()
+                    tk.messagebox.showinfo("Survey Assist", "Target Height Updated")
                 else:
                     # notify user that no lines were selected
                     tk.messagebox.showinfo("INPUT ERROR", "Please select a line first that you want to change target height")
@@ -2660,12 +2661,29 @@ class StationHeightWindow(ChangeHeightWindow):
                     stn_coordinates = self.new_stn_coordinates[station]
                     new_stn_elevation = stn_coordinates[2]
                     new_stn_elevation = str(decimalize_value(new_stn_elevation, self.precision))
-                    gsi.update_station_elevation(line_number-1, new_stn_elevation)
+                    gsi.update_station_elevation(line_number, new_stn_elevation)
 
                     # now update all shots from this station
                     updated_coordintates_dict = self.update_all_shot_elevations_from_station(line_number, station, float(stn_height_diff))
 
-                    # TODO update new station coordinate dictionary
+                    for line_number, coordinate_list in updated_coordintates_dict.items():
+                        formatted_line = gsi.get_formatted_line(line_number)
+                        point_id = formatted_line['Point_ID']
+                        point_easting = formatted_line['Easting']
+                        point_northing = formatted_line['Northing']
+                        point_elevation = formatted_line['Elevation']
+
+                        if point_id in self.subsequent_station_setups.values():
+
+                            # TODO only average coordinates from each setup -
+                            prev_averaged_coordinates = self.new_stn_coordinates.get(point_id)  # retrieve previous average coordinates if they exist
+                            if prev_averaged_coordinates:
+                                self.new_stn_coordinates[point_id] = average_coordinates(prev_averaged_coordinates, [float(point_easting),
+                                                                                                                     float(point_northing),
+                                                                                                                     float(point_elevation)])
+                            else:
+                                self.new_stn_coordinates[point_id] = [float(point_easting), float(point_northing), float(point_elevation)]
+
 
                 if "STNUpdated" not in MenuBar.filename_path:
 
@@ -2683,6 +2701,7 @@ class StationHeightWindow(ChangeHeightWindow):
                 # rebuild database and GUI
                 MenuBar.filename_path = amended_filepath
                 GUIApplication.refresh()
+                tk.messagebox.showinfo("Survey Assist", "Station Height Updated")
             else:
                 # User entered an incorrect station height.  Try again
                 return
