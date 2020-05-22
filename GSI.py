@@ -30,8 +30,8 @@ class GSI:
                                              ('22', r''), ('31', r'31..\d\d\+\d*\.?\d?'), ('32', r'32..\d\d\+\d*\.?\d?'),
                                              ('33', r'33..\d\d[\+-]\d*\.?\d?'), ('51', r'51.{4}\+\d*\+\d{3}'),
                                              ('81', r'81..00\+\d*\.?\d?'), ('82', r'82..00\+\d*\.?\d?'), ('83', r'83..00\+\d*\.?\d?'),
-                                             ('84', r'84..00\+\d*\.?\d?'), ('85', r'85..00\+\d*\.?\d?'), ('86', r'86..00\+\d*\.?\d?'),
-                                             ('87', r'87\.{2}\d{2}\+\d+'), ('88', r'88..00\+\d*\.?\d?')])
+                                             ('84', r'84..\d\d[\+-]\d*\.?\d?'), ('85', r'85..\d\d[\+-]\d*\.?\d?'), ('86', r'86..\d\d[\+-]\d*\.?\d?'),
+                                             ('87', r'87\.{2}\d{2}\+\d+'), ('88', r'88..\d\d[\+-]\d*\.?\d?')])
 
     # PRISM CONSTANTS
     PC_DICT_REAL_VALUES = {'Big Joe': 0.0390, 'Big Joe 2': 0.0340, 'GLASS': 0.0240, 'Leica 360 Prism': 0.0231, 'Leica Circular Prism': 0.0000,
@@ -95,6 +95,34 @@ class GSI:
 
         # update the raw gsi lines
         self.unformatted_lines[line_number - 1] = unformatted_line
+
+    def update_station_height(self, stn_line_number, new_station_height):
+
+        unformatted_line = self.get_unformatted_line(stn_line_number)
+
+        re_pattern = re.compile(GSI.REGULAR_EXPRESSION_LOOKUP['88'])
+        match = re_pattern.search(unformatted_line)
+
+        org_field_value = match.group()
+
+        # Lets build the new field value.First lets build the prefix e.g. 88..10+
+        re_pattern = re.compile(r'\d{2}..\d{2}[\+-]')
+        prefix = re_pattern.search(org_field_value).group()
+
+        # remove the decimal from the new value  e.g. 0.413->0413
+        new_station_height = new_station_height.replace(".", "")
+
+        # There are 16 chars in the suffix so we need to fill the new value with leading zeros
+        new_field_value_suffix = new_station_height.zfill(16)
+
+        # lets combine the prefix with the suffix to create the new field value to replace the old one
+        new_field_value = prefix + new_field_value_suffix
+
+        # now replace the old value with the new one
+        unformatted_line = unformatted_line.replace(org_field_value, new_field_value)
+
+        # update the raw gsi lines
+        self.unformatted_lines[stn_line_number - 1] = unformatted_line
 
     def update_point_name(self, line_number, new_point_name):
 
@@ -333,7 +361,13 @@ class GSI:
     def update_height_diff(self, line_number, height_diff):
         # NOTE: height diff can contain a + or - symbol in the unformatted string
 
-        # new slope_distance must be converted from e.g.'1000.123' to  the 1234123  or 1234123.4 format
+        if height_diff[0] == '-':
+            algebraic_sign = '-'
+            height_diff = height_diff[1:]   # remove algebraic sign
+        else:
+            algebraic_sign = '+'
+
+        # new slope_distance must be converted from e.g.'1000.123' to the 1234123  or 1234123.4 format
         height_diff = height_diff.replace(".", "")
 
         unformatted_line = self.get_unformatted_line(line_number)
@@ -346,6 +380,7 @@ class GSI:
         # Lets build the new field value. First lets build the prefix e.g.33..00+ or 33..00-
         re_pattern = re.compile(r'33..\d\d[\+-]')
         prefix = re_pattern.search(old_height_diff_unformatted).group()
+        prefix = prefix[:-1] + algebraic_sign
 
         # lets build the suffix.
         if self.survey_config.precision_value == '4dp':
