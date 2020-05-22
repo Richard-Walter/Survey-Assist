@@ -218,3 +218,84 @@ ValueError: could not convert string to float:
 2020-05-22 17:43:47,207:Survey Assist - v1.0:Started Application
 
 2020-05-22 17:43:53,034:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/Downloads/890MR 150520.GSI
+2020-05-23 08:52:20,507:Survey Assist - v1.0:Started Application
+
+2020-05-23 08:52:25,954:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/Downloads/890MR 150520.GSI
+2020-05-23 08:53:48,016:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/Downloads/890MR 150520.GSI
+2020-05-23 08:55:18,766:Survey Assist - v1.0:Started Application
+
+2020-05-23 08:55:22,797:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/Downloads/890MR 150520.GSI
+2020-05-23 09:03:09,861:Survey Assist - v1.0:Started Application
+
+2020-05-23 09:03:13,407:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/Downloads/890MR 150520.GSI
+2020-05-23 09:03:20,824:Survey Assist - v1.0:An unexpected error has occurred
+
+update_station_height()
+
+name 'update_all_shot_elevations_from_station' is not defined
+Traceback (most recent call last):
+  File "C:/Users/Richard/PycharmProjects/Survey Assist/main.py", line 2668, in change_station_height
+    updated_coordintates_dict = update_all_shot_elevations_from_station(line_number, station, float(stn_height_diff))
+NameError: name 'update_all_shot_elevations_from_station' is not defined
+2020-05-23 09:03:53,555:Survey Assist - v1.0:Started Application
+
+2020-05-23 09:04:48,313:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/Downloads/890MR 150520.GSI
+2020-05-23 09:04:54,728:Survey Assist - v1.0:An unexpected error has occurred
+
+update_station_height()
+
+could not convert string to float: 
+Traceback (most recent call last):
+  File "C:/Users/Richard/PycharmProjects/Survey Assist/main.py", line 2668, in change_station_height
+    updated_coordintates_dict = self.update_all_shot_elevations_from_station(line_number, station, float(stn_height_diff))
+  File "C:/Users/Richard/PycharmProjects/Survey Assist/main.py", line 2723, in update_all_shot_elevations_from_station
+    point_easting = float(formatted_line['Easting'])
+ValueError: could not convert string to float: 
+2020-05-23 09:06:21,055:Survey Assist - v1.0:Started Application
+
+2020-05-23 09:06:25,891:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/Downloads/890MR 150520.GSI
+2020-05-23 09:06:33,126:Survey Assist - v1.0:An unexpected error has occurred
+
+update_station_height()
+
+'float' object has no attribute 'replace'
+Traceback (most recent call last):
+  File "C:/Users/Richard/PycharmProjects/Survey Assist/main.py", line 2668, in change_station_height
+    updated_coordintates_dict = self.update_all_shot_elevations_from_station(line_number, station, float(stn_height_diff))
+  File "C:/Users/Richard/PycharmProjects/Survey Assist/main.py", line 2731, in update_all_shot_elevations_from_station
+    gsi.update_elevation(formatted_line_number, new_point_elevation)
+  File "C:\Users\Richard\PycharmProjects\Survey Assist\GSI.py", line 293, in update_elevation
+    new_elevation = new_elevation.replace(".", "")
+AttributeError: 'float' object has no attribute 'replace'
+2020-05-23 09:07:54,700:Survey Assist - v1.0:Started Application
+
+2020-05-23 09:07:58,969:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/Downloads/890MR 150520.GSI
+2020-05-23 09:08:06,917:Survey Assist - v1.0:An unexpected error has occurred
+
+update_station_height()
+
+can only concatenate str (not "float") to str
+Traceback (most recent call last):
+  File "C:/Users/Richard/PycharmProjects/Survey Assist/main.py", line 2668, in change_station_height
+    updated_coordintates_dict = self.update_all_shot_elevations_from_station(line_number, station, float(stn_height_diff))
+  File "C:/Users/Richard/PycharmProjects/Survey Assist/main.py", line 2730, in update_all_shot_elevations_from_station
+    new_point_elevation = old_point_elevation + elevation_diff
+TypeError: can only concatenate str (not "float") to str
+2020-05-23 09:10:12,893:Survey Assist - v1.0:Started Application
+
+2020-05-23 09:10:16,484:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/Downloads/890MR 150520.GSI
+2020-05-23 09:10:23,091:Survey Assist - v1.0:An unexpected error has occurred
+
+update_station_height()
+
+name 'self' is not defined
+Traceback (most recent call last):
+  File "C:/Users/Richard/PycharmProjects/Survey Assist/main.py", line 2668, in change_station_height
+    updated_coordintates_dict = self.update_all_shot_elevations_from_station(line_number, station, float(stn_height_diff))
+  File "C:/Users/Richard/PycharmProjects/Survey Assist/main.py", line 2731, in update_all_shot_elevations_from_station
+    new_point_elevation = str(decimalize_value(new_point_elevation, self.precision))
+NameError: name 'self' is not defined
+2020-05-23 09:10:50,221:Survey Assist - v1.0:Started Application
+
+2020-05-23 09:10:53,875:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/Downloads/890MR 150520.GSI
+2020-05-23 09:21:44,656:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/PycharmProjects/Survey Assist/Test Files/GSI Files/HCCL 030719.GSI

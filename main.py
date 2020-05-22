@@ -2644,14 +2644,15 @@ class StationHeightWindow(ChangeHeightWindow):
                         height_diff = str(decimalize_value(height_diff, self.precision))
                         gsi.update_height_diff(formatted_line_number, height_diff)
 
-                        # add point_ID coordinates to a list to average
+                        # add stn point_ID coordinates to a stn coordinate list if not already there
                         if point_id in self.subsequent_station_setups.values():
 
                             prev_averaged_coordinates = self.new_stn_coordinates.get(point_id)  # retrieve previous average coordinates if they exist
                             if prev_averaged_coordinates:
-                                self.new_stn_coordinates[point_id] = average_coordinates(prev_averaged_coordinates, [float(point_easting),
-                                                                                                                     float(point_northing),
-                                                                                                                     float(new_point_elevation)])
+                                continue
+                            #     self.new_stn_coordinates[point_id] = average_coordinates(prev_averaged_coordinates, [float(point_easting),
+                            #                                                                                          float(point_northing),
+                            #                                                                                          float(new_point_elevation)])
                             else:
                                 self.new_stn_coordinates[point_id] = [float(point_easting), float(point_northing), float(new_point_elevation)]
 
@@ -2666,25 +2667,22 @@ class StationHeightWindow(ChangeHeightWindow):
                     # now update all shots from this station
                     updated_coordintates_dict = self.update_all_shot_elevations_from_station(line_number, station, float(stn_height_diff))
 
+                    # add any new stn coordinates to a list for future reference when we update future stations
                     for line_number, coordinate_list in updated_coordintates_dict.items():
                         formatted_line = gsi.get_formatted_line(line_number)
                         point_id = formatted_line['Point_ID']
-                        point_easting = formatted_line['Easting']
-                        point_northing = formatted_line['Northing']
-                        point_elevation = formatted_line['Elevation']
 
+                        # add stn point_ID coordinates to a stn coordinate list if not already there
                         if point_id in self.subsequent_station_setups.values():
 
-                            # TODO get rid of averaging for now
-                            # TODO STN04 not updating properly
                             prev_averaged_coordinates = self.new_stn_coordinates.get(point_id)  # retrieve previous average coordinates if they exist
                             if prev_averaged_coordinates:
-                                self.new_stn_coordinates[point_id] = average_coordinates(prev_averaged_coordinates, [float(point_easting),
-                                                                                                                     float(point_northing),
-                                                                                                                     float(point_elevation)])
+                                continue
+                            #     self.new_stn_coordinates[point_id] = average_coordinates(prev_averaged_coordinates, [float(point_easting),
+                            #                                                                                          float(point_northing),
+                            #                                                                                          float(new_point_elevation)])
                             else:
-                                self.new_stn_coordinates[point_id] = [float(point_easting), float(point_northing), float(point_elevation)]
-
+                                self.new_stn_coordinates[point_id] = [coordinate_list[0], coordinate_list[1], coordinate_list[2]]
 
                 if "STNUpdated" not in MenuBar.filename_path:
 
@@ -2721,19 +2719,19 @@ class StationHeightWindow(ChangeHeightWindow):
 
         for gsi_line_number, formatted_line in station_shots_dict.items():
             formatted_line_number = gsi_line_number + 1
-            point_easting = formatted_line['Easting']
-            point_northing = formatted_line['Northing']
 
             if gsi.is_control_point(formatted_line):  # we dont update the elevation for a station setup
                 continue
             else:  # update the elevation
+                point_easting = formatted_line['Easting']
+                point_northing = formatted_line['Northing']
                 old_point_elevation = float(formatted_line['Elevation'])
                 new_point_elevation = old_point_elevation + elevation_diff
                 new_point_elevation = str(decimalize_value(new_point_elevation, self.precision))
                 gsi.update_elevation(formatted_line_number, new_point_elevation)
 
                 # add new coordinates to change dictionary
-                change_coordinates_dict[formatted_line_number] = [point_easting, point_northing, new_point_elevation]
+                change_coordinates_dict[formatted_line_number] = [float(point_easting), float(point_northing), float(new_point_elevation)]
 
         return change_coordinates_dict
 
