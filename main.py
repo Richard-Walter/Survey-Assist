@@ -12,7 +12,10 @@ KNOWN BUGS
 -Sometimes a GSI is loaded yet the taskbar says please select a GSI.  You can't delete lines or export csv.
 
 """
-# TODO add ability to update station height see email
+# TODO update station height on rail files, especially those that aren't sorted
+# TODO update target height if its a station shot has to update subsequent station shots.  FIrst prevent user updating target height is pointID is
+#  in list of stations setups
+# TODO bug change station height of 2nd station setup and not first
 
 import tkinter.messagebox
 import logging.config
@@ -489,7 +492,7 @@ class MenuBar(tk.Frame):
                 # Create a csv for each of the station shots
                 for formatted_line in station_shots_dict.values():
 
-                    if gsi.is_control_point(formatted_line):
+                    if gsi.is_station_setup(formatted_line):
                         continue
 
                     coordinate_dict[formatted_line['Point_ID']] = [formatted_line['Point_ID'], formatted_line['Easting'], formatted_line['Northing'],
@@ -673,7 +676,7 @@ class MenuBar(tk.Frame):
 
             for gsi_line_number, line in enumerate(gsi.formatted_lines, start=0):
 
-                if GSI.is_control_point(line):
+                if GSI.is_station_setup(line):
                     station_name = line['Point_ID']
                     obs_from_station_dict = gsi.get_all_shots_from_a_station_including_setup(station_name, gsi_line_number)
                     analysed_lines = self.anaylseFLFR(copy.deepcopy(obs_from_station_dict))
@@ -742,7 +745,7 @@ class MenuBar(tk.Frame):
 
             obs_line_1_dict = formatted_line_dict
 
-            if GSI.is_control_point(formatted_line_dict):
+            if GSI.is_station_setup(formatted_line_dict):
                 # dont analyse stn setup - append to start of list
                 analysed_lines.insert(0, formatted_line_dict)
                 continue
@@ -871,7 +874,7 @@ class MenuBar(tk.Frame):
             line_number = gui_app.list_box.list_box_view.item(selected_item)['values'][0]
 
             # Check to make sure that the selected line is not a STN setup
-            if gsi.is_control_point(gsi.get_formatted_line(line_number)):
+            if gsi.is_station_setup(gsi.get_formatted_line(line_number)):
                 tk.messagebox.showinfo("Updating Target Heightt", "Please select a line that contains a target height, NOT a station height")
                 return
 
@@ -886,7 +889,7 @@ class MenuBar(tk.Frame):
             line_number = gui_app.list_box.list_box_view.item(selected_item)['values'][0]
 
             # Check to make sure that the selected line is a STN setup
-            if not gsi.is_control_point(gsi.get_formatted_line(line_number)):
+            if not gsi.is_station_setup(gsi.get_formatted_line(line_number)):
                 tk.messagebox.showinfo("Updating Station Height", "Please select a line that contains only station setup")
                 return
 
@@ -979,7 +982,7 @@ class MenuBar(tk.Frame):
                 for line_number, current_gsi_line in enumerate(gsi.formatted_lines, start=1):
 
                     # check to see if point id is a control point and skip if true
-                    if gsi.is_control_point(current_gsi_line):
+                    if gsi.is_station_setup(current_gsi_line):
                         continue
 
                     current_point_id = current_gsi_line['Point_ID']
@@ -1384,7 +1387,7 @@ class MenuBar(tk.Frame):
                 station_change_points = set()
 
                 for formatted_line in shots_from_station.values():
-                    if gsi.is_control_point(formatted_line):  # should only ever be one
+                    if gsi.is_station_setup(formatted_line):  # should only ever be one
                         change_point_list_text += "@" + control_name + '\n'
                     elif formatted_line['Point_ID'] in change_points:
                         station_change_points.add(formatted_line['Point_ID'])
@@ -2294,7 +2297,7 @@ class PrismConstantUpdate:
 
         # update coordinates for each line
         for line_number, formatted_line in enumerate(gsi.formatted_lines, start=1):
-            if gsi.is_control_point(formatted_line):
+            if gsi.is_station_setup(formatted_line):
                 continue  # can't update pc of a setup
 
             point_name = formatted_line['Point_ID']
@@ -2497,7 +2500,7 @@ class TargetHeightWindow(ChangeHeightWindow):
                         line_number = gui_app.list_box.list_box_view.item(selected_item)['values'][0]
 
                         # Check to make sure that the selected line is not a STN setup
-                        if gsi.is_control_point(gsi.get_formatted_line(line_number)):
+                        if gsi.is_station_setup(gsi.get_formatted_line(line_number)):
                             tk.messagebox.showinfo("Update Target Height", "Please select a line that contains a target "
                                                                            "height, NOT a station height.")
                             return
@@ -2603,7 +2606,7 @@ class StationHeightWindow(ChangeHeightWindow):
 
             # Create a list of subsequent station setups that will need updating
             for gsi_line_number, formatted_line in enumerate(gsi.formatted_lines[stn_line_number:], start=1):  # don't include the current one
-                if gsi.is_control_point(formatted_line):
+                if gsi.is_station_setup(formatted_line):
                     self.subsequent_station_setups[gsi_line_number+1] = formatted_line['Point_ID']
 
             print(self.subsequent_station_setups.values())
@@ -2624,6 +2627,7 @@ class StationHeightWindow(ChangeHeightWindow):
                 # get all shots including station
                 station_shots_dict = gsi.get_all_shots_from_a_station_including_setup(station_formatted_line['Point_ID'], stn_line_number - 1)
 
+                # update all shots from this station
                 for gsi_line_number, formatted_line in station_shots_dict.items():
                     formatted_line_number = gsi_line_number + 1
                     point_id = formatted_line['Point_ID']
@@ -2631,8 +2635,10 @@ class StationHeightWindow(ChangeHeightWindow):
                     point_northing = formatted_line['Northing']
                     point_elevation = formatted_line['Elevation']
 
-                    if gsi.is_control_point(formatted_line):  # should be a station but double check
+                    if gsi.is_station_setup(formatted_line):  # should be a station but double check
                         gsi.update_station_height(formatted_line_number, str(new_station_height))
+                    elif gsi.is_orientation_shot(formatted_line):
+                        continue
                     else:  # update the elevation and height difference
                         old_point_elevation = float(formatted_line['Elevation'])
                         new_point_elevation = old_point_elevation + float(stn_height_diff)
@@ -2658,8 +2664,11 @@ class StationHeightWindow(ChangeHeightWindow):
 
                 # Since we have updated subsequent station elevations, then we need to update all shots from those stations
                 for line_number, station in self.subsequent_station_setups.items():
-                    # first update station elevation to the new value
-                    stn_coordinates = self.new_stn_coordinates[station]
+
+                    # check to see if this station has coordinates to update.  With 2D surveys, there wont be.
+                    stn_coordinates = self.new_stn_coordinates.get(station)
+                    if not stn_coordinates:
+                        continue
                     new_stn_elevation = stn_coordinates[2]
                     new_stn_elevation = str(decimalize_value(new_stn_elevation, self.precision))
                     gsi.update_station_elevation(line_number, new_stn_elevation)
@@ -2720,7 +2729,7 @@ class StationHeightWindow(ChangeHeightWindow):
         for gsi_line_number, formatted_line in station_shots_dict.items():
             formatted_line_number = gsi_line_number + 1
 
-            if gsi.is_control_point(formatted_line):  # we dont update the elevation for a station setup
+            if gsi.is_station_setup(formatted_line):  # we dont update the elevation for a station setup
                 continue
             else:  # update the elevation
                 point_easting = formatted_line['Easting']

@@ -529,8 +529,11 @@ class GSI:
 
                             # Height difference may contain a poistive or negative
                             if two_digit_id == "33":
-                                algebraic_sign = field[6]
-                                field_value = algebraic_sign + field_value
+                                if field_value == "":
+                                    field_value = '0.000'
+                                else:
+                                    algebraic_sign = field[6]
+                                    field_value = algebraic_sign + field_value
 
                         elif field_value == "":
 
@@ -700,14 +703,22 @@ class GSI:
 
         # need to traverse backwards until we hit a station list
         while (line_number > 0):
-            if self.is_control_point(self.formatted_lines[line_number - 1]):
+            if self.is_station_setup(self.formatted_lines[line_number - 1]):
                 return line_number, self.formatted_lines[line_number - 1]
             line_number -= 1
 
     @staticmethod
-    def is_control_point(formatted_line):
+    def is_station_setup(formatted_line):
 
         if formatted_line['STN_Easting']:
+            return True
+
+        return False
+
+    @staticmethod
+    def is_orientation_shot(formatted_line):
+
+        if not formatted_line['STN_Easting'] and not formatted_line['Slope_Distance']:
             return True
 
         return False
@@ -819,7 +830,7 @@ class GSI:
 
                     line_number += 1
                     if point_id == formatted_line['Point_ID']:
-                        if not self.is_control_point(formatted_line):
+                        if not self.is_station_setup(formatted_line):
                             line_number_errors.append(line_number)
                             dialog_error_line_list_text += 'Line ' + str(line_number) + ':  ' + formatted_line[
                                 'Point_ID'] + '  --->  PC= ' + formatted_line['Prism_Constant'] + '\n'
@@ -868,7 +879,7 @@ class GSI:
 
                     line_number += 1
                     if point_id == formatted_line['Point_ID']:
-                        if not self.is_control_point(formatted_line):
+                        if not self.is_station_setup(formatted_line):
                             line_number_errors.append(line_number)
                             dialog_error_line_list_text += 'Line No. ' + str(line_number) + ':  ' + formatted_line[
                                 'Point_ID'] + '---> target height: ' + formatted_line['Target_Height'] + '\n'
@@ -919,7 +930,7 @@ class GSI:
         for line_number, stn_name in list_station_setups.items():
             all_shots_from_station = self.get_all_shots_from_a_station_including_setup(stn_name, line_number)
             for line_no, formatted_line in all_shots_from_station.items():
-                if self.is_control_point(formatted_line):
+                if self.is_station_setup(formatted_line):
                     # ignore the station setup line
                     continue
                 else:
@@ -1054,7 +1065,7 @@ class GSI:
 
         for line_number, formatted_line in enumerate(self.formatted_lines, start=1):
 
-            if self.is_control_point(formatted_line):
+            if self.is_station_setup(formatted_line):
                 continue
             elif point_name == formatted_line['Point_ID']:
                 point_line_numbers.append(line_number)
