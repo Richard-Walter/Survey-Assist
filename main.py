@@ -2488,6 +2488,7 @@ class TargetHeightWindow(ChangeHeightWindow):
     def fix_target_height(self):
 
         station_setup_dic = gsi.get_list_of_station_setups(gsi.formatted_lines)
+        stn_setup_elevation_updated = set()
 
         try:
             # set the new target height the user has entered
@@ -2517,9 +2518,11 @@ class TargetHeightWindow(ChangeHeightWindow):
                     for stn_gsi_line_number, stn_point_id in station_setup_dic.items():
                         stn_formatted_line_number = stn_gsi_line_number+1
 
-                        if point_id == stn_point_id:
+                        # if shot is to a station and it the station setup elevation hasn't already been updated
+                        if point_id == stn_point_id and point_id not in stn_setup_elevation_updated:
                             new_elevation = str(decimalize_value(corrections['83'], self.precision))
                             gsi.update_station_elevation(stn_formatted_line_number, new_elevation)
+                            stn_setup_elevation_updated.add(point_id)
 
                 if "TgtUpdated" not in MenuBar.filename_path:
 
