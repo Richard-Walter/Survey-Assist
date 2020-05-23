@@ -361,3 +361,32 @@ AttributeError: 'NoneType' object has no attribute 'group'
 
 2020-05-23 15:15:05,518:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/rjwal_000/Downloads/890MR 150520_EDITED.GSI
 2020-05-23 15:16:01,315:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/rjwal_000/Downloads/890MR 150520_EDITED.GSI
+2020-05-23 15:31:59,681:Survey Assist - v1.0:Started Application
+
+2020-05-23 15:32:03,768:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/rjwal_000/Downloads/890MR 150520_EDITED.GSI
+2020-05-23 15:33:26,281:Survey Assist - v1.0:Started Application
+
+2020-05-23 15:33:30,221:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/rjwal_000/Downloads/890MR 150520_EDITED.GSI
+2020-05-23 15:34:52,508:Survey Assist - v1.0:Started Application
+
+2020-05-23 15:34:57,705:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/rjwal_000/Downloads/890MR 150520_EDITED.GSI
+2020-05-23 15:43:12,033:Survey Assist - v1.0:Started Application
+
+2020-05-23 15:43:16,550:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/rjwal_000/Downloads/890MR 150520_EDITED.GSI
+2020-05-23 15:43:24,240:Survey Assist - v1.0:An unexpected error has occurred
+
+fix_target_height()
+
+'NoneType' object has no attribute 'group'
+Traceback (most recent call last):
+  File "C:/Users/rjwal_000/PycharmProjects/Survey Assist/main.py", line 2521, in fix_target_height
+    gsi.update_station_elevation(stn_line_number, new_elevation)
+  File "C:\Users\rjwal_000\PycharmProjects\Survey Assist\GSI.py", line 134, in update_station_elevation
+    org_field_value = match.group()
+AttributeError: 'NoneType' object has no attribute 'group'
+2020-05-23 15:45:53,812:Survey Assist - v1.0:Started Application
+
+2020-05-23 15:45:57,580:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/rjwal_000/Downloads/890MR 150520_EDITED.GSI
+2020-05-23 15:46:34,034:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/rjwal_000/Downloads/890MR 150520_EDITED.GSI
+2020-05-23 15:47:20,346:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/rjwal_000/Downloads/890MR 150520_EDITED.GSI
+2020-05-23 15:53:55,661:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/rjwal_000/Downloads/890MR 150520_EDITED.GSI

@@ -427,13 +427,13 @@ class GSI:
         # update the raw gsi lines
         self.unformatted_lines[line_number - 1] = unformatted_line
 
-    def get_unformatted_line(self, line_number):
+    def get_unformatted_line(self, unformatted_line_number):
 
-        return self.unformatted_lines[line_number - 1]
+        return self.unformatted_lines[unformatted_line_number - 1]
 
-    def get_formatted_line(self, line_number):
+    def get_formatted_line(self, formatted_line_number):
 
-        return self.formatted_lines[line_number - 1]
+        return self.formatted_lines[formatted_line_number - 1]
 
     def format_gsi(self, filename):
 
@@ -643,7 +643,7 @@ class GSI:
 
         return sorted(control_points)
 
-    # returns dictionary of station setups along with their line number
+    # returns dictionary of station setups along with their gsi line number
     def get_list_of_station_setups(self, formatted_lines):
 
         station_setups = OrderedDict()

@@ -2468,6 +2468,8 @@ class TargetHeightWindow(ChangeHeightWindow):
 
         self.master = master
 
+        self.new_stn_coordinates = OrderedDict()
+
         # create target height input dialog box
         self.dialog_window = tk.Toplevel(self.master)
 
@@ -2484,6 +2486,8 @@ class TargetHeightWindow(ChangeHeightWindow):
         self.master.wait_window(self.dialog_window)
 
     def fix_target_height(self):
+
+        station_setup_dic = gsi.get_list_of_station_setups(gsi.formatted_lines)
 
         try:
             # set the new target height the user has entered
@@ -2505,8 +2509,17 @@ class TargetHeightWindow(ChangeHeightWindow):
 
                 # update each line to amend with new target height and coordinates
                 for line_number in line_numbers_to_ammend:
+                    point_id = gsi.get_formatted_line(line_number)['Point_ID']
                     corrections = self.get_target_height_corrections(line_number, new_target_height)
                     gsi.update_target_height(line_number, corrections)
+
+                    # update station setup coordinates if this is a shot to a station
+                    for stn_gsi_line_number, stn_point_id in station_setup_dic.items():
+                        stn_formatted_line_number = stn_gsi_line_number+1
+
+                        if point_id == stn_point_id:
+                            new_elevation = str(decimalize_value(corrections['83'], self.precision))
+                            gsi.update_station_elevation(stn_formatted_line_number, new_elevation)
 
                 if "TgtUpdated" not in MenuBar.filename_path:
 
