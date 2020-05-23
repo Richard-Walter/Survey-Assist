@@ -631,7 +631,7 @@ class GSI:
 
         return column_values
 
-    def get_set_of_control_points(self):
+    def get_set_of_station_setups(self):
 
         control_points = set()
 
@@ -643,20 +643,20 @@ class GSI:
 
         return sorted(control_points)
 
-    # returns dictionary of control points along with their line number
-    def get_list_of_control_points(self, formatted_lines):
+    # returns dictionary of station setups along with their line number
+    def get_list_of_station_setups(self, formatted_lines):
 
-        control_points = OrderedDict()
-        control_points_list = []
+        station_setups = OrderedDict()
+        station_setup_list = []
 
         for line_number, formatted_line in enumerate(formatted_lines):
 
             # check to see if point id is a control point by see if STN_Easting exists
             if formatted_line['STN_Easting']:
-                control_points[line_number] = formatted_line['Point_ID']
-                control_points_list.append(control_points)
+                station_setups[line_number] = formatted_line['Point_ID']
+                station_setup_list.append(station_setups)
 
-        return control_points
+        return station_setups
 
     # returns gsi lines containing all shots except setups from GSI
     def get_all_lines_except_setup(self):
@@ -726,7 +726,7 @@ class GSI:
     def get_change_points(self):
 
         change_points = []
-        control_points_dict = self.get_list_of_control_points(self.formatted_lines)
+        control_points_dict = self.get_list_of_station_setups(self.formatted_lines)
 
         # First, create a list of all point_ids and there frequency of occurrence
         point_id_list = []
@@ -769,7 +769,7 @@ class GSI:
 
         control_only_gsi_file_contents = ''
         control_only_filename = self.filename[:-4] + '_CONTROL_ONLY.gsi'
-        control_points = self.get_set_of_control_points()
+        control_points = self.get_set_of_station_setups()
 
         with open(self.filename, "r") as f_orig:
 
@@ -890,8 +890,8 @@ class GSI:
 
     def check_control_naming(self):
 
-        unique_station_setups = self.get_set_of_control_points()
-        list_station_setups = self.get_list_of_control_points(self.formatted_lines)
+        unique_station_setups = self.get_set_of_station_setups()
+        list_station_setups = self.get_list_of_station_setups(self.formatted_lines)
 
         print('STATION SETUP LIST: ' + str(unique_station_setups))
 
@@ -974,7 +974,7 @@ class GSI:
 
     def check_3D_survey(self, conn, survey_config):
 
-        control_points = self.get_set_of_control_points()
+        control_points = self.get_set_of_station_setups()
         change_points = self.get_change_points()
         points = change_points + control_points
 
@@ -1154,7 +1154,7 @@ class GSI:
         uid_formatted_lines = []
         copy_formatted_lines = copy.deepcopy(self.formatted_lines)
 
-        stations_names_dict = self.get_list_of_control_points(copy_formatted_lines)
+        stations_names_dict = self.get_list_of_station_setups(copy_formatted_lines)
 
         for gsi_line_number, station_name in stations_names_dict.items():
 

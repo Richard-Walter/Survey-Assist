@@ -218,272 +218,146 @@ ValueError: could not convert string to float:
 2020-05-22 17:43:47,207:Survey Assist - v1.0:Started Application
 
 2020-05-22 17:43:53,034:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/Downloads/890MR 150520.GSI
-2020-05-23 08:52:20,507:Survey Assist - v1.0:Started Application
+2020-05-22 21:35:17,423:Survey Assist - v1.0:Started Application
 
-2020-05-23 08:52:25,954:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/Downloads/890MR 150520.GSI
-2020-05-23 08:53:48,016:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/Downloads/890MR 150520.GSI
-2020-05-23 08:55:18,766:Survey Assist - v1.0:Started Application
+2020-05-22 21:35:25,566:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/rjwal_000/PycharmProjects/Survey Assist/Test Files/Survey Data/2020/MONITORING/A9 ARTC/200518/TS/EDITING/ARTC_903_MON_V2_TS60_180520_EDITED.GSI
+2020-05-23 11:01:46,640:Survey Assist - v1.0:Started Application
 
-2020-05-23 08:55:22,797:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/Downloads/890MR 150520.GSI
-2020-05-23 09:03:09,861:Survey Assist - v1.0:Started Application
+2020-05-23 11:02:19,222:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/rjwal_000/PycharmProjects/Survey Assist/Test Files/GSI Files/ARTC_903_compnet 240220.GSI
+2020-05-23 13:45:15,452:Survey Assist - v1.0:Started Application
 
-2020-05-23 09:03:13,407:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/Downloads/890MR 150520.GSI
-2020-05-23 09:03:20,824:Survey Assist - v1.0:An unexpected error has occurred
+2020-05-23 13:45:29,784:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/rjwal_000/Downloads/890MR 150520.GSI
+2020-05-23 13:45:36,081:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/rjwal_000/Downloads/890MR 150520_EDITED.GSI
+2020-05-23 13:49:57,674:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/rjwal_000/Downloads/Raumer fix 150520_Sorted.gsi
+2020-05-23 13:50:49,033:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/rjwal_000/Downloads/890MR 150520.GSI
+2020-05-23 13:50:53,893:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/rjwal_000/Downloads/890MR 150520_EDITED.GSI
+2020-05-23 13:54:54,147:Survey Assist - v1.0:Started Application
 
-update_station_height()
+2020-05-23 13:54:59,268:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/rjwal_000/Downloads/MR140519.GSI
+2020-05-23 13:55:09,299:Survey Assist - v1.0:An unexpected error has occurred
 
-name 'update_all_shot_elevations_from_station' is not defined
-Traceback (most recent call last):
-  File "C:/Users/Richard/PycharmProjects/Survey Assist/main.py", line 2668, in change_station_height
-    updated_coordintates_dict = update_all_shot_elevations_from_station(line_number, station, float(stn_height_diff))
-NameError: name 'update_all_shot_elevations_from_station' is not defined
-2020-05-23 09:03:53,555:Survey Assist - v1.0:Started Application
-
-2020-05-23 09:04:48,313:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/Downloads/890MR 150520.GSI
-2020-05-23 09:04:54,728:Survey Assist - v1.0:An unexpected error has occurred
-
-update_station_height()
+fix_target_height()
 
 could not convert string to float: 
 Traceback (most recent call last):
-  File "C:/Users/Richard/PycharmProjects/Survey Assist/main.py", line 2668, in change_station_height
-    updated_coordintates_dict = self.update_all_shot_elevations_from_station(line_number, station, float(stn_height_diff))
-  File "C:/Users/Richard/PycharmProjects/Survey Assist/main.py", line 2723, in update_all_shot_elevations_from_station
-    point_easting = float(formatted_line['Easting'])
+  File "C:/Users/rjwal_000/PycharmProjects/Survey Assist/main.py", line 2512, in fix_target_height
+    corrections = self.get_target_height_corrections(line_number, new_target_height)
+  File "C:/Users/rjwal_000/PycharmProjects/Survey Assist/main.py", line 2549, in get_target_height_corrections
+    old_elevation = float(formatted_line['Elevation'])
 ValueError: could not convert string to float: 
-2020-05-23 09:06:21,055:Survey Assist - v1.0:Started Application
+2020-05-23 13:58:38,737:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/rjwal_000/Downloads/MR140519.GSI
+2020-05-23 14:00:40,254:Survey Assist - v1.0:Started Application
 
-2020-05-23 09:06:25,891:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/Downloads/890MR 150520.GSI
-2020-05-23 09:06:33,126:Survey Assist - v1.0:An unexpected error has occurred
+2020-05-23 14:00:46,424:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/rjwal_000/Downloads/MR140519.GSI
+2020-05-23 14:04:09,882:Survey Assist - v1.0:Started Application
+
+2020-05-23 14:04:14,549:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/rjwal_000/Downloads/MR140519.GSI
+2020-05-23 14:35:57,186:Survey Assist - v1.0:Started Application
+
+2020-05-23 14:36:07,565:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/rjwal_000/Downloads/890MR 150520_EDITED.GSI
+2020-05-23 14:36:20,049:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/rjwal_000/Downloads/MR140519.GSI
+2020-05-23 14:36:36,158:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/rjwal_000/Downloads/890MR 150520_EDITED.GSI
+2020-05-23 14:38:13,294:Survey Assist - v1.0:Started Application
+
+2020-05-23 14:38:32,096:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/rjwal_000/Downloads/890MR 150520_EDITED.GSI
+2020-05-23 14:39:14,349:Survey Assist - v1.0:Started Application
+
+2020-05-23 14:39:34,174:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/rjwal_000/Downloads/890MR 150520_EDITED.GSI
+2020-05-23 14:40:43,018:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/rjwal_000/Downloads/890MR 150520_EDITED.GSI
+2020-05-23 14:42:07,455:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/rjwal_000/Downloads/890MR 150520_EDITED.GSI
+2020-05-23 14:44:49,229:Survey Assist - v1.0:Started Application
+
+2020-05-23 14:45:12,721:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/rjwal_000/Downloads/890MR 150520_EDITED.GSI
+2020-05-23 14:48:25,974:Survey Assist - v1.0:An unexpected error has occurred
+
+update_station_height()
+
+unsupported operand type(s) for -: 'str' and 'int'
+Traceback (most recent call last):
+  File "C:/Users/rjwal_000/PycharmProjects/Survey Assist/main.py", line 2661, in change_station_height
+    formatted_line = gsi.get_formatted_line(formatted_line_number)
+  File "C:\Users\rjwal_000\PycharmProjects\Survey Assist\GSI.py", line 436, in get_formatted_line
+    return self.formatted_lines[line_number - 1]
+TypeError: unsupported operand type(s) for -: 'str' and 'int'
+2020-05-23 14:49:15,926:Survey Assist - v1.0:Started Application
+
+2020-05-23 14:49:20,237:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/rjwal_000/Downloads/890MR 150520_EDITED.GSI
+2020-05-23 14:52:32,268:Survey Assist - v1.0:Started Application
+
+2020-05-23 14:52:37,408:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/rjwal_000/Downloads/890MR 150520_EDITED.GSI
+2020-05-23 14:54:24,718:Survey Assist - v1.0:An unexpected error has occurred
+
+update_station_height()
+
+'NoneType' object has no attribute 'group'
+Traceback (most recent call last):
+  File "C:/Users/rjwal_000/PycharmProjects/Survey Assist/main.py", line 2664, in change_station_height
+    gsi.update_station_height(formatted_line_number, coordinate_list[2])
+  File "C:\Users\rjwal_000\PycharmProjects\Survey Assist\GSI.py", line 106, in update_station_height
+    org_field_value = match.group()
+AttributeError: 'NoneType' object has no attribute 'group'
+2020-05-23 15:05:05,914:Survey Assist - v1.0:Started Application
+
+2020-05-23 15:05:11,471:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/rjwal_000/Downloads/890MR 150520_EDITED.GSI
+2020-05-23 15:05:17,857:Survey Assist - v1.0:An unexpected error has occurred
+
+update_station_height()
+
+get_list_of_station_setups() missing 1 required positional argument: 'formatted_lines'
+Traceback (most recent call last):
+  File "C:/Users/rjwal_000/PycharmProjects/Survey Assist/main.py", line 2609, in change_station_height
+    station_setup_dic = gsi.get_list_of_station_setups()
+TypeError: get_list_of_station_setups() missing 1 required positional argument: 'formatted_lines'
+2020-05-23 15:05:43,890:Survey Assist - v1.0:Started Application
+
+2020-05-23 15:05:47,628:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/rjwal_000/Downloads/890MR 150520_EDITED.GSI
+2020-05-23 15:09:16,170:Survey Assist - v1.0:Started Application
+
+2020-05-23 15:09:21,752:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/rjwal_000/Downloads/890MR 150520_EDITED.GSI
+2020-05-23 15:09:27,480:Survey Assist - v1.0:An unexpected error has occurred
+
+update_station_height()
+
+Unexpected error changing station height
+Traceback (most recent call last):
+  File "C:/Users/rjwal_000/PycharmProjects/Survey Assist/main.py", line 2667, in change_station_height
+    raise Exception("Unexpected error changing station height")
+Exception: Unexpected error changing station height
+2020-05-23 15:09:49,162:Survey Assist - v1.0:Started Application
+
+2020-05-23 15:09:58,596:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/rjwal_000/Downloads/890MR 150520_EDITED.GSI
+2020-05-23 15:11:37,017:Survey Assist - v1.0:Started Application
+
+2020-05-23 15:11:42,533:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/rjwal_000/Downloads/890MR 150520_EDITED.GSI
+2020-05-23 15:11:47,650:Survey Assist - v1.0:An unexpected error has occurred
 
 update_station_height()
 
 'float' object has no attribute 'replace'
 Traceback (most recent call last):
-  File "C:/Users/Richard/PycharmProjects/Survey Assist/main.py", line 2668, in change_station_height
-    updated_coordintates_dict = self.update_all_shot_elevations_from_station(line_number, station, float(stn_height_diff))
-  File "C:/Users/Richard/PycharmProjects/Survey Assist/main.py", line 2731, in update_all_shot_elevations_from_station
-    gsi.update_elevation(formatted_line_number, new_point_elevation)
-  File "C:\Users\Richard\PycharmProjects\Survey Assist\GSI.py", line 293, in update_elevation
-    new_elevation = new_elevation.replace(".", "")
+  File "C:/Users/rjwal_000/PycharmProjects/Survey Assist/main.py", line 2665, in change_station_height
+    gsi.update_station_height(formatted_line_number, coordinate_list[2])
+  File "C:\Users\rjwal_000\PycharmProjects\Survey Assist\GSI.py", line 113, in update_station_height
+    new_station_height = new_station_height.replace(".", "")
 AttributeError: 'float' object has no attribute 'replace'
-2020-05-23 09:07:54,700:Survey Assist - v1.0:Started Application
+2020-05-23 15:13:02,916:Survey Assist - v1.0:Started Application
 
-2020-05-23 09:07:58,969:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/Downloads/890MR 150520.GSI
-2020-05-23 09:08:06,917:Survey Assist - v1.0:An unexpected error has occurred
+2020-05-23 15:13:06,690:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/rjwal_000/Downloads/890MR 150520_EDITED.GSI
+2020-05-23 15:13:51,737:Survey Assist - v1.0:Started Application
 
-update_station_height()
-
-can only concatenate str (not "float") to str
-Traceback (most recent call last):
-  File "C:/Users/Richard/PycharmProjects/Survey Assist/main.py", line 2668, in change_station_height
-    updated_coordintates_dict = self.update_all_shot_elevations_from_station(line_number, station, float(stn_height_diff))
-  File "C:/Users/Richard/PycharmProjects/Survey Assist/main.py", line 2730, in update_all_shot_elevations_from_station
-    new_point_elevation = old_point_elevation + elevation_diff
-TypeError: can only concatenate str (not "float") to str
-2020-05-23 09:10:12,893:Survey Assist - v1.0:Started Application
-
-2020-05-23 09:10:16,484:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/Downloads/890MR 150520.GSI
-2020-05-23 09:10:23,091:Survey Assist - v1.0:An unexpected error has occurred
-
-update_station_height()
-
-name 'self' is not defined
-Traceback (most recent call last):
-  File "C:/Users/Richard/PycharmProjects/Survey Assist/main.py", line 2668, in change_station_height
-    updated_coordintates_dict = self.update_all_shot_elevations_from_station(line_number, station, float(stn_height_diff))
-  File "C:/Users/Richard/PycharmProjects/Survey Assist/main.py", line 2731, in update_all_shot_elevations_from_station
-    new_point_elevation = str(decimalize_value(new_point_elevation, self.precision))
-NameError: name 'self' is not defined
-2020-05-23 09:10:50,221:Survey Assist - v1.0:Started Application
-
-2020-05-23 09:10:53,875:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/Downloads/890MR 150520.GSI
-2020-05-23 09:21:44,656:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/PycharmProjects/Survey Assist/Test Files/GSI Files/HCCL 030719.GSI
-2020-05-23 09:23:18,375:Survey Assist - v1.0:An unexpected error has occurred
-
-update_station_height()
-
-'F'
-Traceback (most recent call last):
-  File "C:/Users/Richard/PycharmProjects/Survey Assist/main.py", line 2662, in change_station_height
-    stn_coordinates = self.new_stn_coordinates[station]
-KeyError: 'F'
-2020-05-23 09:25:01,000:Survey Assist - v1.0:Started Application
-
-2020-05-23 09:25:07,203:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/PycharmProjects/Survey Assist/Test Files/GSI Files/HCCL 030719.GSI
-2020-05-23 09:29:51,787:Survey Assist - v1.0:Started Application
-
-2020-05-23 09:29:56,765:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/PycharmProjects/Survey Assist/Test Files/GSI Files/HCCL 030719.GSI
-2020-05-23 09:30:24,642:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/PycharmProjects/Survey Assist/Test Files/GSI Files/HCCL 030719.GSI
-2020-05-23 09:31:24,985:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/PycharmProjects/Survey Assist/Test Files/GSI Files/HCCL 030719.GSI
-2020-05-23 09:33:09,453:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/PycharmProjects/Survey Assist/Test Files/GSI Files/2D Survey MR050819.GSI
-2020-05-23 09:33:33,516:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/PycharmProjects/Survey Assist/Test Files/GSI Files/2D Survey MR050819.GSI
-2020-05-23 09:34:03,274:Survey Assist - v1.0:Started Application
-
-2020-05-23 09:34:27,985:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/Downloads/MR140519.GSI
-2020-05-23 09:34:43,220:Survey Assist - v1.0:An unexpected error has occurred
-
-update_station_height()
-
-could not convert string to float: 
-Traceback (most recent call last):
-  File "C:/Users/Richard/PycharmProjects/Survey Assist/main.py", line 2637, in change_station_height
-    old_point_elevation = float(formatted_line['Elevation'])
-ValueError: could not convert string to float: 
-2020-05-23 09:39:46,743:Survey Assist - v1.0:Started Application
-
-2020-05-23 09:39:51,297:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/Downloads/MR140519.GSI
-2020-05-23 09:40:13,906:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/Downloads/MR140519.GSI
-2020-05-23 09:44:12,836:Survey Assist - v1.0:Started Application
-
-2020-05-23 09:44:16,703:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/Downloads/MR140519.GSI
-2020-05-23 09:45:29,751:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/Downloads/TEST Target Height Test.GSI
-2020-05-23 09:46:11,766:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/Downloads/TEST Target Height Test.GSI
-2020-05-23 09:47:03,094:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/PycharmProjects/Survey Assist/Test Files/GSI Files/HCCL 030719.GSI
-2020-05-23 09:47:53,329:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/PycharmProjects/Survey Assist/Test Files/GSI Files/ARTC_903_MS60 230320.GSI
-2020-05-23 09:49:06,907:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/Downloads/ARTC_903_MON_V2_TS15_200420_combine.GSI
-2020-05-23 09:49:38,633:Survey Assist - v1.0:An unexpected error has occurred
+2020-05-23 15:13:57,268:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/rjwal_000/Downloads/890MR 150520_EDITED.GSI
+2020-05-23 15:14:03,861:Survey Assist - v1.0:An unexpected error has occurred
 
 update_station_height()
 
 'NoneType' object has no attribute 'group'
 Traceback (most recent call last):
-  File "C:/Users/Richard/PycharmProjects/Survey Assist/main.py", line 2671, in change_station_height
-    gsi.update_station_elevation(line_number, new_stn_elevation)
-  File "C:\Users\Richard\PycharmProjects\Survey Assist\GSI.py", line 134, in update_station_elevation
-    org_field_value = match.group()
+  File "C:/Users/rjwal_000/PycharmProjects/Survey Assist/main.py", line 2666, in change_station_height
+    gsi.update_elevation(formatted_line_number, new_elevation)
+  File "C:\Users\rjwal_000\PycharmProjects\Survey Assist\GSI.py", line 300, in update_elevation
+    old_elevation_unformatted = match.group()
 AttributeError: 'NoneType' object has no attribute 'group'
-2020-05-23 09:51:18,079:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/PycharmProjects/Survey Assist/Test Files/GSI Files/ARTC_903_compnet 240220.GSI
-2020-05-23 09:51:25,063:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/PycharmProjects/Survey Assist/Test Files/GSI Files/ARTC_903_compnet 240220_PCUpdated.gsi
-2020-05-23 09:51:36,562:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/PycharmProjects/Survey Assist/Test Files/GSI Files/ARTC_903_compnet 240220.GSI
-2020-05-23 09:51:52,066:Survey Assist - v1.0:An unexpected error has occurred
+2020-05-23 15:15:01,461:Survey Assist - v1.0:Started Application
 
-update_station_height()
-
-'STN05'
-Traceback (most recent call last):
-  File "C:/Users/Richard/PycharmProjects/Survey Assist/main.py", line 2668, in change_station_height
-    stn_coordinates = self.new_stn_coordinates[station]
-KeyError: 'STN05'
-2020-05-23 09:57:02,503:Survey Assist - v1.0:An unexpected error has occurred
-
-update_station_height()
-
-'STN11'
-Traceback (most recent call last):
-  File "C:/Users/Richard/PycharmProjects/Survey Assist/main.py", line 2668, in change_station_height
-    stn_coordinates = self.new_stn_coordinates[station]
-KeyError: 'STN11'
-2020-05-23 09:59:08,101:Survey Assist - v1.0:Started Application
-
-2020-05-23 10:02:03,062:Survey Assist - v1.0:Started Application
-
-2020-05-23 10:02:10,501:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/PycharmProjects/Survey Assist/Test Files/GSI Files/HCCL 030719.GSI
-2020-05-23 10:02:20,746:Survey Assist - v1.0:An unexpected error has occurred
-
-update_station_height()
-
-'NoneType' object is not subscriptable
-Traceback (most recent call last):
-  File "C:/Users/Richard/PycharmProjects/Survey Assist/main.py", line 2668, in change_station_height
-    new_stn_elevation = stn_coordinates[2]
-TypeError: 'NoneType' object is not subscriptable
-2020-05-23 10:04:48,794:Survey Assist - v1.0:Started Application
-
-2020-05-23 10:04:52,351:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/PycharmProjects/Survey Assist/Test Files/GSI Files/HCCL 030719.GSI
-2020-05-23 10:05:57,151:Survey Assist - v1.0:An unexpected error has occurred
-
-update_station_height()
-
-'NoneType' object is not subscriptable
-Traceback (most recent call last):
-  File "C:/Users/Richard/PycharmProjects/Survey Assist/main.py", line 2668, in change_station_height
-    new_stn_elevation = stn_coordinates[2]
-TypeError: 'NoneType' object is not subscriptable
-2020-05-23 10:07:23,377:Survey Assist - v1.0:Started Application
-
-2020-05-23 10:07:44,582:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/PycharmProjects/Survey Assist/Test Files/GSI Files/HCCL 030719.GSI
-2020-05-23 10:07:58,983:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/PycharmProjects/Survey Assist/Test Files/GSI Files/HCCL 030719.GSI
-2020-05-23 10:08:15,235:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/PycharmProjects/Survey Assist/Test Files/GSI Files/ARTC_903_compnet 240220.GSI
-2020-05-23 10:08:24,951:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/Downloads/ARTC_903_MON_V2_TS15_200420_combine.GSI
-2020-05-23 10:08:48,451:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/PycharmProjects/Survey Assist/Test Files/GSI Files/ARTC_903_compnet 240220_PCUpdated.gsi
-2020-05-23 10:10:10,782:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/PycharmProjects/Survey Assist/Test Files/GSI Files/ARTC_903_compnet 240220.GSI
-2020-05-23 10:11:38,566:Survey Assist - v1.0:Started Application
-
-2020-05-23 10:11:59,750:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/Downloads/890MR 150520.GSI
-2020-05-23 10:12:35,765:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/Downloads/Raumer fix 150520.gsi
-2020-05-23 10:14:36,651:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/Downloads/890MR 150520.GSI
-2020-05-23 10:23:33,267:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/Downloads/890MR 150520.GSI
-2020-05-23 10:26:00,876:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/Downloads/890MR 150520_EDITED.GSI
-2020-05-23 10:35:47,036:Survey Assist - v1.0:An unexpected error has occurred
-
-update_station_height()
-
-'NoneType' object has no attribute 'group'
-Traceback (most recent call last):
-  File "C:/Users/Richard/PycharmProjects/Survey Assist/main.py", line 2670, in change_station_height
-    new_stn_elevation = stn_coordinates[2]
-  File "C:\Users\Richard\PycharmProjects\Survey Assist\GSI.py", line 134, in update_station_elevation
-    org_field_value = match.group()
-AttributeError: 'NoneType' object has no attribute 'group'
-2020-05-23 10:36:20,035:Survey Assist - v1.0:Started Application
-
-2020-05-23 10:36:26,735:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/Downloads/890MR 150520_EDITED_TgtUpdated_STNUpdated.gsi
-2020-05-23 10:38:44,598:Survey Assist - v1.0:An unexpected error has occurred
-
-update_station_height()
-
-'NoneType' object has no attribute 'group'
-Traceback (most recent call last):
-  File "C:/Users/Richard/PycharmProjects/Survey Assist/main.py", line 2672, in change_station_height
-    gsi.update_station_elevation(line_number, new_stn_elevation)
-  File "C:\Users\Richard\PycharmProjects\Survey Assist\GSI.py", line 134, in update_station_elevation
-    org_field_value = match.group()
-AttributeError: 'NoneType' object has no attribute 'group'
-2020-05-23 10:39:50,266:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/Downloads/MR140519.GSI
-2020-05-23 10:39:55,735:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/Downloads/890MR 150520.GSI
-2020-05-23 10:40:12,853:Survey Assist - v1.0:Started Application
-
-2020-05-23 10:40:17,015:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/Downloads/890MR 150520.GSI
-2020-05-23 10:40:27,894:Survey Assist - v1.0:An unexpected error has occurred
-
-update_station_height()
-
-'NoneType' object has no attribute 'group'
-Traceback (most recent call last):
-  File "C:/Users/Richard/PycharmProjects/Survey Assist/main.py", line 2672, in change_station_height
-    gsi.update_station_elevation(line_number, new_stn_elevation)
-  File "C:\Users\Richard\PycharmProjects\Survey Assist\GSI.py", line 134, in update_station_elevation
-    org_field_value = match.group()
-AttributeError: 'NoneType' object has no attribute 'group'
-2020-05-23 10:40:39,433:Survey Assist - v1.0:Started Application
-
-2020-05-23 10:40:46,515:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/Downloads/890MR 150520.GSI
-2020-05-23 10:44:45,099:Survey Assist - v1.0:Started Application
-
-2020-05-23 10:44:51,923:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/Downloads/890MR 150520.GSI
-2020-05-23 10:45:00,772:Survey Assist - v1.0:An unexpected error has occurred
-
-update_station_height()
-
-'NoneType' object has no attribute 'group'
-Traceback (most recent call last):
-  File "C:/Users/Richard/PycharmProjects/Survey Assist/main.py", line 2672, in change_station_height
-    gsi.update_station_elevation(line_number, new_stn_elevation)
-  File "C:\Users\Richard\PycharmProjects\Survey Assist\GSI.py", line 134, in update_station_elevation
-    org_field_value = match.group()
-AttributeError: 'NoneType' object has no attribute 'group'
-2020-05-23 10:46:44,666:Survey Assist - v1.0:Started Application
-
-2020-05-23 10:46:49,688:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/Downloads/890MR 150520.GSI
-2020-05-23 10:47:09,960:Survey Assist - v1.0:An unexpected error has occurred
-
-update_station_height()
-
-'NoneType' object has no attribute 'group'
-Traceback (most recent call last):
-  File "C:/Users/Richard/PycharmProjects/Survey Assist/main.py", line 2673, in change_station_height
-    gsi.update_station_elevation(line_number, new_stn_elevation)
-  File "C:\Users\Richard\PycharmProjects\Survey Assist\GSI.py", line 134, in update_station_elevation
-    org_field_value = match.group()
-AttributeError: 'NoneType' object has no attribute 'group'
+2020-05-23 15:15:05,518:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/rjwal_000/Downloads/890MR 150520_EDITED.GSI
+2020-05-23 15:16:01,315:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/rjwal_000/Downloads/890MR 150520_EDITED.GSI
