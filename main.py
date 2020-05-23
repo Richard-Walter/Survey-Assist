@@ -1859,7 +1859,7 @@ class WorkflowBar(tk.Frame):
         self.btn_csv_from_crd.pack(padx=5, pady=5, side='left')
 
         # pack re-display observations
-        self.btn_re_display_gsi.pack(padx=(30, 5), pady=5, side='right')
+        self.btn_re_display_gsi.pack(padx=(30, 10), pady=5, side='right')
 
     def show_workflow_bar(self):
         self.frame.pack(side='top', anchor=tk.W, fill=tk.X)
