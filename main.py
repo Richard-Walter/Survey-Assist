@@ -250,6 +250,7 @@ class MenuBar(tk.Frame):
         is_rail_survey = False
 
         todays_dated_directory = survey_config.todays_dated_directory
+
         # reset todays dated directory if not today and let user choose
         if todays_date not in todays_dated_directory:
             todays_dated_directory = ""
@@ -299,7 +300,6 @@ class MenuBar(tk.Frame):
 
                 ImportRailMonitoringFileWindow(self.master)
                 ts_used = self.ts_used
-                print(ts_used)
                 rail_monitoring_files = sd_card.get_rail_survey_files()
 
                 if not rail_monitoring_files:
@@ -308,9 +308,9 @@ class MenuBar(tk.Frame):
                                                              "Also, check user_settings.ini and make sure the root SD directory is configured "
                                                              "properly.\n\nRestart Survey Assist after making any changes.")
 
-                    # open up explorer
-                    os.startfile("settings.ini")
-                    os.startfile("c:/SurveyAssist/user_settings.ini")
+                    # # open up explorer
+                    # os.startfile("settings.ini")
+                    # os.startfile("c:/SurveyAssist/user_settings.ini")
 
                     return
                 else:
@@ -385,7 +385,7 @@ class MenuBar(tk.Frame):
                             shutil.copy(file.filepath, import_path)
 
                         if file.file_suffix.upper() == File.GSI_FILE_SUFFIX:
-                            # Check and copy over gsi to edited diretory if it exists
+                            # Check and copy over gsi to edited direc tory if it exists
                             self.copy_over_gsi_to_edited_directory(file, import_path, is_rail_survey)
 
                 elif sd_card.get_todays_ms_60_files():
@@ -412,11 +412,17 @@ class MenuBar(tk.Frame):
                         if file.file_suffix.upper() == File.GSI_FILE_SUFFIX:
                             # Check and copy over gsi to edited directory if it exists
                             self.copy_over_gsi_to_edited_directory(file, import_path, is_rail_survey)
+                else:
+                    # This should not be reachable as there should be at least one file.
+                    logger.exception("Importing SD Data\n\nThis should not be reachable.  Investigate\n\n")
+                    tk.messagebox.showerror("COPYING SD DATA", "Unexpected error has occurred: .\n\nPlease notify the developer.")
 
-
+                    # open up explorer
+                    os.startfile('c:')
 
             except FileExistsError as ex:
                 print(ex)
+                logger.exception("Importing SD Data\n\nFileExistsError\n\n" + str(ex))
                 tk.messagebox.showerror("COPYING SD DATA", "File aready exists: " + file.filepath + '\n\nat:\n\n ' + import_path + '.\n\nPlease '
                                                                                                                                    'check and copy files over manually')
 
@@ -425,6 +431,7 @@ class MenuBar(tk.Frame):
 
             except IOError as ex:
                 print(ex)
+                logger.exception("Importing SD Data\n\nIOError\n\n" + str(ex))
                 # Most likely not a dated directory
                 tk.messagebox.showerror("COPYING SD DATA", "Problem copying files across.   This is most likely because the destination folder "
                                                            "chosen doesn't have a dated folder structure (i.e GPS, OTHER, OUTPUT, "
@@ -435,6 +442,7 @@ class MenuBar(tk.Frame):
 
             except Exception as ex:
                 print(ex)
+                logger.exception("Importing SD Data\n\nException\n\n" + str(ex))
                 tk.messagebox.showerror("COPYING SD DATA", "Problem copying files across.  Please copy files over manually.\n\n" + str(ex))
 
                 # open up explorer
