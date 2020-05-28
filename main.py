@@ -14,6 +14,7 @@ Compnet uses only observations:  slope distance, horizontal and vertical angle, 
 
 KNOWN BUGS
 -Sometimes a GSI is loaded yet the taskbar says please select a GSI.  You can't delete lines or export csv.
+-Importing SD card - sometimes it says files transferred, but nothing actually transferred.  I could put a check that files exists after copying?
 
 """
 
@@ -353,7 +354,9 @@ class MenuBar(tk.Frame):
         if tk.messagebox.askokcancel(message=confirm_msg):
             import_path = ""
 
-            # user wants to copy over the files
+            # user wants to copy over the files.
+            # lets display a indeterminate progress bar to show that something is happening
+
             try:
                 if sd_card.get_todays_gps_files():
                     for file in sd_card.get_todays_gps_files():
@@ -385,7 +388,7 @@ class MenuBar(tk.Frame):
                             shutil.copy(file.filepath, import_path)
 
                         if file.file_suffix.upper() == File.GSI_FILE_SUFFIX:
-                            # Check and copy over gsi to edited direc tory if it exists
+                            # Check and copy over gsi to edited directory if it exists
                             self.copy_over_gsi_to_edited_directory(file, import_path, is_rail_survey)
 
                 elif sd_card.get_todays_ms_60_files():
@@ -425,7 +428,6 @@ class MenuBar(tk.Frame):
                 logger.exception("Importing SD Data\n\nFileExistsError\n\n" + str(ex))
                 tk.messagebox.showerror("COPYING SD DATA", "File aready exists: " + file.filepath + '\n\nat:\n\n ' + import_path + '.\n\nPlease '
                                                                                                                                    'check and copy files over manually')
-
                 # open up explorer
                 os.startfile('c:')
 
@@ -679,6 +681,8 @@ class MenuBar(tk.Frame):
 
             error_line_number_list = []
             dialog_text_set = set()
+            points_no_2nd_face = []
+            points_no_2nd_face_text = ""
 
             formatted_gsi_lines_analysis = []
 
@@ -687,7 +691,7 @@ class MenuBar(tk.Frame):
                 if GSI.is_station_setup(line):
                     station_name = line['Point_ID']
                     obs_from_station_dict = gsi.get_all_shots_from_a_station_including_setup(station_name, gsi_line_number)
-                    analysed_lines = self.anaylseFLFR(copy.deepcopy(obs_from_station_dict))
+                    points_no_2nd_face, analysed_lines = self.anaylseFLFR(copy.deepcopy(obs_from_station_dict))
 
                     # add the analysis lines for this station
                     for aline in analysed_lines:
@@ -696,13 +700,17 @@ class MenuBar(tk.Frame):
                         # for each station setup add 'STN->Point_ID' for each error found
                         for key, field_value in aline.items():
                             if '*' in field_value:
-                                dialog_text_set.add("         " + station_name + "  --->  " + aline['Point_ID'] + '\n')
+                                if aline['Point_ID'] in points_no_2nd_face:
+                                    points_no_2nd_face_text += "         " + station_name + "  --->  " + aline['Point_ID'] + '\n'
+                                else:
+                                    dialog_text_set.add("         " + station_name + "  --->  " + aline['Point_ID'] + '\n')
                                 break
 
             # check for tagged values so line error can be determined
             for index, line_dict in enumerate(formatted_gsi_lines_analysis):
 
                 for key, field_value in line_dict.items():
+
                     if '*' in field_value:
                         error_line_number_list.append(index + 1)
                         break
@@ -713,7 +721,11 @@ class MenuBar(tk.Frame):
                 for line in sorted(dialog_text_set):
                     dialog_text += line
             else:
-                dialog_text = " FL-FR shots are within specified tolerance"
+                dialog_text = " FL-FR shots are within specified tolerance."
+
+            if points_no_2nd_face_text:
+                dialog_text += "\n\n The following points only have one face:\n\n"
+                dialog_text += points_no_2nd_face_text
 
             # display dialog box
             tkinter.messagebox.showinfo("Checking FL-FR", dialog_text)
@@ -733,6 +745,7 @@ class MenuBar(tk.Frame):
 
         precision = survey_config.precision_value
 
+        points_no_2nd_face = []
         analysed_lines = []
         analysed_line_blank_values_dict = {'Point_ID': ' ', 'Timestamp': ' ', 'Horizontal_Angle': ' ',
                                            'Vertical_Angle': ' ', 'Slope_Distance': ' ',
@@ -814,9 +827,11 @@ class MenuBar(tk.Frame):
                                 obs_line_2_dict[key] = float_diff_str
 
                 else:
-                    # probably an orientation shot, or a shot that doesn't have a double - make blank
+                    # probably an orientation shot, or a shot that doesn't have a double - make blank and tag
+                    points_no_2nd_face.append(obs_line_1_dict['Point_ID'])
                     blank_line_dict = analysed_line_blank_values_dict.copy()
                     blank_line_dict['Point_ID'] = obs_line_1_dict['Point_ID']
+                    blank_line_dict['Timestamp'] = '*'
                     analysed_lines.append(blank_line_dict)
                     continue
 
@@ -831,7 +846,7 @@ class MenuBar(tk.Frame):
             #     analysed_lines.append(obs_line_1_dict)
             #     pass
 
-        return analysed_lines
+        return points_no_2nd_face, analysed_lines
 
     def check_diff_exceed_tolerance(self, key, float_diff_str):
 
