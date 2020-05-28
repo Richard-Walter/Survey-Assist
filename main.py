@@ -113,6 +113,8 @@ class MenuBar(tk.Frame):
         self.check_sub_menu.add_command(label="Check FL-FR", command=self.check_FLFR)
         self.check_sub_menu.add_command(label="Check All", command=self.check_3d_all)
         self.check_sub_menu.add_separator()
+        self.check_sub_menu.add_command(label="Check 2D Doubles", command=self.check_2d_doubles)
+        self.check_sub_menu.add_separator()
         self.check_sub_menu.add_command(label="Compare with a similar survey...", command=self.compare_survey)
         self.check_sub_menu.add_separator()
         self.check_sub_menu.add_command(label="Query GSI...", command=self.display_query_input_box)
@@ -965,6 +967,18 @@ class MenuBar(tk.Frame):
             tk.messagebox.showerror("Survey Assist", "An unexpected error has occurred\n\nprism_constant_update_batch()\n\n" + str(ex))
             return
 
+    def check_2d_doubles(self):
+        try:
+            if not MenuBar.filename_path:
+                tk.messagebox.showinfo("Survey Assist", "Please open up a GSI file first.")
+                return
+
+
+        except Exception as ex:
+
+            logger.exception("An unexpected error has occurred\n\ncheck_2d_doubles()\n\n" + str(ex))
+            tk.messagebox.showerror("Survey Assist", "An unexpected error has occurred\n\ncheck_2d_doubles()\n\n" + str(ex))
+            return
     def compare_survey(self):
         try:
             if not MenuBar.filename_path:
