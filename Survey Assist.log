@@ -1,96 +1,54 @@
-2020-05-28 09:21:20,652:Survey Assist - v1.0:Started Application
+2020-05-29 10:22:30,006:Survey Assist - v1.0:Started Application
 
-2020-05-28 09:21:39,461:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/Downloads/MR140519.GSI
-2020-05-28 14:31:39,283:Survey Assist - v1.0:Started Application
+2020-05-29 10:22:40,656:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/rjwal_000/PycharmProjects/Survey Assist/Test Files/GSI Files/2D Survey MR050819.GSI
+2020-05-29 10:25:17,609:Survey Assist - v1.0:Started Application
 
-2020-05-28 14:31:45,861:Survey Assist - v1.0:Started Application
+2020-05-29 10:25:22,766:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/rjwal_000/PycharmProjects/Survey Assist/Test Files/GSI Files/2D Survey MR050819.GSI
+2020-05-29 10:25:48,666:Survey Assist - v1.0:Started Application
 
-2020-05-28 14:31:54,522:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/Downloads/MR140519.GSI
-2020-05-28 14:31:57,316:Survey Assist - v1.0:An unexpected error has occurred
+2020-05-29 10:25:52,891:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/rjwal_000/PycharmProjects/Survey Assist/Test Files/GSI Files/2D Survey MR050819.GSI
+2020-05-29 10:26:37,626:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/rjwal_000/PycharmProjects/Survey Assist/Test Files/GSI Files/2D Survey MR050819_PCUpdated.gsi
+2020-05-29 10:29:26,294:Survey Assist - v1.0:Started Application
 
-check_FLFR()
+2020-05-29 10:29:31,919:Survey Assist - v1.0:Started Application
 
-cannot unpack non-iterable int object
-Traceback (most recent call last):
-  File "C:/Users/Richard/PycharmProjects/Survey Assist/main.py", line 708, in check_FLFR
-    for line_number, line_dict in obs_from_station_dict:
-TypeError: cannot unpack non-iterable int object
-2020-05-28 14:32:24,527:Survey Assist - v1.0:Started Application
+2020-05-29 10:29:39,110:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/rjwal_000/PycharmProjects/Survey Assist/Test Files/GSI Files/2D Survey MR050819_PCUpdated.gsi
+2020-05-29 10:35:56,256:Survey Assist - v1.0:Started Application
 
-2020-05-28 14:32:28,561:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/Downloads/MR140519.GSI
-2020-05-28 14:32:31,116:Survey Assist - v1.0:An unexpected error has occurred
+2020-05-29 10:36:00,969:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/rjwal_000/PycharmProjects/Survey Assist/Test Files/GSI Files/2D Survey MR050819_PCUpdated.gsi
+2020-05-29 10:36:07,813:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/rjwal_000/PycharmProjects/Survey Assist/Test Files/GSI Files/2D Survey MR050819_PCUpdated.gsi
+2020-05-29 10:39:13,554:Survey Assist - v1.0:Started Application
 
-check_FLFR()
+2020-05-29 10:39:18,156:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/rjwal_000/PycharmProjects/Survey Assist/Test Files/GSI Files/2D Survey MR050819_PCUpdated.gsi
+2020-05-29 10:40:25,465:Survey Assist - v1.0:Started Application
 
-can only concatenate str (not "int") to str
-Traceback (most recent call last):
-  File "C:/Users/Richard/PycharmProjects/Survey Assist/main.py", line 711, in check_FLFR
-    points_no_2nd_face_text += "      Line: " + line_number + "  Point ID:  " + line_dict['Point_ID\n']
-TypeError: can only concatenate str (not "int") to str
-2020-05-28 14:32:51,246:Survey Assist - v1.0:Started Application
+2020-05-29 10:40:30,797:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/rjwal_000/PycharmProjects/Survey Assist/Test Files/GSI Files/2D Survey MR050819_PCUpdated.gsi
+2020-05-29 10:41:40,730:Survey Assist - v1.0:Started Application
 
-2020-05-28 14:32:55,646:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/Downloads/MR140519.GSI
-2020-05-28 14:33:03,829:Survey Assist - v1.0:An unexpected error has occurred
+2020-05-29 10:41:45,203:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/rjwal_000/PycharmProjects/Survey Assist/Test Files/GSI Files/2D Survey MR050819_PCUpdated.gsi
+2020-05-29 10:42:08,649:Survey Assist - v1.0:Started Application
 
-check_FLFR()
+2020-05-29 10:42:12,297:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/rjwal_000/PycharmProjects/Survey Assist/Test Files/GSI Files/2D Survey MR050819_PCUpdated.gsi
+2020-05-29 10:42:49,360:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/rjwal_000/PycharmProjects/Survey Assist/Test Files/GSI Files/2D Survey MR050819.GSI
+2020-05-29 10:42:59,265:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/rjwal_000/PycharmProjects/Survey Assist/Test Files/GSI Files/3D MR_120819_3D error change.gsi
+2020-05-29 10:43:12,844:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/rjwal_000/PycharmProjects/Survey Assist/Test Files/GSI Files/MR140519.GSI
+2020-05-29 10:44:17,274:Survey Assist - v1.0:Started Application
 
-'Point_ID\n'
-Traceback (most recent call last):
-  File "C:/Users/Richard/PycharmProjects/Survey Assist/main.py", line 711, in check_FLFR
-    points_no_2nd_face_text += "      Line: " + str(line_number) + "  Point ID:  " + line_dict['Point_ID\n']
-KeyError: 'Point_ID\n'
-2020-05-28 14:33:39,945:Survey Assist - v1.0:Started Application
+2020-05-29 10:44:21,688:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/rjwal_000/PycharmProjects/Survey Assist/Test Files/GSI Files/MR140519.GSI
+2020-05-29 10:45:56,909:Survey Assist - v1.0:Started Application
 
-2020-05-28 14:33:43,506:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/Downloads/MR140519.GSI
-2020-05-28 14:36:21,804:Survey Assist - v1.0:Started Application
+2020-05-29 10:46:45,889:Survey Assist - v1.0:Started Application
 
-2020-05-28 14:36:26,100:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/Downloads/MR140519.GSI
-2020-05-28 14:39:06,378:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/PycharmProjects/Survey Assist/Test Files/GSI Files/2D Survey MR050819.GSI
-2020-05-28 15:34:50,747:Survey Assist - v1.0:Started Application
+2020-05-29 10:47:06,844:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/rjwal_000/PycharmProjects/Survey Assist/Test Files/GSI Files/HCCL 030719.GSI
+2020-05-29 10:47:55,502:Survey Assist - v1.0:Started Application
 
-2020-05-28 15:34:54,804:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/PycharmProjects/Survey Assist/Test Files/GSI Files/2D Survey MR050819.GSI
-2020-05-28 15:35:46,896:Survey Assist - v1.0:Started Application
+2020-05-29 10:47:59,828:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/rjwal_000/PycharmProjects/Survey Assist/Test Files/GSI Files/HCCL 030719.GSI
+2020-05-29 10:48:24,353:Survey Assist - v1.0:Started Application
 
-2020-05-28 15:35:50,085:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/PycharmProjects/Survey Assist/Test Files/GSI Files/2D Survey MR050819.GSI
-2020-05-28 15:36:19,199:Survey Assist - v1.0:Started Application
+2020-05-29 10:48:28,469:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/rjwal_000/PycharmProjects/Survey Assist/Test Files/GSI Files/HCCL 030719.GSI
+2020-05-29 10:49:15,640:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/rjwal_000/PycharmProjects/Survey Assist/Test Files/GSI Files/ARTC_903_compnet 240220.GSI
+2020-05-29 10:50:09,188:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/rjwal_000/PycharmProjects/Survey Assist/Test Files/GSI Files/3D MR_120819_3D error change.gsi
+2020-05-29 10:50:58,378:Survey Assist - v1.0:Started Application
 
-2020-05-28 15:36:23,537:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/PycharmProjects/Survey Assist/Test Files/GSI Files/2D Survey MR050819.GSI
-2020-05-28 15:37:18,362:Survey Assist - v1.0:Started Application
-
-2020-05-28 15:37:21,710:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/PycharmProjects/Survey Assist/Test Files/GSI Files/2D Survey MR050819.GSI
-2020-05-28 15:37:46,761:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/PycharmProjects/Survey Assist/Test Files/GSI Files/MR140519.GSI
-2020-05-28 15:47:09,061:Survey Assist - v1.0:Started Application
-
-2020-05-28 15:47:15,477:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/PycharmProjects/Survey Assist/Test Files/GSI Files/MR140519.GSI
-2020-05-28 15:48:12,607:Survey Assist - v1.0:Started Application
-
-2020-05-28 15:48:19,085:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/PycharmProjects/Survey Assist/Test Files/GSI Files/MR140519.GSI
-2020-05-28 15:49:43,877:Survey Assist - v1.0:Started Application
-
-2020-05-28 15:55:01,709:Survey Assist - v1.0:Started Application
-
-2020-05-28 15:55:05,078:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/PycharmProjects/Survey Assist/Test Files/GSI Files/2D Survey MR050819.GSI
-2020-05-28 15:55:28,645:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/PycharmProjects/Survey Assist/Test Files/GSI Files/MR140519.GSI
-2020-05-28 15:56:51,561:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/PycharmProjects/Survey Assist/Test Files/GSI Files/MR 180420_EDITED_SAME POINTID DIFF PC.GSI
-2020-05-28 15:57:20,367:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/Downloads/890MR 150520_STNUpdated.gsi
-2020-05-28 15:57:36,991:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/Downloads/890MR 150520_EDITED_TgtUpdated_STNUpdated.gsi
-2020-05-28 15:57:46,346:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/Downloads/RICHARD 890MR 150520_EDITED_TgtUpdated_STNUpdated - Copy.gsi
-2020-05-28 15:58:01,600:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/Downloads/Raumer fix 150520_Sorted.gsi
-2020-05-28 15:58:08,951:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/Downloads/ARTC_903_MON_V2_TS15_200420_combine.GSI
-2020-05-28 16:02:23,991:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/PycharmProjects/Survey Assist/Test Files/GSI Files/ARTC_903_compnet TEST.GSI
-2020-05-28 16:02:28,476:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/PycharmProjects/Survey Assist/Test Files/GSI Files/ARTC_903_compnet 240220.GSI
-2020-05-28 16:04:55,116:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/PycharmProjects/Survey Assist/Test Files/GSI Files/HCCL 030719.GSI
-2020-05-28 16:06:03,632:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/PycharmProjects/Survey Assist/Test Files/GSI Files/3D STN named incorrect.GSI
-2020-05-28 16:11:52,396:Survey Assist - v1.0:Started Application
-
-2020-05-28 16:11:56,679:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/PycharmProjects/Survey Assist/Test Files/GSI Files/2D Survey MR050819.GSI
-2020-05-28 16:16:45,765:Survey Assist - v1.0:Started Application
-
-2020-05-28 16:16:49,584:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/PycharmProjects/Survey Assist/Test Files/GSI Files/2D Survey MR050819.GSI
-2020-05-28 16:19:00,361:Survey Assist - v1.0:Started Application
-
-2020-05-28 16:19:11,545:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/Downloads/MR_100320 edit.GSI
-2020-05-28 16:21:20,922:Survey Assist - v1.0:Started Application
-
-2020-05-28 16:21:24,777:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/Downloads/890MR 150520_STNUpdated.gsi
-2020-05-28 16:21:43,007:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/Downloads/MR140519.GSI
+2020-05-29 10:51:04,016:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/rjwal_000/PycharmProjects/Survey Assist/Test Files/GSI Files/3D MR_120819_3D error change.gsi
+2020-05-29 10:51:10,079:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/rjwal_000/Downloads/890MR 150520_EDITED_STNUpdated_TgtUpdated.gsi

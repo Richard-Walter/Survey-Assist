@@ -739,32 +739,13 @@ class GSI:
         for point_id, count in point_id_frequency.items():
             if count > 3:
                 if point_id in control_points_dict.values():
-                    continue  # dont add stations to change point list
+                    continue  # don't add stations to change point list
                 else:
                     change_points.append(point_id)
 
         return sorted(change_points)
 
-        # old code
-        # change_points = set()
-        #
-        # # list of point_IDs used for determining change points
-        # point_id_list = []
-        #
-        # for formatted_line in self.formatted_lines:
-        #     point_id_list.append(formatted_line['Point_ID'])
-        #
-        # # if point ID occurs 8 times then it probably is a change point
-        # point_id_frequency = Counter(point_id_list);
-        #
-        # for point_id, count in point_id_frequency.items():
-        #     if count > 7:
-        #         change_points.add(point_id)
-        #
-        # return sorted(change_points)
-
     # Create a new GSI with suffix that contains only control.  ALl other shots are removed from the GSI
-
     def create_control_only_gsi(self):
 
         control_only_gsi_file_contents = ''

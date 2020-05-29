@@ -113,7 +113,7 @@ class MenuBar(tk.Frame):
         self.check_sub_menu.add_command(label="Check FL-FR", command=self.check_FLFR)
         self.check_sub_menu.add_command(label="Check All", command=self.check_3d_all)
         self.check_sub_menu.add_separator()
-        self.check_sub_menu.add_command(label="Check 2D Doubles", command=self.check_2d_doubles)
+        self.check_sub_menu.add_command(label="Check Double Doubles", command=self.check_2d_doubles)
         self.check_sub_menu.add_separator()
         self.check_sub_menu.add_command(label="Compare with a similar survey...", command=self.compare_survey)
         self.check_sub_menu.add_separator()
@@ -968,11 +968,66 @@ class MenuBar(tk.Frame):
             return
 
     def check_2d_doubles(self):
+
+
+        error_text = ""
+        dialog_text = ""
+
         try:
             if not MenuBar.filename_path:
                 tk.messagebox.showinfo("Survey Assist", "Please open up a GSI file first.")
                 return
 
+            # All the shots from each station should have 2 points with 4 shots each.  Lets check for that.
+            # First, lets get a lits of the station setups so we can get all the shots from each setup
+            station_points_dict = gsi.get_list_of_station_setups(gsi.formatted_lines)
+            for gsi_stn_line_number, station_name in station_points_dict.items():
+
+                # reset the below list for each station setup
+                point_id_list = []
+                more_than_4_shots_list = []
+                doubles_list = []
+
+                station_shots_dict = gsi.get_all_shots_from_a_station_including_setup(station_name, gsi_stn_line_number)
+
+                # lets go through all shots except station setup and orientation shots and count frequency of Point ID's
+                for gsi_line_number, formatted_line in station_shots_dict.items():
+                    if gsi.is_station_setup(formatted_line) or gsi.is_orientation_shot(formatted_line):
+                        continue
+                    else:
+                        point_id_list.append(formatted_line['Point_ID'])
+
+                # Lets check the frequency of points from this setup
+                point_id_frequency = Counter(point_id_list)
+
+                for point_id, count in point_id_frequency.items():
+                    if count > 3:   # point has been shot 4 or more times
+                        doubles_list.append(point_id)
+                    # elif count > 4:   # point has been shot more than 4 times - let user know
+                    #     more_than_4_shots_list.append(point_id)
+
+                    else:           # just a normal double radiation
+                        continue
+
+                # Lets check to see the frequency of doubles for this setup.  There should be two double doubles.
+                if len(doubles_list) == 0:
+                    error_text += station_name + ":  No double doubles were found\n"
+                elif len(doubles_list) == 1:
+                    error_text += station_name + ":  Only one double double was found:\n              " + doubles_list[0] + "\n"
+                elif len(doubles_list) > 2:
+                    error_text += station_name + ":  INFO-more than 2 double double were found:\n"
+                    for point_id in doubles_list:
+                        error_text += "              " + point_id + "\n"
+
+            # Lets check to see if any errors found and report back to user
+
+            if error_text:
+                dialog_text = "The following issues were found with this survey:\n\n"
+                dialog_text += error_text
+            else:
+                dialog_text = "Looks Good!\n\n2 double doubles from each station were found."
+            tkinter.messagebox.showinfo("Check 2D Doubles", dialog_text)
+            gui_app.list_box.populate(gsi.formatted_lines)
 
         except Exception as ex:
 
