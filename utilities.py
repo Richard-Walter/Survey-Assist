@@ -102,13 +102,41 @@ def get_calendar(locale, fwday):
         return calendar.LocaleTextCalendar(fwday, locale)
 
 
+class PleaseWaitScreen:
+
+    def __init__(self, master):
+
+        super().__init__()
+
+        window_height = 100
+        window_width = 250
+
+        self.dialog_window = tk.Toplevel(master)
+        self.dialog_window.title = "Survey Assist"
+
+        self.text = tk.Label(self.dialog_window, text="IMPORTING SD DATA - PLEASE WAIT!!!")
+
+        self.text.pack(fill='both', expand='yes', padx=20, pady=20)
+
+        screen_width = master.winfo_screenwidth()
+        screen_height = master.winfo_screenheight()
+
+        x_cordinate = int((screen_width / 2) - (window_width / 2))
+        y_cordinate = int((screen_height / 2) - (window_height / 2))
+
+        self.dialog_window.geometry("{}x{}+{}+{}".format(window_width, window_height, x_cordinate, y_cordinate))
+
+        ## required to make window show before the program gets to the mainloop
+        master.update()
+
+    def destroy(self):
+        self.dialog_window.destroy()
+
 class CustomDialogBox:
 
     def __init__(self, master, msg):
         super().__init__()
 
-        self.top = tk.Toplevel(master)
-        self.top.title = "TITLE"
 
         self.top = tk.Toplevel(master)
         self.top.title = "TITLE"

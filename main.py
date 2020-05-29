@@ -252,6 +252,8 @@ class MenuBar(tk.Frame):
         rail_monitoring_files = None
         is_rail_survey = False
 
+        please_wait_screen = None
+
         todays_dated_directory = survey_config.todays_dated_directory
 
         # reset todays dated directory if not today and let user choose
@@ -357,9 +359,11 @@ class MenuBar(tk.Frame):
             import_path = ""
 
             # user wants to copy over the files.
-            # lets display a indeterminate progress bar to show that something is happening
-
             try:
+
+                # First, lets display to the user a busy cursor to show that something is happening
+                please_wait_screen = PleaseWaitScreen(self)
+
                 if sd_card.get_todays_gps_files():
                     for file in sd_card.get_todays_gps_files():
                         import_path = os.path.join(import_root_directory, 'GPS', file.basename)
@@ -453,12 +457,21 @@ class MenuBar(tk.Frame):
                 os.startfile('c:')
 
             else:
+
                 # Display message to user that the files have transferred over and can remove SD card
+                please_wait_screen.destroy()
                 tk.messagebox.showinfo("COPYING SD DATA", "SD Card transfer is complete.  It is now safe to remove the SD card.")
+            finally:
+                # self.master.configure(cursor="")    # reset cursor
+                please_wait_screen.destroy()
+                self.master.deiconify()
         else:
             # user wants to transfer files over manually.
             # open up explorer
             os.startfile('c:')
+
+    def copy_over_sd_files(self):
+        pass
 
     def copy_over_gsi_to_edited_directory(self, gsi_file, import_path, is_rail_survey):
 
@@ -969,7 +982,6 @@ class MenuBar(tk.Frame):
 
     def check_2d_doubles(self):
 
-
         error_text = ""
         dialog_text = ""
 
@@ -1001,12 +1013,12 @@ class MenuBar(tk.Frame):
                 point_id_frequency = Counter(point_id_list)
 
                 for point_id, count in point_id_frequency.items():
-                    if count > 3:   # point has been shot 4 or more times
+                    if count > 3:  # point has been shot 4 or more times
                         doubles_list.append(point_id)
                     # elif count > 4:   # point has been shot more than 4 times - let user know
                     #     more_than_4_shots_list.append(point_id)
 
-                    else:           # just a normal double radiation
+                    else:  # just a normal double radiation
                         continue
 
                 # Lets check to see the frequency of doubles for this setup.  There should be two double doubles.
@@ -1034,6 +1046,7 @@ class MenuBar(tk.Frame):
             logger.exception("An unexpected error has occurred\n\ncheck_2d_doubles()\n\n" + str(ex))
             tk.messagebox.showerror("Survey Assist", "An unexpected error has occurred\n\ncheck_2d_doubles()\n\n" + str(ex))
             return
+
     def compare_survey(self):
         try:
             if not MenuBar.filename_path:
@@ -2608,7 +2621,7 @@ class TargetHeightWindow(ChangeHeightWindow):
 
                     # update station setup coordinates if this is a shot to a station
                     for stn_gsi_line_number, stn_point_id in station_setup_dic.items():
-                        stn_formatted_line_number = stn_gsi_line_number+1
+                        stn_formatted_line_number = stn_gsi_line_number + 1
 
                         # if shot is to a station and it the station setup elevation hasn't already been updated
                         if point_id == stn_point_id and point_id not in stn_setup_elevation_updated:
@@ -2724,7 +2737,6 @@ class StationHeightWindow(ChangeHeightWindow):
                     formatted_line_number = gsi_line_number + 1
                     point_id = formatted_line['Point_ID']
 
-
                     if gsi.is_station_setup(formatted_line):  # should be a station but double check
                         gsi.update_station_height(formatted_line_number, str(new_station_height))
                     elif gsi.is_orientation_shot(formatted_line):
@@ -2745,15 +2757,17 @@ class StationHeightWindow(ChangeHeightWindow):
                         # add stn point_ID coordinates to a stn coordinate list if not already there
                         for gsi_line_number, stn_point_id in station_setup_dic.items():
 
-                            formatted_line_number = gsi_line_number+1
+                            formatted_line_number = gsi_line_number + 1
 
                             if point_id == stn_point_id:
 
-                                stn_coordinates = self.new_stn_coordinates.get(formatted_line_number)  # retrieve previous stn coordinates if they exist
+                                stn_coordinates = self.new_stn_coordinates.get(
+                                    formatted_line_number)  # retrieve previous stn coordinates if they exist
                                 if stn_coordinates:
                                     continue
                                 else:
-                                    self.new_stn_coordinates[formatted_line_number] = [float(old_point_easting), float(old_point_northing), float(new_point_elevation)]
+                                    self.new_stn_coordinates[formatted_line_number] = [float(old_point_easting), float(old_point_northing),
+                                                                                       float(new_point_elevation)]
 
                 # Update stations setup coordinates that have been shot from this station
                 for formatted_line_number, coordinate_list in self.new_stn_coordinates.items():
