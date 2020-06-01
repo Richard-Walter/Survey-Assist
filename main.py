@@ -149,6 +149,9 @@ class MenuBar(tk.Frame):
         self.help_sub_menu = tk.Menu(self.menu_bar, tearoff=0)
         self.help_sub_menu.add_command(label="Manual", command=self.open_manual)
         self.help_sub_menu.add_command(label="About", command=self.display_about_dialog_box)
+        self.help_sub_menu.add_separator()
+        self.help_sub_menu.add_command(label="Log File", command=self.open_log)
+
         self.menu_bar.add_cascade(label="Help", menu=self.help_sub_menu)
 
         # Exit menu
@@ -1091,7 +1094,7 @@ class MenuBar(tk.Frame):
 
                     # check to see if point id is a control point and skip if true
                     if gsi.is_station_setup(current_gsi_line):
-                        continue
+                         continue
 
                     current_point_id = current_gsi_line['Point_ID']
                     current_PC = current_gsi_line['Prism_Constant']
@@ -1558,6 +1561,15 @@ class MenuBar(tk.Frame):
             print("Problem opening up Manual\n\n" + str(ex))
             logger.exception("An unexpected error has occurred\n\nopen_manual()\n\n" + str(ex))
             tk.messagebox.showerror("Survey Assist", "An unexpected error has occurred\n\nopen_manual()\n\n" + str(ex))
+            return
+
+    def open_log(self):
+        try:
+            os.startfile("Survey Assist.log")
+        except Exception as ex:
+            print("Problem opening log\n\n" + str(ex))
+            logger.exception("An unexpected error has occurred\n\nopen_log()\n\n" + str(ex))
+            tk.messagebox.showerror("Survey Assist", "An unexpected error has occurred\n\nopenlog()\n\n" + str(ex))
             return
 
     @staticmethod
