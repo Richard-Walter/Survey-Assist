@@ -1293,16 +1293,16 @@ class MenuBar(tk.Frame):
                     csv_file += csv_line
 
             # Write out file
-            with open("temp_create_csv.csv", "w") as f:
+            with open("C:\SurveyAssist\_temp_csv.csv", "w") as f:
                 for line in csv_file:
                     f.write(line)
 
             # Launch excel
             if asc_file_path:
-                os.system("start EXCEL.EXE temp_create_csv.csv")
+                os.system("start EXCEL.EXE C:\SurveyAssist\_temp_csv.csv")
 
         except Exception as ex:
-            print("Problem opening up the GSI file\n\n" + str(ex))
+
             logger.exception("An unexpected error has occurred\n\ncreate_CSV_from_ASC()\n\n" + str(ex))
             tk.messagebox.showerror("Survey Assist", "An unexpected error has occurred\n\ncreate_CSV_from_ASC()\n\n" + str(ex))
             return
@@ -1349,14 +1349,14 @@ class MenuBar(tk.Frame):
 
             # Write out file
             try:
-                with open("temp_create_csv.csv", "w") as f:
+                with open("C:\SurveyAssist\_temp_csv.csv", "w") as f:
                     for line in csv_file:
                         f.write(line)
             except Exception as ex:
                 tk.messagebox.showerror("Error creating the CSV", str(ex))
 
             # Launch excel
-            os.system("start EXCEL.EXE temp_create_csv.csv")
+            os.system("start EXCEL.EXE C:\SurveyAssist\_temp_csv.csv")
 
         except Exception as ex:
             print("Problem opening up the GSI file\n\n" + str(ex))
