@@ -1026,18 +1026,19 @@ class MenuBar(tk.Frame):
 
                 # Lets check to see the frequency of doubles for this setup.  There should be two double doubles.
                 if len(doubles_list) == 0:
-                    error_text += station_name + ":  No double doubles were found\n"
+                    error_text += station_name + ":  No double doubles were found for this setup\n"
                 elif len(doubles_list) == 1:
-                    error_text += station_name + ":  Only one double double was found:\n              " + doubles_list[0] + "\n"
+                    error_text += station_name + ":  Only one double double was found for this setup:\n              " + doubles_list[0] + "\n"
                 elif len(doubles_list) > 2:
-                    error_text += station_name + ":  INFO-more than 2 double double were found:\n"
+                    qty = str(len(doubles_list))
+                    error_text += station_name + ":  " + qty + " double doubles were found for this setup:\n"
                     for point_id in doubles_list:
                         error_text += "              " + point_id + "\n"
 
             # Lets check to see if any errors found and report back to user
 
             if error_text:
-                dialog_text = "The following issues were found with this survey:\n\n"
+                dialog_text = "The following potential issues were found with this survey:\n\n"
                 dialog_text += error_text
             else:
                 dialog_text = "Looks Good!\n\n2 double doubles from each station were found."
