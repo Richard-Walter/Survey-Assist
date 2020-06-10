@@ -1293,13 +1293,16 @@ class MenuBar(tk.Frame):
                     csv_file += csv_line
 
             # Write out file
-            with open("C:\SurveyAssist\_temp_csv.csv", "w") as f:
+            with open("C:\SurveyAssist\Temp_ASC_CSV.csv", "w") as f:
                 for line in csv_file:
                     f.write(line)
 
             # Launch excel
             if asc_file_path:
-                os.system("start EXCEL.EXE C:\SurveyAssist\_temp_csv.csv")
+                os.system("start EXCEL.EXE C:\SurveyAssist\Temp_ASC_CSV.csv")
+
+        except PermissionError:
+            tk.messagebox.showerror("Survey Assist", "Please close the previous popup CSV and try again. ")
 
         except Exception as ex:
 
@@ -1349,14 +1352,18 @@ class MenuBar(tk.Frame):
 
             # Write out file
             try:
-                with open("C:\SurveyAssist\_temp_csv.csv", "w") as f:
+                with open("C:\SurveyAssist\Temp_CRD_CSV.csv", "w") as f:
                     for line in csv_file:
                         f.write(line)
+
+                # Launch excel
+                os.system("start EXCEL.EXE C:\SurveyAssist\Temp_CRD_CSV.csv")
+
+            except PermissionError:
+                tk.messagebox.showerror("Survey Assist", "Please close the previous popup CSV and try again. ")
             except Exception as ex:
                 tk.messagebox.showerror("Error creating the CSV", str(ex))
 
-            # Launch excel
-            os.system("start EXCEL.EXE C:\SurveyAssist\_temp_csv.csv")
 
         except Exception as ex:
             print("Problem opening up the GSI file\n\n" + str(ex))
