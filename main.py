@@ -54,15 +54,17 @@ class MenuBar(tk.Frame):
         if not os.path.exists(UserConfiguration.user_settings_file_path):
             shutil.copy(UserConfiguration.default_user_settings_path, UserConfiguration.user_settings_file_path)
 
-            answer = tk.messagebox.askokcancel("User Settings", "A new user_settings file has been created.\n\nPlease configure your user "
-                                                                "settings.\n\nUSER_SD_ROOT:  This is the root directory when you insert a SD card into your "
-                                                                "computer\n\nUSB-ROOT:  This is the root directory when you plug in a usb device (e.g. to "
-                                                                "transfer 1200 gps data)\n\nSurvey Assist will need to be re-started")
+            tk.messagebox.showinfo("User Settings", "A new user_settings file has been created in C:\SurveyAssist.\n\nPlease configure "
+                                                                "your user settings before continuing by updating this file.\n\n"
+                                                                "USER_SD_ROOT:  This is the root directory when you insert a SD card into your "
+                                                                "computer\n\n"
+                                                                "USB_ROOT:  This is the root directory when you plug in a usb device (e.g. to "
+                                                                "transfer 1200 gps data)\n\n"
+                                                                "USER_INITIALS: Required for Job Tracker"
+                                                                "\n\nSurvey Assist will need to be re-started")
 
-            if answer is True:
-                # open up user settings
-                os.startfile("c:/SurveyAssist/user_settings.ini")
-                exit()
+            os.startfile("c:/SurveyAssist/user_settings.ini")
+            exit()
 
         self.user_config = UserConfiguration()
         self.monitoring_job_dir = os.path.join(survey_config.root_job_directory, survey_config.current_year, survey_config.default_survey_type)

@@ -79,6 +79,7 @@ class SurveyConfiguration:
 
 class UserConfiguration:
     section_file_directories = 'FILE DIRECTORIES'
+    section_user_profile = 'PROFILE'
     user_settings_directory = r"c:/SurveyAssist"
     user_settings_file_path = r"c:/SurveyAssist/user_settings.ini"
     default_user_settings_path = r"Config Files/default_user_settings.ini"
@@ -90,10 +91,11 @@ class UserConfiguration:
         self.config_parser = ConfigParser()
         self.config_parser.read(self.config_file_path)
 
-        # FILE DIRECTORIES
+        # File Directories and User Profile
         try:
             self.user_sd_root = self.config_parser.get(UserConfiguration.section_file_directories, 'user_sd_root')
             self.usb_root = self.config_parser.get(UserConfiguration.section_file_directories, 'usb_root')
+            self.user_initials = self.config_parser.get(UserConfiguration.section_user_profile, 'user_initials')
 
         except Exception:
 
@@ -101,6 +103,7 @@ class UserConfiguration:
             shutil.copy(UserConfiguration.default_user_settings_path, UserConfiguration.user_settings_file_path)
             self.user_sd_root = self.config_parser.get(UserConfiguration.section_file_directories, 'user_sd_root')
             self.usb_root = self.config_parser.get(UserConfiguration.section_file_directories, 'usb_root')
+            self.user_initials = self.config_parser.get(UserConfiguration.section_user_profile, 'user_initials')
 
     def update(self, section, key, value):
         self.config_parser.set(section, key, value)
