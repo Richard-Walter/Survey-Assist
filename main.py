@@ -146,8 +146,8 @@ class MenuBar(tk.Frame):
 
         # Job Tracker
         self.job_tracker_sub_menu = tk.Menu(self.menu_bar, tearoff=0)
-        self.job_tracker_sub_menu.add_command(label="Create new Job ", command=self.job_tracker_new_job)
-        self.job_tracker_sub_menu.add_command(label="Track a Job", command=self.job_tracker_track)
+        self.job_tracker_sub_menu.add_command(label="Create new Job ", command=self.job_tracker_new_job, state="disabled")
+        self.job_tracker_sub_menu.add_command(label="Track a Job", command=self.job_tracker_track, state="disabled")
         self.job_tracker_sub_menu.add_command(label="Open Job Tracker in excel", command=self.job_tracker_open_excel)
         self.menu_bar.add_cascade(label="Job Tracker", menu=self.job_tracker_sub_menu)
 
@@ -2032,12 +2032,23 @@ class JobTrackerBar(tk.Frame):
         self.frame.configure(background='#d9f2d8')
         self.user_initials = user_initials
         self.survey_date = datetime.datetime.today().strftime('%d/%m/%Y')
+        self.job_tracker_filepath = os.path.join(survey_config.root_job_directory, survey_config.default_survey_type, survey_config.current_year,
+                                                 survey_config.job_tracker_filename)
 
         # Create widgets
         self.jt_lbl = tk.Label(self.frame, text='JOB TRACKER:')
         self.jt_lbl.configure(background='#d9f2d8')
-        self.jt_job_name_combo = ttk.Combobox(self.frame, values=("A", "B", "C", "D", "E"))
-        self.jt_job_name_combo.set("C")
+
+        # Combobox
+        self.job_name = tk.StringVar()
+        self.jt_job_name_combo = ttk.Combobox(self.frame, width=18, textvariable=self.job_name)
+
+        self.jt_job_name_combo['values'] = self.get_job_names()
+        self.jt_job_name_combo.bind("<<ComboboxSelected>>", self.cb_callback)
+
+        # self.jt_job_name_combo.set("C")
+
+
         self.jt_date_lbl = tk.Label(self.frame, text='Survey Date:')
         self.jt_date_lbl.configure(background='#d9f2d8')
 
@@ -2051,29 +2062,11 @@ class JobTrackerBar(tk.Frame):
         # check boxes
         calcs_checkbox_var = tk.IntVar()
         results_checkbox_var = tk.IntVar()
-
         self.jt_calcs_checkbox = tk.Checkbutton(self.frame, text='Calcs', variable=calcs_checkbox_var, onvalue=1, offvalue=0, command=self.save_job)
         self.jt_calcs_checkbox.configure(background='#d9f2d8')
         self.jt_results_checkbox = tk.Checkbutton(self.frame, text='Results', variable=results_checkbox_var, onvalue=1, offvalue=0, command=self.save_job)
         self.jt_results_checkbox.configure(background='#d9f2d8')
 
-        # # column entry is where the user selects the column he wants to perform a query on
-        # self.column = tk.StringVar()
-        # self.column_entry = ttk.Combobox(self.dialog_window, width=18, textvariable=self.column, state='readonly')
-        # self.column_entry['values'] = gsi.column_names
-        # self.column_entry.bind("<<ComboboxSelected>>", self.column_entry_cb_callback)
-        # self.column_entry.grid(row=1, column=1, padx=5, pady=5)
-        #
-        # # column value is the value associated with the selected column
-        # self.column_value = tk.StringVar()
-        # self.column_value_entry = ttk.Combobox(self.dialog_window, width=18, textvariable=self.column_value,
-        #                                        state='disabled')
-        # self.column_value_entry.grid(row=2, column=1, padx=5, pady=2)
-        #
-        # self.btn_export_csv = tk.Button(self.frame, text="Export GSI", command=lambda: gui_app.menu_bar.export_csv())
-        # self.btn_export_csv.configure(background='#FCF1E1')
-
-        # Redisplay observations button
         self.btn_new_job = tk.Button(self.frame, text="New Job", command=lambda: gui_app.menu_bar.job_tracker_new_job)
         self.btn_new_job.configure(background='#ffffff')
 
@@ -2088,6 +2081,28 @@ class JobTrackerBar(tk.Frame):
         self.jt_results_checkbox.pack(padx=(15,0), pady=5, side='left')
 
         self.btn_new_job.pack(padx=(30, 30), pady=5, side='right')
+
+
+    def cb_callback(self, event):
+        print("New Element Selected")
+
+
+    def get_job_names(self):
+
+        return ['A', 'B', 'C']
+
+    def read_job_tracker(self):
+
+        pass
+        # with open(self.job_tracker_filepath) as csv_file:
+        #     reader = csv.DictReader(csv_file)
+        #     keys = reader.fieldnames
+        #     r = csv.reader(csv_file)
+        #     self.diary_data = ([OrderedDict(zip(keys, row)) for row in r])
+        #
+        # for i, item in enumerate(self.diary_data):
+        #     item['RECID'] = i
+
 
     def choose_date(self):
         # Let user choose the date, rather than the default todays date
@@ -4081,7 +4096,7 @@ class GUIApplication(tk.Frame):
 
         self.workflow_bar = WorkflowBar(self.main_window)
         self.job_tracker_bar = JobTrackerBar(self.main_window, self.menu_bar.user_config.user_initials)
-        # self.job_tracker_bar.hide_job_tracker_bar()
+        self.job_tracker_bar.hide_job_tracker_bar()
         self.list_box = ListBoxFrame(self.main_window)
         self.workflow_bar.pack(fill="x")
         self.job_tracker_bar.pack(fill="x")
