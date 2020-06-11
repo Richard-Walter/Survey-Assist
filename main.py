@@ -2031,6 +2031,7 @@ class JobTrackerBar(tk.Frame):
         self.frame.pack(side='top', anchor=tk.W, fill=tk.X)
         self.frame.configure(background='#d9f2d8')
         self.user_initials = user_initials
+        self.survey_date = datetime.datetime.today().strftime('%d/%m/%Y')
 
         # Create widgets
         self.jt_lbl = tk.Label(self.frame, text='JOB TRACKER:')
@@ -2039,8 +2040,8 @@ class JobTrackerBar(tk.Frame):
         self.jt_job_name_combo.set("C")
         self.jt_date_lbl = tk.Label(self.frame, text='Survey Date:')
         self.jt_date_lbl.configure(background='#d9f2d8')
-        # TODO command change to date picker
-        self.jt_date_btn = tk.Button(self.frame, text=todays_date, command=lambda: gui_app.menu_bar.re_display_gsi())
+
+        self.jt_date_btn = tk.Button(self.frame, text=self.survey_date, command=self.choose_date)
         self.jt_date_btn.configure(background='#ffffff')
         self.jt_initials_lbl = tk.Label(self.frame, text='Initials:')
         self.jt_initials_lbl.configure(background='#d9f2d8')
@@ -2051,12 +2052,9 @@ class JobTrackerBar(tk.Frame):
         calcs_checkbox_var = tk.IntVar()
         results_checkbox_var = tk.IntVar()
 
-        # TODO update commands
-        self.jt_calcs_checkbox = tk.Checkbutton(self.frame, text='Calcs', variable=calcs_checkbox_var, onvalue=1, offvalue=0,
-                                                command=lambda: gui_app.menu_bar.re_display_gsi())
+        self.jt_calcs_checkbox = tk.Checkbutton(self.frame, text='Calcs', variable=calcs_checkbox_var, onvalue=1, offvalue=0, command=self.save_job)
         self.jt_calcs_checkbox.configure(background='#d9f2d8')
-        self.jt_results_checkbox = tk.Checkbutton(self.frame, text='Results', variable=results_checkbox_var, onvalue=1, offvalue=0,
-                                                command=lambda: gui_app.menu_bar.re_display_gsi())
+        self.jt_results_checkbox = tk.Checkbutton(self.frame, text='Results', variable=results_checkbox_var, onvalue=1, offvalue=0, command=self.save_job)
         self.jt_results_checkbox.configure(background='#d9f2d8')
 
         # # column entry is where the user selects the column he wants to perform a query on
@@ -2076,7 +2074,7 @@ class JobTrackerBar(tk.Frame):
         # self.btn_export_csv.configure(background='#FCF1E1')
 
         # Redisplay observations button
-        self.btn_new_job = tk.Button(self.frame, text="New Job", command=lambda: gui_app.menu_bar.re_display_gsi())
+        self.btn_new_job = tk.Button(self.frame, text="New Job", command=lambda: gui_app.menu_bar.job_tracker_new_job)
         self.btn_new_job.configure(background='#ffffff')
 
         # pack job tracker widgets
@@ -2091,11 +2089,24 @@ class JobTrackerBar(tk.Frame):
 
         self.btn_new_job.pack(padx=(30, 30), pady=5, side='right')
 
+    def choose_date(self):
+        # Let user choose the date, rather than the default todays date
+        cal_root = tk.Toplevel()
+        cal = CalendarWindow(cal_root, todays_date)
+        self.master.wait_window(cal_root)
+        survey_date = cal.get_selected_date()   # e.g. '200610'
+        self.jt_date_btn['text'] = survey_date[4:6] + "/" + survey_date[2:4] + "/" + survey_date[0:2]
+
     def show_job_tracker_bar(self):
         self.frame.pack(side='top', anchor=tk.W, fill=tk.X)
 
     def hide_job_tracker_bar(self):
         self.frame.pack_forget()
+
+    def save_job(self):
+
+        # add ,essage in case excel spreadsheet in currently opened
+        pass
 
 
 class MainWindow(tk.Frame):
@@ -4070,7 +4081,7 @@ class GUIApplication(tk.Frame):
 
         self.workflow_bar = WorkflowBar(self.main_window)
         self.job_tracker_bar = JobTrackerBar(self.main_window, self.menu_bar.user_config.user_initials)
-        self.job_tracker_bar.hide_job_tracker_bar()
+        # self.job_tracker_bar.hide_job_tracker_bar()
         self.list_box = ListBoxFrame(self.main_window)
         self.workflow_bar.pack(fill="x")
         self.job_tracker_bar.pack(fill="x")
