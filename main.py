@@ -55,13 +55,13 @@ class MenuBar(tk.Frame):
             shutil.copy(UserConfiguration.default_user_settings_path, UserConfiguration.user_settings_file_path)
 
             tk.messagebox.showinfo("User Settings", "A new user_settings file has been created in C:\SurveyAssist.\n\nPlease configure "
-                                                                "your user settings before continuing by updating this file.\n\n"
-                                                                "USER_SD_ROOT:  This is the root directory when you insert a SD card into your "
-                                                                "computer\n\n"
-                                                                "USB_ROOT:  This is the root directory when you plug in a usb device (e.g. to "
-                                                                "transfer 1200 gps data)\n\n"
-                                                                "USER_INITIALS: Required for Job Tracker"
-                                                                "\n\nSurvey Assist will need to be re-started")
+                                                    "your user settings before continuing by updating this file.\n\n"
+                                                    "USER_SD_ROOT:  This is the root directory when you insert a SD card into your "
+                                                    "computer\n\n"
+                                                    "USB_ROOT:  This is the root directory when you plug in a usb device (e.g. to "
+                                                    "transfer 1200 gps data)\n\n"
+                                                    "USER_INITIALS: Required for Job Tracker"
+                                                    "\n\nSurvey Assist will need to be re-started")
 
             os.startfile("c:/SurveyAssist/user_settings.ini")
             exit()
@@ -146,7 +146,7 @@ class MenuBar(tk.Frame):
 
         # Job Tracker
         self.job_tracker_sub_menu = tk.Menu(self.menu_bar, tearoff=0)
-        self.job_tracker_sub_menu.add_command(label="Create New Job ", command=self.job_tracker_new_job)
+        self.job_tracker_sub_menu.add_command(label="Create new Job ", command=self.job_tracker_new_job)
         self.job_tracker_sub_menu.add_command(label="Track a Job", command=self.job_tracker_track)
         self.job_tracker_sub_menu.add_command(label="Open Job Tracker in excel", command=self.job_tracker_open_excel)
         self.menu_bar.add_cascade(label="Job Tracker", menu=self.job_tracker_sub_menu)
@@ -1101,7 +1101,7 @@ class MenuBar(tk.Frame):
 
                     # check to see if point id is a control point and skip if true
                     if gsi.is_station_setup(current_gsi_line):
-                         continue
+                        continue
 
                     current_point_id = current_gsi_line['Point_ID']
                     current_PC = current_gsi_line['Prism_Constant']
@@ -1582,7 +1582,7 @@ class MenuBar(tk.Frame):
     def job_tracker_track(self):
 
         try:
-            pass
+            gui_app.job_tracker_bar.show_job_tracker_bar()
 
         except FileNotFoundError as ex:
             print("Couldn't find the Job Tracker Spreadsheet:\n\n" + self.job_tracker_filepath)
@@ -2023,80 +2023,78 @@ class WorkflowBar(tk.Frame):
 
 class JobTrackerBar(tk.Frame):
 
-    def __init__(self, master):
+    def __init__(self, master, user_initials):
         super().__init__(master)
 
         self.master = master
         self.frame = tk.Frame(self.master)
         self.frame.pack(side='top', anchor=tk.W, fill=tk.X)
-        self.frame.configure(background='#FFDEAC')
+        self.frame.configure(background='#d9f2d8')
+        self.user_initials = user_initials
 
-        # new job workflow
-        self.workflow_lbl = tk.Label(self.frame, text='NEW JOB:')
-        self.workflow_lbl.configure(background='#FFDEAC')
-        self.btn_diary = tk.Button(self.frame, text="Job Diary", command=MenuBar.job_diary)
-        self.btn_diary.configure(background='#FCF1E1')
-        self.btn_create_directory_today = tk.Button(self.frame, text="Create Dated Directory",
-                                                    command=lambda: gui_app.menu_bar.new_dated_directory(False))
-        self.btn_create_directory_today.configure(background='#FCF1E1')
-        self.btn_import_sd_data = tk.Button(self.frame, text="Import SD Data", command=lambda: gui_app.menu_bar.import_sd_data())
-        self.btn_import_sd_data.configure(background='#FCF1E1')
-        self.btn_open_gsi = tk.Button(self.frame, text="Open GSI", command=lambda: gui_app.menu_bar.choose_gsi_file())
-        self.btn_open_gsi.configure(background='#FCF1E1')
-        self.lbl_edit_gsi = tk.Label(self.frame, text="Edit GSI", borderwidth=2, relief="groove", padx=4, pady=4)
-        self.lbl_edit_gsi.configure(background='#FCF1E1')
-        self.btn_check_survey = tk.Button(self.frame, text="Check Survey", command=lambda: gui_app.menu_bar.check_3d_all())
-        self.btn_check_survey.configure(background='#FCF1E1')
-        self.btn_compare_survey = tk.Button(self.frame, text="Compare Survey", command=lambda: gui_app.menu_bar.compare_survey())
-        self.btn_compare_survey.configure(background='#FCF1E1')
-        self.btn_export_csv = tk.Button(self.frame, text="Export GSI", command=lambda: gui_app.menu_bar.export_csv())
-        self.btn_export_csv.configure(background='#FCF1E1')
+        # Create widgets
+        self.jt_lbl = tk.Label(self.frame, text='JOB TRACKER:')
+        self.jt_lbl.configure(background='#d9f2d8')
+        self.jt_job_name_combo = ttk.Combobox(self.frame, values=("A", "B", "C", "D", "E"))
+        self.jt_job_name_combo.set("C")
+        self.jt_date_lbl = tk.Label(self.frame, text='Survey Date:')
+        self.jt_date_lbl.configure(background='#d9f2d8')
+        # TODO command change to date picker
+        self.jt_date_btn = tk.Button(self.frame, text=todays_date, command=lambda: gui_app.menu_bar.re_display_gsi())
+        self.jt_date_btn.configure(background='#ffffff')
+        self.jt_initials_lbl = tk.Label(self.frame, text='Initials:')
+        self.jt_initials_lbl.configure(background='#d9f2d8')
+        self.jt_user_lbl = tk.Label(self.frame, text=self.user_initials)
+        self.jt_user_lbl.configure(background='#d9f2d8')
 
-        # Compnet workflow
-        self.compnet_workflow_lbl = tk.Label(self.frame, text='COMPNET:')
-        self.compnet_workflow_lbl.configure(background='#FFDEAC')
-        self.btn_compnet_new_job = tk.Button(self.frame, text="Setup New Job", command=lambda: gui_app.menu_bar.create_compnet_job_folder())
-        self.btn_compnet_new_job.configure(background='#FCF1E1')
-        self.btn_update_fixed_file = tk.Button(self.frame, text="Update Fixed File", command=lambda: gui_app.menu_bar.update_fixed_file())
-        self.btn_update_fixed_file.configure(background='#FCF1E1')
-        self.btn_weight_std_file = tk.Button(self.frame, text="Weight STD File", command=lambda: gui_app.menu_bar.weight_STD_file())
-        self.btn_weight_std_file.configure(background='#FCF1E1')
-        self.btn_copy_job_to_dated_directory = tk.Button(self.frame, text="Copy Job to Dated Directory", command=lambda:
-        gui_app.menu_bar.copy_compnet_job_to_dated_directory())
-        self.btn_copy_job_to_dated_directory.configure(background='#FCF1E1')
-        self.btn_csv_from_crd = tk.Button(self.frame, text="Popup CSV from CRD", command=lambda: gui_app.menu_bar.create_CSV_from_CRD())
-        self.btn_csv_from_crd.configure(background='#FCF1E1')
+        # check boxes
+        calcs_checkbox_var = tk.IntVar()
+        results_checkbox_var = tk.IntVar()
+
+        # TODO update commands
+        self.jt_calcs_checkbox = tk.Checkbutton(self.frame, text='Calcs', variable=calcs_checkbox_var, onvalue=1, offvalue=0,
+                                                command=lambda: gui_app.menu_bar.re_display_gsi())
+        self.jt_calcs_checkbox.configure(background='#d9f2d8')
+        self.jt_results_checkbox = tk.Checkbutton(self.frame, text='Results', variable=results_checkbox_var, onvalue=1, offvalue=0,
+                                                command=lambda: gui_app.menu_bar.re_display_gsi())
+        self.jt_results_checkbox.configure(background='#d9f2d8')
+
+        # # column entry is where the user selects the column he wants to perform a query on
+        # self.column = tk.StringVar()
+        # self.column_entry = ttk.Combobox(self.dialog_window, width=18, textvariable=self.column, state='readonly')
+        # self.column_entry['values'] = gsi.column_names
+        # self.column_entry.bind("<<ComboboxSelected>>", self.column_entry_cb_callback)
+        # self.column_entry.grid(row=1, column=1, padx=5, pady=5)
+        #
+        # # column value is the value associated with the selected column
+        # self.column_value = tk.StringVar()
+        # self.column_value_entry = ttk.Combobox(self.dialog_window, width=18, textvariable=self.column_value,
+        #                                        state='disabled')
+        # self.column_value_entry.grid(row=2, column=1, padx=5, pady=2)
+        #
+        # self.btn_export_csv = tk.Button(self.frame, text="Export GSI", command=lambda: gui_app.menu_bar.export_csv())
+        # self.btn_export_csv.configure(background='#FCF1E1')
 
         # Redisplay observations button
-        self.btn_re_display_gsi = tk.Button(self.frame, text="Re-display GSI", command=lambda: gui_app.menu_bar.re_display_gsi())
-        self.btn_re_display_gsi.configure(background='#FCF1E1')
+        self.btn_new_job = tk.Button(self.frame, text="New Job", command=lambda: gui_app.menu_bar.re_display_gsi())
+        self.btn_new_job.configure(background='#ffffff')
 
-        # pack new job workflow
-        self.workflow_lbl.pack(padx=2, pady=5, side='left')
-        self.btn_diary.pack(padx=5, pady=5, side='left')
-        self.btn_create_directory_today.pack(padx=5, pady=5, side='left')
-        self.btn_import_sd_data.pack(padx=5, pady=5, side='left')
-        self.btn_open_gsi.pack(padx=5, pady=5, side='left')
-        self.lbl_edit_gsi.pack(padx=5, pady=5, side='left')
-        self.btn_check_survey.pack(padx=5, pady=5, side='left')
-        self.btn_compare_survey.pack(padx=5, pady=5, side='left')
-        self.btn_export_csv.pack(padx=5, pady=5, side='left')
+        # pack job tracker widgets
+        self.jt_lbl.pack(padx=5, pady=5, side='left')
+        self.jt_job_name_combo.pack(padx=5, pady=5, side='left')
+        self.jt_date_lbl.pack(padx=(15, 0), pady=5, side='left')
+        self.jt_date_btn.pack(padx=5, pady=5, side='left')
+        self.jt_initials_lbl.pack(padx=(15, 0), pady=5, side='left')
+        self.jt_user_lbl.pack(padx=0, pady=5, side='left')
+        self.jt_calcs_checkbox.pack(padx=(15,0), pady=5, side='left')
+        self.jt_results_checkbox.pack(padx=(15,0), pady=5, side='left')
 
-        # pack compnet workflow
-        self.compnet_workflow_lbl.pack(padx=(25, 2), pady=5, side='left')
-        self.btn_compnet_new_job.pack(padx=5, pady=5, side='left')
-        self.btn_update_fixed_file.pack(padx=5, pady=5, side='left')
-        self.btn_weight_std_file.pack(padx=5, pady=5, side='left')
-        self.btn_copy_job_to_dated_directory.pack(padx=5, pady=5, side='left')
-        self.btn_csv_from_crd.pack(padx=5, pady=5, side='left')
+        self.btn_new_job.pack(padx=(30, 30), pady=5, side='right')
 
-        # pack re-display observations
-        self.btn_re_display_gsi.pack(padx=(30, 10), pady=5, side='right')
-
-    def show_workflow_bar(self):
+    def show_job_tracker_bar(self):
         self.frame.pack(side='top', anchor=tk.W, fill=tk.X)
 
-    def hide_workflow_bar(self):
+    def hide_job_tracker_bar(self):
         self.frame.pack_forget()
 
 
@@ -4071,8 +4069,11 @@ class GUIApplication(tk.Frame):
         self.menu_bar.pack(side="top", fill="x")
 
         self.workflow_bar = WorkflowBar(self.main_window)
+        self.job_tracker_bar = JobTrackerBar(self.main_window, self.menu_bar.user_config.user_initials)
+        self.job_tracker_bar.hide_job_tracker_bar()
         self.list_box = ListBoxFrame(self.main_window)
         self.workflow_bar.pack(fill="x")
+        self.job_tracker_bar.pack(fill="x")
         self.list_box.pack(fill="both")
         self.main_window.pack(fill="both", expand=True)
 
