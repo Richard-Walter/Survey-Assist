@@ -1120,3 +1120,32 @@ TypeError: 'str' object is not callable
 
 2020-06-12 14:50:00,455:Survey Assist - v1.0:Started Application
 
+2020-06-12 15:28:55,268:Survey Assist - v1.0:Started Application
+
+2020-06-12 15:29:54,497:Survey Assist - v1.0:Started Application
+
+2020-06-12 15:30:19,295:Survey Assist - v1.0:Started Application
+
+2020-06-12 16:17:59,246:Survey Assist - v1.0:Started Application
+
+2020-06-12 16:31:21,057:Survey Assist - v1.0:Started Application
+
+2020-06-12 16:31:28,568:Survey Assist - v1.0:Error has occurred in JobTracker init().
+
+Can't convert 'int' object to str implicitly
+Traceback (most recent call last):
+  File "C:/Users/rjwal_000/PycharmProjects/Survey Assist/main.py", line 2162, in save_job_to_excel
+    actions_sheet[percentage_complete_cell] = '=SUM(D' + row + ':H' + row +')'
+TypeError: Can't convert 'int' object to str implicitly
+2020-06-12 16:31:50,480:Survey Assist - v1.0:Started Application
+
+2020-06-12 16:33:48,579:Survey Assist - v1.0:Started Application
+
+2020-06-12 16:36:09,944:Survey Assist - v1.0:Started Application
+
+2020-06-12 16:37:04,470:Survey Assist - v1.0:Started Application
+
+2020-06-12 16:39:34,267:Survey Assist - v1.0:Started Application
+
+2020-06-12 16:41:35,319:Survey Assist - v1.0:Started Application
+

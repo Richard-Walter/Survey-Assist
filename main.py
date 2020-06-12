@@ -18,9 +18,9 @@ KNOWN BUGS
 
 """
 
-from openpyxl.formatting.rule import DataBar, FormatObject
 from openpyxl.formatting.rule import DataBarRule
-from openpyxl.formatting.rule import Rule
+from openpyxl.styles import Alignment
+
 import tkinter.messagebox
 import logging.config
 from job_tracker import *
@@ -2038,7 +2038,7 @@ class JobTrackerBar(tk.Frame):
         self.todays_date = datetime.datetime.today().strftime('%d/%m/%Y')
         self.job_tracker_filepath = os.path.join(survey_config.root_job_directory, survey_config.current_year, survey_config.job_tracker_filename)
         self.job_tracker_backup_filepath = os.path.join(survey_config.root_job_directory, survey_config.current_year,
-                                                      survey_config.job_tracker_filename)
+                                                        survey_config.job_tracker_filename)
 
         self.job_tracker = JobTracker(self.job_tracker_filepath, logger)
 
@@ -2084,13 +2084,11 @@ class JobTrackerBar(tk.Frame):
         self.jt_date_btn.pack(padx=5, pady=5, side='left')
         self.jt_initials_lbl.pack(padx=(15, 0), pady=5, side='left')
         self.jt_user_lbl.pack(padx=0, pady=5, side='left')
-        self.jt_calcs_checkbox.pack(padx=(15,0), pady=5, side='left')
-        self.jt_results_checkbox.pack(padx=(15,0), pady=5, side='left')
-        self.jt_btn_save_job.pack(padx=(15,0), pady=5, side='left')
-
+        self.jt_calcs_checkbox.pack(padx=(15, 0), pady=5, side='left')
+        self.jt_results_checkbox.pack(padx=(15, 0), pady=5, side='left')
+        self.jt_btn_save_job.pack(padx=(15, 0), pady=5, side='left')
 
     def cb_callback(self, event):
-
 
         # get job details and populate job tracker widget
         survey_job = self.job_tracker.get_job(self.jt_job_name_combo.get())
@@ -2107,7 +2105,7 @@ class JobTrackerBar(tk.Frame):
                 self.jt_results_checkbox.select()
             else:
                 self.jt_results_checkbox.deselect()
-        else: # user has selected to create a new job
+        else:  # user has selected to create a new job
             self.jt_date_btn.configure(text=self.todays_date)
             self.jt_calcs_checkbox.deselect()
             self.jt_results_checkbox.deselect()
@@ -2115,10 +2113,10 @@ class JobTrackerBar(tk.Frame):
     def get_combobox_values(self):
 
         self.job_tracker = JobTracker(self.job_tracker_filepath, logger)
-        self.job_names = self.job_tracker.get_job_names()
-        self.job_names.insert(0, "<<Enter New Job>>")
+        job_names = self.job_tracker.get_job_names()
+        job_names.insert(0, "<<Enter New Job>>")
 
-        return self.job_names
+        return job_names
 
     def choose_date(self):
 
@@ -2126,7 +2124,7 @@ class JobTrackerBar(tk.Frame):
         cal_root = tk.Toplevel()
         cal = CalendarWindow(cal_root, todays_date)
         self.master.wait_window(cal_root)
-        survey_date = cal.get_selected_date()   # e.g. '200610'
+        survey_date = cal.get_selected_date()  # e.g. '200610'
         self.jt_date_btn['text'] = survey_date[4:6] + "/" + survey_date[2:4] + "/" + survey_date[0:2]
 
     def show_job_tracker_bar(self):
@@ -2147,44 +2145,38 @@ class JobTrackerBar(tk.Frame):
             actions_sheet.insert_rows(idx=11)
             actions_sheet["A11"] = self.jt_job_name_combo.get()
             actions_sheet["B11"] = self.jt_date_btn['text']
+            actions_sheet["B11"].alignment = Alignment(horizontal='center')
             actions_sheet["C11"] = self.jt_user_lbl['text']
+            actions_sheet["C11"].alignment = Alignment(horizontal='center')
             if self.calcs_checkbox_var.get() == '1':
                 actions_sheet["D11"] = 1
-            else:
-                actions_sheet["D11"] = ''
+                actions_sheet["D11"].alignment = Alignment(horizontal='center')
+
             if self.results_checkbox_var.get() == '1':
-                actions_sheet["D11"] = 1
-            else:
-                actions_sheet["D11"] = ''
-            actions_sheet["J11"] = '=SUM(D11:H11)'
+                actions_sheet["E11"] = 1
+                actions_sheet["E11"].alignment = Alignment(horizontal='center')
+
+            # add formula and update all subsequent row formulas as it they dont update when inserting a row for some reason
+            for row in range(11, 11+len(self.job_tracker.get_job_names())):
+                percentage_complete_cell = 'J'+str(row)
+                actions_sheet[percentage_complete_cell] = '=SUM(D' + str(row) + ':H' + str(row) +')'
+            # actions_sheet["J11"] = '=SUM(D11:H11)'
 
             # create conditional formatting
-            # first = FormatObject(type='min')
-            # second = FormatObject(type='max')
-            # data_bar = DataBar(cfvo=[first, second], color="638EC6", showValue=None, minLength=None, maxLength=None)
-            # assign the data bar to a rule
-            # rule = Rule(type='dataBar', dataBar=data_bar)
-
-            rule = DataBarRule(start_type='num', start_value=0, end_type='num', end_value=5, color = "FF638EC6",
-                               showValue = False, minLength = 0, maxLength = 100)
-
+            rule = DataBarRule(start_type='num', start_value=0, end_type='num', end_value=5, color="FF638EC6",
+                               showValue=False, minLength=0, maxLength=100)
             actions_sheet.conditional_formatting.add('J11:J1000', rule)
 
-            # fo1 = FormatObject(type="num", val="0")
-            # fo2 = FormatObject(type="num", val="100")
-            # db = DataBar(
-            #     minLength=0,
-            #     maxLength=5,
-            #     cfvo=[fo1, fo2],
-            #     color="FF2266",
-            #     showValue=True
-            # )
-            #
-            # cfRule = Rule(type='dataBar', dataBar=db)
-            # actions_sheet.conditional_formatting.add('J11:J1000', cfRule)
-            #
             workbook.save(filename=self.job_tracker_filepath)
             workbook.close()
+
+            # reset combo box
+            self.job_tracker = JobTracker(self.job_tracker_filepath, logger)
+            self.jt_job_name_combo['values'] = self.get_combobox_values()
+            self.jt_calcs_checkbox.deselect()
+            self.jt_results_checkbox.deselect()
+
+            self.jt_job_name_combo.current(0)
 
         except FileNotFoundError as ex:
 
