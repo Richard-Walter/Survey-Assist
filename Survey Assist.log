@@ -470,3 +470,150 @@ AttributeError: 'datetime.datetime' object has no attribute 'ToString'
 
 2020-06-12 10:56:33,798:Survey Assist - v1.0:Started Application
 
+2020-06-12 11:03:34,377:Survey Assist - v1.0:Started Application
+
+2020-06-12 11:03:51,997:Survey Assist - v1.0:Started Application
+
+2020-06-12 11:05:44,064:Survey Assist - v1.0:Started Application
+
+2020-06-12 11:09:40,153:Survey Assist - v1.0:Started Application
+
+2020-06-12 11:11:26,897:Survey Assist - v1.0:Started Application
+
+2020-06-12 11:11:37,814:Survey Assist - v1.0:Started Application
+
+2020-06-12 11:12:21,222:Survey Assist - v1.0:Started Application
+
+2020-06-12 11:14:20,823:Survey Assist - v1.0:Started Application
+
+2020-06-12 11:14:31,100:Survey Assist - v1.0:Started Application
+
+2020-06-12 11:14:53,226:Survey Assist - v1.0:Started Application
+
+2020-06-12 11:16:39,378:Survey Assist - v1.0:Started Application
+
+2020-06-12 11:19:25,425:Survey Assist - v1.0:Started Application
+
+2020-06-12 11:20:36,479:Survey Assist - v1.0:Started Application
+
+2020-06-12 11:21:37,050:Survey Assist - v1.0:Started Application
+
+2020-06-12 11:22:55,342:Survey Assist - v1.0:Started Application
+
+2020-06-12 11:23:15,454:Survey Assist - v1.0:Started Application
+
+2020-06-12 11:23:31,834:Survey Assist - v1.0:Started Application
+
+2020-06-12 11:26:39,310:Survey Assist - v1.0:Started Application
+
+2020-06-12 11:27:15,727:Survey Assist - v1.0:Started Application
+
+2020-06-12 11:27:27,561:Survey Assist - v1.0:Started Application
+
+2020-06-12 11:27:37,522:Survey Assist - v1.0:Started Application
+
+2020-06-12 11:28:34,615:Survey Assist - v1.0:Started Application
+
+2020-06-12 11:28:54,645:Survey Assist - v1.0:Started Application
+
+2020-06-12 11:29:31,584:Survey Assist - v1.0:Started Application
+
+2020-06-12 11:29:58,188:Survey Assist - v1.0:Started Application
+
+2020-06-12 11:30:14,950:Survey Assist - v1.0:Started Application
+
+2020-06-12 11:30:43,165:Survey Assist - v1.0:Started Application
+
+2020-06-12 11:31:02,550:Survey Assist - v1.0:Started Application
+
+2020-06-12 11:31:29,411:Survey Assist - v1.0:Started Application
+
+2020-06-12 11:33:15,168:Survey Assist - v1.0:Started Application
+
+2020-06-12 11:33:56,442:Survey Assist - v1.0:Started Application
+
+2020-06-12 11:35:31,875:Survey Assist - v1.0:Started Application
+
+2020-06-12 11:36:05,350:Survey Assist - v1.0:Started Application
+
+2020-06-12 11:36:58,631:Survey Assist - v1.0:Started Application
+
+2020-06-12 11:54:49,185:Survey Assist - v1.0:Started Application
+
+2020-06-12 11:55:19,921:Survey Assist - v1.0:Started Application
+
+2020-06-12 11:56:29,058:Survey Assist - v1.0:Started Application
+
+2020-06-12 11:58:42,837:Survey Assist - v1.0:Started Application
+
+2020-06-12 11:58:54,971:Survey Assist - v1.0:Job Tracker excel spreadsheet currently in use
+
+[Errno 13] Permission denied: 'C:\\Users\\rjwal_000\\PycharmProjects\\Survey Assist\\Test Files\\Survey Data\\2020\\Job Tracker Digital System.xlsm'
+Traceback (most recent call last):
+  File "C:/Users/rjwal_000/PycharmProjects/Survey Assist/main.py", line 2145, in save_job_to_excel
+    workbook.save(filename=self.job_tracker_filepath)
+  File "C:\Python34\lib\site-packages\openpyxl\workbook\workbook.py", line 391, in save
+    save_workbook(self, filename)
+  File "C:\Python34\lib\site-packages\openpyxl\writer\excel.py", line 282, in save_workbook
+    archive = ZipFile(filename, 'w', ZIP_DEFLATED, allowZip64=True)
+  File "C:\Python34\lib\zipfile.py", line 923, in __init__
+    self.fp = io.open(file, modeDict[mode])
+PermissionError: [Errno 13] Permission denied: 'C:\\Users\\rjwal_000\\PycharmProjects\\Survey Assist\\Test Files\\Survey Data\\2020\\Job Tracker Digital System.xlsm'
+2020-06-12 12:00:28,707:Survey Assist - v1.0:Started Application
+
+2020-06-12 12:00:30,717:Survey Assist - v1.0:Job Tracker excel spreadsheet currently in use
+
+[Errno 13] Permission denied: 'C:\\Users\\rjwal_000\\PycharmProjects\\Survey Assist\\Test Files\\Survey Data\\2020\\Job Tracker Digital System.xlsm'
+Traceback (most recent call last):
+  File "C:/Users/rjwal_000/PycharmProjects/Survey Assist/main.py", line 2145, in save_job_to_excel
+    workbook.save(filename=self.job_tracker_filepath)
+  File "C:\Python34\lib\site-packages\openpyxl\workbook\workbook.py", line 391, in save
+    save_workbook(self, filename)
+  File "C:\Python34\lib\site-packages\openpyxl\writer\excel.py", line 282, in save_workbook
+    archive = ZipFile(filename, 'w', ZIP_DEFLATED, allowZip64=True)
+  File "C:\Python34\lib\zipfile.py", line 923, in __init__
+    self.fp = io.open(file, modeDict[mode])
+PermissionError: [Errno 13] Permission denied: 'C:\\Users\\rjwal_000\\PycharmProjects\\Survey Assist\\Test Files\\Survey Data\\2020\\Job Tracker Digital System.xlsm'
+2020-06-12 12:04:52,588:Survey Assist - v1.0:Started Application
+
+2020-06-12 12:04:57,116:Survey Assist - v1.0:Job Tracker excel spreadsheet currently in use
+
+[Errno 13] Permission denied: 'C:\\Users\\rjwal_000\\PycharmProjects\\Survey Assist\\Test Files\\Survey Data\\2020\\Job Tracker Digital System.xlsm'
+Traceback (most recent call last):
+  File "C:/Users/rjwal_000/PycharmProjects/Survey Assist/main.py", line 2145, in save_job_to_excel
+    workbook.save(filename=self.job_tracker_filepath)
+  File "C:\Python34\lib\site-packages\openpyxl\workbook\workbook.py", line 391, in save
+    save_workbook(self, filename)
+  File "C:\Python34\lib\site-packages\openpyxl\writer\excel.py", line 282, in save_workbook
+    archive = ZipFile(filename, 'w', ZIP_DEFLATED, allowZip64=True)
+  File "C:\Python34\lib\zipfile.py", line 923, in __init__
+    self.fp = io.open(file, modeDict[mode])
+PermissionError: [Errno 13] Permission denied: 'C:\\Users\\rjwal_000\\PycharmProjects\\Survey Assist\\Test Files\\Survey Data\\2020\\Job Tracker Digital System.xlsm'
+2020-06-12 12:14:28,472:Survey Assist - v1.0:Started Application
+
+2020-06-12 12:15:10,409:Survey Assist - v1.0:Started Application
+
+2020-06-12 12:18:31,049:Survey Assist - v1.0:Started Application
+
+2020-06-12 12:19:44,060:Survey Assist - v1.0:Started Application
+
+2020-06-12 12:19:53,051:Survey Assist - v1.0:Error has occurred in JobTracker init().
+
+invalid literal for int() with base 10: ''
+Traceback (most recent call last):
+  File "C:/Users/rjwal_000/PycharmProjects/Survey Assist/main.py", line 2142, in save_job_to_excel
+    actions_sheet["D11"] = self.calcs_checkbox_var.get()
+  File "C:\Python34\lib\tkinter\__init__.py", line 358, in get
+    return getint(self._tk.globalgetvar(self._name))
+ValueError: invalid literal for int() with base 10: ''
+2020-06-12 12:21:36,921:Survey Assist - v1.0:Started Application
+
+2020-06-12 12:21:43,348:Survey Assist - v1.0:Error has occurred in JobTracker init().
+
+get() missing 1 required positional argument: 'self'
+Traceback (most recent call last):
+  File "C:/Users/rjwal_000/PycharmProjects/Survey Assist/main.py", line 2143, in save_job_to_excel
+    actions_sheet["E11"] = self.results_checkbox_var.get()
+TypeError: get() missing 1 required positional argument: 'self'
+2020-06-12 12:22:31,771:Survey Assist - v1.0:Started Application
+

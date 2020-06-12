@@ -150,7 +150,7 @@ class MenuBar(tk.Frame):
         self.job_tracker_sub_menu = tk.Menu(self.menu_bar, tearoff=0)
         self.job_tracker_sub_menu.add_command(label="Create new Job ", command=self.job_tracker_new_job)
         self.job_tracker_sub_menu.add_command(label="Track a Job", command=self.job_tracker_track)
-        self.job_tracker_sub_menu.add_command(label="Open Job Tracker in excel", command=self.job_tracker_open_excel)
+        self.job_tracker_sub_menu.add_command(label="Open in excel", command=self.job_tracker_open_excel)
         self.menu_bar.add_cascade(label="Job Tracker", menu=self.job_tracker_sub_menu)
 
         # Help menu
@@ -1573,7 +1573,7 @@ class MenuBar(tk.Frame):
     def job_tracker_new_job(self):
 
         try:
-            pass
+            gui_app.job_tracker_bar.show_job_tracker_bar()
 
         except FileNotFoundError as ex:
             print("Couldn't find the Job Tracker Spreadsheet:\n\n" + self.job_tracker_filepath)
@@ -2033,10 +2033,10 @@ class JobTrackerBar(tk.Frame):
         self.frame.pack(side='top', anchor=tk.W, fill=tk.X)
         self.frame.configure(background='#d9f2d8')
         self.user_initials = user_initials
-        self.survey_date = datetime.datetime.today().strftime('%d/%m/%Y')
+        self.todays_date = datetime.datetime.today().strftime('%d/%m/%Y')
         self.job_tracker_filepath = os.path.join(survey_config.root_job_directory, survey_config.current_year, survey_config.job_tracker_filename)
 
-        self.job_tracker = JobTracker(self.job_tracker_filepath, survey_config, logger)
+        self.job_tracker = JobTracker(self.job_tracker_filepath, logger)
 
         # Create widgets
         self.jt_lbl = tk.Label(self.frame, text='JOB TRACKER:')
@@ -2046,16 +2046,18 @@ class JobTrackerBar(tk.Frame):
         self.job_name = tk.StringVar()
         self.jt_job_name_combo = ttk.Combobox(self.frame, width=35, textvariable=self.job_name)
 
-        self.jt_job_name_combo['values'] = self.job_tracker.get_job_names()
+        self.job_names = self.job_tracker.get_job_names()
+        self.job_names.insert(0, "<<Enter New Job>>")
+
+        self.jt_job_name_combo['values'] = self.job_names
         self.jt_job_name_combo.bind("<<ComboboxSelected>>", self.cb_callback)
 
-        # self.jt_job_name_combo.set("C")
-
+        self.jt_job_name_combo.current(0)
 
         self.jt_date_lbl = tk.Label(self.frame, text='Survey Date:')
         self.jt_date_lbl.configure(background='#d9f2d8')
 
-        self.jt_date_btn = tk.Button(self.frame, text=self.survey_date, command=self.choose_date)
+        self.jt_date_btn = tk.Button(self.frame, text=self.todays_date, command=self.choose_date)
         self.jt_date_btn.configure(background='#ffffff')
         self.jt_initials_lbl = tk.Label(self.frame, text='Initials:')
         self.jt_initials_lbl.configure(background='#d9f2d8')
@@ -2063,16 +2065,16 @@ class JobTrackerBar(tk.Frame):
         self.jt_user_lbl.configure(background='#d9f2d8')
 
         # check boxes
-        calcs_checkbox_var = tk.IntVar()
-        results_checkbox_var = tk.IntVar()
-        self.jt_calcs_checkbox = tk.Checkbutton(self.frame, text='Calcs', variable=calcs_checkbox_var, onvalue=1, offvalue=0, command=self.save_job)
+        self.calcs_checkbox_var = tk.StringVar()
+        self.results_checkbox_var = tk.StringVar()
+        self.jt_calcs_checkbox = tk.Checkbutton(self.frame, text='Calcs', variable=self.calcs_checkbox_var, onvalue='1', offvalue='')
         self.jt_calcs_checkbox.configure(background='#d9f2d8')
-        self.jt_results_checkbox = tk.Checkbutton(self.frame, text='Results', variable=results_checkbox_var, onvalue=1, offvalue=0,
-                                                  command=self.save_job)
+        self.jt_results_checkbox = tk.Checkbutton(self.frame, text='Results', variable=self.results_checkbox_var, onvalue='1', offvalue='')
         self.jt_results_checkbox.configure(background='#d9f2d8')
 
-        self.btn_new_job = tk.Button(self.frame, text="New Job", command=lambda: gui_app.menu_bar.job_tracker_new_job)
-        self.btn_new_job.configure(background='#ffffff')
+        # save button
+        self.jt_btn_save_job = tk.Button(self.frame, text="Save Job", command=self.save_job_to_excel)
+        self.jt_btn_save_job.configure(background='#ffffff')
 
         # pack job tracker widgets
         self.jt_lbl.pack(padx=5, pady=5, side='left')
@@ -2083,27 +2085,31 @@ class JobTrackerBar(tk.Frame):
         self.jt_user_lbl.pack(padx=0, pady=5, side='left')
         self.jt_calcs_checkbox.pack(padx=(15,0), pady=5, side='left')
         self.jt_results_checkbox.pack(padx=(15,0), pady=5, side='left')
-
-        self.btn_new_job.pack(padx=(30, 30), pady=5, side='right')
+        self.jt_btn_save_job.pack(padx=(15,0), pady=5, side='left')
 
 
     def cb_callback(self, event):
 
+
         # get job details and populate job tracker widget
         survey_job = self.job_tracker.get_job(self.jt_job_name_combo.get())
-        self.jt_date_btn.configure(text=survey_job.survey_date)
-        self.jt_user_lbl.configure(text=survey_job.initials)
-        self.jt_calcs_checkbox.configure(text=survey_job.calcs)
 
-        if survey_job.calcs == 1:
-            self.jt_calcs_checkbox.select()
-        else:
+        if survey_job:
+            self.jt_date_btn.configure(text=survey_job.survey_date)
+            self.jt_user_lbl.configure(text=survey_job.initials)
+
+            if survey_job.calcs == '1':
+                self.jt_calcs_checkbox.select()
+            else:
+                self.jt_calcs_checkbox.deselect()
+            if survey_job.results == '1':
+                self.jt_results_checkbox.select()
+            else:
+                self.jt_results_checkbox.deselect()
+        else: # user has selected to create a new job
+            self.jt_date_btn.configure(text=self.todays_date)
             self.jt_calcs_checkbox.deselect()
-        if survey_job.results == 1:
-            self.jt_results_checkbox.select()
-        else:
             self.jt_results_checkbox.deselect()
-
 
     def choose_date(self):
 
@@ -2120,10 +2126,42 @@ class JobTrackerBar(tk.Frame):
     def hide_job_tracker_bar(self):
         self.frame.pack_forget()
 
-    def save_job(self):
+    def save_job_to_excel(self):
 
-        # add ,essage in case excel spreadsheet in currently opened
-        pass
+        try:
+
+            # try and read in the job tracker spreadsheet
+            workbook = load_workbook(self.job_tracker_filepath, read_only=False, keep_vba=True)
+            actions_sheet = workbook["Actions"]
+
+            # inserts blank row at row 11 and populate
+            actions_sheet.insert_rows(idx=12)
+            actions_sheet["A11"] = self.jt_job_name_combo.get()
+            actions_sheet["B11"] = self.jt_date_btn['text']
+            actions_sheet["C11"] = self.jt_user_lbl['text']
+            actions_sheet["D11"] = self.calcs_checkbox_var.get()
+            actions_sheet["E11"] = self.results_checkbox_var.get()
+
+            workbook.save(filename=self.job_tracker_filepath)
+
+        except FileNotFoundError as ex:
+
+            logger.exception('Job Tracker excel spreadsheet not found\n\n' + str(ex))
+
+            tk.messagebox.showerror("ERROR", "Unable to find the Job Tracker Spreadsheet at the following location:\n\n" + self.job_tracker_filepath)
+
+        except PermissionError as ex:
+
+            logger.exception('Job Tracker excel spreadsheet currently in use\n\n' + str(ex))
+
+            tk.messagebox.showinfo("Survey Assist", "The Job Tracker Excel Spreadsheet is currently open.  Please close it down and try again.")
+
+        except Exception as ex:
+
+            # Most likely an incorrect file was chosen
+            logger.exception('Error has occurred in JobTracker init().\n\n' + str(ex))
+
+            tk.messagebox.showerror("ERROR", 'An unexpected error has occurred reading the excel Job Tracker.  Please contact the developer')
 
 
 class MainWindow(tk.Frame):

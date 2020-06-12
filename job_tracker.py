@@ -6,7 +6,7 @@ import datetime
 
 class JobTracker:
 
-    def __init__(self, excel_file_path, survey_config, logger):
+    def __init__(self, excel_file_path, logger):
         super().__init__()
 
         try:
