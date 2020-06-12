@@ -1,5 +1,4 @@
 from openpyxl import load_workbook
-import os
 import tkinter.messagebox
 import tkinter as tk
 import datetime
@@ -19,6 +18,7 @@ class JobTracker:
             self.workbook = load_workbook(self.job_tracker_filepath, read_only=True)
             self.active_sheet = self.workbook["Actions"]
             self.create_list_of_job_tracker_jobs()
+            self.workbook.close()
 
         except FileNotFoundError as ex:
 
@@ -39,7 +39,9 @@ class JobTracker:
         for row in self.active_sheet.iter_rows(min_row=11, max_row=31, min_col=1, max_col=5):
 
             # create a survey job and add to list
-            survey_job = SurveyJob(row[0].value, row[1].value.strftime('%d/%m/%Y'), row[2].value, row[3].value, row[4].value)
+            survey_date = row[1].value
+            # survey_job = SurveyJob(row[0].value, survey_date('%d/%m/%Y'), row[2].value, row[3].value, row[4].value)
+            survey_job = SurveyJob(row[0].value, survey_date, row[2].value, row[3].value, row[4].value)
             self.survey_job_list.append(survey_job)
 
     def get_job_names(self):

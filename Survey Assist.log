@@ -617,3 +617,506 @@ Traceback (most recent call last):
 TypeError: get() missing 1 required positional argument: 'self'
 2020-06-12 12:22:31,771:Survey Assist - v1.0:Started Application
 
+2020-06-12 12:48:56,067:Survey Assist - v1.0:Started Application
+
+2020-06-12 12:48:57,248:Survey Assist - v1.0:Job Tracker excel spreadsheet not found
+
+[Errno 2] No such file or directory: '/dst/test_copy.txt'
+Traceback (most recent call last):
+  File "C:/Users/rjwal_000/PycharmProjects/Survey Assist/main.py", line 2136, in save_job_to_excel
+    shutil.copy2(self.job_tracker_filepath, '/dst/test_copy.txt')
+  File "C:\Python34\lib\shutil.py", line 245, in copy2
+    copyfile(src, dst, follow_symlinks=follow_symlinks)
+  File "C:\Python34\lib\shutil.py", line 109, in copyfile
+    with open(dst, 'wb') as fdst:
+FileNotFoundError: [Errno 2] No such file or directory: '/dst/test_copy.txt'
+2020-06-12 12:49:39,036:Survey Assist - v1.0:Started Application
+
+2020-06-12 12:54:49,545:Survey Assist - v1.0:Started Application
+
+2020-06-12 12:55:15,755:Survey Assist - v1.0:Started Application
+
+2020-06-12 12:55:48,939:Survey Assist - v1.0:Started Application
+
+2020-06-12 12:56:00,604:Survey Assist - v1.0:Started Application
+
+2020-06-12 12:57:23,803:Survey Assist - v1.0:Started Application
+
+2020-06-12 12:57:25,668:Survey Assist - v1.0:Job Tracker excel spreadsheet currently in use
+
+[Errno 13] Permission denied: 'C:\\Users\\rjwal_000\\PycharmProjects\\Survey Assist\\Test Files\\Survey Data\\2020\\Job Tracker Digital System.xlsm'
+Traceback (most recent call last):
+  File "C:/Users/rjwal_000/PycharmProjects/Survey Assist/main.py", line 2152, in save_job_to_excel
+    workbook.save(filename=self.job_tracker_filepath)
+  File "C:\Python34\lib\site-packages\openpyxl\workbook\workbook.py", line 391, in save
+    save_workbook(self, filename)
+  File "C:\Python34\lib\site-packages\openpyxl\writer\excel.py", line 282, in save_workbook
+    archive = ZipFile(filename, 'w', ZIP_DEFLATED, allowZip64=True)
+  File "C:\Python34\lib\zipfile.py", line 923, in __init__
+    self.fp = io.open(file, modeDict[mode])
+PermissionError: [Errno 13] Permission denied: 'C:\\Users\\rjwal_000\\PycharmProjects\\Survey Assist\\Test Files\\Survey Data\\2020\\Job Tracker Digital System.xlsm'
+2020-06-12 12:58:23,643:Survey Assist - v1.0:Started Application
+
+2020-06-12 13:03:10,781:Survey Assist - v1.0:Started Application
+
+2020-06-12 13:11:27,738:Survey Assist - v1.0:Started Application
+
+2020-06-12 13:11:27,755:Survey Assist - v1.0:Job Tracker excel spreadsheet not found
+
+[Errno 2] No such file or directory: 'C:\\Users\\rjwal_000\\PycharmProjects\\Survey Assist\\Test Files\\Survey Data\\2020\\Job Tracker Digital System.xlsm'
+Traceback (most recent call last):
+  File "C:\Users\rjwal_000\PycharmProjects\Survey Assist\job_tracker.py", line 19, in __init__
+    self.workbook = load_workbook(self.job_tracker_filepath, read_only=True)
+  File "C:\Python34\lib\site-packages\openpyxl\reader\excel.py", line 147, in load_workbook
+    archive = _validate_archive(filename)
+  File "C:\Python34\lib\site-packages\openpyxl\reader\excel.py", line 97, in _validate_archive
+    archive = ZipFile(filename, 'r')
+  File "C:\Python34\lib\zipfile.py", line 923, in __init__
+    self.fp = io.open(file, modeDict[mode])
+FileNotFoundError: [Errno 2] No such file or directory: 'C:\\Users\\rjwal_000\\PycharmProjects\\Survey Assist\\Test Files\\Survey Data\\2020\\Job Tracker Digital System.xlsm'
+2020-06-12 13:11:31,718:Survey Assist - v1.0:Job Tracker excel spreadsheet not found
+
+[Errno 2] No such file or directory: 'C:\\Users\\rjwal_000\\PycharmProjects\\Survey Assist\\Test Files\\Survey Data\\2020\\Job Tracker Digital System.xlsm'
+Traceback (most recent call last):
+  File "C:\Users\rjwal_000\PycharmProjects\Survey Assist\job_tracker.py", line 19, in __init__
+    self.workbook = load_workbook(self.job_tracker_filepath, read_only=True)
+  File "C:\Python34\lib\site-packages\openpyxl\reader\excel.py", line 147, in load_workbook
+    archive = _validate_archive(filename)
+  File "C:\Python34\lib\site-packages\openpyxl\reader\excel.py", line 97, in _validate_archive
+    archive = ZipFile(filename, 'r')
+  File "C:\Python34\lib\zipfile.py", line 923, in __init__
+    self.fp = io.open(file, modeDict[mode])
+FileNotFoundError: [Errno 2] No such file or directory: 'C:\\Users\\rjwal_000\\PycharmProjects\\Survey Assist\\Test Files\\Survey Data\\2020\\Job Tracker Digital System.xlsm'
+2020-06-12 13:12:33,899:Survey Assist - v1.0:Started Application
+
+2020-06-12 13:12:33,914:Survey Assist - v1.0:Job Tracker excel spreadsheet not found
+
+[Errno 2] No such file or directory: 'C:\\Users\\rjwal_000\\PycharmProjects\\Survey Assist\\Test Files\\Survey Data\\2020\\Job Tracker Digital System.xlsm'
+Traceback (most recent call last):
+  File "C:\Users\rjwal_000\PycharmProjects\Survey Assist\job_tracker.py", line 19, in __init__
+    self.workbook = load_workbook(self.job_tracker_filepath, read_only=True)
+  File "C:\Python34\lib\site-packages\openpyxl\reader\excel.py", line 147, in load_workbook
+    archive = _validate_archive(filename)
+  File "C:\Python34\lib\site-packages\openpyxl\reader\excel.py", line 97, in _validate_archive
+    archive = ZipFile(filename, 'r')
+  File "C:\Python34\lib\zipfile.py", line 923, in __init__
+    self.fp = io.open(file, modeDict[mode])
+FileNotFoundError: [Errno 2] No such file or directory: 'C:\\Users\\rjwal_000\\PycharmProjects\\Survey Assist\\Test Files\\Survey Data\\2020\\Job Tracker Digital System.xlsm'
+2020-06-12 13:12:36,910:Survey Assist - v1.0:Job Tracker excel spreadsheet not found
+
+[Errno 2] No such file or directory: 'C:\\Users\\rjwal_000\\PycharmProjects\\Survey Assist\\Test Files\\Survey Data\\2020\\Job Tracker Digital System.xlsm'
+Traceback (most recent call last):
+  File "C:\Users\rjwal_000\PycharmProjects\Survey Assist\job_tracker.py", line 19, in __init__
+    self.workbook = load_workbook(self.job_tracker_filepath, read_only=True)
+  File "C:\Python34\lib\site-packages\openpyxl\reader\excel.py", line 147, in load_workbook
+    archive = _validate_archive(filename)
+  File "C:\Python34\lib\site-packages\openpyxl\reader\excel.py", line 97, in _validate_archive
+    archive = ZipFile(filename, 'r')
+  File "C:\Python34\lib\zipfile.py", line 923, in __init__
+    self.fp = io.open(file, modeDict[mode])
+FileNotFoundError: [Errno 2] No such file or directory: 'C:\\Users\\rjwal_000\\PycharmProjects\\Survey Assist\\Test Files\\Survey Data\\2020\\Job Tracker Digital System.xlsm'
+2020-06-12 13:13:28,180:Survey Assist - v1.0:Started Application
+
+2020-06-12 13:13:28,195:Survey Assist - v1.0:Job Tracker excel spreadsheet not found
+
+[Errno 2] No such file or directory: 'C:\\Users\\rjwal_000\\PycharmProjects\\Survey Assist\\Test Files\\Survey Data\\2020\\Job Tracker Digital System.xlsm'
+Traceback (most recent call last):
+  File "C:\Users\rjwal_000\PycharmProjects\Survey Assist\job_tracker.py", line 19, in __init__
+    self.workbook = load_workbook(self.job_tracker_filepath, read_only=True)
+  File "C:\Python34\lib\site-packages\openpyxl\reader\excel.py", line 147, in load_workbook
+    archive = _validate_archive(filename)
+  File "C:\Python34\lib\site-packages\openpyxl\reader\excel.py", line 97, in _validate_archive
+    archive = ZipFile(filename, 'r')
+  File "C:\Python34\lib\zipfile.py", line 923, in __init__
+    self.fp = io.open(file, modeDict[mode])
+FileNotFoundError: [Errno 2] No such file or directory: 'C:\\Users\\rjwal_000\\PycharmProjects\\Survey Assist\\Test Files\\Survey Data\\2020\\Job Tracker Digital System.xlsm'
+2020-06-12 13:13:30,707:Survey Assist - v1.0:Job Tracker excel spreadsheet not found
+
+[Errno 2] No such file or directory: 'C:\\Users\\rjwal_000\\PycharmProjects\\Survey Assist\\Test Files\\Survey Data\\2020\\Job Tracker Digital System.xlsm'
+Traceback (most recent call last):
+  File "C:\Users\rjwal_000\PycharmProjects\Survey Assist\job_tracker.py", line 19, in __init__
+    self.workbook = load_workbook(self.job_tracker_filepath, read_only=True)
+  File "C:\Python34\lib\site-packages\openpyxl\reader\excel.py", line 147, in load_workbook
+    archive = _validate_archive(filename)
+  File "C:\Python34\lib\site-packages\openpyxl\reader\excel.py", line 97, in _validate_archive
+    archive = ZipFile(filename, 'r')
+  File "C:\Python34\lib\zipfile.py", line 923, in __init__
+    self.fp = io.open(file, modeDict[mode])
+FileNotFoundError: [Errno 2] No such file or directory: 'C:\\Users\\rjwal_000\\PycharmProjects\\Survey Assist\\Test Files\\Survey Data\\2020\\Job Tracker Digital System.xlsm'
+2020-06-12 13:14:36,700:Survey Assist - v1.0:Started Application
+
+2020-06-12 13:14:36,715:Survey Assist - v1.0:Job Tracker excel spreadsheet not found
+
+[Errno 2] No such file or directory: 'C:\\Users\\rjwal_000\\PycharmProjects\\Survey Assist\\Test Files\\Survey Data\\2020\\Job Tracker Digital System.xlsm'
+Traceback (most recent call last):
+  File "C:\Users\rjwal_000\PycharmProjects\Survey Assist\job_tracker.py", line 18, in __init__
+    self.workbook = load_workbook(self.job_tracker_filepath, read_only=True)
+  File "C:\Python34\lib\site-packages\openpyxl\reader\excel.py", line 147, in load_workbook
+    archive = _validate_archive(filename)
+  File "C:\Python34\lib\site-packages\openpyxl\reader\excel.py", line 97, in _validate_archive
+    archive = ZipFile(filename, 'r')
+  File "C:\Python34\lib\zipfile.py", line 923, in __init__
+    self.fp = io.open(file, modeDict[mode])
+FileNotFoundError: [Errno 2] No such file or directory: 'C:\\Users\\rjwal_000\\PycharmProjects\\Survey Assist\\Test Files\\Survey Data\\2020\\Job Tracker Digital System.xlsm'
+2020-06-12 13:14:42,956:Survey Assist - v1.0:Job Tracker excel spreadsheet not found
+
+[Errno 2] No such file or directory: 'C:\\Users\\rjwal_000\\PycharmProjects\\Survey Assist\\Test Files\\Survey Data\\2020\\Job Tracker Digital System.xlsm'
+Traceback (most recent call last):
+  File "C:\Users\rjwal_000\PycharmProjects\Survey Assist\job_tracker.py", line 18, in __init__
+    self.workbook = load_workbook(self.job_tracker_filepath, read_only=True)
+  File "C:\Python34\lib\site-packages\openpyxl\reader\excel.py", line 147, in load_workbook
+    archive = _validate_archive(filename)
+  File "C:\Python34\lib\site-packages\openpyxl\reader\excel.py", line 97, in _validate_archive
+    archive = ZipFile(filename, 'r')
+  File "C:\Python34\lib\zipfile.py", line 923, in __init__
+    self.fp = io.open(file, modeDict[mode])
+FileNotFoundError: [Errno 2] No such file or directory: 'C:\\Users\\rjwal_000\\PycharmProjects\\Survey Assist\\Test Files\\Survey Data\\2020\\Job Tracker Digital System.xlsm'
+2020-06-12 13:14:50,911:Survey Assist - v1.0:Started Application
+
+2020-06-12 13:14:50,927:Survey Assist - v1.0:Job Tracker excel spreadsheet not found
+
+[Errno 2] No such file or directory: 'C:\\Users\\rjwal_000\\PycharmProjects\\Survey Assist\\Test Files\\Survey Data\\2020\\Job Tracker Digital System.xlsm'
+Traceback (most recent call last):
+  File "C:\Users\rjwal_000\PycharmProjects\Survey Assist\job_tracker.py", line 18, in __init__
+    self.workbook = load_workbook(self.job_tracker_filepath, read_only=True)
+  File "C:\Python34\lib\site-packages\openpyxl\reader\excel.py", line 147, in load_workbook
+    archive = _validate_archive(filename)
+  File "C:\Python34\lib\site-packages\openpyxl\reader\excel.py", line 97, in _validate_archive
+    archive = ZipFile(filename, 'r')
+  File "C:\Python34\lib\zipfile.py", line 923, in __init__
+    self.fp = io.open(file, modeDict[mode])
+FileNotFoundError: [Errno 2] No such file or directory: 'C:\\Users\\rjwal_000\\PycharmProjects\\Survey Assist\\Test Files\\Survey Data\\2020\\Job Tracker Digital System.xlsm'
+2020-06-12 13:14:52,033:Survey Assist - v1.0:Job Tracker excel spreadsheet not found
+
+[Errno 2] No such file or directory: 'C:\\Users\\rjwal_000\\PycharmProjects\\Survey Assist\\Test Files\\Survey Data\\2020\\Job Tracker Digital System.xlsm'
+Traceback (most recent call last):
+  File "C:\Users\rjwal_000\PycharmProjects\Survey Assist\job_tracker.py", line 18, in __init__
+    self.workbook = load_workbook(self.job_tracker_filepath, read_only=True)
+  File "C:\Python34\lib\site-packages\openpyxl\reader\excel.py", line 147, in load_workbook
+    archive = _validate_archive(filename)
+  File "C:\Python34\lib\site-packages\openpyxl\reader\excel.py", line 97, in _validate_archive
+    archive = ZipFile(filename, 'r')
+  File "C:\Python34\lib\zipfile.py", line 923, in __init__
+    self.fp = io.open(file, modeDict[mode])
+FileNotFoundError: [Errno 2] No such file or directory: 'C:\\Users\\rjwal_000\\PycharmProjects\\Survey Assist\\Test Files\\Survey Data\\2020\\Job Tracker Digital System.xlsm'
+2020-06-12 13:18:02,356:Survey Assist - v1.0:Started Application
+
+2020-06-12 13:18:02,370:Survey Assist - v1.0:Job Tracker excel spreadsheet not found
+
+[Errno 2] No such file or directory: 'C:\\Users\\rjwal_000\\PycharmProjects\\Survey Assist\\Test Files\\Survey Data\\2020\\Job Tracker Digital System.xlsm'
+Traceback (most recent call last):
+  File "C:\Users\rjwal_000\PycharmProjects\Survey Assist\job_tracker.py", line 18, in __init__
+    self.workbook = load_workbook(self.job_tracker_filepath, read_only=True)
+  File "C:\Python34\lib\site-packages\openpyxl\reader\excel.py", line 147, in load_workbook
+    archive = _validate_archive(filename)
+  File "C:\Python34\lib\site-packages\openpyxl\reader\excel.py", line 97, in _validate_archive
+    archive = ZipFile(filename, 'r')
+  File "C:\Python34\lib\zipfile.py", line 923, in __init__
+    self.fp = io.open(file, modeDict[mode])
+FileNotFoundError: [Errno 2] No such file or directory: 'C:\\Users\\rjwal_000\\PycharmProjects\\Survey Assist\\Test Files\\Survey Data\\2020\\Job Tracker Digital System.xlsm'
+2020-06-12 13:18:06,152:Survey Assist - v1.0:Job Tracker excel spreadsheet not found
+
+[Errno 2] No such file or directory: 'C:\\Users\\rjwal_000\\PycharmProjects\\Survey Assist\\Test Files\\Survey Data\\2020\\Job Tracker Digital System.xlsm'
+Traceback (most recent call last):
+  File "C:\Users\rjwal_000\PycharmProjects\Survey Assist\job_tracker.py", line 18, in __init__
+    self.workbook = load_workbook(self.job_tracker_filepath, read_only=True)
+  File "C:\Python34\lib\site-packages\openpyxl\reader\excel.py", line 147, in load_workbook
+    archive = _validate_archive(filename)
+  File "C:\Python34\lib\site-packages\openpyxl\reader\excel.py", line 97, in _validate_archive
+    archive = ZipFile(filename, 'r')
+  File "C:\Python34\lib\zipfile.py", line 923, in __init__
+    self.fp = io.open(file, modeDict[mode])
+FileNotFoundError: [Errno 2] No such file or directory: 'C:\\Users\\rjwal_000\\PycharmProjects\\Survey Assist\\Test Files\\Survey Data\\2020\\Job Tracker Digital System.xlsm'
+2020-06-12 13:19:36,091:Survey Assist - v1.0:Started Application
+
+2020-06-12 13:19:41,112:Survey Assist - v1.0:Error has occurred in JobTracker init().
+
+insert_rows() got an unexpected keyword argument 'translate'
+Traceback (most recent call last):
+  File "C:/Users/rjwal_000/PycharmProjects/Survey Assist/main.py", line 2145, in save_job_to_excel
+    actions_sheet.insert_rows(idx=11, translate=True)
+TypeError: insert_rows() got an unexpected keyword argument 'translate'
+2020-06-12 13:23:55,337:Survey Assist - v1.0:Started Application
+
+2020-06-12 13:26:15,064:Survey Assist - v1.0:Started Application
+
+2020-06-12 13:26:18,002:Survey Assist - v1.0:Job Tracker excel spreadsheet currently in use
+
+[Errno 13] Permission denied: 'C:\\Users\\rjwal_000\\PycharmProjects\\Survey Assist\\Test Files\\Survey Data\\2020\\Job Tracker Digital System.xlsm'
+Traceback (most recent call last):
+  File "C:/Users/rjwal_000/PycharmProjects/Survey Assist/main.py", line 2153, in save_job_to_excel
+    workbook.save(filename=self.job_tracker_filepath)
+  File "C:\Python34\lib\site-packages\openpyxl\workbook\workbook.py", line 391, in save
+    save_workbook(self, filename)
+  File "C:\Python34\lib\site-packages\openpyxl\writer\excel.py", line 282, in save_workbook
+    archive = ZipFile(filename, 'w', ZIP_DEFLATED, allowZip64=True)
+  File "C:\Python34\lib\zipfile.py", line 923, in __init__
+    self.fp = io.open(file, modeDict[mode])
+PermissionError: [Errno 13] Permission denied: 'C:\\Users\\rjwal_000\\PycharmProjects\\Survey Assist\\Test Files\\Survey Data\\2020\\Job Tracker Digital System.xlsm'
+2020-06-12 13:40:10,275:Survey Assist - v1.0:Started Application
+
+2020-06-12 13:40:34,691:Survey Assist - v1.0:Started Application
+
+2020-06-12 13:50:32,318:Survey Assist - v1.0:Started Application
+
+2020-06-12 13:52:07,064:Survey Assist - v1.0:Started Application
+
+2020-06-12 13:52:07,094:Survey Assist - v1.0:Error has occurred in JobTracker init().
+
+'NoneType' object has no attribute 'strftime'
+Traceback (most recent call last):
+  File "C:\Users\rjwal_000\PycharmProjects\Survey Assist\job_tracker.py", line 20, in __init__
+    self.create_list_of_job_tracker_jobs()
+  File "C:\Users\rjwal_000\PycharmProjects\Survey Assist\job_tracker.py", line 42, in create_list_of_job_tracker_jobs
+    survey_job = SurveyJob(row[0].value, row[1].value.strftime('%d/%m/%Y'), row[2].value, row[3].value, row[4].value)
+AttributeError: 'NoneType' object has no attribute 'strftime'
+2020-06-12 13:52:08,736:Survey Assist - v1.0:Error has occurred in JobTracker init().
+
+'NoneType' object has no attribute 'strftime'
+Traceback (most recent call last):
+  File "C:\Users\rjwal_000\PycharmProjects\Survey Assist\job_tracker.py", line 20, in __init__
+    self.create_list_of_job_tracker_jobs()
+  File "C:\Users\rjwal_000\PycharmProjects\Survey Assist\job_tracker.py", line 42, in create_list_of_job_tracker_jobs
+    survey_job = SurveyJob(row[0].value, row[1].value.strftime('%d/%m/%Y'), row[2].value, row[3].value, row[4].value)
+AttributeError: 'NoneType' object has no attribute 'strftime'
+2020-06-12 13:53:40,542:Survey Assist - v1.0:Started Application
+
+2020-06-12 13:54:22,582:Survey Assist - v1.0:Started Application
+
+2020-06-12 13:54:22,619:Survey Assist - v1.0:Error has occurred in JobTracker init().
+
+'NoneType' object has no attribute 'strftime'
+Traceback (most recent call last):
+  File "C:\Users\rjwal_000\PycharmProjects\Survey Assist\job_tracker.py", line 20, in __init__
+    self.create_list_of_job_tracker_jobs()
+  File "C:\Users\rjwal_000\PycharmProjects\Survey Assist\job_tracker.py", line 43, in create_list_of_job_tracker_jobs
+    survey_job = SurveyJob(row[0].value, row[1].value.strftime('%d/%m/%Y'), row[2].value, row[3].value, row[4].value)
+AttributeError: 'NoneType' object has no attribute 'strftime'
+2020-06-12 13:54:24,758:Survey Assist - v1.0:Error has occurred in JobTracker init().
+
+'NoneType' object has no attribute 'strftime'
+Traceback (most recent call last):
+  File "C:\Users\rjwal_000\PycharmProjects\Survey Assist\job_tracker.py", line 20, in __init__
+    self.create_list_of_job_tracker_jobs()
+  File "C:\Users\rjwal_000\PycharmProjects\Survey Assist\job_tracker.py", line 43, in create_list_of_job_tracker_jobs
+    survey_job = SurveyJob(row[0].value, row[1].value.strftime('%d/%m/%Y'), row[2].value, row[3].value, row[4].value)
+AttributeError: 'NoneType' object has no attribute 'strftime'
+2020-06-12 13:55:26,709:Survey Assist - v1.0:Started Application
+
+2020-06-12 13:56:39,095:Survey Assist - v1.0:Started Application
+
+2020-06-12 14:10:29,131:Survey Assist - v1.0:Started Application
+
+2020-06-12 14:10:29,150:Survey Assist - v1.0:Job Tracker excel spreadsheet not found
+
+[Errno 2] No such file or directory: 'C:\\Users\\rjwal_000\\PycharmProjects\\Survey Assist\\Test Files\\Survey Data\\2020\\Job Tracker Digital System.xlsm'
+Traceback (most recent call last):
+  File "C:\Users\rjwal_000\PycharmProjects\Survey Assist\job_tracker.py", line 18, in __init__
+    self.workbook = load_workbook(self.job_tracker_filepath, read_only=True)
+  File "C:\Python34\lib\site-packages\openpyxl\reader\excel.py", line 147, in load_workbook
+    archive = _validate_archive(filename)
+  File "C:\Python34\lib\site-packages\openpyxl\reader\excel.py", line 97, in _validate_archive
+    archive = ZipFile(filename, 'r')
+  File "C:\Python34\lib\zipfile.py", line 923, in __init__
+    self.fp = io.open(file, modeDict[mode])
+FileNotFoundError: [Errno 2] No such file or directory: 'C:\\Users\\rjwal_000\\PycharmProjects\\Survey Assist\\Test Files\\Survey Data\\2020\\Job Tracker Digital System.xlsm'
+2020-06-12 14:10:30,500:Survey Assist - v1.0:Job Tracker excel spreadsheet not found
+
+[Errno 2] No such file or directory: 'C:\\Users\\rjwal_000\\PycharmProjects\\Survey Assist\\Test Files\\Survey Data\\2020\\Job Tracker Digital System.xlsm'
+Traceback (most recent call last):
+  File "C:\Users\rjwal_000\PycharmProjects\Survey Assist\job_tracker.py", line 18, in __init__
+    self.workbook = load_workbook(self.job_tracker_filepath, read_only=True)
+  File "C:\Python34\lib\site-packages\openpyxl\reader\excel.py", line 147, in load_workbook
+    archive = _validate_archive(filename)
+  File "C:\Python34\lib\site-packages\openpyxl\reader\excel.py", line 97, in _validate_archive
+    archive = ZipFile(filename, 'r')
+  File "C:\Python34\lib\zipfile.py", line 923, in __init__
+    self.fp = io.open(file, modeDict[mode])
+FileNotFoundError: [Errno 2] No such file or directory: 'C:\\Users\\rjwal_000\\PycharmProjects\\Survey Assist\\Test Files\\Survey Data\\2020\\Job Tracker Digital System.xlsm'
+2020-06-12 14:11:06,931:Survey Assist - v1.0:Started Application
+
+2020-06-12 14:12:58,385:Survey Assist - v1.0:Started Application
+
+2020-06-12 14:15:31,146:Survey Assist - v1.0:Started Application
+
+2020-06-12 14:15:31,178:Survey Assist - v1.0:Error has occurred in JobTracker init().
+
+'str' object has no attribute 'strftime'
+Traceback (most recent call last):
+  File "C:\Users\rjwal_000\PycharmProjects\Survey Assist\job_tracker.py", line 20, in __init__
+    self.create_list_of_job_tracker_jobs()
+  File "C:\Users\rjwal_000\PycharmProjects\Survey Assist\job_tracker.py", line 42, in create_list_of_job_tracker_jobs
+    survey_job = SurveyJob(row[0].value, row[1].value.strftime('%d/%m/%Y'), row[2].value, row[3].value, row[4].value)
+AttributeError: 'str' object has no attribute 'strftime'
+2020-06-12 14:15:32,646:Survey Assist - v1.0:Error has occurred in JobTracker init().
+
+'str' object has no attribute 'strftime'
+Traceback (most recent call last):
+  File "C:\Users\rjwal_000\PycharmProjects\Survey Assist\job_tracker.py", line 20, in __init__
+    self.create_list_of_job_tracker_jobs()
+  File "C:\Users\rjwal_000\PycharmProjects\Survey Assist\job_tracker.py", line 42, in create_list_of_job_tracker_jobs
+    survey_job = SurveyJob(row[0].value, row[1].value.strftime('%d/%m/%Y'), row[2].value, row[3].value, row[4].value)
+AttributeError: 'str' object has no attribute 'strftime'
+2020-06-12 14:16:41,147:Survey Assist - v1.0:Started Application
+
+2020-06-12 14:16:41,167:Survey Assist - v1.0:Job Tracker excel spreadsheet not found
+
+[Errno 2] No such file or directory: 'C:\\Users\\rjwal_000\\PycharmProjects\\Survey Assist\\Test Files\\Survey Data\\2020\\Job Tracker Digital System.xlsm'
+Traceback (most recent call last):
+  File "C:\Users\rjwal_000\PycharmProjects\Survey Assist\job_tracker.py", line 18, in __init__
+    self.workbook = load_workbook(self.job_tracker_filepath, read_only=True)
+  File "C:\Python34\lib\site-packages\openpyxl\reader\excel.py", line 147, in load_workbook
+    archive = _validate_archive(filename)
+  File "C:\Python34\lib\site-packages\openpyxl\reader\excel.py", line 97, in _validate_archive
+    archive = ZipFile(filename, 'r')
+  File "C:\Python34\lib\zipfile.py", line 923, in __init__
+    self.fp = io.open(file, modeDict[mode])
+FileNotFoundError: [Errno 2] No such file or directory: 'C:\\Users\\rjwal_000\\PycharmProjects\\Survey Assist\\Test Files\\Survey Data\\2020\\Job Tracker Digital System.xlsm'
+2020-06-12 14:16:42,863:Survey Assist - v1.0:Job Tracker excel spreadsheet not found
+
+[Errno 2] No such file or directory: 'C:\\Users\\rjwal_000\\PycharmProjects\\Survey Assist\\Test Files\\Survey Data\\2020\\Job Tracker Digital System.xlsm'
+Traceback (most recent call last):
+  File "C:\Users\rjwal_000\PycharmProjects\Survey Assist\job_tracker.py", line 18, in __init__
+    self.workbook = load_workbook(self.job_tracker_filepath, read_only=True)
+  File "C:\Python34\lib\site-packages\openpyxl\reader\excel.py", line 147, in load_workbook
+    archive = _validate_archive(filename)
+  File "C:\Python34\lib\site-packages\openpyxl\reader\excel.py", line 97, in _validate_archive
+    archive = ZipFile(filename, 'r')
+  File "C:\Python34\lib\zipfile.py", line 923, in __init__
+    self.fp = io.open(file, modeDict[mode])
+FileNotFoundError: [Errno 2] No such file or directory: 'C:\\Users\\rjwal_000\\PycharmProjects\\Survey Assist\\Test Files\\Survey Data\\2020\\Job Tracker Digital System.xlsm'
+2020-06-12 14:16:59,138:Survey Assist - v1.0:Started Application
+
+2020-06-12 14:24:36,283:Survey Assist - v1.0:Started Application
+
+2020-06-12 14:24:42,496:Survey Assist - v1.0:Error has occurred in JobTracker init().
+
+Value must be one of {'formula', 'percentile', 'num', 'percent', 'max', 'min'}
+Traceback (most recent call last):
+  File "C:/Users/rjwal_000/PycharmProjects/Survey Assist/main.py", line 2169, in save_job_to_excel
+    showValue = "None", minLength = 0, maxLength = 5)
+  File "C:\Python34\lib\site-packages\openpyxl\formatting\rule.py", line 288, in DataBarRule
+    start = FormatObject(start_type, start_value)
+  File "C:\Python34\lib\site-packages\openpyxl\formatting\rule.py", line 59, in __init__
+    self.type = type
+  File "C:\Python34\lib\site-packages\openpyxl\descriptors\base.py", line 130, in __set__
+    raise ValueError(self.__doc__)
+ValueError: Value must be one of {'formula', 'percentile', 'num', 'percent', 'max', 'min'}
+2020-06-12 14:25:15,166:Survey Assist - v1.0:Started Application
+
+2020-06-12 14:25:20,812:Survey Assist - v1.0:Job Tracker excel spreadsheet currently in use
+
+[Errno 13] Permission denied: 'C:\\Users\\rjwal_000\\PycharmProjects\\Survey Assist\\Test Files\\Survey Data\\2020\\Job Tracker Digital System.xlsm'
+Traceback (most recent call last):
+  File "C:/Users/rjwal_000/PycharmProjects/Survey Assist/main.py", line 2173, in save_job_to_excel
+    workbook.save(filename=self.job_tracker_filepath)
+  File "C:\Python34\lib\site-packages\openpyxl\workbook\workbook.py", line 391, in save
+    save_workbook(self, filename)
+  File "C:\Python34\lib\site-packages\openpyxl\writer\excel.py", line 282, in save_workbook
+    archive = ZipFile(filename, 'w', ZIP_DEFLATED, allowZip64=True)
+  File "C:\Python34\lib\zipfile.py", line 923, in __init__
+    self.fp = io.open(file, modeDict[mode])
+PermissionError: [Errno 13] Permission denied: 'C:\\Users\\rjwal_000\\PycharmProjects\\Survey Assist\\Test Files\\Survey Data\\2020\\Job Tracker Digital System.xlsm'
+2020-06-12 14:33:08,499:Survey Assist - v1.0:Started Application
+
+2020-06-12 14:33:08,531:Survey Assist - v1.0:Error has occurred in JobTracker init().
+
+'str' object has no attribute 'strftime'
+Traceback (most recent call last):
+  File "C:\Users\rjwal_000\PycharmProjects\Survey Assist\job_tracker.py", line 20, in __init__
+    self.create_list_of_job_tracker_jobs()
+  File "C:\Users\rjwal_000\PycharmProjects\Survey Assist\job_tracker.py", line 42, in create_list_of_job_tracker_jobs
+    survey_job = SurveyJob(row[0].value, row[1].value.strftime('%d/%m/%Y'), row[2].value, row[3].value, row[4].value)
+AttributeError: 'str' object has no attribute 'strftime'
+2020-06-12 14:33:10,270:Survey Assist - v1.0:Error has occurred in JobTracker init().
+
+'str' object has no attribute 'strftime'
+Traceback (most recent call last):
+  File "C:\Users\rjwal_000\PycharmProjects\Survey Assist\job_tracker.py", line 20, in __init__
+    self.create_list_of_job_tracker_jobs()
+  File "C:\Users\rjwal_000\PycharmProjects\Survey Assist\job_tracker.py", line 42, in create_list_of_job_tracker_jobs
+    survey_job = SurveyJob(row[0].value, row[1].value.strftime('%d/%m/%Y'), row[2].value, row[3].value, row[4].value)
+AttributeError: 'str' object has no attribute 'strftime'
+2020-06-12 14:34:08,922:Survey Assist - v1.0:Started Application
+
+2020-06-12 14:34:40,538:Survey Assist - v1.0:Started Application
+
+2020-06-12 14:34:40,567:Survey Assist - v1.0:Error has occurred in JobTracker init().
+
+'str' object has no attribute 'strftime'
+Traceback (most recent call last):
+  File "C:\Users\rjwal_000\PycharmProjects\Survey Assist\job_tracker.py", line 20, in __init__
+    self.create_list_of_job_tracker_jobs()
+  File "C:\Users\rjwal_000\PycharmProjects\Survey Assist\job_tracker.py", line 42, in create_list_of_job_tracker_jobs
+    survey_job = SurveyJob(row[0].value, row[1].value.strftime('%d/%m/%Y'), row[2].value, row[3].value, row[4].value)
+AttributeError: 'str' object has no attribute 'strftime'
+2020-06-12 14:34:42,085:Survey Assist - v1.0:Error has occurred in JobTracker init().
+
+'str' object has no attribute 'strftime'
+Traceback (most recent call last):
+  File "C:\Users\rjwal_000\PycharmProjects\Survey Assist\job_tracker.py", line 20, in __init__
+    self.create_list_of_job_tracker_jobs()
+  File "C:\Users\rjwal_000\PycharmProjects\Survey Assist\job_tracker.py", line 42, in create_list_of_job_tracker_jobs
+    survey_job = SurveyJob(row[0].value, row[1].value.strftime('%d/%m/%Y'), row[2].value, row[3].value, row[4].value)
+AttributeError: 'str' object has no attribute 'strftime'
+2020-06-12 14:35:51,767:Survey Assist - v1.0:Started Application
+
+2020-06-12 14:35:51,798:Survey Assist - v1.0:Error has occurred in JobTracker init().
+
+'str' object has no attribute 'strftime'
+Traceback (most recent call last):
+  File "C:\Users\rjwal_000\PycharmProjects\Survey Assist\job_tracker.py", line 20, in __init__
+    self.create_list_of_job_tracker_jobs()
+  File "C:\Users\rjwal_000\PycharmProjects\Survey Assist\job_tracker.py", line 42, in create_list_of_job_tracker_jobs
+    survey_job = SurveyJob(row[0].value, row[1].value.strftime('%d/%m/%Y'), row[2].value, row[3].value, row[4].value)
+AttributeError: 'str' object has no attribute 'strftime'
+2020-06-12 14:35:53,088:Survey Assist - v1.0:Error has occurred in JobTracker init().
+
+'str' object has no attribute 'strftime'
+Traceback (most recent call last):
+  File "C:\Users\rjwal_000\PycharmProjects\Survey Assist\job_tracker.py", line 20, in __init__
+    self.create_list_of_job_tracker_jobs()
+  File "C:\Users\rjwal_000\PycharmProjects\Survey Assist\job_tracker.py", line 42, in create_list_of_job_tracker_jobs
+    survey_job = SurveyJob(row[0].value, row[1].value.strftime('%d/%m/%Y'), row[2].value, row[3].value, row[4].value)
+AttributeError: 'str' object has no attribute 'strftime'
+2020-06-12 14:36:59,142:Survey Assist - v1.0:Started Application
+
+2020-06-12 14:36:59,171:Survey Assist - v1.0:Error has occurred in JobTracker init().
+
+'str' object is not callable
+Traceback (most recent call last):
+  File "C:\Users\rjwal_000\PycharmProjects\Survey Assist\job_tracker.py", line 20, in __init__
+    self.create_list_of_job_tracker_jobs()
+  File "C:\Users\rjwal_000\PycharmProjects\Survey Assist\job_tracker.py", line 43, in create_list_of_job_tracker_jobs
+    survey_job = SurveyJob(row[0].value, survey_date('%d/%m/%Y'), row[2].value, row[3].value, row[4].value)
+TypeError: 'str' object is not callable
+2020-06-12 14:37:00,210:Survey Assist - v1.0:Error has occurred in JobTracker init().
+
+'str' object is not callable
+Traceback (most recent call last):
+  File "C:\Users\rjwal_000\PycharmProjects\Survey Assist\job_tracker.py", line 20, in __init__
+    self.create_list_of_job_tracker_jobs()
+  File "C:\Users\rjwal_000\PycharmProjects\Survey Assist\job_tracker.py", line 43, in create_list_of_job_tracker_jobs
+    survey_job = SurveyJob(row[0].value, survey_date('%d/%m/%Y'), row[2].value, row[3].value, row[4].value)
+TypeError: 'str' object is not callable
+2020-06-12 14:37:09,179:Survey Assist - v1.0:Started Application
+
+2020-06-12 14:37:31,528:Survey Assist - v1.0:Error has occurred in JobTracker init().
+
+'str' object is not callable
+Traceback (most recent call last):
+  File "C:\Users\rjwal_000\PycharmProjects\Survey Assist\job_tracker.py", line 20, in __init__
+    self.create_list_of_job_tracker_jobs()
+  File "C:\Users\rjwal_000\PycharmProjects\Survey Assist\job_tracker.py", line 43, in create_list_of_job_tracker_jobs
+    survey_job = SurveyJob(row[0].value, survey_date('%d/%m/%Y'), row[2].value, row[3].value, row[4].value)
+TypeError: 'str' object is not callable
+2020-06-12 14:38:53,758:Survey Assist - v1.0:Started Application
+
+2020-06-12 14:39:26,705:Survey Assist - v1.0:Started Application
+
+2020-06-12 14:44:56,101:Survey Assist - v1.0:Started Application
+
+2020-06-12 14:49:22,845:Survey Assist - v1.0:Started Application
+
+2020-06-12 14:50:00,455:Survey Assist - v1.0:Started Application
+

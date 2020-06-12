@@ -18,7 +18,9 @@ KNOWN BUGS
 
 """
 
-from openpyxl import load_workbook
+from openpyxl.formatting.rule import DataBar, FormatObject
+from openpyxl.formatting.rule import DataBarRule
+from openpyxl.formatting.rule import Rule
 import tkinter.messagebox
 import logging.config
 from job_tracker import *
@@ -2035,6 +2037,8 @@ class JobTrackerBar(tk.Frame):
         self.user_initials = user_initials
         self.todays_date = datetime.datetime.today().strftime('%d/%m/%Y')
         self.job_tracker_filepath = os.path.join(survey_config.root_job_directory, survey_config.current_year, survey_config.job_tracker_filename)
+        self.job_tracker_backup_filepath = os.path.join(survey_config.root_job_directory, survey_config.current_year,
+                                                      survey_config.job_tracker_filename)
 
         self.job_tracker = JobTracker(self.job_tracker_filepath, logger)
 
@@ -2046,10 +2050,7 @@ class JobTrackerBar(tk.Frame):
         self.job_name = tk.StringVar()
         self.jt_job_name_combo = ttk.Combobox(self.frame, width=35, textvariable=self.job_name)
 
-        self.job_names = self.job_tracker.get_job_names()
-        self.job_names.insert(0, "<<Enter New Job>>")
-
-        self.jt_job_name_combo['values'] = self.job_names
+        self.jt_job_name_combo['values'] = self.get_combobox_values()
         self.jt_job_name_combo.bind("<<ComboboxSelected>>", self.cb_callback)
 
         self.jt_job_name_combo.current(0)
@@ -2111,6 +2112,14 @@ class JobTrackerBar(tk.Frame):
             self.jt_calcs_checkbox.deselect()
             self.jt_results_checkbox.deselect()
 
+    def get_combobox_values(self):
+
+        self.job_tracker = JobTracker(self.job_tracker_filepath, logger)
+        self.job_names = self.job_tracker.get_job_names()
+        self.job_names.insert(0, "<<Enter New Job>>")
+
+        return self.job_names
+
     def choose_date(self):
 
         # Let user choose the date, rather than the default todays date
@@ -2135,14 +2144,47 @@ class JobTrackerBar(tk.Frame):
             actions_sheet = workbook["Actions"]
 
             # inserts blank row at row 11 and populate
-            actions_sheet.insert_rows(idx=12)
+            actions_sheet.insert_rows(idx=11)
             actions_sheet["A11"] = self.jt_job_name_combo.get()
             actions_sheet["B11"] = self.jt_date_btn['text']
             actions_sheet["C11"] = self.jt_user_lbl['text']
-            actions_sheet["D11"] = self.calcs_checkbox_var.get()
-            actions_sheet["E11"] = self.results_checkbox_var.get()
+            if self.calcs_checkbox_var.get() == '1':
+                actions_sheet["D11"] = 1
+            else:
+                actions_sheet["D11"] = ''
+            if self.results_checkbox_var.get() == '1':
+                actions_sheet["D11"] = 1
+            else:
+                actions_sheet["D11"] = ''
+            actions_sheet["J11"] = '=SUM(D11:H11)'
 
+            # create conditional formatting
+            # first = FormatObject(type='min')
+            # second = FormatObject(type='max')
+            # data_bar = DataBar(cfvo=[first, second], color="638EC6", showValue=None, minLength=None, maxLength=None)
+            # assign the data bar to a rule
+            # rule = Rule(type='dataBar', dataBar=data_bar)
+
+            rule = DataBarRule(start_type='num', start_value=0, end_type='num', end_value=5, color = "FF638EC6",
+                               showValue = False, minLength = 0, maxLength = 100)
+
+            actions_sheet.conditional_formatting.add('J11:J1000', rule)
+
+            # fo1 = FormatObject(type="num", val="0")
+            # fo2 = FormatObject(type="num", val="100")
+            # db = DataBar(
+            #     minLength=0,
+            #     maxLength=5,
+            #     cfvo=[fo1, fo2],
+            #     color="FF2266",
+            #     showValue=True
+            # )
+            #
+            # cfRule = Rule(type='dataBar', dataBar=db)
+            # actions_sheet.conditional_formatting.add('J11:J1000', cfRule)
+            #
             workbook.save(filename=self.job_tracker_filepath)
+            workbook.close()
 
         except FileNotFoundError as ex:
 
@@ -2162,6 +2204,9 @@ class JobTrackerBar(tk.Frame):
             logger.exception('Error has occurred in JobTracker init().\n\n' + str(ex))
 
             tk.messagebox.showerror("ERROR", 'An unexpected error has occurred reading the excel Job Tracker.  Please contact the developer')
+
+        else:
+            tk.messagebox.showinfo("Survey Assist", 'Job Saved')
 
 
 class MainWindow(tk.Frame):
