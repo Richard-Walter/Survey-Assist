@@ -35,11 +35,11 @@ class JobTracker:
 
     def create_list_of_job_tracker_jobs(self):
 
-        # read in the first 10 jobs only otherwises the combobox gets too large
-        for row in self.active_sheet.iter_rows(min_row=11, max_row=21, min_col=1, max_col=4):
+        # read in the first 20 jobs only otherwises the combobox gets too large
+        for row in self.active_sheet.iter_rows(min_row=11, max_row=31, min_col=1, max_col=5):
 
             # create a survey job and add to list
-            survey_job = SurveyJob(row[0].value, row[1].value, row[2].value, row[3].value)
+            survey_job = SurveyJob(row[0].value, row[1].value.strftime('%d/%m/%Y'), row[2].value, row[3].value, row[4].value)
             self.survey_job_list.append(survey_job)
 
     def get_job_names(self):
@@ -59,11 +59,12 @@ class JobTracker:
 
 class SurveyJob:
 
-    def __init__(self, job_name, survey_date='self.todays_date', calcs='', results=''):
+    def __init__(self, job_name, survey_date='', initials='', calcs='', results=''):
         super().__init__()
 
         self.job_name = job_name
         self.survey_date = survey_date
+        self.initials = initials
         self.calcs = calcs
         self.results = results
 

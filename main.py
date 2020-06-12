@@ -2044,7 +2044,7 @@ class JobTrackerBar(tk.Frame):
 
         # Combobox
         self.job_name = tk.StringVar()
-        self.jt_job_name_combo = ttk.Combobox(self.frame, width=18, textvariable=self.job_name)
+        self.jt_job_name_combo = ttk.Combobox(self.frame, width=35, textvariable=self.job_name)
 
         self.jt_job_name_combo['values'] = self.job_tracker.get_job_names()
         self.jt_job_name_combo.bind("<<ComboboxSelected>>", self.cb_callback)
@@ -2067,7 +2067,8 @@ class JobTrackerBar(tk.Frame):
         results_checkbox_var = tk.IntVar()
         self.jt_calcs_checkbox = tk.Checkbutton(self.frame, text='Calcs', variable=calcs_checkbox_var, onvalue=1, offvalue=0, command=self.save_job)
         self.jt_calcs_checkbox.configure(background='#d9f2d8')
-        self.jt_results_checkbox = tk.Checkbutton(self.frame, text='Results', variable=results_checkbox_var, onvalue=1, offvalue=0, command=self.save_job)
+        self.jt_results_checkbox = tk.Checkbutton(self.frame, text='Results', variable=results_checkbox_var, onvalue=1, offvalue=0,
+                                                  command=self.save_job)
         self.jt_results_checkbox.configure(background='#d9f2d8')
 
         self.btn_new_job = tk.Button(self.frame, text="New Job", command=lambda: gui_app.menu_bar.job_tracker_new_job)
@@ -2087,10 +2088,25 @@ class JobTrackerBar(tk.Frame):
 
 
     def cb_callback(self, event):
-        print("New Element Selected")
+
+        # get job details and populate job tracker widget
+        survey_job = self.job_tracker.get_job(self.jt_job_name_combo.get())
+        self.jt_date_btn.configure(text=survey_job.survey_date)
+        self.jt_user_lbl.configure(text=survey_job.initials)
+        self.jt_calcs_checkbox.configure(text=survey_job.calcs)
+
+        if survey_job.calcs == 1:
+            self.jt_calcs_checkbox.select()
+        else:
+            self.jt_calcs_checkbox.deselect()
+        if survey_job.results == 1:
+            self.jt_results_checkbox.select()
+        else:
+            self.jt_results_checkbox.deselect()
 
 
     def choose_date(self):
+
         # Let user choose the date, rather than the default todays date
         cal_root = tk.Toplevel()
         cal = CalendarWindow(cal_root, todays_date)
