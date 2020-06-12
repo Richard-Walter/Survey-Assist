@@ -295,3 +295,76 @@
 
 2020-06-11 16:06:16,759:Survey Assist - v1.0:Started Application
 
+2020-06-11 16:08:13,882:Survey Assist - v1.0:Started Application
+
+2020-06-11 16:37:48,274:Survey Assist - v1.0:Started Application
+
+2020-06-11 16:41:52,681:Survey Assist - v1.0:Started Application
+
+2020-06-11 16:42:17,916:Survey Assist - v1.0:Started Application
+
+2020-06-11 16:46:46,831:Survey Assist - v1.0:Started Application
+
+2020-06-11 16:53:18,765:Survey Assist - v1.0:Started Application
+
+2020-06-11 16:53:59,297:Survey Assist - v1.0:Started Application
+
+2020-06-11 16:55:50,213:Survey Assist - v1.0:Started Application
+
+2020-06-11 16:57:10,400:Survey Assist - v1.0:Started Application
+
+2020-06-11 16:57:20,727:Survey Assist - v1.0:Started Application
+
+2020-06-11 17:00:53,574:Survey Assist - v1.0:Started Application
+
+2020-06-11 17:01:47,705:Survey Assist - v1.0:Started Application
+
+2020-06-12 09:16:10,538:Survey Assist - v1.0:Started Application
+
+2020-06-12 09:28:21,922:Survey Assist - v1.0:Started Application
+
+2020-06-12 09:28:50,853:Survey Assist - v1.0:Started Application
+
+2020-06-12 09:29:09,124:Survey Assist - v1.0:Started Application
+
+2020-06-12 09:58:52,723:Survey Assist - v1.0:Started Application
+
+2020-06-12 09:58:52,743:Survey Assist - v1.0:Error has occurred in JobTracker init().
+
+[Errno 2] No such file or directory: 'C:\\Users\\rjwal_000\\PycharmProjects\\Survey Assist\\Test Files\\Survey Data\\2020\\Job Tracker Digital System.xlsm'
+Traceback (most recent call last):
+  File "C:\Users\rjwal_000\PycharmProjects\Survey Assist\job_tracker.py", line 19, in __init__
+    self.workbook = load_workbook(self.job_tracker_filepath, read_only=True)
+  File "C:\Python34\lib\site-packages\openpyxl\reader\excel.py", line 147, in load_workbook
+    archive = _validate_archive(filename)
+  File "C:\Python34\lib\site-packages\openpyxl\reader\excel.py", line 97, in _validate_archive
+    archive = ZipFile(filename, 'r')
+  File "C:\Python34\lib\zipfile.py", line 923, in __init__
+    self.fp = io.open(file, modeDict[mode])
+FileNotFoundError: [Errno 2] No such file or directory: 'C:\\Users\\rjwal_000\\PycharmProjects\\Survey Assist\\Test Files\\Survey Data\\2020\\Job Tracker Digital System.xlsm'
+2020-06-12 10:03:23,450:Survey Assist - v1.0:Started Application
+
+2020-06-12 10:03:23,488:Survey Assist - v1.0:Job Tracker excel spreadsheet not found
+
+[Errno 2] No such file or directory: 'C:\\Users\\rjwal_000\\PycharmProjects\\Survey Assist\\Test Files\\Survey Data\\2020\\Job Tracker Digital System.xlsm'
+Traceback (most recent call last):
+  File "C:\Users\rjwal_000\PycharmProjects\Survey Assist\job_tracker.py", line 19, in __init__
+    self.workbook = load_workbook(self.job_tracker_filepath, read_only=True)
+  File "C:\Python34\lib\site-packages\openpyxl\reader\excel.py", line 147, in load_workbook
+    archive = _validate_archive(filename)
+  File "C:\Python34\lib\site-packages\openpyxl\reader\excel.py", line 97, in _validate_archive
+    archive = ZipFile(filename, 'r')
+  File "C:\Python34\lib\zipfile.py", line 923, in __init__
+    self.fp = io.open(file, modeDict[mode])
+FileNotFoundError: [Errno 2] No such file or directory: 'C:\\Users\\rjwal_000\\PycharmProjects\\Survey Assist\\Test Files\\Survey Data\\2020\\Job Tracker Digital System.xlsm'
+2020-06-12 10:03:37,191:Survey Assist - v1.0:An unexpected error has occurred
+
+btn_job_tracker()
+
+[WinError 2] The system cannot find the file specified: 'C:\\Users\\rjwal_000\\PycharmProjects\\Survey Assist\\Test Files\\Survey Data\\2020\\Job Tracker Digital System.xlsm'
+Traceback (most recent call last):
+  File "C:/Users/rjwal_000/PycharmProjects/Survey Assist/main.py", line 1565, in job_tracker_open_excel
+    os.startfile(self.job_tracker_filepath)
+FileNotFoundError: [WinError 2] The system cannot find the file specified: 'C:\\Users\\rjwal_000\\PycharmProjects\\Survey Assist\\Test Files\\Survey Data\\2020\\Job Tracker Digital System.xlsm'
+2020-06-12 10:03:53,109:Survey Assist - v1.0:Started Application
+

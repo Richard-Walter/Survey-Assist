@@ -18,8 +18,10 @@ KNOWN BUGS
 
 """
 
+from openpyxl import load_workbook
 import tkinter.messagebox
 import logging.config
+from job_tracker import *
 from tkinter import filedialog
 from GSI import *
 from GSI import GSIDatabase, CorruptedGSIFileError, GSIFileContents
@@ -146,8 +148,8 @@ class MenuBar(tk.Frame):
 
         # Job Tracker
         self.job_tracker_sub_menu = tk.Menu(self.menu_bar, tearoff=0)
-        self.job_tracker_sub_menu.add_command(label="Create new Job ", command=self.job_tracker_new_job, state="disabled")
-        self.job_tracker_sub_menu.add_command(label="Track a Job", command=self.job_tracker_track, state="disabled")
+        self.job_tracker_sub_menu.add_command(label="Create new Job ", command=self.job_tracker_new_job)
+        self.job_tracker_sub_menu.add_command(label="Track a Job", command=self.job_tracker_track)
         self.job_tracker_sub_menu.add_command(label="Open Job Tracker in excel", command=self.job_tracker_open_excel)
         self.menu_bar.add_cascade(label="Job Tracker", menu=self.job_tracker_sub_menu)
 
@@ -2032,8 +2034,9 @@ class JobTrackerBar(tk.Frame):
         self.frame.configure(background='#d9f2d8')
         self.user_initials = user_initials
         self.survey_date = datetime.datetime.today().strftime('%d/%m/%Y')
-        self.job_tracker_filepath = os.path.join(survey_config.root_job_directory, survey_config.default_survey_type, survey_config.current_year,
-                                                 survey_config.job_tracker_filename)
+        self.job_tracker_filepath = os.path.join(survey_config.root_job_directory, survey_config.current_year, survey_config.job_tracker_filename)
+
+        self.job_tracker = JobTracker(self.job_tracker_filepath, survey_config, logger)
 
         # Create widgets
         self.jt_lbl = tk.Label(self.frame, text='JOB TRACKER:')
@@ -2043,7 +2046,7 @@ class JobTrackerBar(tk.Frame):
         self.job_name = tk.StringVar()
         self.jt_job_name_combo = ttk.Combobox(self.frame, width=18, textvariable=self.job_name)
 
-        self.jt_job_name_combo['values'] = self.get_job_names()
+        self.jt_job_name_combo['values'] = self.job_tracker.get_job_names()
         self.jt_job_name_combo.bind("<<ComboboxSelected>>", self.cb_callback)
 
         # self.jt_job_name_combo.set("C")
@@ -2085,23 +2088,6 @@ class JobTrackerBar(tk.Frame):
 
     def cb_callback(self, event):
         print("New Element Selected")
-
-
-    def get_job_names(self):
-
-        return ['A', 'B', 'C']
-
-    def read_job_tracker(self):
-
-        pass
-        # with open(self.job_tracker_filepath) as csv_file:
-        #     reader = csv.DictReader(csv_file)
-        #     keys = reader.fieldnames
-        #     r = csv.reader(csv_file)
-        #     self.diary_data = ([OrderedDict(zip(keys, row)) for row in r])
-        #
-        # for i, item in enumerate(self.diary_data):
-        #     item['RECID'] = i
 
 
     def choose_date(self):
@@ -4096,7 +4082,7 @@ class GUIApplication(tk.Frame):
 
         self.workflow_bar = WorkflowBar(self.main_window)
         self.job_tracker_bar = JobTrackerBar(self.main_window, self.menu_bar.user_config.user_initials)
-        self.job_tracker_bar.hide_job_tracker_bar()
+        # self.job_tracker_bar.hide_job_tracker_bar()
         self.list_box = ListBoxFrame(self.main_window)
         self.workflow_bar.pack(fill="x")
         self.job_tracker_bar.pack(fill="x")
