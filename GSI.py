@@ -172,7 +172,8 @@ class GSI:
         new_point_id_field_value = prefix + new_point_name_suffix
 
         # now replace the old value with the new one
-        unformatted_line = unformatted_line.replace(org_point_id_value, new_point_id_field_value)
+        # unformatted_line = unformatted_line.replace(org_point_id_value, new_point_id_field_value)
+        unformatted_line = new_point_id_field_value + unformatted_line[24:]
 
         # update the raw gsi lines
         self.unformatted_lines[line_number - 1] = unformatted_line
