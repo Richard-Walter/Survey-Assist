@@ -1149,3 +1149,200 @@ TypeError: Can't convert 'int' object to str implicitly
 
 2020-06-12 16:41:35,319:Survey Assist - v1.0:Started Application
 
+2020-06-14 15:52:47,086:Survey Assist - v1.0:Started Application
+
+2020-06-14 15:53:17,588:Survey Assist - v1.0:Started Application
+
+2020-06-14 15:55:30,372:Survey Assist - v1.0:Started Application
+
+2020-06-14 15:56:39,789:Survey Assist - v1.0:Started Application
+
+2020-06-14 15:59:01,013:Survey Assist - v1.0:Started Application
+
+2020-06-14 15:59:40,995:Survey Assist - v1.0:Started Application
+
+2020-06-14 15:59:55,998:Survey Assist - v1.0:Started Application
+
+2020-06-14 16:00:35,546:Survey Assist - v1.0:Job Tracker excel spreadsheet currently in use
+
+[Errno 13] Permission denied: 'C:\\Users\\rjwal_000\\PycharmProjects\\Survey Assist\\Test Files\\Survey Data\\2020\\Job Tracker Digital System.xlsm'
+Traceback (most recent call last):
+  File "C:/Users/rjwal_000/PycharmProjects/Survey Assist/main.py", line 2186, in save_job_to_excel
+    workbook.save(filename=self.job_tracker_filepath)
+  File "C:\Python34\lib\site-packages\openpyxl\workbook\workbook.py", line 391, in save
+    save_workbook(self, filename)
+  File "C:\Python34\lib\site-packages\openpyxl\writer\excel.py", line 282, in save_workbook
+    archive = ZipFile(filename, 'w', ZIP_DEFLATED, allowZip64=True)
+  File "C:\Python34\lib\zipfile.py", line 923, in __init__
+    self.fp = io.open(file, modeDict[mode])
+PermissionError: [Errno 13] Permission denied: 'C:\\Users\\rjwal_000\\PycharmProjects\\Survey Assist\\Test Files\\Survey Data\\2020\\Job Tracker Digital System.xlsm'
+2020-06-14 16:02:59,087:Survey Assist - v1.0:Job Tracker excel spreadsheet currently in use
+
+[Errno 13] Permission denied: 'C:\\Users\\rjwal_000\\PycharmProjects\\Survey Assist\\Test Files\\Survey Data\\2020\\Job Tracker Digital System.xlsm'
+Traceback (most recent call last):
+  File "C:/Users/rjwal_000/PycharmProjects/Survey Assist/main.py", line 2186, in save_job_to_excel
+    workbook.save(filename=self.job_tracker_filepath)
+  File "C:\Python34\lib\site-packages\openpyxl\workbook\workbook.py", line 391, in save
+    save_workbook(self, filename)
+  File "C:\Python34\lib\site-packages\openpyxl\writer\excel.py", line 282, in save_workbook
+    archive = ZipFile(filename, 'w', ZIP_DEFLATED, allowZip64=True)
+  File "C:\Python34\lib\zipfile.py", line 923, in __init__
+    self.fp = io.open(file, modeDict[mode])
+PermissionError: [Errno 13] Permission denied: 'C:\\Users\\rjwal_000\\PycharmProjects\\Survey Assist\\Test Files\\Survey Data\\2020\\Job Tracker Digital System.xlsm'
+2020-06-14 16:04:51,025:Survey Assist - v1.0:Started Application
+
+2020-06-14 16:05:53,253:Survey Assist - v1.0:Started Application
+
+2020-06-14 16:09:30,124:Survey Assist - v1.0:Started Application
+
+2020-06-14 16:15:37,754:Survey Assist - v1.0:Started Application
+
+2020-06-14 16:15:37,827:Survey Assist - v1.0:Error has occurred in JobTracker init().
+
+'datetime.datetime' object has no attribute 'split'
+Traceback (most recent call last):
+  File "C:\Users\rjwal_000\PycharmProjects\Survey Assist\job_tracker.py", line 20, in __init__
+    self.create_list_of_job_tracker_jobs()
+  File "C:\Users\rjwal_000\PycharmProjects\Survey Assist\job_tracker.py", line 44, in create_list_of_job_tracker_jobs
+    survey_job = SurveyJob(row[0].value, survey_date, row[2].value, row[3].value, row[4].value)
+  File "C:\Users\rjwal_000\PycharmProjects\Survey Assist\job_tracker.py", line 68, in __init__
+    self.survey_date = survey_date.split()[0]   #we only want the date not the timestamp
+AttributeError: 'datetime.datetime' object has no attribute 'split'
+2020-06-14 16:15:39,525:Survey Assist - v1.0:Error has occurred in JobTracker init().
+
+'datetime.datetime' object has no attribute 'split'
+Traceback (most recent call last):
+  File "C:\Users\rjwal_000\PycharmProjects\Survey Assist\job_tracker.py", line 20, in __init__
+    self.create_list_of_job_tracker_jobs()
+  File "C:\Users\rjwal_000\PycharmProjects\Survey Assist\job_tracker.py", line 44, in create_list_of_job_tracker_jobs
+    survey_job = SurveyJob(row[0].value, survey_date, row[2].value, row[3].value, row[4].value)
+  File "C:\Users\rjwal_000\PycharmProjects\Survey Assist\job_tracker.py", line 68, in __init__
+    self.survey_date = survey_date.split()[0]   #we only want the date not the timestamp
+AttributeError: 'datetime.datetime' object has no attribute 'split'
+2020-06-14 16:17:00,568:Survey Assist - v1.0:Started Application
+
+2020-06-14 16:17:12,531:Survey Assist - v1.0:Error has occurred in JobTracker init().
+
+'str' object has no attribute 'strftime'
+Traceback (most recent call last):
+  File "C:\Users\rjwal_000\PycharmProjects\Survey Assist\job_tracker.py", line 20, in __init__
+    self.create_list_of_job_tracker_jobs()
+  File "C:\Users\rjwal_000\PycharmProjects\Survey Assist\job_tracker.py", line 44, in create_list_of_job_tracker_jobs
+    survey_job = SurveyJob(row[0].value, survey_date, row[2].value, row[3].value, row[4].value)
+  File "C:\Users\rjwal_000\PycharmProjects\Survey Assist\job_tracker.py", line 68, in __init__
+    self.survey_date = survey_date.strftime('%d/%m/%Y')
+AttributeError: 'str' object has no attribute 'strftime'
+2020-06-14 16:17:21,300:Survey Assist - v1.0:Error has occurred in JobTracker init().
+
+'str' object has no attribute 'strftime'
+Traceback (most recent call last):
+  File "C:\Users\rjwal_000\PycharmProjects\Survey Assist\job_tracker.py", line 20, in __init__
+    self.create_list_of_job_tracker_jobs()
+  File "C:\Users\rjwal_000\PycharmProjects\Survey Assist\job_tracker.py", line 44, in create_list_of_job_tracker_jobs
+    survey_job = SurveyJob(row[0].value, survey_date, row[2].value, row[3].value, row[4].value)
+  File "C:\Users\rjwal_000\PycharmProjects\Survey Assist\job_tracker.py", line 68, in __init__
+    self.survey_date = survey_date.strftime('%d/%m/%Y')
+AttributeError: 'str' object has no attribute 'strftime'
+2020-06-14 16:18:08,390:Survey Assist - v1.0:Started Application
+
+2020-06-14 16:19:37,123:Survey Assist - v1.0:Started Application
+
+2020-06-14 16:25:13,907:Survey Assist - v1.0:Started Application
+
+2020-06-14 16:25:20,265:Survey Assist - v1.0:Error has occurred in JobTracker init().
+
+'Cell' object has no attribute 'date_format'
+Traceback (most recent call last):
+  File "C:/Users/rjwal_000/PycharmProjects/Survey Assist/main.py", line 2165, in save_job_to_excel
+    actions_sheet["B11"].date_format
+AttributeError: 'Cell' object has no attribute 'date_format'
+2020-06-14 16:26:57,052:Survey Assist - v1.0:Started Application
+
+2020-06-14 16:27:03,059:Survey Assist - v1.0:Error has occurred in JobTracker init().
+
+an integer is required (got type str)
+Traceback (most recent call last):
+  File "C:/Users/rjwal_000/PycharmProjects/Survey Assist/main.py", line 2164, in save_job_to_excel
+    actions_sheet["B11"] = datetime.datetime(self.jt_date_btn['text'])
+TypeError: an integer is required (got type str)
+2020-06-14 16:29:08,493:Survey Assist - v1.0:Started Application
+
+2020-06-14 16:29:12,030:Survey Assist - v1.0:Error has occurred in JobTracker init().
+
+an integer is required (got type str)
+Traceback (most recent call last):
+  File "C:/Users/rjwal_000/PycharmProjects/Survey Assist/main.py", line 2167, in save_job_to_excel
+    actions_sheet["B11"] = datetime.datetime(job_day, job_month, job_year)
+TypeError: an integer is required (got type str)
+2020-06-14 16:29:36,426:Survey Assist - v1.0:Started Application
+
+2020-06-14 16:29:39,059:Survey Assist - v1.0:Error has occurred in JobTracker init().
+
+day is out of range for month
+Traceback (most recent call last):
+  File "C:/Users/rjwal_000/PycharmProjects/Survey Assist/main.py", line 2167, in save_job_to_excel
+    actions_sheet["B11"] = datetime.datetime(job_day, job_month, job_year)
+ValueError: day is out of range for month
+2020-06-14 16:30:04,959:Survey Assist - v1.0:Started Application
+
+2020-06-14 16:33:08,476:Survey Assist - v1.0:Started Application
+
+2020-06-14 16:36:19,175:Survey Assist - v1.0:Started Application
+
+2020-06-14 16:36:22,815:Survey Assist - v1.0:Error has occurred in JobTracker init().
+
+name 'GradientFill' is not defined
+Traceback (most recent call last):
+  File "C:/Users/rjwal_000/PycharmProjects/Survey Assist/main.py", line 2186, in save_job_to_excel
+    actions_sheet[percentage_complete_cell] = GradientFill(stop=("4875f0", "4875f0"))
+NameError: name 'GradientFill' is not defined
+2020-06-14 16:37:10,438:Survey Assist - v1.0:Started Application
+
+2020-06-14 16:37:28,058:Survey Assist - v1.0:Error has occurred in JobTracker init().
+
+Cannot convert <openpyxl.styles.fills.GradientFill object>
+Parameters:
+top=0.0, right=0.0, bottom=0.0, degree=0.0, type='linear', left=0.0, stop=[<openpyxl.styles.fills.Stop object>
+Parameters:
+position=0.0, color=<openpyxl.styles.colors.Color object>
+Parameters:
+auto=None, theme=None, tint=0.0, rgb='004875f0', indexed=None, type='rgb', <openpyxl.styles.fills.Stop object>
+Parameters:
+position=1.0, color=<openpyxl.styles.colors.Color object>
+Parameters:
+auto=None, theme=None, tint=0.0, rgb='004875f0', indexed=None, type='rgb'] to Excel
+Traceback (most recent call last):
+  File "C:/Users/rjwal_000/PycharmProjects/Survey Assist/main.py", line 2187, in save_job_to_excel
+    actions_sheet[percentage_complete_cell] = GradientFill(stop=("4875f0", "4875f0"))
+  File "C:\Python34\lib\site-packages\openpyxl\worksheet\worksheet.py", line 369, in __setitem__
+    self[key].value = value
+  File "C:\Python34\lib\site-packages\openpyxl\cell\cell.py", line 294, in value
+    self._bind_value(value)
+  File "C:\Python34\lib\site-packages\openpyxl\cell\cell.py", line 207, in _bind_value
+    raise ValueError("Cannot convert {0!r} to Excel".format(value))
+ValueError: Cannot convert <openpyxl.styles.fills.GradientFill object>
+Parameters:
+top=0.0, right=0.0, bottom=0.0, degree=0.0, type='linear', left=0.0, stop=[<openpyxl.styles.fills.Stop object>
+Parameters:
+position=0.0, color=<openpyxl.styles.colors.Color object>
+Parameters:
+auto=None, theme=None, tint=0.0, rgb='004875f0', indexed=None, type='rgb', <openpyxl.styles.fills.Stop object>
+Parameters:
+position=1.0, color=<openpyxl.styles.colors.Color object>
+Parameters:
+auto=None, theme=None, tint=0.0, rgb='004875f0', indexed=None, type='rgb'] to Excel
+2020-06-14 16:37:53,432:Survey Assist - v1.0:Started Application
+
+2020-06-14 16:41:37,607:Survey Assist - v1.0:Started Application
+
+2020-06-14 16:41:41,042:Survey Assist - v1.0:Error has occurred in JobTracker init().
+
+DataBarRule() got an unexpected keyword argument 'dxf'
+Traceback (most recent call last):
+  File "C:/Users/rjwal_000/PycharmProjects/Survey Assist/main.py", line 2194, in save_job_to_excel
+    showValue=False, minLength=0, maxLength=100, dxf=dxf)
+TypeError: DataBarRule() got an unexpected keyword argument 'dxf'
+2020-06-14 16:42:08,624:Survey Assist - v1.0:Started Application
+
+2020-06-14 16:48:15,341:Survey Assist - v1.0:Started Application
+

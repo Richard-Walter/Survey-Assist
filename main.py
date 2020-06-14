@@ -2077,6 +2077,10 @@ class JobTrackerBar(tk.Frame):
         self.jt_btn_save_job = tk.Button(self.frame, text="Save Job", command=self.save_job_to_excel)
         self.jt_btn_save_job.configure(background='#ffffff')
 
+        # open in excel button
+        self.jt_btn_open_in_excel = tk.Button(self.frame, text="Open in Excel", command=self.open_in_excel)
+        self.jt_btn_open_in_excel.configure(background='#ffffff')
+
         # pack job tracker widgets
         self.jt_lbl.pack(padx=5, pady=5, side='left')
         self.jt_job_name_combo.pack(padx=5, pady=5, side='left')
@@ -2087,6 +2091,7 @@ class JobTrackerBar(tk.Frame):
         self.jt_calcs_checkbox.pack(padx=(15, 0), pady=5, side='left')
         self.jt_results_checkbox.pack(padx=(15, 0), pady=5, side='left')
         self.jt_btn_save_job.pack(padx=(15, 0), pady=5, side='left')
+        self.jt_btn_open_in_excel.pack(padx=(15, 15), pady=5, side='right')
 
     def cb_callback(self, event):
 
@@ -2133,9 +2138,22 @@ class JobTrackerBar(tk.Frame):
     def hide_job_tracker_bar(self):
         self.frame.pack_forget()
 
+    def open_in_excel(self):
+        try:
+            os.startfile(self.job_tracker_filepath)
+
+        except FileNotFoundError as ex:
+            print("Couldn't find the Job Tracker Spreadsheet:\n\n" + self.job_tracker_filepath)
+            logger.exception("An unexpected error has occurred\n\nbtn_job_tracker()\n\n" + str(ex))
+            tk.messagebox.showerror("Survey Assist", "Couldn't find the Job Tracker Spreadsheet:\n\n" + self.job_tracker_filepath)
+            return
+
     def save_job_to_excel(self):
 
         try:
+            if self.jt_job_name_combo.get() == "<<Enter New Job>>":
+                tk.messagebox.showerror("Survey Assist", "Please enter a job name")
+                return
 
             # try and read in the job tracker spreadsheet
             workbook = load_workbook(self.job_tracker_filepath, read_only=False, keep_vba=True)
@@ -2144,22 +2162,31 @@ class JobTrackerBar(tk.Frame):
             # inserts blank row at row 11 and populate
             actions_sheet.insert_rows(idx=11)
             actions_sheet["A11"] = self.jt_job_name_combo.get()
+
+            # job_date = self.jt_date_btn['text']
+            # job_day = int(job_date.split('/')[0])
+            # job_month = int(job_date.split('/')[1])
+            # job_year =int(job_date.split('/')[2])
+            # actions_sheet["B11"] = datetime.datetime(job_year, job_month, job_day)
             actions_sheet["B11"] = self.jt_date_btn['text']
             actions_sheet["B11"].alignment = Alignment(horizontal='center')
+
+
             actions_sheet["C11"] = self.jt_user_lbl['text']
             actions_sheet["C11"].alignment = Alignment(horizontal='center')
             if self.calcs_checkbox_var.get() == '1':
-                actions_sheet["D11"] = 1
+                actions_sheet["D11"] = '1'
                 actions_sheet["D11"].alignment = Alignment(horizontal='center')
 
             if self.results_checkbox_var.get() == '1':
-                actions_sheet["E11"] = 1
+                actions_sheet["E11"] = '1'
                 actions_sheet["E11"].alignment = Alignment(horizontal='center')
 
             # add formula and update all subsequent row formulas as it they dont update when inserting a row for some reason
             for row in range(11, 11+len(self.job_tracker.get_job_names())):
                 percentage_complete_cell = 'J'+str(row)
                 actions_sheet[percentage_complete_cell] = '=SUM(D' + str(row) + ':H' + str(row) +')'
+
             # actions_sheet["J11"] = '=SUM(D11:H11)'
 
             # create conditional formatting

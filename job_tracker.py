@@ -61,14 +61,15 @@ class JobTracker:
 
 class SurveyJob:
 
-    def __init__(self, job_name, survey_date='', initials='', calcs='', results=''):
+    def __init__(self, job_name, survey_date, initials='', calcs='', results=''):
         super().__init__()
 
         self.job_name = job_name
-        self.survey_date = survey_date
+        # self.survey_date = survey_date.strftime('%d/%m/%Y')
+        self.survey_date = str(survey_date).split()[0]
         self.initials = initials
-        self.calcs = calcs
-        self.results = results
+        self.calcs = str(calcs)
+        self.results = str(results)
 
         # self.survey_job = {'job_name': self.job_name, 'survey_date': self.survey_date, 'calcs': self.calcs, 'results': self.results}
 
