@@ -76,225 +76,54 @@
 
 2020-06-02 16:49:40,309:Survey Assist - v1.0:Started Application
 
-2020-06-07 08:45:13,903:Survey Assist - v1.0:Started Application
+2020-06-07 10:56:14,129:Survey Assist - v1.0:Started Application
 
-2020-06-07 08:45:39,856:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/rjwal_000/PycharmProjects/Survey Assist/Test Files/GSI Files/3D MR_120819_3D error change.gsi
-2020-06-11 08:54:04,190:Survey Assist - v1.0:Started Application
+2020-06-07 11:00:26,331:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/PycharmProjects/Survey Assist/Test Files/GSI Files/3D MR_120819_3D error change.gsi
+2020-06-07 11:01:21,315:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/PycharmProjects/Survey Assist/Test Files/GSI Files/HCCL 030719.GSI
+2020-06-07 11:01:28,753:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/PycharmProjects/Survey Assist/Test Files/GSI Files/HCCUL180219.GSI
+2020-06-07 11:01:58,737:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/PycharmProjects/Survey Assist/Test Files/GSI Files/3D MR_120819_3D error change.gsi
+2020-06-07 11:05:10,846:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/PycharmProjects/Survey Assist/Test Files/GSI Files/3D MR_120819_3D error change.gsi
+2020-06-07 11:09:22,737:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/PycharmProjects/Survey Assist/Test Files/GSI Files/ARTC_903_compnet 240220.GSI
+2020-06-07 11:11:40,408:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/PycharmProjects/Survey Assist/Test Files/GSI Files/3D MR_120819_3D error change.gsi
+2020-06-07 11:15:43,424:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/PycharmProjects/Survey Assist/Test Files/GSI Files/ARTC_903_compnet 240220.GSI
+2020-06-11 16:29:23,159:Survey Assist - v1.0:Started Application
 
-2020-06-11 08:55:29,511:Survey Assist - v1.0:Started Application
+2020-06-11 16:29:32,640:Survey Assist - v1.0:Started Application
 
-2020-06-11 09:01:26,872:Survey Assist - v1.0:Started Application
+2020-06-11 16:29:35,928:Survey Assist - v1.0:An unexpected error has occurred
 
-2020-06-11 09:04:13,834:Survey Assist - v1.0:Started Application
+btn_job_tracker()
 
-2020-06-11 09:05:13,110:Survey Assist - v1.0:Started Application
+[WinError 2] The system cannot find the file specified: 'C:\\Users\\rjwal_000\\PycharmProjects\\Survey Assist\\Test Files\\Survey Data\\2020\\Job Tracker Digital System.xlsm'
+Traceback (most recent call last):
+  File "C:/Users/Richard/PycharmProjects/Survey Assist/main.py", line 1563, in job_tracker_open_excel
+    os.startfile(self.job_tracker_filepath)
+FileNotFoundError: [WinError 2] The system cannot find the file specified: 'C:\\Users\\rjwal_000\\PycharmProjects\\Survey Assist\\Test Files\\Survey Data\\2020\\Job Tracker Digital System.xlsm'
+2020-06-13 08:41:31,731:Survey Assist - v1.0:Started Application
 
-2020-06-11 09:05:38,208:Survey Assist - v1.0:Started Application
+2020-06-13 08:41:36,716:Survey Assist - v1.0:An unexpected error has occurred
 
-2020-06-11 09:06:52,494:Survey Assist - v1.0:Started Application
+btn_job_tracker()
 
-2020-06-11 09:10:11,072:Survey Assist - v1.0:Started Application
+[WinError 2] The system cannot find the file specified: 'C:\\Users\\rjwal_000\\PycharmProjects\\Survey Assist\\Test Files\\Survey Data\\2020\\Job Tracker Digital System.xlsm'
+Traceback (most recent call last):
+  File "C:/Users/Richard/PycharmProjects/Survey Assist/main.py", line 1563, in job_tracker_open_excel
+    os.startfile(self.job_tracker_filepath)
+FileNotFoundError: [WinError 2] The system cannot find the file specified: 'C:\\Users\\rjwal_000\\PycharmProjects\\Survey Assist\\Test Files\\Survey Data\\2020\\Job Tracker Digital System.xlsm'
+2020-06-14 08:01:25,946:Survey Assist - v1.0:Started Application
 
-2020-06-11 09:12:18,064:Survey Assist - v1.0:Started Application
+2020-06-14 08:01:31,930:Survey Assist - v1.0:Started Application
 
-2020-06-11 09:12:23,664:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/rjwal_000/Downloads/MR200620_EDIT.GSI
-2020-06-11 09:17:04,994:Survey Assist - v1.0:Started Application
+2020-06-14 08:01:55,711:Survey Assist - v1.0:Started Application
 
-2020-06-11 09:17:11,711:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/rjwal_000/Downloads/MR200620_EDIT.GSI
-2020-06-11 09:19:47,415:Survey Assist - v1.0:Started Application
+2020-06-14 08:02:12,382:Survey Assist - v1.0:An unexpected error has occurred
 
-2020-06-11 09:19:53,867:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/rjwal_000/Downloads/MR200620_EDIT.GSI
-2020-06-11 09:20:52,595:Survey Assist - v1.0:Started Application
+btn_job_tracker()
 
-2020-06-11 09:20:58,070:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/rjwal_000/Downloads/MR200620_EDIT.GSI
-2020-06-11 09:23:49,662:Survey Assist - v1.0:Started Application
+[WinError 2] The system cannot find the file specified: 'C:\\Users\\rjwal_000\\PycharmProjects\\Survey Assist\\Test Files\\Survey Data\\2020\\Job Tracker Digital System.xlsm'
+Traceback (most recent call last):
+  File "C:/Users/Richard/PycharmProjects/Survey Assist/main.py", line 1563, in job_tracker_open_excel
+    os.startfile(self.job_tracker_filepath)
+FileNotFoundError: [WinError 2] The system cannot find the file specified: 'C:\\Users\\rjwal_000\\PycharmProjects\\Survey Assist\\Test Files\\Survey Data\\2020\\Job Tracker Digital System.xlsm'
+2020-06-14 08:03:16,386:Survey Assist - v1.0:Started Application
 
-2020-06-11 09:34:56,891:Survey Assist - v1.0:Started Application
-
-2020-06-11 09:35:13,257:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/rjwal_000/Downloads/MR200620_EDIT.GSI
-2020-06-11 09:35:52,653:Survey Assist - v1.0:Started Application
-
-2020-06-11 09:40:51,660:Survey Assist - v1.0:Started Application
-
-2020-06-11 09:41:13,062:Survey Assist - v1.0:Started Application
-
-2020-06-11 09:41:21,109:Survey Assist - v1.0:Started Application
-
-2020-06-11 09:44:40,185:Survey Assist - v1.0:Started Application
-
-2020-06-11 09:45:00,041:Survey Assist - v1.0:Started Application
-
-2020-06-11 09:45:46,167:Survey Assist - v1.0:Started Application
-
-2020-06-11 09:47:02,573:Survey Assist - v1.0:Started Application
-
-2020-06-11 09:47:15,707:Survey Assist - v1.0:Started Application
-
-2020-06-11 09:48:27,089:Survey Assist - v1.0:Started Application
-
-2020-06-11 09:59:44,392:Survey Assist - v1.0:Started Application
-
-2020-06-11 10:00:32,600:Survey Assist - v1.0:Started Application
-
-2020-06-11 10:02:38,708:Survey Assist - v1.0:Started Application
-
-2020-06-11 11:46:42,107:Survey Assist - v1.0:Started Application
-
-2020-06-11 11:48:18,490:Survey Assist - v1.0:Started Application
-
-2020-06-11 11:49:38,957:Survey Assist - v1.0:Started Application
-
-2020-06-11 11:50:28,825:Survey Assist - v1.0:Started Application
-
-2020-06-11 11:58:50,305:Survey Assist - v1.0:Started Application
-
-2020-06-11 11:59:35,948:Survey Assist - v1.0:Started Application
-
-2020-06-11 11:59:49,918:Survey Assist - v1.0:Started Application
-
-2020-06-11 12:00:10,492:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/rjwal_000/Downloads/MR200620_EDIT.GSI
-2020-06-11 12:00:22,889:Survey Assist - v1.0:Started Application
-
-2020-06-11 12:00:57,820:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/rjwal_000/Downloads/MR200620_EDIT.GSI
-2020-06-11 12:01:24,695:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/rjwal_000/PycharmProjects/Survey Assist/Test Files/GSI Files/HCCL 030719.GSI
-2020-06-11 12:02:34,327:Survey Assist - v1.0:Started Application
-
-2020-06-11 12:03:19,257:Survey Assist - v1.0:Started Application
-
-2020-06-11 12:03:45,133:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/rjwal_000/PycharmProjects/Survey Assist/Test Files/GSI Files/HCCL 030719.GSI
-2020-06-11 12:04:56,463:Survey Assist - v1.0:Started Application
-
-2020-06-11 12:05:28,959:Survey Assist - v1.0:Started Application
-
-2020-06-11 12:05:38,596:Survey Assist - v1.0:Started Application
-
-2020-06-11 12:05:50,492:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/rjwal_000/Downloads/MR200620_EDIT.GSI
-2020-06-11 12:08:36,129:Survey Assist - v1.0:Started Application
-
-2020-06-11 12:08:47,627:Survey Assist - v1.0:Started Application
-
-2020-06-11 12:10:15,862:Survey Assist - v1.0:Started Application
-
-2020-06-11 12:10:33,783:Survey Assist - v1.0:Started Application
-
-2020-06-11 12:10:39,161:Survey Assist - v1.0:Started Application
-
-2020-06-11 12:12:00,641:Survey Assist - v1.0:Started Application
-
-2020-06-11 12:14:52,214:Survey Assist - v1.0:Started Application
-
-2020-06-11 12:15:34,261:Survey Assist - v1.0:Started Application
-
-2020-06-11 12:15:56,865:Survey Assist - v1.0:Started Application
-
-2020-06-11 12:16:59,398:Survey Assist - v1.0:Started Application
-
-2020-06-11 12:18:06,996:Survey Assist - v1.0:Started Application
-
-2020-06-11 12:18:23,845:Survey Assist - v1.0:Started Application
-
-2020-06-11 12:18:44,768:Survey Assist - v1.0:Started Application
-
-2020-06-11 12:22:12,490:Survey Assist - v1.0:Started Application
-
-2020-06-11 12:24:26,223:Survey Assist - v1.0:Started Application
-
-2020-06-11 12:24:55,647:Survey Assist - v1.0:Started Application
-
-2020-06-11 12:25:04,115:Survey Assist - v1.0:Started Application
-
-2020-06-11 12:25:20,959:Survey Assist - v1.0:Started Application
-
-2020-06-11 12:25:55,255:Survey Assist - v1.0:Started Application
-
-2020-06-11 12:26:14,439:Survey Assist - v1.0:Started Application
-
-2020-06-11 12:26:40,806:Survey Assist - v1.0:Started Application
-
-2020-06-11 12:26:51,351:Survey Assist - v1.0:Started Application
-
-2020-06-11 12:27:07,245:Survey Assist - v1.0:Started Application
-
-2020-06-11 12:31:57,958:Survey Assist - v1.0:Started Application
-
-2020-06-11 12:32:58,703:Survey Assist - v1.0:Started Application
-
-2020-06-11 12:35:17,598:Survey Assist - v1.0:Started Application
-
-2020-06-11 12:35:45,156:Survey Assist - v1.0:Started Application
-
-2020-06-11 12:36:04,871:Survey Assist - v1.0:Started Application
-
-2020-06-11 12:36:27,561:Survey Assist - v1.0:Started Application
-
-2020-06-11 12:39:03,115:Survey Assist - v1.0:Started Application
-
-2020-06-11 12:44:48,353:Survey Assist - v1.0:Started Application
-
-2020-06-11 12:45:06,352:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/rjwal_000/Downloads/MR200620_EDIT.GSI
-2020-06-11 12:47:50,523:Survey Assist - v1.0:Started Application
-
-2020-06-11 13:29:28,202:Survey Assist - v1.0:Started Application
-
-2020-06-11 13:31:17,840:Survey Assist - v1.0:Started Application
-
-2020-06-11 13:31:35,861:Survey Assist - v1.0:Started Application
-
-2020-06-11 13:38:44,096:Survey Assist - v1.0:Started Application
-
-2020-06-11 13:39:37,137:Survey Assist - v1.0:Started Application
-
-2020-06-11 13:39:54,835:Survey Assist - v1.0:Started Application
-
-2020-06-11 13:40:30,918:Survey Assist - v1.0:Started Application
-
-2020-06-11 13:43:57,111:Survey Assist - v1.0:Started Application
-
-2020-06-11 13:44:16,850:Survey Assist - v1.0:Started Application
-
-2020-06-11 13:45:08,068:Survey Assist - v1.0:Started Application
-
-2020-06-11 13:45:38,760:Survey Assist - v1.0:Started Application
-
-2020-06-11 13:48:36,295:Survey Assist - v1.0:Started Application
-
-2020-06-11 13:52:55,677:Survey Assist - v1.0:Started Application
-
-2020-06-11 13:53:33,475:Survey Assist - v1.0:Started Application
-
-2020-06-11 13:54:59,411:Survey Assist - v1.0:Started Application
-
-2020-06-11 13:57:14,747:Survey Assist - v1.0:Started Application
-
-2020-06-11 13:58:47,016:Survey Assist - v1.0:Started Application
-
-2020-06-11 13:58:57,469:Survey Assist - v1.0:Started Application
-
-2020-06-11 13:59:02,907:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/rjwal_000/PycharmProjects/Survey Assist/Test Files/GSI Files/HCCL 030719.GSI
-2020-06-11 14:01:06,648:Survey Assist - v1.0:Started Application
-
-2020-06-11 14:05:35,005:Survey Assist - v1.0:Started Application
-
-2020-06-11 14:06:31,542:Survey Assist - v1.0:Started Application
-
-2020-06-11 14:07:50,640:Survey Assist - v1.0:Started Application
-
-2020-06-11 14:08:10,845:Survey Assist - v1.0:Started Application
-
-2020-06-11 14:21:39,098:Survey Assist - v1.0:Started Application
-
-2020-06-11 14:22:29,516:Survey Assist - v1.0:Started Application
-
-2020-06-11 14:23:19,870:Survey Assist - v1.0:Started Application
-
-2020-06-11 16:04:54,014:Survey Assist - v1.0:Started Application
-
-2020-06-11 16:05:22,010:Survey Assist - v1.0:Started Application
-
-2020-06-11 16:05:26,535:Survey Assist - v1.0:Started Application
-
-2020-06-11 16:06:16,759:Survey Assist - v1.0:Started Application
-
-2020-06-13 18:45:16,119:Survey Assist - v1.0:Started Application
-
-2020-06-13 18:45:20,298:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/rjwal_000/Downloads/TEST NAME CHANGE_EDITED.gsi
