@@ -136,3 +136,5 @@ FileNotFoundError: [WinError 2] The system cannot find the file specified: 'C:\\
 2020-06-16 19:17:32,602:Survey Assist - v1.0:Started Application
 
 2020-06-16 19:17:38,701:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/PycharmProjects/Survey Assist/Test Files/GSI Files/3D MR_120819_3D error change.gsi
+2020-06-16 19:19:50,057:Survey Assist - v1.0:Started Application
+
