@@ -1200,8 +1200,8 @@ class GSI:
 
 
 class GSIDatabase:
-    DATABASE_NAME = 'GSI_database.db'
-    DATABASE_PATH = 'GSI_database.db'
+
+    DATABASE_PATH = 'C:\SurveyAssist\GSI_database.db'
     TABLE_NAME = 'GSI'
 
     def __init__(self, ):

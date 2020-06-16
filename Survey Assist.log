@@ -127,3 +127,12 @@ Traceback (most recent call last):
 FileNotFoundError: [WinError 2] The system cannot find the file specified: 'C:\\Users\\rjwal_000\\PycharmProjects\\Survey Assist\\Test Files\\Survey Data\\2020\\Job Tracker Digital System.xlsm'
 2020-06-14 08:03:16,386:Survey Assist - v1.0:Started Application
 
+2020-06-16 19:14:10,111:Survey Assist - v1.0:Started Application
+
+2020-06-16 19:14:16,427:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/PycharmProjects/Survey Assist/Test Files/GSI Files/2D Survey MR050819.GSI
+2020-06-16 19:16:51,855:Survey Assist - v1.0:Started Application
+
+2020-06-16 19:16:55,534:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/PycharmProjects/Survey Assist/Test Files/GSI Files/2D Survey MR050819.GSI
+2020-06-16 19:17:32,602:Survey Assist - v1.0:Started Application
+
+2020-06-16 19:17:38,701:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/Richard/PycharmProjects/Survey Assist/Test Files/GSI Files/3D MR_120819_3D error change.gsi
