@@ -4127,12 +4127,13 @@ def main():
     survey_config = SurveyConfiguration()
 
     # Setup logger
-    logger = logging.getLogger('Survey Assist - v1.0')
+    logger = logging.getLogger('Survey Assist - v1.0 ')
     configure_logger()
-
     gsi = GSI(logger, survey_config)
     gui_app = GUIApplication(root)
     database = GSIDatabase()
+
+    logger.info('************************* STARTED APPLICATION - User: ' + gui_app.menu_bar.user_config.user_initials + ' *************************')
 
     root.mainloop()
 
@@ -4153,8 +4154,6 @@ def configure_logger():
 
     logger.addHandler(file_handler)
     logger.addHandler(stream_handler)
-    logger.info('Started Application\n')
-
 
 if __name__ == "__main__":
     main()
