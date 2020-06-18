@@ -18,9 +18,10 @@ KNOWN BUGS
 
 """
 
+
+from openpyxl.styles import Font
 from openpyxl.formatting.rule import DataBarRule
 from openpyxl.styles import Alignment
-
 import tkinter.messagebox
 import logging.config
 from job_tracker import *
@@ -150,7 +151,7 @@ class MenuBar(tk.Frame):
 
         # Job Tracker
         self.job_tracker_sub_menu = tk.Menu(self.menu_bar, tearoff=0)
-        self.job_tracker_sub_menu.add_command(label="Create new Job ", command=self.job_tracker_new_job)
+        self.job_tracker_sub_menu.add_command(label="Create new Job", command=self.job_tracker_new_job)
         self.job_tracker_sub_menu.add_command(label="Track a Job", command=self.job_tracker_track)
         self.job_tracker_sub_menu.add_command(label="Open in excel", command=self.job_tracker_open_excel)
         self.menu_bar.add_cascade(label="Job Tracker", menu=self.job_tracker_sub_menu)
@@ -831,7 +832,7 @@ class MenuBar(tk.Frame):
                             obs_line_1_field_value = get_numerical_value_from_string(obs_line_1_field_value_str, field_type, precision)
 
                             obs_line_2_field_value = get_numerical_value_from_string(obs_line_2_field_value_str, field_type, precision)
-                            if key is 'Horizontal_Angle':
+                            if key == 'Horizontal_Angle':
                                 angular_diff = decimalize_value(angular_difference(obs_line_1_field_value, obs_line_2_field_value, 180), '3dp')
                             else:  # key is vertical angle:
                                 obs_angular_diff = angular_difference(obs_line_2_field_value, obs_line_1_field_value, 0)
@@ -1878,7 +1879,7 @@ class QueryDialogWindow:
         column_entry = self.column_entry.get()
         column_value_entry = self.column_value_entry.get()
 
-        if column_entry is "":
+        if column_entry == "":
             tkinter.messagebox.showinfo("GSI Query", "Please enter valid search data")
             logger.info(
                 "Invalid data entered.  Column Name was {}: column value was {}".format(column_entry,
@@ -2046,15 +2047,6 @@ class JobTrackerBar(tk.Frame):
         self.jt_lbl = tk.Label(self.frame, text='JOB TRACKER:')
         self.jt_lbl.configure(background='#d9f2d8')
 
-        # Combobox
-        self.job_name = tk.StringVar()
-        self.jt_job_name_combo = ttk.Combobox(self.frame, width=35, textvariable=self.job_name)
-
-        self.jt_job_name_combo['values'] = self.get_combobox_values()
-        self.jt_job_name_combo.bind("<<ComboboxSelected>>", self.cb_callback)
-
-        self.jt_job_name_combo.current(0)
-
         self.jt_date_lbl = tk.Label(self.frame, text='Survey Date:')
         self.jt_date_lbl.configure(background='#d9f2d8')
 
@@ -2076,6 +2068,15 @@ class JobTrackerBar(tk.Frame):
         # save button
         self.jt_btn_save_job = tk.Button(self.frame, text="Save Job", command=self.save_job_to_excel)
         self.jt_btn_save_job.configure(background='#ffffff')
+
+        # Combobox
+        self.job_name = tk.StringVar()
+        self.jt_job_name_combo = ttk.Combobox(self.frame, width=35, textvariable=self.job_name)
+
+        self.jt_job_name_combo['values'] = self.get_combobox_values()
+        self.jt_job_name_combo.bind("<<ComboboxSelected>>", self.cb_callback)
+
+        self.jt_job_name_combo.current(0)
 
         # open in excel button
         self.jt_btn_open_in_excel = tk.Button(self.frame, text="Open in Excel", command=self.open_in_excel)
@@ -2114,14 +2115,26 @@ class JobTrackerBar(tk.Frame):
             self.jt_date_btn.configure(text=self.todays_date)
             self.jt_calcs_checkbox.deselect()
             self.jt_results_checkbox.deselect()
+            self.jt_user_lbl.configure(text=self.user_initials)
 
     def get_combobox_values(self):
 
-        self.job_tracker = JobTracker(self.job_tracker_filepath, logger)
+        # self.job_tracker = JobTracker(self.job_tracker_filepath, logger)
         job_names = self.job_tracker.get_job_names()
-        job_names.insert(0, "<<Enter New Job>>")
 
-        return job_names
+
+        if not job_names: # problem has occurred.  Disable job tracker
+
+            job_names.insert(0, "<<ERROR>>")
+
+            self.jt_btn_save_job.configure(state = 'disabled')
+
+            raise Exception("No Job Names Found")
+
+        else:
+            job_names.insert(0, "<<Enter New Job>>")
+
+        return job_names[0:30]  # only return the 30 most recent jobs as the list gets too large
 
     def choose_date(self):
 
@@ -2151,53 +2164,64 @@ class JobTrackerBar(tk.Frame):
     def save_job_to_excel(self):
 
         try:
-            if self.jt_job_name_combo.get() == "<<Enter New Job>>":
+            job_name = self.jt_job_name_combo.get()
+            if job_name == "<<Enter New Job>>":
                 tk.messagebox.showerror("Survey Assist", "Please enter a job name")
                 return
+
+            print(self.jt_job_name_combo.current())
 
             # try and read in the job tracker spreadsheet
             workbook = load_workbook(self.job_tracker_filepath, read_only=False, keep_vba=True)
             actions_sheet = workbook["Actions"]
 
-            # inserts blank row at row 11 and populate
-            actions_sheet.insert_rows(idx=11)
-            actions_sheet["A11"] = self.jt_job_name_combo.get()
+            date_string = self.jt_date_btn['text']
 
-            # job_date = self.jt_date_btn['text']
-            # job_day = int(job_date.split('/')[0])
-            # job_month = int(job_date.split('/')[1])
-            # job_year =int(job_date.split('/')[2])
-            # actions_sheet["B11"] = datetime.datetime(job_year, job_month, job_day)
-            actions_sheet["B11"] = self.jt_date_btn['text']
-            actions_sheet["B11"].alignment = Alignment(horizontal='center')
+            # check to see if we are adding a new job or updating an old one.
+            if self.jt_job_name_combo.current() == -1:  # user is creating a new job
+
+                # insert blank row at row 11 and populate
+                actions_sheet.insert_rows(idx=11)
+                actions_sheet["A11"].value = self.jt_job_name_combo.get()
+
+                self.update_job_date(actions_sheet["B11"], date_string)
+                self.update_user(actions_sheet["C11"], self.jt_user_lbl['text'])
+
+                if self.calcs_checkbox_var.get() == '1':
+                    self.update_checkbox(actions_sheet["D11"], 1)
+
+                if self.results_checkbox_var.get() == '1':
+                    self.update_checkbox(actions_sheet["E11"], 1)
+
+                # add formula and update all subsequent row formulas as it doesn't update when inserting a row for some reason
+                for row in range(11, 11+len(self.job_tracker.get_job_names())):
+                    percentage_complete_cell = 'J'+str(row)
+                    actions_sheet[percentage_complete_cell] = '=SUM(D' + str(row) + ':H' + str(row) +')'
+
+                self.update_conditional_formatting(actions_sheet)
+
+            else:   # updating an existing job
+
+                current_job_selected_line = self.jt_job_name_combo.current()
+                excel_row_to_update = str(10 + current_job_selected_line)
+
+                self.update_job_date(actions_sheet["B"+ excel_row_to_update], self.jt_date_btn['text'] )
+
+                self.update_user(actions_sheet["C"+ excel_row_to_update],self.jt_user_lbl['text'] )
+
+                if self.calcs_checkbox_var.get() == '1':
+                    self.update_checkbox(actions_sheet["D11"], 1)
 
 
-            actions_sheet["C11"] = self.jt_user_lbl['text']
-            actions_sheet["C11"].alignment = Alignment(horizontal='center')
-            if self.calcs_checkbox_var.get() == '1':
-                actions_sheet["D11"] = '1'
-                actions_sheet["D11"].alignment = Alignment(horizontal='center')
+                if self.results_checkbox_var.get() == '1':
+                    self.update_checkbox(actions_sheet["E11"], 1)
 
-            if self.results_checkbox_var.get() == '1':
-                actions_sheet["E11"] = '1'
-                actions_sheet["E11"].alignment = Alignment(horizontal='center')
-
-            # add formula and update all subsequent row formulas as it they dont update when inserting a row for some reason
-            for row in range(11, 11+len(self.job_tracker.get_job_names())):
-                percentage_complete_cell = 'J'+str(row)
-                actions_sheet[percentage_complete_cell] = '=SUM(D' + str(row) + ':H' + str(row) +')'
-
-            # actions_sheet["J11"] = '=SUM(D11:H11)'
-
-            # create conditional formatting
-            rule = DataBarRule(start_type='num', start_value=0, end_type='num', end_value=5, color="FF638EC6",
-                               showValue=False, minLength=0, maxLength=100)
-            actions_sheet.conditional_formatting.add('J11:J1000', rule)
+                self.update_conditional_formatting(actions_sheet)
 
             workbook.save(filename=self.job_tracker_filepath)
             workbook.close()
 
-            # reset combo box
+            # reset combo box after update
             self.job_tracker = JobTracker(self.job_tracker_filepath, logger)
             self.jt_job_name_combo['values'] = self.get_combobox_values()
             self.jt_calcs_checkbox.deselect()
@@ -2224,8 +2248,37 @@ class JobTrackerBar(tk.Frame):
 
             tk.messagebox.showerror("ERROR", 'An unexpected error has occurred reading the excel Job Tracker.  Please contact the developer')
 
+            gui_app.menu_bar.job_tracker_sub_menu.entryconfig("Create new Job", state="disabled")
+            gui_app.menu_bar.job_tracker_sub_menu.entryconfig("Track a Job", state="disabled")
+            gui_app.job_tracker_bar.hide_job_tracker_bar()
+
         else:
             tk.messagebox.showinfo("Survey Assist", 'Job Saved')
+
+    def update_job_date(self, cell, date_string):
+
+        cell.value = date_string
+        cell.alignment = Alignment(horizontal='center')
+
+    def update_user(self, cell, user_initials):
+
+        cell.value = self.jt_user_lbl['text']
+        cell.font = Font(color='FF0000')
+        cell.alignment = Alignment(horizontal='center')
+
+    def update_checkbox(self, cell, value):
+
+        cell.value = value
+        cell.font = Font(color='00B050')
+        cell.alignment = Alignment(horizontal='center')
+
+    def update_conditional_formatting(self, actions_sheet):
+
+        rule = DataBarRule(start_type='num', start_value=0, end_type='num', end_value=5, color="FF638EC6",
+                           showValue=False, minLength=0, maxLength=100)
+        max_range_cell = str((11+len(self.job_tracker.get_job_names())))
+        cell_range = "J11:J" + max_range_cell
+        actions_sheet.conditional_formatting.add(cell_range, rule)
 
 
 class MainWindow(tk.Frame):
@@ -2324,10 +2377,10 @@ class ListBoxFrame(tk.Frame):
                 complete_line.append(gsi_value)
 
                 # add STN tag if line is a station setup
-                if column_name == gsi.GSI_WORD_ID_DICT['84'] and gsi_value is not "":
+                if column_name == gsi.GSI_WORD_ID_DICT['84'] and gsi_value != "":
                     tag = self.stn_tag  # add STN tag if line is a station setup
 
-                elif column_name == gsi.GSI_WORD_ID_DICT['32'] and gsi_value is "":
+                elif column_name == gsi.GSI_WORD_ID_DICT['32'] and gsi_value == "":
                     tag = self.orientation_tag
 
                 elif line_number in highlight_lines:
@@ -2855,7 +2908,7 @@ class TargetHeightWindow(ChangeHeightWindow):
             new_target_height = self.get_entered_height(self.new_target_height_entry)
             self.dialog_window.destroy()
 
-            if new_target_height is not 'ERROR':
+            if new_target_height != 'ERROR':
 
                 line_numbers_to_ammend = []
 
@@ -2969,7 +3022,7 @@ class StationHeightWindow(ChangeHeightWindow):
             new_station_height = self.get_entered_height(self.new_station_height_entry)
             self.dialog_window.destroy()
 
-            if new_station_height is not 'ERROR':
+            if new_station_height != 'ERROR':
 
                 # Get user selected line number - should only be one selected line when updating station height
                 selected_line = gui_app.list_box.list_box_view.selection()[0]
@@ -3408,7 +3461,7 @@ class CompnetCompareCRDFWindow:
 
         parent_dated_directory = Path(survey_config.todays_dated_directory).parent
 
-        if file_path_number is 1:
+        if file_path_number == 1:
             self.crd_file_path_1 = tk.filedialog.askopenfilename(parent=self.master, initialdir=survey_config.todays_dated_directory,
                                                                  title="Select CRD file",
                                                                  filetypes=[("CRD Files", ".CRD")])
@@ -3417,7 +3470,7 @@ class CompnetCompareCRDFWindow:
                 self.crd_file_1_btn.config(text=os.path.basename(self.crd_file_path_1))
             self.dialog_window.lift()  # bring window to the front again
 
-        elif file_path_number is 2:
+        elif file_path_number == 2:
             self.crd_file_path_2 = tk.filedialog.askopenfilename(parent=self.master, initialdir=parent_dated_directory, title="Select CRD file",
                                                                  filetypes=[("CRD Files", ".CRD")])
 
@@ -4199,11 +4252,21 @@ class GUIApplication(tk.Frame):
         self.menu_bar.pack(side="top", fill="x")
 
         self.workflow_bar = WorkflowBar(self.main_window)
-        self.job_tracker_bar = JobTrackerBar(self.main_window, self.menu_bar.user_config.user_initials)
+        self.workflow_bar.pack(fill="x")
+
+        self.job_tracker_bar = None
+        try:
+            self.job_tracker_bar = JobTrackerBar(self.main_window, self.menu_bar.user_config.user_initials)
+            self.job_tracker_bar.pack(fill="x")
+        except Exception as ex:
+
+            self.menu_bar.job_tracker_sub_menu.entryconfig("Create new Job", state="disabled")
+            self.menu_bar.job_tracker_sub_menu.entryconfig("Track a Job", state="disabled")
+            logger.exception('Error has occurred creating Job Tracker object.\n\n' + str(ex))
+
+
         # self.job_tracker_bar.hide_job_tracker_bar()
         self.list_box = ListBoxFrame(self.main_window)
-        self.workflow_bar.pack(fill="x")
-        self.job_tracker_bar.pack(fill="x")
         self.list_box.pack(fill="both")
         self.main_window.pack(fill="both", expand=True)
 
