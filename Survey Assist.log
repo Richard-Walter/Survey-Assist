@@ -2659,3 +2659,98 @@ PermissionError: [Errno 13] Permission denied: 'C:\\Users\\rjwal_000\\PycharmPro
 
 2020-06-18 20:17:01,482:Survey Assist - v1.0:Started Application
 
+2020-06-18 20:22:22,080:Survey Assist - v1.0:Started Application
+
+2020-06-18 20:23:05,421:Survey Assist - v1.0:Started Application
+
+2020-06-18 20:23:29,752:Survey Assist - v1.0:Started Application
+
+2020-06-18 20:26:09,071:Survey Assist - v1.0:Started Application
+
+2020-06-18 20:26:24,027:Survey Assist - v1.0:Started Application
+
+2020-06-18 20:27:21,135:Survey Assist - v1.0:Started Application
+
+2020-06-18 20:28:14,130:Survey Assist - v1.0:Started Application
+
+2020-06-18 20:28:41,664:Survey Assist - v1.0:Started Application
+
+2020-06-18 20:29:06,722:Survey Assist - v1.0:Started Application
+
+2020-06-18 20:29:27,833:Survey Assist - v1.0:Started Application
+
+2020-06-18 20:29:47,329:Survey Assist - v1.0:Started Application
+
+2020-06-18 20:31:06,112:Survey Assist - v1.0:Started Application
+
+2020-06-18 20:31:31,504:Survey Assist - v1.0:Started Application
+
+2020-06-18 20:32:09,231:Survey Assist - v1.0:Started Application
+
+2020-06-18 20:41:33,940:Survey Assist - v1.0:Started Application
+
+2020-06-18 20:41:33,993:Survey Assist - v1.0:Error has occurred creating Job Tracker object.
+
+tuple index out of range
+Traceback (most recent call last):
+  File "C:/Users/rjwal_000/PycharmProjects/Survey Assist/main.py", line 4310, in __init__
+    self.job_tracker_bar = JobTrackerBar(self.main_window, self.menu_bar.user_config.user_initials)
+  File "C:/Users/rjwal_000/PycharmProjects/Survey Assist/main.py", line 2043, in __init__
+    self.job_tracker = JobTracker(self.job_tracker_filepath, logger)
+  File "C:\Users\rjwal_000\PycharmProjects\Survey Assist\job_tracker.py", line 21, in __init__
+    self.create_list_of_job_tracker_jobs()
+  File "C:\Users\rjwal_000\PycharmProjects\Survey Assist\job_tracker.py", line 44, in create_list_of_job_tracker_jobs
+    survey_job = SurveyJob(row[0].value, row[1].value, row[2].value, row[3].value, row[4].value, row[5].value, row[6].value,
+IndexError: tuple index out of range
+2020-06-18 20:43:15,082:Survey Assist - v1.0:Started Application
+
+2020-06-18 20:43:15,117:Survey Assist - v1.0:Error has occurred creating Job Tracker object.
+
+tuple index out of range
+Traceback (most recent call last):
+  File "C:/Users/rjwal_000/PycharmProjects/Survey Assist/main.py", line 4310, in __init__
+    self.job_tracker_bar = JobTrackerBar(self.main_window, self.menu_bar.user_config.user_initials)
+  File "C:/Users/rjwal_000/PycharmProjects/Survey Assist/main.py", line 2043, in __init__
+    self.job_tracker = JobTracker(self.job_tracker_filepath, logger)
+  File "C:\Users\rjwal_000\PycharmProjects\Survey Assist\job_tracker.py", line 21, in __init__
+    self.create_list_of_job_tracker_jobs()
+  File "C:\Users\rjwal_000\PycharmProjects\Survey Assist\job_tracker.py", line 44, in create_list_of_job_tracker_jobs
+    survey_job = SurveyJob(row[0].value, row[1].value, row[2].value, row[3].value, row[4].value, row[5].value, row[6].value, row[7].value, row[8].value)
+IndexError: tuple index out of range
+2020-06-18 20:45:24,416:Survey Assist - v1.0:Started Application
+
+2020-06-18 20:45:24,451:Survey Assist - v1.0:Error has occurred creating Job Tracker object.
+
+tuple index out of range
+Traceback (most recent call last):
+  File "C:/Users/rjwal_000/PycharmProjects/Survey Assist/main.py", line 4310, in __init__
+    self.job_tracker_bar = JobTrackerBar(self.main_window, self.menu_bar.user_config.user_initials)
+  File "C:/Users/rjwal_000/PycharmProjects/Survey Assist/main.py", line 2043, in __init__
+    self.job_tracker = JobTracker(self.job_tracker_filepath, logger)
+  File "C:\Users\rjwal_000\PycharmProjects\Survey Assist\job_tracker.py", line 21, in __init__
+    self.create_list_of_job_tracker_jobs()
+  File "C:\Users\rjwal_000\PycharmProjects\Survey Assist\job_tracker.py", line 44, in create_list_of_job_tracker_jobs
+    survey_job = SurveyJob(row[0].value, row[1].value, row[2].value, row[3].value, row[4].value, row[5].value, row[6].value, row[7].value, row[8].value)
+IndexError: tuple index out of range
+2020-06-18 20:47:42,616:Survey Assist - v1.0:Started Application
+
+2020-06-18 20:48:20,713:Survey Assist - v1.0:Started Application
+
+2020-06-18 20:49:45,868:Survey Assist - v1.0:Started Application
+
+2020-06-18 20:50:20,075:Survey Assist - v1.0:Started Application
+
+2020-06-18 21:01:18,560:Survey Assist - v1.0:Started Application
+
+2020-06-18 21:01:35,601:Survey Assist - v1.0:Started Application
+
+2020-06-18 21:07:36,247:Survey Assist - v1.0:Started Application
+
+2020-06-18 21:08:19,484:Survey Assist - v1.0:Started Application
+
+2020-06-18 21:10:48,836:Survey Assist - v1.0:Started Application
+
+2020-06-18 21:11:31,747:Survey Assist - v1.0:Started Application
+
+2020-06-18 21:13:18,406:Survey Assist - v1.0:Started Application
+

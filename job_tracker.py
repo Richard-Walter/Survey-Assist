@@ -36,12 +36,12 @@ class JobTracker:
 
     def create_list_of_job_tracker_jobs(self):
 
-        for row in self.active_sheet.iter_rows(min_row=11, max_row=1000, min_col=1, max_col=5):
+        for row in self.active_sheet.iter_rows(min_row=11, max_row=1000, min_col=1, max_col=9):
 
                 # create a survey job and add to list.
                 # survey_job = SurveyJob(row[0].value, survey_date('%d/%m/%Y'), row[2].value, row[3].value, row[4].value)
                 if row[0].value:
-                    survey_job = SurveyJob(row[0].value, row[1].value, row[2].value, row[3].value, row[4].value)
+                    survey_job = SurveyJob(row[0].value, row[1].value, row[2].value, row[3].value, row[4].value, row[5].value, row[6].value, row[7].value, row[8].value)
                     self.survey_job_list.append(survey_job)
                 else:
                     return
@@ -64,7 +64,7 @@ class JobTracker:
 
 class SurveyJob:
 
-    def __init__(self, job_name, survey_date, initials='', calcs='', results=''):
+    def __init__(self, job_name, survey_date, initials='', calcs='', results='',  checked='',  sent='',  xml='',  notes=''):
         super().__init__()
 
         self.job_name = job_name
@@ -79,5 +79,12 @@ class SurveyJob:
         self.initials = initials
         self.calcs = str(calcs)
         self.results = str(results)
+        self.checked = str(checked)
+        self.sent = str(sent)
+        self.xml = str(xml)
+        if notes is None:
+            self.notes = ""
+        else:
+            self.notes = str(notes)
 
         # self.survey_job = {'job_name': self.job_name, 'survey_date': self.survey_date, 'calcs': self.calcs, 'results': self.results}

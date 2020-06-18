@@ -2059,10 +2059,26 @@ class JobTrackerBar(tk.Frame):
         # check boxes
         self.calcs_checkbox_var = tk.StringVar()
         self.results_checkbox_var = tk.StringVar()
+        self.checked_checkbox_var = tk.StringVar()
+        self.sent_checkbox_var = tk.StringVar()
+        self.xml_checkbox_var = tk.StringVar()
+
         self.jt_calcs_checkbox = tk.Checkbutton(self.frame, text='Calcs', variable=self.calcs_checkbox_var, onvalue='1', offvalue='')
         self.jt_calcs_checkbox.configure(background='#d9f2d8')
         self.jt_results_checkbox = tk.Checkbutton(self.frame, text='Results', variable=self.results_checkbox_var, onvalue='1', offvalue='')
         self.jt_results_checkbox.configure(background='#d9f2d8')
+        self.jt_checked_checkbox = tk.Checkbutton(self.frame, text='Checked', variable=self.checked_checkbox_var, onvalue='1', offvalue='')
+        self.jt_checked_checkbox.configure(background='#d9f2d8')
+        self.jt_sent_checkbox = tk.Checkbutton(self.frame, text='Sent', variable=self.checked_checkbox_var, onvalue='1', offvalue='')
+        self.jt_sent_checkbox.configure(background='#d9f2d8')
+        self.jt_xml_checkbox = tk.Checkbutton(self.frame, text='XML', variable=self.checked_checkbox_var, onvalue='1', offvalue='')
+        self.jt_xml_checkbox.configure(background='#d9f2d8')
+
+        # notes label and entry
+        text = 'Outstanding/Notes'
+        self.jt_notes_label = tk.Label(self.frame, text='Outstanding/Notes: ')
+        self.jt_notes_label.configure(background='#d9f2d8')
+        self.jt_notes_entry = tk.Entry(self.frame, width=40)
 
         # save button
         self.jt_btn_save_job = tk.Button(self.frame, text="Save Job", command=self.save_job_to_excel)
@@ -2090,7 +2106,13 @@ class JobTrackerBar(tk.Frame):
         self.jt_user_lbl.pack(padx=0, pady=5, side='left')
         self.jt_calcs_checkbox.pack(padx=(15, 0), pady=5, side='left')
         self.jt_results_checkbox.pack(padx=(15, 0), pady=5, side='left')
-        self.jt_btn_save_job.pack(padx=(15, 0), pady=5, side='left')
+        self.jt_checked_checkbox.pack(padx=(15, 0), pady=5, side='left')
+        self.jt_sent_checkbox.pack(padx=(15, 0), pady=5, side='left')
+        self.jt_xml_checkbox.pack(padx=(15, 0), pady=5, side='left')
+        self.jt_notes_label.pack(padx=(15, 0), pady=5, side='left')
+        self.jt_notes_entry.pack(padx=(15, 0), pady=5, side='left')
+
+        self.jt_btn_save_job.pack(padx=(50, 0), pady=5, side='left')
         self.jt_btn_open_in_excel.pack(padx=(15, 15), pady=5, side='right')
 
     def cb_callback(self, event):
@@ -2106,10 +2128,30 @@ class JobTrackerBar(tk.Frame):
                 self.jt_calcs_checkbox.select()
             else:
                 self.jt_calcs_checkbox.deselect()
+
             if survey_job.results == '1':
                 self.jt_results_checkbox.select()
             else:
                 self.jt_results_checkbox.deselect()
+
+            if survey_job.checked == '1':
+                self.jt_checked_checkbox.select()
+            else:
+                self.jt_checked_checkbox.deselect()
+
+            if survey_job.sent == '1':
+                self.jt_sent_checkbox.select()
+            else:
+                self.jt_sent_checkbox.deselect()
+
+            if survey_job.xml == '1':
+                self.jt_xml_checkbox.select()
+            else:
+                self.jt_xml_checkbox.deselect()
+
+            self.jt_notes_entry.delete(0, tk.END)
+            self.jt_notes_entry.insert(0, survey_job.notes)
+
         else:  # user has selected to create a new job
             self.jt_date_btn.configure(text=self.todays_date)
             self.jt_calcs_checkbox.deselect()
