@@ -18,9 +18,8 @@ KNOWN BUGS
 
 """
 
-
-from openpyxl.styles import Font
 from openpyxl.formatting.rule import DataBarRule
+from openpyxl.styles import Font
 from openpyxl.styles import Alignment
 import tkinter.messagebox
 import logging.config
@@ -2175,6 +2174,11 @@ class JobTrackerBar(tk.Frame):
             workbook = load_workbook(self.job_tracker_filepath, read_only=False, keep_vba=True)
             actions_sheet = workbook["Actions"]
 
+            # max cell range based on the number of job tracker jobs
+            max_range_cell = str((11 + len(self.job_tracker.get_job_names())))
+            cell_range = "J11:J" + max_range_cell
+            print('Cell Range ' + cell_range)
+
             date_string = self.jt_date_btn['text']
 
             # check to see if we are adding a new job or updating an old one.
@@ -2196,9 +2200,14 @@ class JobTrackerBar(tk.Frame):
                 # add formula and update all subsequent row formulas as it doesn't update when inserting a row for some reason
                 for row in range(11, 11+len(self.job_tracker.get_job_names())):
                     percentage_complete_cell = 'J'+str(row)
-                    actions_sheet[percentage_complete_cell] = '=SUM(D' + str(row) + ':H' + str(row) +')'
+                    # actions_sheet[percentage_complete_cell] = '=SUM(D' + str(row) + ':H' + str(row) +')'
+                    cell_forumua = '=IF(SUM(D' + str(row) + ': H'+ str(row) + ') > 5, REPT("g", 10), (REPT("g", SUM(D' + str(row) + ': H'+ str(row) + ') * 2)))'
+                    actions_sheet[percentage_complete_cell] = cell_forumua
 
-                self.update_conditional_formatting(actions_sheet)
+                    # Change font
+                    actions_sheet[percentage_complete_cell].font = Font(color="4472C4", name="Webdings")
+
+                # self.update_conditional_formatting(actions_sheet)
 
             else:   # updating an existing job
 
@@ -2216,7 +2225,7 @@ class JobTrackerBar(tk.Frame):
                 if self.results_checkbox_var.get() == '1':
                     self.update_checkbox(actions_sheet["E11"], 1)
 
-                self.update_conditional_formatting(actions_sheet)
+                # self.update_conditional_formatting(actions_sheet)
 
             workbook.save(filename=self.job_tracker_filepath)
             workbook.close()
@@ -2274,11 +2283,12 @@ class JobTrackerBar(tk.Frame):
 
     def update_conditional_formatting(self, actions_sheet):
 
-        rule = DataBarRule(start_type='num', start_value=0, end_type='num', end_value=5, color="FF638EC6",
-                           showValue=False, minLength=0, maxLength=100)
-        max_range_cell = str((11+len(self.job_tracker.get_job_names())))
+        # rule = DataBarRule(start_type='num', start_value=0, end_type='num', end_value=5, color="FF638EC6",
+        #                    showValue=False, minLength=0, maxLength=100)
+        max_range_cell = str((10+len(self.job_tracker.get_job_names())))
         cell_range = "J11:J" + max_range_cell
-        actions_sheet.conditional_formatting.add(cell_range, rule)
+        print('Cell Range ' + cell_range)
+        # actions_sheet.conditional_formatting.add(cell_range, rule)
 
 
 class MainWindow(tk.Frame):

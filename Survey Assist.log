@@ -2567,3 +2567,95 @@ PermissionError: [Errno 13] Permission denied: 'C:\\Users\\rjwal_000\\PycharmPro
 
 2020-06-18 16:45:13,000:Survey Assist - v1.0:Started Application
 
+2020-06-18 16:46:14,377:Survey Assist - v1.0:Started Application
+
+2020-06-18 16:47:50,615:Survey Assist - v1.0:Started Application
+
+2020-06-18 16:49:05,804:Survey Assist - v1.0:Started Application
+
+2020-06-18 16:49:22,443:Survey Assist - v1.0:Started Application
+
+2020-06-18 16:50:01,155:Survey Assist - v1.0:Started Application
+
+2020-06-18 16:51:50,727:Survey Assist - v1.0:Started Application
+
+2020-06-18 16:52:52,845:Survey Assist - v1.0:Started Application
+
+2020-06-18 16:53:13,296:Survey Assist - v1.0:Job Tracker excel spreadsheet currently in use
+
+[Errno 13] Permission denied: 'C:\\Users\\rjwal_000\\PycharmProjects\\Survey Assist\\Test Files\\Survey Data\\2020\\Job Tracker Digital System.xlsm'
+Traceback (most recent call last):
+  File "C:/Users/rjwal_000/PycharmProjects/Survey Assist/main.py", line 2221, in save_job_to_excel
+    workbook.save(filename=self.job_tracker_filepath)
+  File "C:\Python34\lib\site-packages\openpyxl\workbook\workbook.py", line 391, in save
+    save_workbook(self, filename)
+  File "C:\Python34\lib\site-packages\openpyxl\writer\excel.py", line 282, in save_workbook
+    archive = ZipFile(filename, 'w', ZIP_DEFLATED, allowZip64=True)
+  File "C:\Python34\lib\zipfile.py", line 923, in __init__
+    self.fp = io.open(file, modeDict[mode])
+PermissionError: [Errno 13] Permission denied: 'C:\\Users\\rjwal_000\\PycharmProjects\\Survey Assist\\Test Files\\Survey Data\\2020\\Job Tracker Digital System.xlsm'
+2020-06-18 16:55:53,350:Survey Assist - v1.0:Started Application
+
+2020-06-18 17:00:00,551:Survey Assist - v1.0:Started Application
+
+2020-06-18 17:05:06,161:Survey Assist - v1.0:Started Application
+
+2020-06-18 17:05:54,047:Survey Assist - v1.0:Started Application
+
+2020-06-18 18:28:59,688:Survey Assist - v1.0:Started Application
+
+2020-06-18 18:55:51,910:Survey Assist - v1.0:Started Application
+
+2020-06-18 18:55:51,970:Survey Assist - v1.0:Error has occurred creating Job Tracker object.
+
+No Job Names Found
+Traceback (most recent call last):
+  File "C:/Users/rjwal_000/PycharmProjects/Survey Assist/main.py", line 4258, in __init__
+    self.job_tracker_bar = JobTrackerBar(self.main_window, self.menu_bar.user_config.user_initials)
+  File "C:/Users/rjwal_000/PycharmProjects/Survey Assist/main.py", line 2075, in __init__
+    self.jt_job_name_combo['values'] = self.get_combobox_values()
+  File "C:/Users/rjwal_000/PycharmProjects/Survey Assist/main.py", line 2131, in get_combobox_values
+    raise Exception("No Job Names Found")
+Exception: No Job Names Found
+2020-06-18 18:57:35,306:Survey Assist - v1.0:Started Application
+
+2020-06-18 18:57:35,356:Survey Assist - v1.0:Error has occurred creating Job Tracker object.
+
+No Job Names Found
+Traceback (most recent call last):
+  File "C:/Users/rjwal_000/PycharmProjects/Survey Assist/main.py", line 4258, in __init__
+    self.job_tracker_bar = JobTrackerBar(self.main_window, self.menu_bar.user_config.user_initials)
+  File "C:/Users/rjwal_000/PycharmProjects/Survey Assist/main.py", line 2075, in __init__
+    self.jt_job_name_combo['values'] = self.get_combobox_values()
+  File "C:/Users/rjwal_000/PycharmProjects/Survey Assist/main.py", line 2131, in get_combobox_values
+    raise Exception("No Job Names Found")
+Exception: No Job Names Found
+2020-06-18 19:01:21,673:Survey Assist - v1.0:Started Application
+
+2020-06-18 19:01:25,417:Survey Assist - v1.0:Job Tracker excel spreadsheet currently in use
+
+[Errno 13] Permission denied: 'C:\\Users\\rjwal_000\\PycharmProjects\\Survey Assist\\Test Files\\Survey Data\\2020\\Job Tracker Digital System.xlsm'
+Traceback (most recent call last):
+  File "C:/Users/rjwal_000/PycharmProjects/Survey Assist/main.py", line 2220, in save_job_to_excel
+    workbook.save(filename=self.job_tracker_filepath)
+  File "C:\Python34\lib\site-packages\openpyxl\workbook\workbook.py", line 391, in save
+    save_workbook(self, filename)
+  File "C:\Python34\lib\site-packages\openpyxl\writer\excel.py", line 282, in save_workbook
+    archive = ZipFile(filename, 'w', ZIP_DEFLATED, allowZip64=True)
+  File "C:\Python34\lib\zipfile.py", line 923, in __init__
+    self.fp = io.open(file, modeDict[mode])
+PermissionError: [Errno 13] Permission denied: 'C:\\Users\\rjwal_000\\PycharmProjects\\Survey Assist\\Test Files\\Survey Data\\2020\\Job Tracker Digital System.xlsm'
+2020-06-18 19:03:40,538:Survey Assist - v1.0:Started Application
+
+2020-06-18 19:04:13,652:Survey Assist - v1.0:Started Application
+
+2020-06-18 19:06:09,749:Survey Assist - v1.0:Started Application
+
+2020-06-18 20:06:47,050:Survey Assist - v1.0:Started Application
+
+2020-06-18 20:08:56,525:Survey Assist - v1.0:Started Application
+
+2020-06-18 20:16:43,194:Survey Assist - v1.0:Started Application
+
+2020-06-18 20:17:01,482:Survey Assist - v1.0:Started Application
+
