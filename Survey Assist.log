@@ -2754,3 +2754,22 @@ IndexError: tuple index out of range
 
 2020-06-18 21:13:18,406:Survey Assist - v1.0:Started Application
 
+2020-06-18 21:15:04,989:Survey Assist - v1.0:Started Application
+
+2020-06-18 21:15:09,993:Survey Assist - v1.0:Job Tracker excel spreadsheet currently in use
+
+[Errno 13] Permission denied: 'C:\\Users\\rjwal_000\\PycharmProjects\\Survey Assist\\Test Files\\Survey Data\\2020\\Job Tracker Digital System.xlsm'
+Traceback (most recent call last):
+  File "C:/Users/rjwal_000/PycharmProjects/Survey Assist/main.py", line 2272, in save_job_to_excel
+    workbook.save(filename=self.job_tracker_filepath)
+  File "C:\Python34\lib\site-packages\openpyxl\workbook\workbook.py", line 391, in save
+    save_workbook(self, filename)
+  File "C:\Python34\lib\site-packages\openpyxl\writer\excel.py", line 282, in save_workbook
+    archive = ZipFile(filename, 'w', ZIP_DEFLATED, allowZip64=True)
+  File "C:\Python34\lib\zipfile.py", line 923, in __init__
+    self.fp = io.open(file, modeDict[mode])
+PermissionError: [Errno 13] Permission denied: 'C:\\Users\\rjwal_000\\PycharmProjects\\Survey Assist\\Test Files\\Survey Data\\2020\\Job Tracker Digital System.xlsm'
+2020-06-19 11:14:41,827:Survey Assist - v1.0:Started Application
+
+2020-06-19 11:36:23,003:Survey Assist - v1.0:Started Application
+

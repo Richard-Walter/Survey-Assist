@@ -17,7 +17,7 @@ KNOWN BUGS
 -Importing SD card - sometimes it says files transferred, but nothing actually transferred.  I could put a check that files exists after copying?
 
 """
-
+from openpyxl.formatting.rule import ColorScaleRule
 from openpyxl.formatting.rule import DataBarRule
 from openpyxl.styles import Font
 from openpyxl.styles import Alignment
@@ -2204,6 +2204,15 @@ class JobTrackerBar(tk.Frame):
 
     def save_job_to_excel(self):
 
+        two_color_scale_rule = ColorScaleRule(start_type='num', start_value=0, start_color='FFFFFF', end_type = 'num', end_value = 1,
+                                              end_color = '70AD47')
+
+        xml_two_color_scale_rule = ColorScaleRule(start_type='num', start_value=1, start_color='70AD47', end_type='num', end_value=2,
+                                              end_color='FFFF00')
+
+        green_font =  Font(color='00B050')
+
+
         try:
             job_name = self.jt_job_name_combo.get()
             if job_name == "<<Enter New Job>>":
@@ -2233,13 +2242,24 @@ class JobTrackerBar(tk.Frame):
                 self.update_job_date(actions_sheet["B11"], date_string)
                 self.update_user(actions_sheet["C11"], self.jt_user_lbl['text'])
 
+                # apply 2-scale conditional formatting to check boxes
+                actions_sheet.conditional_formatting.add("D11:G11", two_color_scale_rule)
+                actions_sheet.conditional_formatting.add("H11", xml_two_color_scale_rule)
+
+                # apply font to the checkboxes
+                actions_sheet["D11"].font = green_font
+                actions_sheet["E11"].font = green_font
+                actions_sheet["F11"].font = green_font
+                actions_sheet["G11"].font = green_font
+                actions_sheet["H11"].font = green_font
+
                 if self.calcs_checkbox_var.get() == '1':
                     self.update_checkbox(actions_sheet["D11"], 1)
 
                 if self.results_checkbox_var.get() == '1':
                     self.update_checkbox(actions_sheet["E11"], 1)
 
-                # add formula and update all subsequent row formulas as it doesn't update when inserting a row for some reason
+                # % Complete - add formula and update all subsequent row formulas as it doesn't update when inserting a row for some reason
                 for row in range(11, 11+len(self.job_tracker.get_job_names())):
                     percentage_complete_cell = 'J'+str(row)
                     # actions_sheet[percentage_complete_cell] = '=SUM(D' + str(row) + ':H' + str(row) +')'
@@ -2262,7 +2282,6 @@ class JobTrackerBar(tk.Frame):
 
                 if self.calcs_checkbox_var.get() == '1':
                     self.update_checkbox(actions_sheet["D11"], 1)
-
 
                 if self.results_checkbox_var.get() == '1':
                     self.update_checkbox(actions_sheet["E11"], 1)
@@ -2325,12 +2344,12 @@ class JobTrackerBar(tk.Frame):
 
     def update_conditional_formatting(self, actions_sheet):
 
-        # rule = DataBarRule(start_type='num', start_value=0, end_type='num', end_value=5, color="FF638EC6",
-        #                    showValue=False, minLength=0, maxLength=100)
+        rule = DataBarRule(start_type='num', start_value=0, end_type='num', end_value=5, color="FF638EC6",
+                           showValue=False, minLength=0, maxLength=100)
         max_range_cell = str((10+len(self.job_tracker.get_job_names())))
         cell_range = "J11:J" + max_range_cell
         print('Cell Range ' + cell_range)
-        # actions_sheet.conditional_formatting.add(cell_range, rule)
+        actions_sheet.conditional_formatting.add(cell_range, rule)
 
 
 class MainWindow(tk.Frame):
