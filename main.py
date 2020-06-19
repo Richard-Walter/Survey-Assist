@@ -17,6 +17,8 @@ KNOWN BUGS
 -Importing SD card - sometimes it says files transferred, but nothing actually transferred.  I could put a check that files exists after copying?
 
 """
+
+from openpyxl.styles import Border, Side
 from openpyxl.formatting.rule import ColorScaleRule
 from openpyxl.formatting.rule import DataBarRule
 from openpyxl.styles import Font
@@ -153,6 +155,7 @@ class MenuBar(tk.Frame):
         self.job_tracker_sub_menu.add_command(label="Create new Job", command=self.job_tracker_new_job)
         self.job_tracker_sub_menu.add_command(label="Track a Job", command=self.job_tracker_track)
         self.job_tracker_sub_menu.add_command(label="Open in excel", command=self.job_tracker_open_excel)
+        self.job_tracker_sub_menu.add_command(label="Hide", command=self.job_tracker_hide)
         self.menu_bar.add_cascade(label="Job Tracker", menu=self.job_tracker_sub_menu)
 
         # Help menu
@@ -1572,6 +1575,17 @@ class MenuBar(tk.Frame):
             tk.messagebox.showerror("Survey Assist", "Couldn't find the Job Tracker Spreadsheet:\n\n" + self.job_tracker_filepath)
             return
 
+    def job_tracker_hide(self):
+
+        try:
+            if gui_app.job_tracker_bar is not None:
+                gui_app.job_tracker_bar.hide_job_tracker_bar()
+
+        except FileNotFoundError as ex:
+
+            logger.exception("An unexpected error has occurred\n\njob_tracker_hide()\n\n" + str(ex))
+            return
+
     def job_tracker_new_job(self):
 
         try:
@@ -2144,7 +2158,7 @@ class JobTrackerBar(tk.Frame):
             else:
                 self.jt_sent_checkbox.deselect()
 
-            if survey_job.xml == '1':
+            if survey_job.xml == '1' or survey_job.xml == '2':
                 self.jt_xml_checkbox.select()
             else:
                 self.jt_xml_checkbox.deselect()
@@ -2163,12 +2177,11 @@ class JobTrackerBar(tk.Frame):
         # self.job_tracker = JobTracker(self.job_tracker_filepath, logger)
         job_names = self.job_tracker.get_job_names()
 
-
-        if not job_names: # problem has occurred.  Disable job tracker
+        if not job_names:  # problem has occurred.  Disable job tracker
 
             job_names.insert(0, "<<ERROR>>")
 
-            self.jt_btn_save_job.configure(state = 'disabled')
+            self.jt_btn_save_job.configure(state='disabled')
 
             raise Exception("No Job Names Found")
 
@@ -2204,14 +2217,16 @@ class JobTrackerBar(tk.Frame):
 
     def save_job_to_excel(self):
 
-        two_color_scale_rule = ColorScaleRule(start_type='num', start_value=0, start_color='FFFFFF', end_type = 'num', end_value = 1,
-                                              end_color = '70AD47')
+        two_color_scale_rule = ColorScaleRule(start_type='num', start_value=0, start_color='FFFFFF', end_type='num', end_value=1,
+                                              end_color='70AD47')
 
         xml_two_color_scale_rule = ColorScaleRule(start_type='num', start_value=1, start_color='70AD47', end_type='num', end_value=2,
-                                              end_color='FFFF00')
+                                                  end_color='FFFF00')
 
-        green_font =  Font(color='00B050')
+        green_font = Font(color='00B050')
         yellow_font = Font(color='FFFF00')
+
+        border = Border(bottom=Side(border_style='thin', color='000000'))
 
         try:
             job_name = self.jt_job_name_combo.get()
@@ -2250,20 +2265,26 @@ class JobTrackerBar(tk.Frame):
 
                 # apply font to the checkboxes
                 actions_sheet["D11"].font = green_font
+                actions_sheet["D11"].border = border
                 actions_sheet["E11"].font = green_font
+                actions_sheet["E11"].border = border
                 actions_sheet["F11"].font = green_font
+                actions_sheet["F11"].border = border
                 actions_sheet["G11"].font = green_font
+                actions_sheet["G11"].border = border
                 actions_sheet["H11"].font = yellow_font
+                actions_sheet["H11"].border = border
 
                 self.update_checkbox_values(actions_sheet, "11")
 
                 actions_sheet["I11"] = self.jt_notes_entry.get()
 
                 # % Complete - add formula and update all subsequent row formulas as it doesn't update when inserting a row for some reason
-                for row in range(11, 11+len(self.job_tracker.get_job_names())):
-                    percentage_complete_cell = 'J'+str(row)
+                for row in range(11, 11 + len(self.job_tracker.get_job_names())):
+                    percentage_complete_cell = 'J' + str(row)
                     # actions_sheet[percentage_complete_cell] = '=SUM(D' + str(row) + ':H' + str(row) +')'
-                    cell_forumua = '=IF(SUM(D' + str(row) + ': H'+ str(row) + ') > 5, REPT("g", 10), (REPT("g", SUM(D' + str(row) + ': H'+ str(row) + ') * 2)))'
+                    cell_forumua = '=IF(SUM(D' + str(row) + ': H' + str(row) + ') > 5, REPT("g", 10), (REPT("g", SUM(D' + str(row) + ': H' + str(
+                        row) + ') * 2)))'
                     actions_sheet[percentage_complete_cell] = cell_forumua
 
                     # Change font
@@ -2271,14 +2292,14 @@ class JobTrackerBar(tk.Frame):
 
                 # self.update_conditional_formatting(actions_sheet)
 
-            else:   # updating an existing job
+            else:  # updating an existing job
 
                 current_job_selected_line = self.jt_job_name_combo.current()
                 excel_row_to_update = str(10 + current_job_selected_line)
 
-                self.update_job_date(actions_sheet["B"+ excel_row_to_update], self.jt_date_btn['text'] )
+                self.update_job_date(actions_sheet["B" + excel_row_to_update], self.jt_date_btn['text'])
 
-                self.update_user(actions_sheet["C"+ excel_row_to_update],self.jt_user_lbl['text'] )
+                self.update_user(actions_sheet["C" + excel_row_to_update], self.jt_user_lbl['text'])
 
                 self.update_checkbox_values(actions_sheet, excel_row_to_update)
 
@@ -2295,10 +2316,12 @@ class JobTrackerBar(tk.Frame):
             self.jt_calcs_checkbox.deselect()
             self.jt_results_checkbox.deselect()
 
-            if selected_job_index == -1:    # new job created
+            if selected_job_index == -1:  # new job created
                 self.jt_job_name_combo.current(1)
             else:
                 self.jt_job_name_combo.current(selected_job_index)
+
+            self.cb_callback(None)
 
         except FileNotFoundError as ex:
 
@@ -2337,7 +2360,7 @@ class JobTrackerBar(tk.Frame):
         cell.font = Font(color='FF0000')
         cell.alignment = Alignment(horizontal='center')
 
-    def update_checkbox(self, cell, value, font = Font(color='00B050')):
+    def update_checkbox(self, cell, value, font=Font(color='00B050')):
 
         cell.value = value
         cell.font = font
@@ -2374,7 +2397,7 @@ class JobTrackerBar(tk.Frame):
 
         rule = DataBarRule(start_type='num', start_value=0, end_type='num', end_value=5, color="FF638EC6",
                            showValue=False, minLength=0, maxLength=100)
-        max_range_cell = str((10+len(self.job_tracker.get_job_names())))
+        max_range_cell = str((10 + len(self.job_tracker.get_job_names())))
         cell_range = "J11:J" + max_range_cell
         print('Cell Range ' + cell_range)
         actions_sheet.conditional_formatting.add(cell_range, rule)
@@ -4363,8 +4386,7 @@ class GUIApplication(tk.Frame):
             self.menu_bar.job_tracker_sub_menu.entryconfig("Track a Job", state="disabled")
             logger.exception('Error has occurred creating Job Tracker object.\n\n' + str(ex))
 
-
-        # self.job_tracker_bar.hide_job_tracker_bar()
+        self.job_tracker_bar.hide_job_tracker_bar()
         self.list_box = ListBoxFrame(self.main_window)
         self.list_box.pack(fill="both")
         self.main_window.pack(fill="both", expand=True)
