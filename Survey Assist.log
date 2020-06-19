@@ -2773,3 +2773,86 @@ PermissionError: [Errno 13] Permission denied: 'C:\\Users\\rjwal_000\\PycharmPro
 
 2020-06-19 11:36:23,003:Survey Assist - v1.0:Started Application
 
+2020-06-19 11:45:34,571:Survey Assist - v1.0:Started Application
+
+2020-06-19 11:45:47,696:Survey Assist - v1.0:Started Application
+
+2020-06-19 11:49:30,091:Survey Assist - v1.0:Started Application
+
+2020-06-19 11:51:55,037:Survey Assist - v1.0:Job Tracker excel spreadsheet currently in use
+
+[Errno 13] Permission denied: 'C:\\Users\\rjwal_000\\PycharmProjects\\Survey Assist\\Test Files\\Survey Data\\2020\\Job Tracker Digital System.xlsm'
+Traceback (most recent call last):
+  File "C:/Users/rjwal_000/PycharmProjects/Survey Assist/main.py", line 2287, in save_job_to_excel
+    workbook.save(filename=self.job_tracker_filepath)
+  File "C:\Python34\lib\site-packages\openpyxl\workbook\workbook.py", line 391, in save
+    save_workbook(self, filename)
+  File "C:\Python34\lib\site-packages\openpyxl\writer\excel.py", line 282, in save_workbook
+    archive = ZipFile(filename, 'w', ZIP_DEFLATED, allowZip64=True)
+  File "C:\Python34\lib\zipfile.py", line 923, in __init__
+    self.fp = io.open(file, modeDict[mode])
+PermissionError: [Errno 13] Permission denied: 'C:\\Users\\rjwal_000\\PycharmProjects\\Survey Assist\\Test Files\\Survey Data\\2020\\Job Tracker Digital System.xlsm'
+2020-06-19 11:55:38,933:Survey Assist - v1.0:Started Application
+
+2020-06-19 11:56:15,641:Survey Assist - v1.0:Started Application
+
+2020-06-19 11:59:11,176:Survey Assist - v1.0:Started Application
+
+2020-06-19 12:00:03,524:Survey Assist - v1.0:Started Application
+
+2020-06-19 12:01:15,842:Survey Assist - v1.0:Job Tracker excel spreadsheet currently in use
+
+[Errno 13] Permission denied: 'C:\\Users\\rjwal_000\\PycharmProjects\\Survey Assist\\Test Files\\Survey Data\\2020\\Job Tracker Digital System.xlsm'
+Traceback (most recent call last):
+  File "C:/Users/rjwal_000/PycharmProjects/Survey Assist/main.py", line 2287, in save_job_to_excel
+    workbook.save(filename=self.job_tracker_filepath)
+  File "C:\Python34\lib\site-packages\openpyxl\workbook\workbook.py", line 391, in save
+    save_workbook(self, filename)
+  File "C:\Python34\lib\site-packages\openpyxl\writer\excel.py", line 282, in save_workbook
+    archive = ZipFile(filename, 'w', ZIP_DEFLATED, allowZip64=True)
+  File "C:\Python34\lib\zipfile.py", line 923, in __init__
+    self.fp = io.open(file, modeDict[mode])
+PermissionError: [Errno 13] Permission denied: 'C:\\Users\\rjwal_000\\PycharmProjects\\Survey Assist\\Test Files\\Survey Data\\2020\\Job Tracker Digital System.xlsm'
+2020-06-19 12:03:17,642:Survey Assist - v1.0:Started Application
+
+2020-06-19 12:03:33,058:Survey Assist - v1.0:Error has occurred in JobTracker init().
+
+Can't convert 'int' object to str implicitly
+Traceback (most recent call last):
+  File "C:/Users/rjwal_000/PycharmProjects/Survey Assist/main.py", line 2257, in save_job_to_excel
+    self.update_checkbox_values(actions_sheet, 11)
+  File "C:/Users/rjwal_000/PycharmProjects/Survey Assist/main.py", line 2345, in update_checkbox_values
+    self.update_checkbox(actions_sheet["D" + row], 1)
+TypeError: Can't convert 'int' object to str implicitly
+2020-06-19 12:05:30,426:Survey Assist - v1.0:Started Application
+
+2020-06-19 12:09:37,024:Survey Assist - v1.0:Started Application
+
+2020-06-19 12:10:21,150:Survey Assist - v1.0:Job Tracker excel spreadsheet currently in use
+
+[Errno 13] Permission denied: 'C:\\Users\\rjwal_000\\PycharmProjects\\Survey Assist\\Test Files\\Survey Data\\2020\\Job Tracker Digital System.xlsm'
+Traceback (most recent call last):
+  File "C:/Users/rjwal_000/PycharmProjects/Survey Assist/main.py", line 2287, in save_job_to_excel
+    workbook.save(filename=self.job_tracker_filepath)
+  File "C:\Python34\lib\site-packages\openpyxl\workbook\workbook.py", line 391, in save
+    save_workbook(self, filename)
+  File "C:\Python34\lib\site-packages\openpyxl\writer\excel.py", line 282, in save_workbook
+    archive = ZipFile(filename, 'w', ZIP_DEFLATED, allowZip64=True)
+  File "C:\Python34\lib\zipfile.py", line 923, in __init__
+    self.fp = io.open(file, modeDict[mode])
+PermissionError: [Errno 13] Permission denied: 'C:\\Users\\rjwal_000\\PycharmProjects\\Survey Assist\\Test Files\\Survey Data\\2020\\Job Tracker Digital System.xlsm'
+2020-06-19 12:16:36,784:Survey Assist - v1.0:Started Application
+
+2020-06-19 12:16:44,665:Survey Assist - v1.0:Error has occurred in JobTracker init().
+
+Index -1 out of range
+Traceback (most recent call last):
+  File "C:/Users/rjwal_000/PycharmProjects/Survey Assist/main.py", line 2298, in save_job_to_excel
+    self.jt_job_name_combo.current(selected_job_index)
+  File "C:\Python34\lib\tkinter\ttk.py", line 713, in current
+    return self.tk.call(self._w, "current", newindex)
+_tkinter.TclError: Index -1 out of range
+2020-06-19 12:17:09,786:Survey Assist - v1.0:Started Application
+
+2020-06-19 12:18:41,564:Survey Assist - v1.0:Started Application
+

@@ -2069,9 +2069,9 @@ class JobTrackerBar(tk.Frame):
         self.jt_results_checkbox.configure(background='#d9f2d8')
         self.jt_checked_checkbox = tk.Checkbutton(self.frame, text='Checked', variable=self.checked_checkbox_var, onvalue='1', offvalue='')
         self.jt_checked_checkbox.configure(background='#d9f2d8')
-        self.jt_sent_checkbox = tk.Checkbutton(self.frame, text='Sent', variable=self.checked_checkbox_var, onvalue='1', offvalue='')
+        self.jt_sent_checkbox = tk.Checkbutton(self.frame, text='Sent', variable=self.sent_checkbox_var, onvalue='1', offvalue='')
         self.jt_sent_checkbox.configure(background='#d9f2d8')
-        self.jt_xml_checkbox = tk.Checkbutton(self.frame, text='XML', variable=self.checked_checkbox_var, onvalue='1', offvalue='')
+        self.jt_xml_checkbox = tk.Checkbutton(self.frame, text='XML', variable=self.xml_checkbox_var, onvalue='1', offvalue='')
         self.jt_xml_checkbox.configure(background='#d9f2d8')
 
         # notes label and entry
@@ -2211,10 +2211,12 @@ class JobTrackerBar(tk.Frame):
                                               end_color='FFFF00')
 
         green_font =  Font(color='00B050')
-
+        yellow_font = Font(color='FFFF00')
 
         try:
             job_name = self.jt_job_name_combo.get()
+            selected_job_index = self.jt_job_name_combo.current()
+
             if job_name == "<<Enter New Job>>":
                 tk.messagebox.showerror("Survey Assist", "Please enter a job name")
                 return
@@ -2251,13 +2253,11 @@ class JobTrackerBar(tk.Frame):
                 actions_sheet["E11"].font = green_font
                 actions_sheet["F11"].font = green_font
                 actions_sheet["G11"].font = green_font
-                actions_sheet["H11"].font = green_font
+                actions_sheet["H11"].font = yellow_font
 
-                if self.calcs_checkbox_var.get() == '1':
-                    self.update_checkbox(actions_sheet["D11"], 1)
+                self.update_checkbox_values(actions_sheet, "11")
 
-                if self.results_checkbox_var.get() == '1':
-                    self.update_checkbox(actions_sheet["E11"], 1)
+                actions_sheet["I11"] = self.jt_notes_entry.get()
 
                 # % Complete - add formula and update all subsequent row formulas as it doesn't update when inserting a row for some reason
                 for row in range(11, 11+len(self.job_tracker.get_job_names())):
@@ -2280,11 +2280,9 @@ class JobTrackerBar(tk.Frame):
 
                 self.update_user(actions_sheet["C"+ excel_row_to_update],self.jt_user_lbl['text'] )
 
-                if self.calcs_checkbox_var.get() == '1':
-                    self.update_checkbox(actions_sheet["D11"], 1)
+                self.update_checkbox_values(actions_sheet, excel_row_to_update)
 
-                if self.results_checkbox_var.get() == '1':
-                    self.update_checkbox(actions_sheet["E11"], 1)
+                actions_sheet["I" + excel_row_to_update] = self.jt_notes_entry.get()
 
                 # self.update_conditional_formatting(actions_sheet)
 
@@ -2297,7 +2295,10 @@ class JobTrackerBar(tk.Frame):
             self.jt_calcs_checkbox.deselect()
             self.jt_results_checkbox.deselect()
 
-            self.jt_job_name_combo.current(0)
+            if selected_job_index == -1:    # new job created
+                self.jt_job_name_combo.current(1)
+            else:
+                self.jt_job_name_combo.current(selected_job_index)
 
         except FileNotFoundError as ex:
 
@@ -2336,11 +2337,38 @@ class JobTrackerBar(tk.Frame):
         cell.font = Font(color='FF0000')
         cell.alignment = Alignment(horizontal='center')
 
-    def update_checkbox(self, cell, value):
+    def update_checkbox(self, cell, value, font = Font(color='00B050')):
 
         cell.value = value
-        cell.font = Font(color='00B050')
+        cell.font = font
         cell.alignment = Alignment(horizontal='center')
+
+    def update_checkbox_values(self, actions_sheet, row):
+
+        if self.calcs_checkbox_var.get() == '1':
+            self.update_checkbox(actions_sheet["D" + row], 1)
+        else:
+            self.update_checkbox(actions_sheet["D" + row], "")
+
+        if self.results_checkbox_var.get() == '1':
+            self.update_checkbox(actions_sheet["E" + row], 1)
+        else:
+            self.update_checkbox(actions_sheet["E" + row], "")
+
+        if self.checked_checkbox_var.get() == '1':
+            self.update_checkbox(actions_sheet["F" + row], 1)
+        else:
+            self.update_checkbox(actions_sheet["F" + row], "")
+
+        if self.sent_checkbox_var.get() == '1':
+            self.update_checkbox(actions_sheet["G" + row], 1)
+        else:
+            self.update_checkbox(actions_sheet["G" + row], "")
+
+        if self.xml_checkbox_var.get() == '1':
+            self.update_checkbox(actions_sheet["H" + row], 1, Font(color='FFFF00'))
+        else:
+            self.update_checkbox(actions_sheet["H" + row], "", Font(color='FFFF00'))
 
     def update_conditional_formatting(self, actions_sheet):
 
