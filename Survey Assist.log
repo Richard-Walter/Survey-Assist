@@ -2904,3 +2904,68 @@ TypeError: cb_callback() missing 1 required positional argument: 'event'
 
 2020-06-19 12:49:38,566:Survey Assist - v1.0:Started Application
 
+2020-06-22 10:45:18,884:Survey Assist - v1.0:Started Application
+
+2020-06-22 10:45:24,822:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/rjwal_000/PycharmProjects/Survey Assist/Test Files/GSI Files/3D MR_120819_3D error change.gsi
+2020-06-22 10:46:42,648:Survey Assist - v1.0:Started Application
+
+2020-06-22 10:46:49,433:Survey Assist - v1.0:Started Application
+
+2020-06-22 10:46:54,385:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/rjwal_000/PycharmProjects/Survey Assist/Test Files/GSI Files/2D Survey MR050819.GSI
+2020-06-22 10:48:11,798:Survey Assist - v1.0:Started Application
+
+2020-06-22 10:48:20,260:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/rjwal_000/PycharmProjects/Survey Assist/Test Files/GSI Files/2D Survey MR050819.GSI
+2020-06-22 10:48:20,309:Survey Assist - v1.0:An unexpected error has occurred
+
+update_gui()
+
+unknown color name "EAF7F9"
+Traceback (most recent call last):
+  File "C:/Users/rjwal_000/PycharmProjects/Survey Assist/main.py", line 627, in update_gui
+    gui_app.list_box.populate(gsi.formatted_lines)
+  File "C:/Users/rjwal_000/PycharmProjects/Survey Assist/main.py", line 2524, in populate
+    self.list_box_view.tag_configure("", background='EAF7F9')
+  File "C:\Users\rjwal_000\AppData\Local\Programs\Python\Python38-32\lib\tkinter\ttk.py", line 1488, in tag_configure
+    return _val_or_dict(self.tk, kw, self._w, "tag", "configure",
+  File "C:\Users\rjwal_000\AppData\Local\Programs\Python\Python38-32\lib\tkinter\ttk.py", line 297, in _val_or_dict
+    res = tk.call(*(args + options))
+_tkinter.TclError: unknown color name "EAF7F9"
+2020-06-22 10:48:37,990:Survey Assist - v1.0:Started Application
+
+2020-06-22 10:48:44,401:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/rjwal_000/PycharmProjects/Survey Assist/Test Files/GSI Files/2D Survey MR050819.GSI
+2020-06-22 11:00:57,269:Survey Assist - v1.0:Started Application
+
+2020-06-22 11:02:21,501:Survey Assist - v1.0:Started Application
+
+2020-06-22 11:03:28,302:Survey Assist - v1.0:Started Application
+
+2020-06-22 11:05:37,169:Survey Assist - v1.0:Started Application
+
+2020-06-22 11:05:43,479:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/rjwal_000/PycharmProjects/Survey Assist/Test Files/GSI Files/2D Survey MR050819.GSI
+2020-06-22 11:06:03,839:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/rjwal_000/PycharmProjects/Survey Assist/Test Files/GSI Files/ARTC_903_compnet 240220.GSI
+2020-06-22 11:06:13,901:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/rjwal_000/PycharmProjects/Survey Assist/Test Files/GSI Files/MR140519.GSI
+2020-06-22 11:07:12,900:Survey Assist - v1.0:Started Application
+
+2020-06-22 11:07:18,606:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/rjwal_000/PycharmProjects/Survey Assist/Test Files/GSI Files/MR140519.GSI
+2020-06-22 11:08:30,637:Survey Assist - v1.0:Started Application
+
+2020-06-22 11:08:40,057:Survey Assist - v1.0:OPENING UP A GSI FILE: C:/Users/rjwal_000/PycharmProjects/Survey Assist/Test Files/GSI Files/MR140519.GSI
+2020-06-22 11:10:11,865:Survey Assist - v1.0:Started Application
+
+2020-06-22 11:11:24,009:Survey Assist - v1.0:Started Application
+
+2020-06-22 11:11:41,494:Survey Assist - v1.0:Job Tracker excel spreadsheet currently in use
+
+[Errno 13] Permission denied: 'C:\\Users\\rjwal_000\\PycharmProjects\\Survey Assist\\Test Files\\Survey Data\\2020\\Job Tracker Digital System.xlsm'
+Traceback (most recent call last):
+  File "C:/Users/rjwal_000/PycharmProjects/Survey Assist/main.py", line 2315, in save_job_to_excel
+    workbook.save(filename=self.job_tracker_filepath)
+  File "C:\Python34\lib\site-packages\openpyxl\workbook\workbook.py", line 391, in save
+    save_workbook(self, filename)
+  File "C:\Python34\lib\site-packages\openpyxl\writer\excel.py", line 282, in save_workbook
+    archive = ZipFile(filename, 'w', ZIP_DEFLATED, allowZip64=True)
+  File "C:\Python34\lib\zipfile.py", line 923, in __init__
+    self.fp = io.open(file, modeDict[mode])
+PermissionError: [Errno 13] Permission denied: 'C:\\Users\\rjwal_000\\PycharmProjects\\Survey Assist\\Test Files\\Survey Data\\2020\\Job Tracker Digital System.xlsm'
+2020-06-22 11:12:02,946:Survey Assist - v1.0:Started Application
+

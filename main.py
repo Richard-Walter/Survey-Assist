@@ -2170,7 +2170,12 @@ class JobTrackerBar(tk.Frame):
             self.jt_date_btn.configure(text=self.todays_date)
             self.jt_calcs_checkbox.deselect()
             self.jt_results_checkbox.deselect()
+            self.jt_checked_checkbox.deselect()
+            self.jt_sent_checkbox.deselect()
+            self.jt_xml_checkbox.deselect()
             self.jt_user_lbl.configure(text=self.user_initials)
+            self.jt_notes_entry.delete(0, tk.END)
+            self.jt_notes_entry.insert(0, survey_job.notes)
 
     def get_combobox_values(self):
 
@@ -2514,10 +2519,15 @@ class ListBoxFrame(tk.Frame):
             self.list_box_view.insert("", "end", values=complete_line, tags=(tag,))
 
         # color station setup and the remaining rows
-        self.list_box_view.tag_configure(self.stn_tag, background='#ffe793')
-        self.list_box_view.tag_configure(self.orientation_tag, background='#d1fac5')
-        self.list_box_view.tag_configure(self.highlight_tag, background='#ffff00')
-        self.list_box_view.tag_configure("", background='#eaf7f9')
+        # self.list_box_view.tag_configure(self.stn_tag, background='#ffe793')
+        self.list_box_view.tag_configure(self.stn_tag, background='#FFE793')
+        self.list_box_view.tag_configure(self.stn_tag, background='#FFE793')
+        # self.list_box_view.tag_configure(self.orientation_tag, background='#d1fac5')
+        self.list_box_view.tag_configure(self.orientation_tag, background='#D1FAC5')
+        # self.list_box_view.tag_configure(self.highlight_tag, background='#ffff00')
+        self.list_box_view.tag_configure(self.highlight_tag, background='#FFFF00')
+        # self.list_box_view.tag_configure("", background='#eaf7f9')
+        self.list_box_view.tag_configure("", background='#EAF7F9')
 
     def delete_selected_rows(self, event):
 
@@ -4367,6 +4377,11 @@ class GUIApplication(tk.Frame):
     def __init__(self, master, *args, **kwargs):
         super().__init__(master, *args, **kwargs)
 
+        # see fixed_map method for the reason for this style inclusion
+        self.style = ttk.Style()
+        self.style.map('Treeview', foreground=self.fixed_map('foreground'),
+                  background=self.fixed_map('background'))
+
         self.menu_bar = MenuBar(master)
         self.status_bar = StatusBar(master)
         self.main_window = MainWindow(master)
@@ -4391,12 +4406,23 @@ class GUIApplication(tk.Frame):
         self.list_box.pack(fill="both")
         self.main_window.pack(fill="both", expand=True)
 
+    def fixed_map(self, option):
+        # Fix for setting text colour for Tkinter 8.6.9
+        # From: https://core.tcl.tk/tk/info/509cafafae
+        #
+        # Returns the style map for 'option' with any styles starting with
+        # ('!disabled', '!selected', ...) filtered out.
+
+        # style.map() returns an empty list for missing options, so this
+        # should be future-safe.
+        return [elm for elm in self.style.map('Treeview', query_opt=option) if
+                elm[:2] != ('!disabled', '!selected')]
+
     @staticmethod
     def refresh():
         MenuBar.format_gsi_file()
         MenuBar.create_and_populate_database()
         MenuBar.update_gui()
-
 
 def main():
     global gui_app
@@ -4423,6 +4449,8 @@ def main():
     database = GSIDatabase()
 
     root.mainloop()
+
+
 
 
 def configure_logger():
