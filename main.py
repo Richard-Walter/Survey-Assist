@@ -18,8 +18,14 @@ KNOWN BUGS
 
 """
 
+from openpyxl.styles import Border, Side
+from openpyxl.formatting.rule import ColorScaleRule
+from openpyxl.formatting.rule import DataBarRule
+from openpyxl.styles import Font
+from openpyxl.styles import Alignment
 import tkinter.messagebox
 import logging.config
+from job_tracker import *
 from tkinter import filedialog
 from GSI import *
 from GSI import GSIDatabase, CorruptedGSIFileError, GSIFileContents
@@ -146,9 +152,10 @@ class MenuBar(tk.Frame):
 
         # Job Tracker
         self.job_tracker_sub_menu = tk.Menu(self.menu_bar, tearoff=0)
-        self.job_tracker_sub_menu.add_command(label="Create new Job ", command=self.job_tracker_new_job, state="disabled")
-        self.job_tracker_sub_menu.add_command(label="Track a Job", command=self.job_tracker_track, state="disabled")
-        self.job_tracker_sub_menu.add_command(label="Open Job Tracker in excel", command=self.job_tracker_open_excel)
+        self.job_tracker_sub_menu.add_command(label="Create new Job", command=self.job_tracker_new_job)
+        self.job_tracker_sub_menu.add_command(label="Track a Job", command=self.job_tracker_track)
+        self.job_tracker_sub_menu.add_command(label="Open in excel", command=self.job_tracker_open_excel)
+        self.job_tracker_sub_menu.add_command(label="Hide", command=self.job_tracker_hide)
         self.menu_bar.add_cascade(label="Job Tracker", menu=self.job_tracker_sub_menu)
 
         # Help menu
@@ -827,7 +834,7 @@ class MenuBar(tk.Frame):
                             obs_line_1_field_value = get_numerical_value_from_string(obs_line_1_field_value_str, field_type, precision)
 
                             obs_line_2_field_value = get_numerical_value_from_string(obs_line_2_field_value_str, field_type, precision)
-                            if key is 'Horizontal_Angle':
+                            if key == 'Horizontal_Angle':
                                 angular_diff = decimalize_value(angular_difference(obs_line_1_field_value, obs_line_2_field_value, 180), '3dp')
                             else:  # key is vertical angle:
                                 obs_angular_diff = angular_difference(obs_line_2_field_value, obs_line_1_field_value, 0)
@@ -1568,10 +1575,21 @@ class MenuBar(tk.Frame):
             tk.messagebox.showerror("Survey Assist", "Couldn't find the Job Tracker Spreadsheet:\n\n" + self.job_tracker_filepath)
             return
 
+    def job_tracker_hide(self):
+
+        try:
+            if gui_app.job_tracker_bar is not None:
+                gui_app.job_tracker_bar.hide_job_tracker_bar()
+
+        except FileNotFoundError as ex:
+
+            logger.exception("An unexpected error has occurred\n\njob_tracker_hide()\n\n" + str(ex))
+            return
+
     def job_tracker_new_job(self):
 
         try:
-            pass
+            gui_app.job_tracker_bar.show_job_tracker_bar()
 
         except FileNotFoundError as ex:
             print("Couldn't find the Job Tracker Spreadsheet:\n\n" + self.job_tracker_filepath)
@@ -1874,7 +1892,7 @@ class QueryDialogWindow:
         column_entry = self.column_entry.get()
         column_value_entry = self.column_value_entry.get()
 
-        if column_entry is "":
+        if column_entry == "":
             tkinter.messagebox.showinfo("GSI Query", "Please enter valid search data")
             logger.info(
                 "Invalid data entered.  Column Name was {}: column value was {}".format(column_entry,
@@ -2031,28 +2049,21 @@ class JobTrackerBar(tk.Frame):
         self.frame.pack(side='top', anchor=tk.W, fill=tk.X)
         self.frame.configure(background='#d9f2d8')
         self.user_initials = user_initials
-        self.survey_date = datetime.datetime.today().strftime('%d/%m/%Y')
-        self.job_tracker_filepath = os.path.join(survey_config.root_job_directory, survey_config.default_survey_type, survey_config.current_year,
-                                                 survey_config.job_tracker_filename)
+        self.todays_date = datetime.datetime.today().strftime('%d/%m/%Y')
+        self.job_tracker_filepath = os.path.join(survey_config.root_job_directory, survey_config.current_year, survey_config.job_tracker_filename)
+        self.job_tracker_backup_filepath = os.path.join(survey_config.root_job_directory, survey_config.current_year,
+                                                        survey_config.job_tracker_filename)
+
+        self.job_tracker = JobTracker(self.job_tracker_filepath, logger)
 
         # Create widgets
         self.jt_lbl = tk.Label(self.frame, text='JOB TRACKER:')
         self.jt_lbl.configure(background='#d9f2d8')
 
-        # Combobox
-        self.job_name = tk.StringVar()
-        self.jt_job_name_combo = ttk.Combobox(self.frame, width=18, textvariable=self.job_name)
-
-        self.jt_job_name_combo['values'] = self.get_job_names()
-        self.jt_job_name_combo.bind("<<ComboboxSelected>>", self.cb_callback)
-
-        # self.jt_job_name_combo.set("C")
-
-
         self.jt_date_lbl = tk.Label(self.frame, text='Survey Date:')
         self.jt_date_lbl.configure(background='#d9f2d8')
 
-        self.jt_date_btn = tk.Button(self.frame, text=self.survey_date, command=self.choose_date)
+        self.jt_date_btn = tk.Button(self.frame, text=self.todays_date, command=self.choose_date)
         self.jt_date_btn.configure(background='#ffffff')
         self.jt_initials_lbl = tk.Label(self.frame, text='Initials:')
         self.jt_initials_lbl.configure(background='#d9f2d8')
@@ -2060,15 +2071,45 @@ class JobTrackerBar(tk.Frame):
         self.jt_user_lbl.configure(background='#d9f2d8')
 
         # check boxes
-        calcs_checkbox_var = tk.IntVar()
-        results_checkbox_var = tk.IntVar()
-        self.jt_calcs_checkbox = tk.Checkbutton(self.frame, text='Calcs', variable=calcs_checkbox_var, onvalue=1, offvalue=0, command=self.save_job)
-        self.jt_calcs_checkbox.configure(background='#d9f2d8')
-        self.jt_results_checkbox = tk.Checkbutton(self.frame, text='Results', variable=results_checkbox_var, onvalue=1, offvalue=0, command=self.save_job)
-        self.jt_results_checkbox.configure(background='#d9f2d8')
+        self.calcs_checkbox_var = tk.StringVar()
+        self.results_checkbox_var = tk.StringVar()
+        self.checked_checkbox_var = tk.StringVar()
+        self.sent_checkbox_var = tk.StringVar()
+        self.xml_checkbox_var = tk.StringVar()
 
-        self.btn_new_job = tk.Button(self.frame, text="New Job", command=lambda: gui_app.menu_bar.job_tracker_new_job)
-        self.btn_new_job.configure(background='#ffffff')
+        self.jt_calcs_checkbox = tk.Checkbutton(self.frame, text='Calcs', variable=self.calcs_checkbox_var, onvalue='1', offvalue='')
+        self.jt_calcs_checkbox.configure(background='#d9f2d8')
+        self.jt_results_checkbox = tk.Checkbutton(self.frame, text='Results', variable=self.results_checkbox_var, onvalue='1', offvalue='')
+        self.jt_results_checkbox.configure(background='#d9f2d8')
+        self.jt_checked_checkbox = tk.Checkbutton(self.frame, text='Checked', variable=self.checked_checkbox_var, onvalue='1', offvalue='')
+        self.jt_checked_checkbox.configure(background='#d9f2d8')
+        self.jt_sent_checkbox = tk.Checkbutton(self.frame, text='Sent', variable=self.sent_checkbox_var, onvalue='1', offvalue='')
+        self.jt_sent_checkbox.configure(background='#d9f2d8')
+        self.jt_xml_checkbox = tk.Checkbutton(self.frame, text='XML', variable=self.xml_checkbox_var, onvalue='1', offvalue='')
+        self.jt_xml_checkbox.configure(background='#d9f2d8')
+
+        # notes label and entry
+        text = 'Outstanding/Notes'
+        self.jt_notes_label = tk.Label(self.frame, text='Outstanding/Notes: ')
+        self.jt_notes_label.configure(background='#d9f2d8')
+        self.jt_notes_entry = tk.Entry(self.frame, width=40)
+
+        # save button
+        self.jt_btn_save_job = tk.Button(self.frame, text="Save Job", command=self.save_job_to_excel)
+        self.jt_btn_save_job.configure(background='#ffffff')
+
+        # Combobox
+        self.job_name = tk.StringVar()
+        self.jt_job_name_combo = ttk.Combobox(self.frame, width=35, textvariable=self.job_name)
+
+        self.jt_job_name_combo['values'] = self.get_combobox_values()
+        self.jt_job_name_combo.bind("<<ComboboxSelected>>", self.cb_callback)
+
+        self.jt_job_name_combo.current(0)
+
+        # open in excel button
+        self.jt_btn_open_in_excel = tk.Button(self.frame, text="Open in Excel", command=self.open_in_excel)
+        self.jt_btn_open_in_excel.configure(background='#ffffff')
 
         # pack job tracker widgets
         self.jt_lbl.pack(padx=5, pady=5, side='left')
@@ -2077,39 +2118,90 @@ class JobTrackerBar(tk.Frame):
         self.jt_date_btn.pack(padx=5, pady=5, side='left')
         self.jt_initials_lbl.pack(padx=(15, 0), pady=5, side='left')
         self.jt_user_lbl.pack(padx=0, pady=5, side='left')
-        self.jt_calcs_checkbox.pack(padx=(15,0), pady=5, side='left')
-        self.jt_results_checkbox.pack(padx=(15,0), pady=5, side='left')
+        self.jt_calcs_checkbox.pack(padx=(15, 0), pady=5, side='left')
+        self.jt_results_checkbox.pack(padx=(15, 0), pady=5, side='left')
+        self.jt_checked_checkbox.pack(padx=(15, 0), pady=5, side='left')
+        self.jt_sent_checkbox.pack(padx=(15, 0), pady=5, side='left')
+        self.jt_xml_checkbox.pack(padx=(15, 0), pady=5, side='left')
+        self.jt_notes_label.pack(padx=(15, 0), pady=5, side='left')
+        self.jt_notes_entry.pack(padx=(15, 0), pady=5, side='left')
 
-        self.btn_new_job.pack(padx=(30, 30), pady=5, side='right')
-
+        self.jt_btn_save_job.pack(padx=(50, 0), pady=5, side='left')
+        self.jt_btn_open_in_excel.pack(padx=(15, 15), pady=5, side='right')
 
     def cb_callback(self, event):
-        print("New Element Selected")
 
+        # get job details and populate job tracker widget
+        survey_job = self.job_tracker.get_job(self.jt_job_name_combo.get())
 
-    def get_job_names(self):
+        if survey_job:
+            self.jt_date_btn.configure(text=survey_job.survey_date)
+            self.jt_user_lbl.configure(text=survey_job.initials)
 
-        return ['A', 'B', 'C']
+            if survey_job.calcs == '1':
+                self.jt_calcs_checkbox.select()
+            else:
+                self.jt_calcs_checkbox.deselect()
 
-    def read_job_tracker(self):
+            if survey_job.results == '1':
+                self.jt_results_checkbox.select()
+            else:
+                self.jt_results_checkbox.deselect()
 
-        pass
-        # with open(self.job_tracker_filepath) as csv_file:
-        #     reader = csv.DictReader(csv_file)
-        #     keys = reader.fieldnames
-        #     r = csv.reader(csv_file)
-        #     self.diary_data = ([OrderedDict(zip(keys, row)) for row in r])
-        #
-        # for i, item in enumerate(self.diary_data):
-        #     item['RECID'] = i
+            if survey_job.checked == '1':
+                self.jt_checked_checkbox.select()
+            else:
+                self.jt_checked_checkbox.deselect()
 
+            if survey_job.sent == '1':
+                self.jt_sent_checkbox.select()
+            else:
+                self.jt_sent_checkbox.deselect()
+
+            if survey_job.xml == '1' or survey_job.xml == '2':
+                self.jt_xml_checkbox.select()
+            else:
+                self.jt_xml_checkbox.deselect()
+
+            self.jt_notes_entry.delete(0, tk.END)
+            self.jt_notes_entry.insert(0, survey_job.notes)
+
+        else:  # user has selected to create a new job
+            self.jt_date_btn.configure(text=self.todays_date)
+            self.jt_calcs_checkbox.deselect()
+            self.jt_results_checkbox.deselect()
+            self.jt_checked_checkbox.deselect()
+            self.jt_sent_checkbox.deselect()
+            self.jt_xml_checkbox.deselect()
+            self.jt_user_lbl.configure(text=self.user_initials)
+            self.jt_notes_entry.delete(0, tk.END)
+            self.jt_notes_entry.insert(0, survey_job.notes)
+
+    def get_combobox_values(self):
+
+        # self.job_tracker = JobTracker(self.job_tracker_filepath, logger)
+        job_names = self.job_tracker.get_job_names()
+
+        if not job_names:  # problem has occurred.  Disable job tracker
+
+            job_names.insert(0, "<<ERROR>>")
+
+            self.jt_btn_save_job.configure(state='disabled')
+
+            raise Exception("No Job Names Found")
+
+        else:
+            job_names.insert(0, "<<Enter New Job>>")
+
+        return job_names[0:30]  # only return the 30 most recent jobs as the list gets too large
 
     def choose_date(self):
+
         # Let user choose the date, rather than the default todays date
         cal_root = tk.Toplevel()
         cal = CalendarWindow(cal_root, todays_date)
         self.master.wait_window(cal_root)
-        survey_date = cal.get_selected_date()   # e.g. '200610'
+        survey_date = cal.get_selected_date()  # e.g. '200610'
         self.jt_date_btn['text'] = survey_date[4:6] + "/" + survey_date[2:4] + "/" + survey_date[0:2]
 
     def show_job_tracker_bar(self):
@@ -2118,10 +2210,202 @@ class JobTrackerBar(tk.Frame):
     def hide_job_tracker_bar(self):
         self.frame.pack_forget()
 
-    def save_job(self):
+    def open_in_excel(self):
+        try:
+            os.startfile(self.job_tracker_filepath)
 
-        # add ,essage in case excel spreadsheet in currently opened
-        pass
+        except FileNotFoundError as ex:
+            print("Couldn't find the Job Tracker Spreadsheet:\n\n" + self.job_tracker_filepath)
+            logger.exception("An unexpected error has occurred\n\nbtn_job_tracker()\n\n" + str(ex))
+            tk.messagebox.showerror("Survey Assist", "Couldn't find the Job Tracker Spreadsheet:\n\n" + self.job_tracker_filepath)
+            return
+
+    def save_job_to_excel(self):
+
+        two_color_scale_rule = ColorScaleRule(start_type='num', start_value=0, start_color='FFFFFF', end_type='num', end_value=1,
+                                              end_color='70AD47')
+
+        xml_two_color_scale_rule = ColorScaleRule(start_type='num', start_value=1, start_color='70AD47', end_type='num', end_value=2,
+                                                  end_color='FFFF00')
+
+        green_font = Font(color='00B050')
+        yellow_font = Font(color='FFFF00')
+
+        border = Border(bottom=Side(border_style='thin', color='000000'))
+
+        try:
+            job_name = self.jt_job_name_combo.get()
+            selected_job_index = self.jt_job_name_combo.current()
+
+            if job_name == "<<Enter New Job>>":
+                tk.messagebox.showerror("Survey Assist", "Please enter a job name")
+                return
+
+            print(self.jt_job_name_combo.current())
+
+            # try and read in the job tracker spreadsheet
+            workbook = load_workbook(self.job_tracker_filepath, read_only=False, keep_vba=True)
+            actions_sheet = workbook["Actions"]
+
+            # max cell range based on the number of job tracker jobs
+            max_range_cell = str((11 + len(self.job_tracker.get_job_names())))
+            cell_range = "J11:J" + max_range_cell
+            print('Cell Range ' + cell_range)
+
+            date_string = self.jt_date_btn['text']
+
+            # check to see if we are adding a new job or updating an old one.
+            if self.jt_job_name_combo.current() == -1:  # user is creating a new job
+
+                # insert blank row at row 11 and populate
+                actions_sheet.insert_rows(idx=11)
+                actions_sheet["A11"].value = self.jt_job_name_combo.get()
+
+                self.update_job_date(actions_sheet["B11"], date_string)
+                self.update_user(actions_sheet["C11"], self.jt_user_lbl['text'])
+
+                # apply 2-scale conditional formatting to check boxes
+                actions_sheet.conditional_formatting.add("D11:G11", two_color_scale_rule)
+                actions_sheet.conditional_formatting.add("H11", xml_two_color_scale_rule)
+
+                # apply font to the checkboxes
+                actions_sheet["D11"].font = green_font
+                actions_sheet["D11"].border = border
+                actions_sheet["E11"].font = green_font
+                actions_sheet["E11"].border = border
+                actions_sheet["F11"].font = green_font
+                actions_sheet["F11"].border = border
+                actions_sheet["G11"].font = green_font
+                actions_sheet["G11"].border = border
+                actions_sheet["H11"].font = yellow_font
+                actions_sheet["H11"].border = border
+
+                self.update_checkbox_values(actions_sheet, "11")
+
+                actions_sheet["I11"] = self.jt_notes_entry.get()
+
+                # % Complete - add formula and update all subsequent row formulas as it doesn't update when inserting a row for some reason
+                for row in range(11, 11 + len(self.job_tracker.get_job_names())):
+                    percentage_complete_cell = 'J' + str(row)
+                    # actions_sheet[percentage_complete_cell] = '=SUM(D' + str(row) + ':H' + str(row) +')'
+                    cell_forumua = '=IF(SUM(D' + str(row) + ': H' + str(row) + ') > 5, REPT("g", 10), (REPT("g", SUM(D' + str(row) + ': H' + str(
+                        row) + ') * 2)))'
+                    actions_sheet[percentage_complete_cell] = cell_forumua
+
+                    # Change font
+                    actions_sheet[percentage_complete_cell].font = Font(color="4472C4", name="Webdings")
+
+                # self.update_conditional_formatting(actions_sheet)
+
+            else:  # updating an existing job
+
+                current_job_selected_line = self.jt_job_name_combo.current()
+                excel_row_to_update = str(10 + current_job_selected_line)
+
+                self.update_job_date(actions_sheet["B" + excel_row_to_update], self.jt_date_btn['text'])
+
+                self.update_user(actions_sheet["C" + excel_row_to_update], self.jt_user_lbl['text'])
+
+                self.update_checkbox_values(actions_sheet, excel_row_to_update)
+
+                actions_sheet["I" + excel_row_to_update] = self.jt_notes_entry.get()
+
+                # self.update_conditional_formatting(actions_sheet)
+
+            workbook.save(filename=self.job_tracker_filepath)
+            workbook.close()
+
+            # reset combo box after update
+            self.job_tracker = JobTracker(self.job_tracker_filepath, logger)
+            self.jt_job_name_combo['values'] = self.get_combobox_values()
+            self.jt_calcs_checkbox.deselect()
+            self.jt_results_checkbox.deselect()
+
+            if selected_job_index == -1:  # new job created
+                self.jt_job_name_combo.current(1)
+            else:
+                self.jt_job_name_combo.current(selected_job_index)
+
+            self.cb_callback(None)
+
+        except FileNotFoundError as ex:
+
+            logger.exception('Job Tracker excel spreadsheet not found\n\n' + str(ex))
+
+            tk.messagebox.showerror("ERROR", "Unable to find the Job Tracker Spreadsheet at the following location:\n\n" + self.job_tracker_filepath)
+
+        except PermissionError as ex:
+
+            logger.exception('Job Tracker excel spreadsheet currently in use\n\n' + str(ex))
+
+            tk.messagebox.showinfo("Survey Assist", "The Job Tracker Excel Spreadsheet is currently open.  Please close it down and try again.")
+
+        except Exception as ex:
+
+            # Most likely an incorrect file was chosen
+            logger.exception('Error has occurred in JobTracker init().\n\n' + str(ex))
+
+            tk.messagebox.showerror("ERROR", 'An unexpected error has occurred reading the excel Job Tracker.  Please contact the developer')
+
+            gui_app.menu_bar.job_tracker_sub_menu.entryconfig("Create new Job", state="disabled")
+            gui_app.menu_bar.job_tracker_sub_menu.entryconfig("Track a Job", state="disabled")
+            gui_app.job_tracker_bar.hide_job_tracker_bar()
+
+        else:
+            tk.messagebox.showinfo("Survey Assist", 'Job Saved')
+
+    def update_job_date(self, cell, date_string):
+
+        cell.value = date_string
+        cell.alignment = Alignment(horizontal='center')
+
+    def update_user(self, cell, user_initials):
+
+        cell.value = self.jt_user_lbl['text']
+        cell.font = Font(color='FF0000')
+        cell.alignment = Alignment(horizontal='center')
+
+    def update_checkbox(self, cell, value, font=Font(color='00B050')):
+
+        cell.value = value
+        cell.font = font
+        cell.alignment = Alignment(horizontal='center')
+
+    def update_checkbox_values(self, actions_sheet, row):
+
+        if self.calcs_checkbox_var.get() == '1':
+            self.update_checkbox(actions_sheet["D" + row], 1)
+        else:
+            self.update_checkbox(actions_sheet["D" + row], "")
+
+        if self.results_checkbox_var.get() == '1':
+            self.update_checkbox(actions_sheet["E" + row], 1)
+        else:
+            self.update_checkbox(actions_sheet["E" + row], "")
+
+        if self.checked_checkbox_var.get() == '1':
+            self.update_checkbox(actions_sheet["F" + row], 1)
+        else:
+            self.update_checkbox(actions_sheet["F" + row], "")
+
+        if self.sent_checkbox_var.get() == '1':
+            self.update_checkbox(actions_sheet["G" + row], 1)
+        else:
+            self.update_checkbox(actions_sheet["G" + row], "")
+
+        if self.xml_checkbox_var.get() == '1':
+            self.update_checkbox(actions_sheet["H" + row], 1, Font(color='FFFF00'))
+        else:
+            self.update_checkbox(actions_sheet["H" + row], "", Font(color='FFFF00'))
+
+    def update_conditional_formatting(self, actions_sheet):
+
+        rule = DataBarRule(start_type='num', start_value=0, end_type='num', end_value=5, color="FF638EC6",
+                           showValue=False, minLength=0, maxLength=100)
+        max_range_cell = str((10 + len(self.job_tracker.get_job_names())))
+        cell_range = "J11:J" + max_range_cell
+        print('Cell Range ' + cell_range)
+        actions_sheet.conditional_formatting.add(cell_range, rule)
 
 
 class MainWindow(tk.Frame):
@@ -2220,10 +2504,10 @@ class ListBoxFrame(tk.Frame):
                 complete_line.append(gsi_value)
 
                 # add STN tag if line is a station setup
-                if column_name == gsi.GSI_WORD_ID_DICT['84'] and gsi_value is not "":
+                if column_name == gsi.GSI_WORD_ID_DICT['84'] and gsi_value != "":
                     tag = self.stn_tag  # add STN tag if line is a station setup
 
-                elif column_name == gsi.GSI_WORD_ID_DICT['32'] and gsi_value is "":
+                elif column_name == gsi.GSI_WORD_ID_DICT['32'] and gsi_value == "":
                     tag = self.orientation_tag
 
                 elif line_number in highlight_lines:
@@ -2235,10 +2519,15 @@ class ListBoxFrame(tk.Frame):
             self.list_box_view.insert("", "end", values=complete_line, tags=(tag,))
 
         # color station setup and the remaining rows
-        self.list_box_view.tag_configure(self.stn_tag, background='#ffe793')
-        self.list_box_view.tag_configure(self.orientation_tag, background='#d1fac5')
-        self.list_box_view.tag_configure(self.highlight_tag, background='#ffff00')
-        self.list_box_view.tag_configure("", background='#eaf7f9')
+        # self.list_box_view.tag_configure(self.stn_tag, background='#ffe793')
+        self.list_box_view.tag_configure(self.stn_tag, background='#FFE793')
+        self.list_box_view.tag_configure(self.stn_tag, background='#FFE793')
+        # self.list_box_view.tag_configure(self.orientation_tag, background='#d1fac5')
+        self.list_box_view.tag_configure(self.orientation_tag, background='#D1FAC5')
+        # self.list_box_view.tag_configure(self.highlight_tag, background='#ffff00')
+        self.list_box_view.tag_configure(self.highlight_tag, background='#FFFF00')
+        # self.list_box_view.tag_configure("", background='#eaf7f9')
+        self.list_box_view.tag_configure("", background='#EAF7F9')
 
     def delete_selected_rows(self, event):
 
@@ -2751,7 +3040,7 @@ class TargetHeightWindow(ChangeHeightWindow):
             new_target_height = self.get_entered_height(self.new_target_height_entry)
             self.dialog_window.destroy()
 
-            if new_target_height is not 'ERROR':
+            if new_target_height != 'ERROR':
 
                 line_numbers_to_ammend = []
 
@@ -2865,7 +3154,7 @@ class StationHeightWindow(ChangeHeightWindow):
             new_station_height = self.get_entered_height(self.new_station_height_entry)
             self.dialog_window.destroy()
 
-            if new_station_height is not 'ERROR':
+            if new_station_height != 'ERROR':
 
                 # Get user selected line number - should only be one selected line when updating station height
                 selected_line = gui_app.list_box.list_box_view.selection()[0]
@@ -3304,7 +3593,7 @@ class CompnetCompareCRDFWindow:
 
         parent_dated_directory = Path(survey_config.todays_dated_directory).parent
 
-        if file_path_number is 1:
+        if file_path_number == 1:
             self.crd_file_path_1 = tk.filedialog.askopenfilename(parent=self.master, initialdir=survey_config.todays_dated_directory,
                                                                  title="Select CRD file",
                                                                  filetypes=[("CRD Files", ".CRD")])
@@ -3313,7 +3602,7 @@ class CompnetCompareCRDFWindow:
                 self.crd_file_1_btn.config(text=os.path.basename(self.crd_file_path_1))
             self.dialog_window.lift()  # bring window to the front again
 
-        elif file_path_number is 2:
+        elif file_path_number == 2:
             self.crd_file_path_2 = tk.filedialog.askopenfilename(parent=self.master, initialdir=parent_dated_directory, title="Select CRD file",
                                                                  filetypes=[("CRD Files", ".CRD")])
 
@@ -4088,6 +4377,11 @@ class GUIApplication(tk.Frame):
     def __init__(self, master, *args, **kwargs):
         super().__init__(master, *args, **kwargs)
 
+        # see fixed_map method for the reason for this style inclusion
+        self.style = ttk.Style()
+        self.style.map('Treeview', foreground=self.fixed_map('foreground'),
+                  background=self.fixed_map('background'))
+
         self.menu_bar = MenuBar(master)
         self.status_bar = StatusBar(master)
         self.main_window = MainWindow(master)
@@ -4095,20 +4389,40 @@ class GUIApplication(tk.Frame):
         self.menu_bar.pack(side="top", fill="x")
 
         self.workflow_bar = WorkflowBar(self.main_window)
-        self.job_tracker_bar = JobTrackerBar(self.main_window, self.menu_bar.user_config.user_initials)
+        self.workflow_bar.pack(fill="x")
+
+        self.job_tracker_bar = None
+        try:
+            self.job_tracker_bar = JobTrackerBar(self.main_window, self.menu_bar.user_config.user_initials)
+            self.job_tracker_bar.pack(fill="x")
+        except Exception as ex:
+
+            self.menu_bar.job_tracker_sub_menu.entryconfig("Create new Job", state="disabled")
+            self.menu_bar.job_tracker_sub_menu.entryconfig("Track a Job", state="disabled")
+            logger.exception('Error has occurred creating Job Tracker object.\n\n' + str(ex))
+
         self.job_tracker_bar.hide_job_tracker_bar()
         self.list_box = ListBoxFrame(self.main_window)
-        self.workflow_bar.pack(fill="x")
-        self.job_tracker_bar.pack(fill="x")
         self.list_box.pack(fill="both")
         self.main_window.pack(fill="both", expand=True)
+
+    def fixed_map(self, option):
+        # Fix for setting text colour for Tkinter 8.6.9
+        # From: https://core.tcl.tk/tk/info/509cafafae
+        #
+        # Returns the style map for 'option' with any styles starting with
+        # ('!disabled', '!selected', ...) filtered out.
+
+        # style.map() returns an empty list for missing options, so this
+        # should be future-safe.
+        return [elm for elm in self.style.map('Treeview', query_opt=option) if
+                elm[:2] != ('!disabled', '!selected')]
 
     @staticmethod
     def refresh():
         MenuBar.format_gsi_file()
         MenuBar.create_and_populate_database()
         MenuBar.update_gui()
-
 
 def main():
     global gui_app
@@ -4136,6 +4450,8 @@ def main():
     logger.info('************************* STARTED APPLICATION - User: ' + gui_app.menu_bar.user_config.user_initials + ' *************************')
 
     root.mainloop()
+
+
 
 
 def configure_logger():
