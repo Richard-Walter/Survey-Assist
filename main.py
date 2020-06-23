@@ -99,7 +99,7 @@ class MenuBar(tk.Frame):
         self.file_sub_menu.add_command(label="Monitoring - Rename Updated Files", command=self.monitoring_rename_updated_files, state="disabled")
         self.file_sub_menu.add_separator()
         self.file_sub_menu.add_command(label="Job Diary", command=self.job_diary)
-        self.file_sub_menu.add_command(label="Configuration", command=self.configure_survey)
+        self.file_sub_menu.add_command(label="Settings", command=self.configure_survey)
 
         self.menu_bar.add_cascade(label="File", menu=self.file_sub_menu)
 
