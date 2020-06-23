@@ -118,11 +118,11 @@ class MenuBar(tk.Frame):
 
         # Check menu
         self.check_sub_menu = tk.Menu(self.menu_bar, tearoff=0)
-        self.check_sub_menu.add_command(label="Check Tolerances (3D)", command=self.check_3d_survey)
         self.check_sub_menu.add_command(label="Check Control Naming ", command=self.check_control_naming)
         self.check_sub_menu.add_command(label="Check Prism Constants", command=self.check_prism_constants)
         self.check_sub_menu.add_command(label="Check Target Heights", command=self.check_target_heights)
         self.check_sub_menu.add_command(label="Check FL-FR", command=self.check_FLFR)
+        self.check_sub_menu.add_command(label="Check Tolerances (3D)", command=self.check_3d_survey)
         self.check_sub_menu.add_command(label="Check All", command=self.check_3d_all)
         self.check_sub_menu.add_separator()
         self.check_sub_menu.add_command(label="Check Double Doubles", command=self.check_2d_doubles)
