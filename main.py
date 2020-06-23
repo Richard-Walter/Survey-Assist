@@ -18,6 +18,9 @@ KNOWN BUGS
 
 """
 
+# TODO GSI query only let user select PC, Target height, Point nmae
+# TODO Configuration - choose current rail monitoring name current_rail_monitoring_file_name
+
 from openpyxl.styles import Border, Side
 from openpyxl.formatting.rule import ColorScaleRule
 from openpyxl.formatting.rule import DataBarRule
