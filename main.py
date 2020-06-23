@@ -20,6 +20,7 @@ KNOWN BUGS
 
 # TODO GSI query only let user select PC, Target height, Point nmae
 # TODO File->Settings - choose current rail monitoring name current_rail_monitoring_file_name
+# TODO JOb Tracker - have intials and ediitable field in case of dual intitials  e.g RW/DP
 
 from openpyxl.styles import Border, Side
 from openpyxl.formatting.rule import ColorScaleRule
