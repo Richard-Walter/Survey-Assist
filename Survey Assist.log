@@ -127,3 +127,26 @@ Traceback (most recent call last):
     self.tk.call(self._w, 'insert', index, string)
 _tkinter.TclError: wrong # args: should be ".!mainwindow.!frame2.!entry insert index text"
 2020-06-24 10:45:50,831:Survey Assist - v1.0 :************************* STARTED APPLICATION - User: RW *************************
+2020-06-24 10:48:14,370:Survey Assist - v1.0 :************************* STARTED APPLICATION - User: RW *************************
+2020-06-24 10:48:52,008:Survey Assist - v1.0 :************************* STARTED APPLICATION - User: RW *************************
+2020-06-24 10:52:28,786:Survey Assist - v1.0 :************************* STARTED APPLICATION - User: RW *************************
+2020-06-24 10:52:57,560:Survey Assist - v1.0 :************************* STARTED APPLICATION - User: RW *************************
+2020-06-24 10:54:31,164:Survey Assist - v1.0 :************************* STARTED APPLICATION - User: RW *************************
+2020-06-24 10:55:07,536:Survey Assist - v1.0 :************************* STARTED APPLICATION - User: RW *************************
+2020-06-24 10:56:07,414:Survey Assist - v1.0 :OPENING UP A GSI FILE: C:/SD/TS60/Gsi/A9MR210120.GSI
+2020-06-24 11:00:13,042:Survey Assist - v1.0 :************************* STARTED APPLICATION - User: RW *************************
+2020-06-24 11:00:45,114:Survey Assist - v1.0 :************************* STARTED APPLICATION - User: RW *************************
+2020-06-24 11:01:14,846:Survey Assist - v1.0 :************************* STARTED APPLICATION - User: RW *************************
+2020-06-24 11:01:40,717:Survey Assist - v1.0 :************************* STARTED APPLICATION - User: RW *************************
+2020-06-24 11:04:09,705:Survey Assist - v1.0 :************************* STARTED APPLICATION - User: RW *************************
+2020-06-24 11:04:47,859:Survey Assist - v1.0 :************************* STARTED APPLICATION - User: RW *************************
+2020-06-24 11:11:59,329:Survey Assist - v1.0 :************************* STARTED APPLICATION - User: RW *************************
+2020-06-24 11:12:39,104:Survey Assist - v1.0 :************************* STARTED APPLICATION - User: RW *************************
+2020-06-24 11:13:47,183:Survey Assist - v1.0 :************************* STARTED APPLICATION - User: RW *************************
+2020-06-24 11:16:11,642:Survey Assist - v1.0 :************************* STARTED APPLICATION - User: RW *************************
+2020-06-24 11:17:25,148:Survey Assist - v1.0 :************************* STARTED APPLICATION - User: RW *************************
+2020-06-24 11:18:41,982:Survey Assist - v1.0 :************************* STARTED APPLICATION - User: RW *************************
+2020-06-24 11:19:01,718:Survey Assist - v1.0 :************************* STARTED APPLICATION - User: RW *************************
+2020-06-24 11:25:13,030:Survey Assist - v1.0 :************************* STARTED APPLICATION - User: RW *************************
+2020-06-24 11:25:36,802:Survey Assist - v1.0 :************************* STARTED APPLICATION - User: RW *************************
+2020-06-24 11:26:24,476:Survey Assist - v1.0 :OPENING UP A GSI FILE: C:/Users/rjwal_000/PycharmProjects/Survey Assist/Test Files/Survey Data/2020/MONITORING/A9 ARTC/200529/TS/EDITING/ARTC_903_MON_V2_TS60_240620_EDITED.GSI

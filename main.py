@@ -18,10 +18,6 @@ KNOWN BUGS
 
 """
 
-
-# TODO File->Settings - choose current rail monitoring name current_rail_monitoring_file_name
-# TODO JOb Tracker - have intials and ediitable field in case of dual intitials  e.g RW/DP
-
 from openpyxl.styles import Border, Side
 from openpyxl.formatting.rule import ColorScaleRule
 from openpyxl.formatting.rule import DataBarRule
@@ -99,7 +95,7 @@ class MenuBar(tk.Frame):
         self.file_sub_menu.add_command(label="Monitoring - Update Labels", command=self.monitoring_update_labels, state="disabled")
         self.file_sub_menu.add_command(label="Monitoring - Rename Updated Files", command=self.monitoring_rename_updated_files, state="disabled")
         self.file_sub_menu.add_separator()
-        self.file_sub_menu.add_command(label="Job Diary", command=self.job_diary)
+        # self.file_sub_menu.add_command(label="Job Diary", command=self.job_diary)
         self.file_sub_menu.add_command(label="Settings", command=self.configure_survey)
 
         self.menu_bar.add_cascade(label="File", menu=self.file_sub_menu)
@@ -305,8 +301,11 @@ class MenuBar(tk.Frame):
         # check to see if survey files from today were found
         if not sd_card.get_list_all_todays_files():
 
+            survey_config.current_rail_monitoring_file_name
+
             user_answer = tk.messagebox.askyesnocancel("IMPORT SD DATA", "Couldn't find any survey files with todays date."
-                                                                         "\n\nAre you trying to import a rail survey?\n\n"
+                                                                         "\n\nAre you trying to import a rail survey (" +
+                                                       survey_config.current_rail_monitoring_file_name +") ?\n\n"
                                                                          "YES           -  IMPORT RAIL SURVEY\n"
                                                                          "NO            - IMPORT FILES MANUALLY\n"
                                                                          "CANCEL    - INSERT SD CARD AND TRY_AGAIN\n\n"
@@ -1732,6 +1731,7 @@ class ConfigDialogWindow:
         self.master = master
 
         self.sorted_stn_file_path = survey_config.sorted_station_config
+        self.current_rail_monitoring_name = survey_config.current_rail_monitoring_file_name
 
         #  Lets build the dialog box
         self.dialog_window = tk.Toplevel(master)
@@ -1764,21 +1764,23 @@ class ConfigDialogWindow:
         self.entry_height.insert(tkinter.END, survey_config.height_tolerance)
         self.entry_height.grid(row=3, column=1, padx=10, pady=5, sticky='w')
 
-        self.sorted_station_file_lbl = tk.Label(self.dialog_window, text="Sorted station file: ").grid(row=4, column=0,
-                                                                                                       padx=10,
-                                                                                                       pady=10,
-                                                                                                       sticky='w')
-        self.sorted_station_file_btn = tk.Button(self.dialog_window, text=os.path.basename(self.sorted_stn_file_path),
-                                                 command=self.select_sorted_stn_file)
-        self.sorted_station_file_btn.grid(row=4, column=1, padx=20, pady=10, sticky='w')
+        self.sorted_station_file_lbl = tk.Label(self.dialog_window, text="Sorted station file: ").grid(row=4, column=0,padx=10, pady=10, sticky='w')
+        self.sorted_station_file_btn = tk.Button(self.dialog_window, text=os.path.basename(self.sorted_stn_file_path), command=self.select_sorted_stn_file)
+        self.sorted_station_file_btn.grid(row=4, column=1, padx=10, pady=10, sticky='w')
+
+        self.current_rail_monitoring_file_lbl = tk.Label(self.dialog_window, text="Rail Monitoring Name: ").grid(row=5, column=0,padx=10, pady=10,
+                                                                                                          sticky='w')
+        self.current_rail_monitoring_file_entry = tk.Entry(self.dialog_window)
+        self.current_rail_monitoring_file_entry.grid(row=5, column=1, padx=10, pady=10, sticky='w')
+        self.current_rail_monitoring_file_entry.insert(tk.END, self.current_rail_monitoring_name)
 
         save_b = tk.Button(self.dialog_window, text="Save", width=10, command=self.save)
-        save_b.grid(row=5, column=0, padx=10, pady=20, sticky='nesw')
+        save_b.grid(row=6, column=0, padx=10, pady=20, sticky='nesw')
 
         cancel_b = tk.Button(self.dialog_window, text="Cancel", width=10, command=self.cancel)
-        cancel_b.grid(row=5, column=1, padx=20, pady=20, sticky='nesw')
+        cancel_b.grid(row=6, column=1, padx=20, pady=20, sticky='nesw')
 
-        self.dialog_window.geometry(MainWindow.position_popup(master, 310, 250))
+        self.dialog_window.geometry(MainWindow.position_popup(master, 330, 270))
 
     def select_sorted_stn_file(self):
 
@@ -1802,8 +1804,20 @@ class ConfigDialogWindow:
         survey_tolerance_dictionary['northings'] = self.entry_northing.get()
         survey_tolerance_dictionary['height'] = self.entry_height.get()
         configuration_dictionary['sorted_station_config'] = self.sorted_stn_file_path
+        file_directory_dictionary['current_rail_monitoring_file_name'] = self.current_rail_monitoring_file_entry.get().strip()
 
         input_error = False
+
+        # Check monitoring file name entered
+        if not file_directory_dictionary['current_rail_monitoring_file_name']:
+            tkinter.messagebox.showinfo("Survey Config", "Please enter a name for the current monitoring file")
+            logger.info("no current monitoring name entered")
+            self.dialog_window.destroy()
+
+            # re-display query dialog
+            ConfigDialogWindow(self.master)
+
+            return
 
         # check to make sure number is entered
         for value in survey_tolerance_dictionary.values():
@@ -1839,7 +1853,12 @@ class ConfigDialogWindow:
             for key, value in configuration_dictionary.items():
                 survey_config.update(SurveyConfiguration.section_config_files, key, value)
 
+            for key, value in file_directory_dictionary.items():
+                survey_config.update(SurveyConfiguration.section_file_directories, key, value)
+
             survey_config = SurveyConfiguration()
+
+            tkinter.messagebox.showinfo("Survey Config", "Settings updated.")
 
     def cancel(self):
 
