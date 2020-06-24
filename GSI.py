@@ -42,6 +42,7 @@ class GSI:
         self.logger = logger
         self.filename = None
         self.column_names = list(GSI.GSI_WORD_ID_DICT.values())
+        self.query_column_names = [GSI.GSI_WORD_ID_DICT['11'], GSI.GSI_WORD_ID_DICT['51'], GSI.GSI_WORD_ID_DICT['87']]
         self.column_ids = list(GSI.GSI_WORD_ID_DICT.keys())
         self.formatted_lines = []
         self.unformatted_lines = []

@@ -18,7 +18,7 @@ KNOWN BUGS
 
 """
 
-# TODO GSI query only let user select PC, Target height, Point nmae
+
 # TODO File->Settings - choose current rail monitoring name current_rail_monitoring_file_name
 # TODO JOb Tracker - have intials and ediitable field in case of dual intitials  e.g RW/DP
 
@@ -1867,7 +1867,7 @@ class QueryDialogWindow:
         # column entry is where the user selects the column he wants to perform a query on
         self.column = tk.StringVar()
         self.column_entry = ttk.Combobox(self.dialog_window, width=18, textvariable=self.column, state='readonly')
-        self.column_entry['values'] = gsi.column_names
+        self.column_entry['values'] = gsi.query_column_names
         self.column_entry.bind("<<ComboboxSelected>>", self.column_entry_cb_callback)
         self.column_entry.grid(row=1, column=1, padx=5, pady=5)
 
