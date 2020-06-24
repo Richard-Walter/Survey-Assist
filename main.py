@@ -2071,8 +2071,9 @@ class JobTrackerBar(tk.Frame):
         self.jt_date_btn.configure(background='#ffffff')
         self.jt_initials_lbl = tk.Label(self.frame, text='Initials:')
         self.jt_initials_lbl.configure(background='#d9f2d8')
-        self.jt_user_lbl = tk.Label(self.frame, text=self.user_initials)
-        self.jt_user_lbl.configure(background='#d9f2d8')
+        self.jt_user_entry = tk.Entry(self.frame, width=8)
+        self.jt_user_entry.insert(tk.END, user_initials)
+        # self.jt_user_lbl.configure(background='#d9f2d8')
 
         # check boxes
         self.calcs_checkbox_var = tk.StringVar()
@@ -2121,7 +2122,7 @@ class JobTrackerBar(tk.Frame):
         self.jt_date_lbl.pack(padx=(15, 0), pady=5, side='left')
         self.jt_date_btn.pack(padx=5, pady=5, side='left')
         self.jt_initials_lbl.pack(padx=(15, 0), pady=5, side='left')
-        self.jt_user_lbl.pack(padx=0, pady=5, side='left')
+        self.jt_user_entry.pack(padx=0, pady=5, side='left')
         self.jt_calcs_checkbox.pack(padx=(15, 0), pady=5, side='left')
         self.jt_results_checkbox.pack(padx=(15, 0), pady=5, side='left')
         self.jt_checked_checkbox.pack(padx=(15, 0), pady=5, side='left')
@@ -2140,7 +2141,7 @@ class JobTrackerBar(tk.Frame):
 
         if survey_job:
             self.jt_date_btn.configure(text=survey_job.survey_date)
-            self.jt_user_lbl.configure(text=survey_job.initials)
+            # self.jt_user_entry.configure(text=survey_job.initials)
 
             if survey_job.calcs == '1':
                 self.jt_calcs_checkbox.select()
@@ -2170,6 +2171,9 @@ class JobTrackerBar(tk.Frame):
             self.jt_notes_entry.delete(0, tk.END)
             self.jt_notes_entry.insert(0, survey_job.notes)
 
+            self.jt_user_entry.delete(0, tk.END)
+            self.jt_user_entry.insert(0, survey_job.initials)
+
         else:  # user has selected to create a new job
             self.jt_date_btn.configure(text=self.todays_date)
             self.jt_calcs_checkbox.deselect()
@@ -2177,9 +2181,11 @@ class JobTrackerBar(tk.Frame):
             self.jt_checked_checkbox.deselect()
             self.jt_sent_checkbox.deselect()
             self.jt_xml_checkbox.deselect()
-            self.jt_user_lbl.configure(text=self.user_initials)
+            # self.jt_user_entry.configure(text=self.user_initials)
             self.jt_notes_entry.delete(0, tk.END)
-            self.jt_notes_entry.insert(0, survey_job.notes)
+            self.jt_notes_entry.insert(0, "")
+            self.jt_user_entry.delete(0, tk.END)
+            self.jt_user_entry.insert(0, self.user_initials)
 
     def get_combobox_values(self):
 
@@ -2266,7 +2272,7 @@ class JobTrackerBar(tk.Frame):
                 actions_sheet["A11"].value = self.jt_job_name_combo.get()
 
                 self.update_job_date(actions_sheet["B11"], date_string)
-                self.update_user(actions_sheet["C11"], self.jt_user_lbl['text'])
+                self.update_user(actions_sheet["C11"], self.jt_user_entry.get())
 
                 # apply 2-scale conditional formatting to check boxes
                 actions_sheet.conditional_formatting.add("D11:G11", two_color_scale_rule)
@@ -2308,7 +2314,7 @@ class JobTrackerBar(tk.Frame):
 
                 self.update_job_date(actions_sheet["B" + excel_row_to_update], self.jt_date_btn['text'])
 
-                self.update_user(actions_sheet["C" + excel_row_to_update], self.jt_user_lbl['text'])
+                self.update_user(actions_sheet["C" + excel_row_to_update], self.jt_user_entry.get())
 
                 self.update_checkbox_values(actions_sheet, excel_row_to_update)
 
@@ -2365,7 +2371,7 @@ class JobTrackerBar(tk.Frame):
 
     def update_user(self, cell, user_initials):
 
-        cell.value = self.jt_user_lbl['text']
+        cell.value = user_initials
         cell.font = Font(color='FF0000')
         cell.alignment = Alignment(horizontal='center')
 

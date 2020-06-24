@@ -40,3 +40,90 @@ Exception: No Job Names Found
 2020-06-24 10:04:26,210:Survey Assist - v1.0 :OPENING UP A GSI FILE: C:/SD/TS60/Gsi/A9MR210120.GSI
 2020-06-24 10:08:28,111:Survey Assist - v1.0 :************************* STARTED APPLICATION - User: RW *************************
 2020-06-24 10:08:32,665:Survey Assist - v1.0 :OPENING UP A GSI FILE: C:/SD/TS60/Gsi/A9MR210120.GSI
+2020-06-24 10:14:21,879:Survey Assist - v1.0 :************************* STARTED APPLICATION - User: RW *************************
+2020-06-24 10:14:41,985:Survey Assist - v1.0 :************************* STARTED APPLICATION - User: RW *************************
+2020-06-24 10:14:59,948:Survey Assist - v1.0 :************************* STARTED APPLICATION - User: RW *************************
+2020-06-24 10:17:03,856:Survey Assist - v1.0 :************************* STARTED APPLICATION - User: RW *************************
+2020-06-24 10:17:52,896:Survey Assist - v1.0 :************************* STARTED APPLICATION - User: RW *************************
+2020-06-24 10:22:43,469:Survey Assist - v1.0 :************************* STARTED APPLICATION - User: RW *************************
+2020-06-24 10:23:26,900:Survey Assist - v1.0 :************************* STARTED APPLICATION - User: RW *************************
+2020-06-24 10:25:30,306:Survey Assist - v1.0 :************************* STARTED APPLICATION - User: RW *************************
+2020-06-24 10:25:55,638:Survey Assist - v1.0 :Job Tracker excel spreadsheet currently in use
+
+[Errno 13] Permission denied: 'C:\\Users\\rjwal_000\\PycharmProjects\\Survey Assist\\Test Files\\Survey Data\\2020\\Job Tracker Digital System.xlsm'
+Traceback (most recent call last):
+  File "C:/Users/rjwal_000/PycharmProjects/Survey Assist/main.py", line 2325, in save_job_to_excel
+    workbook.save(filename=self.job_tracker_filepath)
+  File "C:\Users\rjwal_000\AppData\Local\Programs\Python\Python38-32\lib\site-packages\openpyxl\workbook\workbook.py", line 392, in save
+    save_workbook(self, filename)
+  File "C:\Users\rjwal_000\AppData\Local\Programs\Python\Python38-32\lib\site-packages\openpyxl\writer\excel.py", line 291, in save_workbook
+    archive = ZipFile(filename, 'w', ZIP_DEFLATED, allowZip64=True)
+  File "C:\Users\rjwal_000\AppData\Local\Programs\Python\Python38-32\lib\zipfile.py", line 1250, in __init__
+    self.fp = io.open(file, filemode)
+PermissionError: [Errno 13] Permission denied: 'C:\\Users\\rjwal_000\\PycharmProjects\\Survey Assist\\Test Files\\Survey Data\\2020\\Job Tracker Digital System.xlsm'
+2020-06-24 10:26:02,527:Survey Assist - v1.0 :Error has occurred in JobTracker init().
+
+wrong # args: should be ".!mainwindow.!frame2.!entry insert index text"
+Traceback (most recent call last):
+  File "C:/Users/rjwal_000/PycharmProjects/Survey Assist/main.py", line 2339, in save_job_to_excel
+    self.cb_callback(None)
+  File "C:/Users/rjwal_000/PycharmProjects/Survey Assist/main.py", line 2175, in cb_callback
+    self.jt_user_entry.insert(0, survey_job.initials)
+  File "C:\Users\rjwal_000\AppData\Local\Programs\Python\Python38-32\lib\tkinter\__init__.py", line 3051, in insert
+    self.tk.call(self._w, 'insert', index, string)
+_tkinter.TclError: wrong # args: should be ".!mainwindow.!frame2.!entry insert index text"
+2020-06-24 10:28:06,126:Survey Assist - v1.0 :************************* STARTED APPLICATION - User: RW *************************
+2020-06-24 10:28:30,856:Survey Assist - v1.0 :************************* STARTED APPLICATION - User: RW *************************
+2020-06-24 10:29:38,103:Survey Assist - v1.0 :************************* STARTED APPLICATION - User: RW *************************
+2020-06-24 10:29:49,871:Survey Assist - v1.0 :Error has occurred in JobTracker init().
+
+wrong # args: should be ".!mainwindow.!frame2.!entry insert index text"
+Traceback (most recent call last):
+  File "C:/Users/rjwal_000/PycharmProjects/Survey Assist/main.py", line 2339, in save_job_to_excel
+    self.cb_callback(None)
+  File "C:/Users/rjwal_000/PycharmProjects/Survey Assist/main.py", line 2175, in cb_callback
+    self.jt_user_entry.insert(0, survey_job.initials)
+  File "C:\Users\rjwal_000\AppData\Local\Programs\Python\Python38-32\lib\tkinter\__init__.py", line 3051, in insert
+    self.tk.call(self._w, 'insert', index, string)
+_tkinter.TclError: wrong # args: should be ".!mainwindow.!frame2.!entry insert index text"
+2020-06-24 10:31:11,401:Survey Assist - v1.0 :************************* STARTED APPLICATION - User: RW *************************
+2020-06-24 10:32:47,986:Survey Assist - v1.0 :************************* STARTED APPLICATION - User: RW *************************
+2020-06-24 10:40:41,555:Survey Assist - v1.0 :************************* STARTED APPLICATION - User: RW *************************
+2020-06-24 10:41:33,792:Survey Assist - v1.0 :Error has occurred in JobTracker init().
+
+wrong # args: should be ".!mainwindow.!frame2.!entry insert index text"
+Traceback (most recent call last):
+  File "C:/Users/rjwal_000/PycharmProjects/Survey Assist/main.py", line 2339, in save_job_to_excel
+    self.cb_callback(None)
+  File "C:/Users/rjwal_000/PycharmProjects/Survey Assist/main.py", line 2175, in cb_callback
+    self.jt_user_entry.insert(0, survey_job.initials)
+  File "C:\Users\rjwal_000\AppData\Local\Programs\Python\Python38-32\lib\tkinter\__init__.py", line 3051, in insert
+    self.tk.call(self._w, 'insert', index, string)
+_tkinter.TclError: wrong # args: should be ".!mainwindow.!frame2.!entry insert index text"
+2020-06-24 10:42:45,843:Survey Assist - v1.0 :************************* STARTED APPLICATION - User: RW *************************
+2020-06-24 10:42:59,876:Survey Assist - v1.0 :Error has occurred in JobTracker init().
+
+wrong # args: should be ".!mainwindow.!frame2.!entry insert index text"
+Traceback (most recent call last):
+  File "C:/Users/rjwal_000/PycharmProjects/Survey Assist/main.py", line 2339, in save_job_to_excel
+    self.cb_callback(None)
+  File "C:/Users/rjwal_000/PycharmProjects/Survey Assist/main.py", line 2175, in cb_callback
+    self.jt_user_entry.insert(0, survey_job.initials)
+  File "C:\Users\rjwal_000\AppData\Local\Programs\Python\Python38-32\lib\tkinter\__init__.py", line 3051, in insert
+    self.tk.call(self._w, 'insert', index, string)
+_tkinter.TclError: wrong # args: should be ".!mainwindow.!frame2.!entry insert index text"
+2020-06-24 10:43:28,105:Survey Assist - v1.0 :************************* STARTED APPLICATION - User: RW *************************
+2020-06-24 10:43:49,432:Survey Assist - v1.0 :************************* STARTED APPLICATION - User: RW *************************
+2020-06-24 10:44:33,313:Survey Assist - v1.0 :************************* STARTED APPLICATION - User: RW *************************
+2020-06-24 10:44:42,303:Survey Assist - v1.0 :Error has occurred in JobTracker init().
+
+wrong # args: should be ".!mainwindow.!frame2.!entry insert index text"
+Traceback (most recent call last):
+  File "C:/Users/rjwal_000/PycharmProjects/Survey Assist/main.py", line 2339, in save_job_to_excel
+    self.cb_callback(None)
+  File "C:/Users/rjwal_000/PycharmProjects/Survey Assist/main.py", line 2175, in cb_callback
+    self.jt_user_entry.insert(0, survey_job.initials)
+  File "C:\Users\rjwal_000\AppData\Local\Programs\Python\Python38-32\lib\tkinter\__init__.py", line 3051, in insert
+    self.tk.call(self._w, 'insert', index, string)
+_tkinter.TclError: wrong # args: should be ".!mainwindow.!frame2.!entry insert index text"
+2020-06-24 10:45:50,831:Survey Assist - v1.0 :************************* STARTED APPLICATION - User: RW *************************

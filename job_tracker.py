@@ -76,7 +76,10 @@ class SurveyJob:
         #     self.survey_date = str(survey_date).split()[0]  # only want the date and not the timestamp
         else:
             self.survey_date = survey_date
-        self.initials = initials
+        if initials is None:
+            self.initials = ""
+        else:
+            self.initials = str(initials)
         self.calcs = str(calcs)
         self.results = str(results)
         self.checked = str(checked)
