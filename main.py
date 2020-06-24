@@ -1858,7 +1858,7 @@ class ConfigDialogWindow:
 
             survey_config = SurveyConfiguration()
 
-            tkinter.messagebox.showinfo("Survey Config", "Settings updated.")
+            tkinter.messagebox.showinfo("Survey Config", "Settings updated.\n\nPlease RE-START Survey Assist")
 
     def cancel(self):
 

@@ -150,3 +150,23 @@ _tkinter.TclError: wrong # args: should be ".!mainwindow.!frame2.!entry insert i
 2020-06-24 11:25:13,030:Survey Assist - v1.0 :************************* STARTED APPLICATION - User: RW *************************
 2020-06-24 11:25:36,802:Survey Assist - v1.0 :************************* STARTED APPLICATION - User: RW *************************
 2020-06-24 11:26:24,476:Survey Assist - v1.0 :OPENING UP A GSI FILE: C:/Users/rjwal_000/PycharmProjects/Survey Assist/Test Files/Survey Data/2020/MONITORING/A9 ARTC/200529/TS/EDITING/ARTC_903_MON_V2_TS60_240620_EDITED.GSI
+2020-06-24 11:28:37,550:Survey Assist - v1.0 :************************* STARTED APPLICATION - User: RW *************************
+2020-06-24 11:28:51,056:Survey Assist - v1.0 :************************* STARTED APPLICATION - User: RW *************************
+2020-06-24 11:32:03,315:Survey Assist - v1.0 :************************* STARTED APPLICATION - User: RW *************************
+2020-06-24 11:33:16,034:Survey Assist - v1.0 :************************* STARTED APPLICATION - User: RW *************************
+2020-06-24 11:33:28,038:Survey Assist - v1.0 :************************* STARTED APPLICATION - User: RW *************************
+2020-06-24 11:36:05,790:Survey Assist - v1.0 :Importing SD Data
+
+FileExistsError
+
+[WinError 183] Cannot create a file when that file already exists: 'C:/Users/rjwal_000/PycharmProjects/Survey Assist/Test Files/Survey Data/2020/MONITORING/A9 ARTC/200529\\TS\\TS60\\ARTC_903_MON_V2_MS60_0103_090510'
+Traceback (most recent call last):
+  File "C:/Users/rjwal_000/PycharmProjects/Survey Assist/main.py", line 436, in import_sd_data
+    shutil.copytree(file.filepath, import_path)
+  File "C:\Users\rjwal_000\AppData\Local\Programs\Python\Python38-32\lib\shutil.py", line 554, in copytree
+    return _copytree(entries=entries, src=src, dst=dst, symlinks=symlinks,
+  File "C:\Users\rjwal_000\AppData\Local\Programs\Python\Python38-32\lib\shutil.py", line 455, in _copytree
+    os.makedirs(dst, exist_ok=dirs_exist_ok)
+  File "C:\Users\rjwal_000\AppData\Local\Programs\Python\Python38-32\lib\os.py", line 223, in makedirs
+    mkdir(name, mode)
+FileExistsError: [WinError 183] Cannot create a file when that file already exists: 'C:/Users/rjwal_000/PycharmProjects/Survey Assist/Test Files/Survey Data/2020/MONITORING/A9 ARTC/200529\\TS\\TS60\\ARTC_903_MON_V2_MS60_0103_090510'
