@@ -2,7 +2,7 @@ from openpyxl import load_workbook
 import tkinter.messagebox
 import tkinter as tk
 import datetime
-
+import io
 
 class JobTracker:
 
@@ -15,8 +15,14 @@ class JobTracker:
             self.logger = logger
             self.job_tracker_filepath = excel_file_path
 
-            # try and read in the job tracker spreadsheet
-            self.workbook = load_workbook(self.job_tracker_filepath, read_only=True)
+            # try and read in the job tracker spreadsheet.
+            # Due to bug with OPenpyxl not closeing excel files we use ta context manager below as a work around
+            with open(self.job_tracker_filepath, "rb") as f:
+                in_mem_file = io.BytesIO(f.read())
+
+            self.workbook = load_workbook(in_mem_file, read_only=True)
+
+            # self.workbook = load_workbook(self.job_tracker_filepath, read_only=True)
             self.active_sheet = self.workbook["Actions"]
             self.create_list_of_job_tracker_jobs()
             self.workbook.close()

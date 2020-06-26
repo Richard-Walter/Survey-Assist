@@ -18,6 +18,9 @@ KNOWN BUGS
 
 """
 
+# TODO re-create Job tracker when hiding, creating and tracking a job.
+# Todo - fix sync errors when a manual entry is made whilst job tracker is open and a previous job is then updated
+
 from openpyxl.styles import Border, Side
 from openpyxl.formatting.rule import ColorScaleRule
 from openpyxl.formatting.rule import DataBarRule
