@@ -2106,7 +2106,6 @@ class JobTrackerBar(tk.Frame):
         self.jt_xml_checkbox.configure(background='#d9f2d8')
 
         # notes label and entry
-        text = 'Outstanding/Notes'
         self.jt_notes_label = tk.Label(self.frame, text='Outstanding/Notes: ')
         self.jt_notes_label.configure(background='#d9f2d8')
         self.jt_notes_entry = tk.Entry(self.frame, width=40)
@@ -2384,7 +2383,8 @@ class JobTrackerBar(tk.Frame):
 
             logger.exception('Job Tracker excel spreadsheet currently in use\n\n' + str(ex))
 
-            tk.messagebox.showinfo("Survey Assist", "The Job Tracker Excel Spreadsheet is currently open.  Please close it down and try again.")
+            tk.messagebox.showinfo("Survey Assist", "The Job Tracker Excel Spreadsheet is currently open by you or another user.  Please close it "
+                                                    "down and try again.")
 
         except Exception as ex:
 
