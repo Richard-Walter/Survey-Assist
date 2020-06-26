@@ -155,8 +155,7 @@ class MenuBar(tk.Frame):
 
         # Job Tracker
         self.job_tracker_sub_menu = tk.Menu(self.menu_bar, tearoff=0)
-        self.job_tracker_sub_menu.add_command(label="Create new Job", command=self.job_tracker_new_job)
-        self.job_tracker_sub_menu.add_command(label="Track a Job", command=self.job_tracker_track)
+        self.job_tracker_sub_menu.add_command(label="Track/Create a Job", command=self.job_tracker_open)
         self.job_tracker_sub_menu.add_command(label="Open in excel", command=self.job_tracker_open_excel)
         self.job_tracker_sub_menu.add_command(label="Hide", command=self.job_tracker_hide)
         self.menu_bar.add_cascade(label="Job Tracker", menu=self.job_tracker_sub_menu)
@@ -1592,20 +1591,11 @@ class MenuBar(tk.Frame):
             logger.exception("An unexpected error has occurred\n\njob_tracker_hide()\n\n" + str(ex))
             return
 
-    def job_tracker_new_job(self):
+    def job_tracker_open(self):
 
         try:
-            gui_app.job_tracker_bar.show_job_tracker_bar()
-
-        except FileNotFoundError as ex:
-            print("Couldn't find the Job Tracker Spreadsheet:\n\n" + self.job_tracker_filepath)
-            logger.exception("An unexpected error has occurred\n\nbtn_job_tracker()\n\n" + str(ex))
-            tk.messagebox.showerror("Survey Assist", "Couldn't find the Job Tracker Spreadsheet:\n\n" + self.job_tracker_filepath)
-            return
-
-    def job_tracker_track(self):
-
-        try:
+            gui_app.job_tracker_bar = JobTrackerBar(gui_app.main_window, self.user_config.user_initials)
+            gui_app.job_tracker_bar.pack(fill="x")
             gui_app.job_tracker_bar.show_job_tracker_bar()
 
         except FileNotFoundError as ex:
@@ -2127,7 +2117,7 @@ class JobTrackerBar(tk.Frame):
 
         # Combobox
         self.job_name = tk.StringVar()
-        self.jt_job_name_combo = ttk.Combobox(self.frame, width=35, textvariable=self.job_name)
+        self.jt_job_name_combo = ttk.Combobox(self.frame, width=35, textvariable=self.job_name, postcommand=self.get_latest_combobox_values)
 
         self.jt_job_name_combo['values'] = self.get_combobox_values()
         self.jt_job_name_combo.bind("<<ComboboxSelected>>", self.cb_callback)
@@ -2209,6 +2199,12 @@ class JobTrackerBar(tk.Frame):
             self.jt_user_entry.delete(0, tk.END)
             self.jt_user_entry.insert(0, self.user_initials)
 
+    def get_latest_combobox_values(self):
+
+        self.job_tracker = JobTracker(self.job_tracker_filepath, logger)
+        self.jt_job_name_combo['values'] = self.get_combobox_values()
+        # self.jt_job_name_combo.bind("<<ComboboxSelected>>", self.cb_callback)
+
     def get_combobox_values(self):
 
         # self.job_tracker = JobTracker(self.job_tracker_filepath, logger)
@@ -2241,6 +2237,7 @@ class JobTrackerBar(tk.Frame):
 
     def hide_job_tracker_bar(self):
         self.frame.pack_forget()
+        gui_app.job_tracker_bar = None
 
     def open_in_excel(self):
         try:
@@ -2267,6 +2264,8 @@ class JobTrackerBar(tk.Frame):
 
         try:
             job_name = self.jt_job_name_combo.get()
+            job_date = self.jt_date_btn['text']
+
             selected_job_index = self.jt_job_name_combo.current()
 
             if job_name == "<<Enter New Job>>":
@@ -2279,12 +2278,13 @@ class JobTrackerBar(tk.Frame):
             workbook = load_workbook(self.job_tracker_filepath, read_only=False, keep_vba=True)
             actions_sheet = workbook["Actions"]
 
+            # create a new job tracker in case excel has been updated in between selecting job and saving job
+            self.job_tracker = JobTracker(self.job_tracker_filepath, logger)
+
             # max cell range based on the number of job tracker jobs
             max_range_cell = str((11 + len(self.job_tracker.get_job_names())))
             cell_range = "J11:J" + max_range_cell
             print('Cell Range ' + cell_range)
-
-            date_string = self.jt_date_btn['text']
 
             # check to see if we are adding a new job or updating an old one.
             if self.jt_job_name_combo.current() == -1:  # user is creating a new job
@@ -2293,7 +2293,7 @@ class JobTrackerBar(tk.Frame):
                 actions_sheet.insert_rows(idx=11)
                 actions_sheet["A11"].value = self.jt_job_name_combo.get()
 
-                self.update_job_date(actions_sheet["B11"], date_string)
+                self.update_job_date(actions_sheet["B11"], job_date)
                 self.update_user(actions_sheet["C11"], self.jt_user_entry.get())
 
                 # apply 2-scale conditional formatting to check boxes
@@ -2320,9 +2320,9 @@ class JobTrackerBar(tk.Frame):
                 for row in range(11, 11 + len(self.job_tracker.get_job_names())):
                     percentage_complete_cell = 'J' + str(row)
                     # actions_sheet[percentage_complete_cell] = '=SUM(D' + str(row) + ':H' + str(row) +')'
-                    cell_forumua = '=IF(SUM(D' + str(row) + ': H' + str(row) + ') > 5, REPT("g", 10), (REPT("g", SUM(D' + str(row) + ': H' + str(
+                    cell_forumula = '=IF(SUM(D' + str(row) + ': H' + str(row) + ') > 5, REPT("g", 10), (REPT("g", SUM(D' + str(row) + ': H' + str(
                         row) + ') * 2)))'
-                    actions_sheet[percentage_complete_cell] = cell_forumua
+                    actions_sheet[percentage_complete_cell] = cell_forumula
 
                     # Change font
                     actions_sheet[percentage_complete_cell].font = Font(color="4472C4", name="Webdings")
@@ -2331,17 +2331,31 @@ class JobTrackerBar(tk.Frame):
 
             else:  # updating an existing job
 
-                current_job_selected_line = self.jt_job_name_combo.current()
-                excel_row_to_update = str(10 + current_job_selected_line)
+                excel_row_to_update = -1
+
+                # The excel might have been updated by another user.  We need to match the job name and date to get the current index.
+                for index, row in enumerate(actions_sheet.iter_rows(min_row=11, max_row=100, min_col=1, max_col=2), start=11):
+                    row_job_name = row[0].value.strip()
+                    row_job_date = row[1].value
+
+                    # sometimes excel job date is stored as a string or a datetime object.
+                    if isinstance(row_job_date, datetime.datetime):
+                        row_job_date = row_job_date.strftime('%d/%m/%Y')
+                    else:
+                        row_job_date = row_job_date.strip()
+
+                    if job_name == row_job_name and job_date == row_job_date:
+                        excel_row_to_update = str(index)
+                        selected_job_index = int(excel_row_to_update)-10  # required to set the combo box value after a refresh
+                        break
+
+                # current_job_selected_line = self.jt_job_name_combo.current()
+                # excel_row_to_update = str(10 + current_job_selected_line)
 
                 self.update_job_date(actions_sheet["B" + excel_row_to_update], self.jt_date_btn['text'])
-
                 self.update_user(actions_sheet["C" + excel_row_to_update], self.jt_user_entry.get())
-
                 self.update_checkbox_values(actions_sheet, excel_row_to_update)
-
                 actions_sheet["I" + excel_row_to_update] = self.jt_notes_entry.get()
-
                 # self.update_conditional_formatting(actions_sheet)
 
             workbook.save(filename=self.job_tracker_filepath)
@@ -2379,8 +2393,7 @@ class JobTrackerBar(tk.Frame):
 
             tk.messagebox.showerror("ERROR", 'An unexpected error has occurred reading the excel Job Tracker.  Please contact the developer')
 
-            gui_app.menu_bar.job_tracker_sub_menu.entryconfig("Create new Job", state="disabled")
-            gui_app.menu_bar.job_tracker_sub_menu.entryconfig("Track a Job", state="disabled")
+            gui_app.menu_bar.job_tracker_sub_menu.entryconfig("Track/Create a Job", state="disabled")
             gui_app.job_tracker_bar.hide_job_tracker_bar()
 
         else:
@@ -4424,16 +4437,16 @@ class GUIApplication(tk.Frame):
         self.workflow_bar.pack(fill="x")
 
         self.job_tracker_bar = None
-        try:
-            self.job_tracker_bar = JobTrackerBar(self.main_window, self.menu_bar.user_config.user_initials)
-            self.job_tracker_bar.pack(fill="x")
-        except Exception as ex:
+        # try:
+        #     self.job_tracker_bar = JobTrackerBar(self.main_window, self.menu_bar.user_config.user_initials)
+        #     self.job_tracker_bar.pack(fill="x")
+        # except Exception as ex:
+        #
+        #     self.menu_bar.job_tracker_sub_menu.entryconfig("Create new Job", state="disabled")
+        #     self.menu_bar.job_tracker_sub_menu.entryconfig("Track a Job", state="disabled")
+        #     logger.exception('Error has occurred creating Job Tracker object.\n\n' + str(ex))
 
-            self.menu_bar.job_tracker_sub_menu.entryconfig("Create new Job", state="disabled")
-            self.menu_bar.job_tracker_sub_menu.entryconfig("Track a Job", state="disabled")
-            logger.exception('Error has occurred creating Job Tracker object.\n\n' + str(ex))
-
-        self.job_tracker_bar.hide_job_tracker_bar()
+        # self.job_tracker_bar.hide_job_tracker_bar()
         self.list_box = ListBoxFrame(self.main_window)
         self.list_box.pack(fill="both")
         self.main_window.pack(fill="both", expand=True)
@@ -4482,9 +4495,6 @@ def main():
     logger.info('************************* STARTED APPLICATION - User: ' + gui_app.menu_bar.user_config.user_initials + ' *************************')
 
     root.mainloop()
-
-
-
 
 def configure_logger():
     logger.setLevel(logging.INFO)

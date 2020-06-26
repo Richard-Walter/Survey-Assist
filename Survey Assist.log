@@ -139,3 +139,89 @@ TypeError: close() takes 1 positional argument but 2 were given
 2020-06-26 15:26:25,674:Survey Assist - v1.0 :************************* STARTED APPLICATION - User: RW *************************
 2020-06-26 15:27:11,502:Survey Assist - v1.0 :************************* STARTED APPLICATION - User: RW *************************
 2020-06-26 15:27:31,701:Survey Assist - v1.0 :************************* STARTED APPLICATION - User: RW *************************
+2020-06-26 15:34:55,070:Survey Assist - v1.0 :************************* STARTED APPLICATION - User: RW *************************
+2020-06-26 15:41:01,967:Survey Assist - v1.0 :************************* STARTED APPLICATION - User: RW *************************
+2020-06-26 15:45:36,932:Survey Assist - v1.0 :************************* STARTED APPLICATION - User: RW *************************
+2020-06-26 15:47:16,133:Survey Assist - v1.0 :************************* STARTED APPLICATION - User: RW *************************
+2020-06-26 16:02:30,869:Survey Assist - v1.0 :************************* STARTED APPLICATION - User: RW *************************
+2020-06-26 16:04:47,355:Survey Assist - v1.0 :************************* STARTED APPLICATION - User: RW *************************
+2020-06-26 16:07:39,206:Survey Assist - v1.0 :************************* STARTED APPLICATION - User: RW *************************
+2020-06-26 16:07:44,164:Survey Assist - v1.0 :************************* STARTED APPLICATION - User: RW *************************
+2020-06-26 16:10:15,859:Survey Assist - v1.0 :************************* STARTED APPLICATION - User: RW *************************
+2020-06-26 16:11:13,283:Survey Assist - v1.0 :************************* STARTED APPLICATION - User: RW *************************
+2020-06-26 16:13:39,067:Survey Assist - v1.0 :************************* STARTED APPLICATION - User: RW *************************
+2020-06-26 16:14:33,189:Survey Assist - v1.0 :************************* STARTED APPLICATION - User: RW *************************
+2020-06-26 16:26:12,347:Survey Assist - v1.0 :************************* STARTED APPLICATION - User: RW *************************
+2020-06-26 16:41:32,437:Survey Assist - v1.0 :************************* STARTED APPLICATION - User: RW *************************
+2020-06-26 16:41:48,288:Survey Assist - v1.0 :Error has occurred in JobTracker init().
+
+name 'current_job_selected_line' is not defined
+Traceback (most recent call last):
+  File "C:/Users/Richard/PycharmProjects/Survey Assist/main.py", line 2345, in save_job_to_excel
+    excel_row_to_update = str(10 + current_job_selected_line)
+NameError: name 'current_job_selected_line' is not defined
+2020-06-26 16:42:28,925:Survey Assist - v1.0 :Error has occurred in JobTracker init().
+
+name 'current_job_selected_line' is not defined
+Traceback (most recent call last):
+  File "C:/Users/Richard/PycharmProjects/Survey Assist/main.py", line 2345, in save_job_to_excel
+    excel_row_to_update = str(10 + current_job_selected_line)
+NameError: name 'current_job_selected_line' is not defined
+2020-06-26 16:42:41,660:Survey Assist - v1.0 :Error has occurred in JobTracker init().
+
+name 'current_job_selected_line' is not defined
+Traceback (most recent call last):
+  File "C:/Users/Richard/PycharmProjects/Survey Assist/main.py", line 2345, in save_job_to_excel
+    excel_row_to_update = str(10 + current_job_selected_line)
+NameError: name 'current_job_selected_line' is not defined
+2020-06-26 16:44:09,564:Survey Assist - v1.0 :************************* STARTED APPLICATION - User: RW *************************
+2020-06-26 16:44:22,041:Survey Assist - v1.0 :Error has occurred in JobTracker init().
+
+name 'current_job_selected_line' is not defined
+Traceback (most recent call last):
+  File "C:/Users/Richard/PycharmProjects/Survey Assist/main.py", line 2345, in save_job_to_excel
+    excel_row_to_update = str(10 + current_job_selected_line)
+NameError: name 'current_job_selected_line' is not defined
+2020-06-26 16:45:13,302:Survey Assist - v1.0 :************************* STARTED APPLICATION - User: RW *************************
+2020-06-26 16:49:10,690:Survey Assist - v1.0 :************************* STARTED APPLICATION - User: RW *************************
+2020-06-26 16:51:16,176:Survey Assist - v1.0 :************************* STARTED APPLICATION - User: RW *************************
+2020-06-26 16:53:27,193:Survey Assist - v1.0 :************************* STARTED APPLICATION - User: RW *************************
+2020-06-26 16:53:34,026:Survey Assist - v1.0 :Error has occurred in JobTracker init().
+
+'Worksheet' object has no attribute 'iter_rowa'
+Traceback (most recent call last):
+  File "C:/Users/Richard/PycharmProjects/Survey Assist/main.py", line 2335, in save_job_to_excel
+    for row in actions_sheet.iter_rowa(min_row=11, max_row=100, min_col=1, max_col=2):
+AttributeError: 'Worksheet' object has no attribute 'iter_rowa'
+2020-06-26 16:53:58,052:Survey Assist - v1.0 :************************* STARTED APPLICATION - User: RW *************************
+2020-06-26 17:29:36,335:Survey Assist - v1.0 :************************* STARTED APPLICATION - User: RW *************************
+2020-06-26 20:57:47,016:Survey Assist - v1.0 :************************* STARTED APPLICATION - User: RW *************************
+2020-06-26 21:01:10,432:Survey Assist - v1.0 :************************* STARTED APPLICATION - User: RW *************************
+2020-06-26 21:02:29,539:Survey Assist - v1.0 :************************* STARTED APPLICATION - User: RW *************************
+2020-06-26 21:03:52,007:Survey Assist - v1.0 :************************* STARTED APPLICATION - User: RW *************************
+2020-06-26 21:05:40,403:Survey Assist - v1.0 :Error has occurred in JobTracker init().
+
+'datetime.datetime' object has no attribute 'strip'
+Traceback (most recent call last):
+  File "C:/Users/Richard/PycharmProjects/Survey Assist/main.py", line 2338, in save_job_to_excel
+    if job_name == row[0].value.strip() and job_date == row[1].value.strip():
+AttributeError: 'datetime.datetime' object has no attribute 'strip'
+2020-06-26 21:07:12,984:Survey Assist - v1.0 :************************* STARTED APPLICATION - User: RW *************************
+2020-06-26 21:07:24,327:Survey Assist - v1.0 :Error has occurred in JobTracker init().
+
+can only concatenate str (not "int") to str
+Traceback (most recent call last):
+  File "C:/Users/Richard/PycharmProjects/Survey Assist/main.py", line 2351, in save_job_to_excel
+    self.update_job_date(actions_sheet["B" + excel_row_to_update], self.jt_date_btn['text'])
+TypeError: can only concatenate str (not "int") to str
+2020-06-26 21:09:33,925:Survey Assist - v1.0 :************************* STARTED APPLICATION - User: RW *************************
+2020-06-26 21:09:42,566:Survey Assist - v1.0 :Error has occurred in JobTracker init().
+
+can only concatenate str (not "int") to str
+Traceback (most recent call last):
+  File "C:/Users/Richard/PycharmProjects/Survey Assist/main.py", line 2351, in save_job_to_excel
+    self.update_job_date(actions_sheet["B" + excel_row_to_update], self.jt_date_btn['text'])
+TypeError: can only concatenate str (not "int") to str
+2020-06-26 21:14:11,220:Survey Assist - v1.0 :************************* STARTED APPLICATION - User: RW *************************
+2020-06-26 21:16:16,113:Survey Assist - v1.0 :************************* STARTED APPLICATION - User: RW *************************
+2020-06-26 21:16:27,801:Survey Assist - v1.0 :************************* STARTED APPLICATION - User: RW *************************
