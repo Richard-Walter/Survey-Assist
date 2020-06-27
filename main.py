@@ -15,11 +15,7 @@ Compnet uses only observations:  slope distance, horizontal and vertical angle, 
 KNOWN BUGS
 -Sometimes a GSI is loaded yet the taskbar says please select a GSI.  You can't delete lines or export csv.
 -Importing SD card - sometimes it says files transferred, but nothing actually transferred.  I could put a check that files exists after copying?
-
 """
-
-# TODO re-create Job tracker when hiding, creating and tracking a job.
-# Todo - fix sync errors when a manual entry is made whilst job tracker is open and a previous job is then updated
 
 from openpyxl.styles import Border, Side
 from openpyxl.formatting.rule import ColorScaleRule
