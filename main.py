@@ -110,8 +110,8 @@ class MenuBar(tk.Frame):
         self.edit_sub_menu.add_command(label="Change target height...", command=self.change_target_height)
         self.edit_sub_menu.add_command(label="(BETA) Change station height...", command=self.change_station_height)
         self.edit_sub_menu.add_separator()
-        self.edit_sub_menu.add_command(label="(BETA) Prism Constant - Fix single...", command=self.prism_constant_update_manually)
-        self.edit_sub_menu.add_command(label="(BETA) Prism Constant - Fix batch ...", command=self.prism_constant_update_batch)
+        self.edit_sub_menu.add_command(label="Prism Constant - Fix single...", command=self.prism_constant_update_manually)
+        self.edit_sub_menu.add_command(label="Prism Constant - Fix batch ...", command=self.prism_constant_update_batch)
 
         self.menu_bar.add_cascade(label="Edit Survey", menu=self.edit_sub_menu, state="disabled")
 
@@ -562,7 +562,7 @@ class MenuBar(tk.Frame):
 
         except Exception as ex:
             print("Problem opening up the GSI file\n\n" + str(ex))
-            logger.exception("An unexpected error has occurred\n\nProblem opening up the GSI file\n\n" + str(ex))
+            logger.exception("monitoring_create\n\nProblem opening up the GSI file\n\n" + str(ex))
             tk.messagebox.showerror("Survey Assist", "An unexpected error has occurred\n\nProblem opening up the GSI file\n\n" + str(ex))
             return
 
