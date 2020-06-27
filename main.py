@@ -2138,7 +2138,7 @@ class JobTrackerBar(tk.Frame):
         self.jt_notes_label.pack(padx=(15, 0), pady=5, side='left')
         self.jt_notes_entry.pack(padx=(15, 0), pady=5, side='left')
 
-        self.jt_btn_save_job.pack(padx=(50, 0), pady=5, side='left')
+        self.jt_btn_save_job.pack(padx=(20, 0), pady=5, side='left')
         self.jt_btn_open_in_excel.pack(padx=(15, 15), pady=5, side='right')
 
     def cb_callback(self, event):

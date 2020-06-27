@@ -238,3 +238,21 @@ Traceback (most recent call last):
 FileNotFoundError: [Errno 2] No such file or directory: 'C:\\Users\\Richard\\PycharmProjects\\Survey Assist\\Monitoring Files\\STN01.csv'
 2020-06-28 09:24:28,059:Survey Assist - v1.0 :************************* STARTED APPLICATION - User: RW *************************
 2020-06-28 09:24:37,749:Survey Assist - v1.0 :OPENING UP A GSI FILE: C:/SD/TS60/Gsi/A7MR 240620.gsi
+2020-06-28 09:31:03,213:Survey Assist - v1.0 :************************* STARTED APPLICATION - User: RW *************************
+2020-06-28 09:31:05,444:Survey Assist - v1.0 :Job Tracker excel spreadsheet not found
+
+[Errno 2] No such file or directory: 'C:\\Users\\rjwal_000\\PycharmProjects\\Survey Assist\\Test Files\\Survey Data\\2020\\Job Tracker Digital System.xlsm'
+Traceback (most recent call last):
+  File "C:\Users\Richard\PycharmProjects\Survey Assist\job_tracker.py", line 20, in __init__
+    with open(self.job_tracker_filepath, "rb") as f:
+FileNotFoundError: [Errno 2] No such file or directory: 'C:\\Users\\rjwal_000\\PycharmProjects\\Survey Assist\\Test Files\\Survey Data\\2020\\Job Tracker Digital System.xlsm'
+2020-06-28 09:32:38,724:Survey Assist - v1.0 :************************* STARTED APPLICATION - User: RW *************************
+2020-06-28 09:32:40,860:Survey Assist - v1.0 :Job Tracker excel spreadsheet not found
+
+[Errno 2] No such file or directory: 'C:\\Users\\Richard Walter\\PycharmProjects\\Survey Assist\\Test Files\\Survey Data\\2020\\Job Tracker Digital System.xlsm'
+Traceback (most recent call last):
+  File "C:\Users\Richard\PycharmProjects\Survey Assist\job_tracker.py", line 20, in __init__
+    with open(self.job_tracker_filepath, "rb") as f:
+FileNotFoundError: [Errno 2] No such file or directory: 'C:\\Users\\Richard Walter\\PycharmProjects\\Survey Assist\\Test Files\\Survey Data\\2020\\Job Tracker Digital System.xlsm'
+2020-06-28 09:33:39,508:Survey Assist - v1.0 :************************* STARTED APPLICATION - User: RW *************************
+2020-06-28 09:36:07,756:Survey Assist - v1.0 :************************* STARTED APPLICATION - User: RW *************************
