@@ -256,3 +256,5 @@ Traceback (most recent call last):
 FileNotFoundError: [Errno 2] No such file or directory: 'C:\\Users\\Richard Walter\\PycharmProjects\\Survey Assist\\Test Files\\Survey Data\\2020\\Job Tracker Digital System.xlsm'
 2020-06-28 09:33:39,508:Survey Assist - v1.0 :************************* STARTED APPLICATION - User: RW *************************
 2020-06-28 09:36:07,756:Survey Assist - v1.0 :************************* STARTED APPLICATION - User: RW *************************
+2020-06-28 09:55:48,335:Survey Assist - v1.0 :************************* STARTED APPLICATION - User: RW *************************
+2020-06-28 09:59:51,444:Survey Assist - v1.0 :************************* STARTED APPLICATION - User: RW *************************

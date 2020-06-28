@@ -2063,8 +2063,8 @@ class JobTrackerBar(tk.Frame):
         self.user_initials = user_initials
         self.todays_date = datetime.datetime.today().strftime('%d/%m/%Y')
         self.job_tracker_filepath = os.path.join(survey_config.root_job_directory, survey_config.current_year, survey_config.job_tracker_filename)
-        self.job_tracker_backup_filepath = os.path.join(survey_config.root_job_directory, survey_config.current_year,
-                                                        survey_config.job_tracker_filename)
+        # self.job_tracker_backup_filepath = os.path.join(survey_config.root_job_directory, survey_config.current_year,
+        #                                                 survey_config.job_tracker_filename)
 
         self.job_tracker = JobTracker(self.job_tracker_filepath, logger)
 
@@ -2140,6 +2140,9 @@ class JobTrackerBar(tk.Frame):
 
         self.jt_btn_save_job.pack(padx=(20, 0), pady=5, side='left')
         self.jt_btn_open_in_excel.pack(padx=(15, 15), pady=5, side='right')
+
+        # Create a backup
+        self.backup_job_tracker()
 
     def cb_callback(self, event):
 
@@ -2378,7 +2381,6 @@ class JobTrackerBar(tk.Frame):
         except PermissionError as ex:
 
             logger.exception('Job Tracker excel spreadsheet currently in use\n\n' + str(ex))
-
             tk.messagebox.showinfo("Survey Assist", "The Job Tracker Excel Spreadsheet is currently open by you or another user.  Please close it "
                                                     "down and try again.")
 
@@ -2448,6 +2450,21 @@ class JobTrackerBar(tk.Frame):
         print('Cell Range ' + cell_range)
         actions_sheet.conditional_formatting.add(cell_range, rule)
 
+    def backup_job_tracker(self):
+
+        try:
+            Job_tracker_backup_folder_name = "JOB TRACKER BACKUPS"
+            job_tracker_backup_dir = os.path.join(survey_config.root_job_directory, survey_config.current_year, Job_tracker_backup_folder_name)
+
+            if os.path.exists(job_tracker_backup_dir) == False:
+                os.mkdir(job_tracker_backup_dir)
+            date_string = datetime.datetime.now().strftime('%Y%m%d_%H%M%S')
+            save_name = os.path.join(job_tracker_backup_dir, os.path.basename(self.job_tracker_filepath).split('.')[0] + '_' + date_string + '.xlsm')
+            print(save_name)
+            shutil.copyfile(self.job_tracker_filepath, save_name)
+        except Exception as ex:
+
+            logger.exception('Error has occurred in backup_job_tracker\n\n' + str(ex))
 
 class MainWindow(tk.Frame):
 
