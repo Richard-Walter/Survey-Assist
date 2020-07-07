@@ -207,11 +207,12 @@ class MenuBar(tk.Frame):
                     self.choose_date()
 
                 CreateDatedDirectoryWindow(self, folder_selected)
+
         except Exception as ex:
             print("Unexpected error has occurred\n\n" + str(ex))
             logger.exception("An unexpected error has occurred\n\nnew_dated_directory()\n\n" + str(ex))
             tk.messagebox.showerror("Survey Assist", "An unexpected error has occurred\n\nnew_dated_directory()\n\n" + str(ex))
-            return
+
 
     def choose_date(self):
         # Let user choose the date, rather than the default todays date
@@ -2366,7 +2367,7 @@ class JobTrackerBar(tk.Frame):
             self.jt_results_checkbox.deselect()
 
             if selected_job_index == -1:  # new job created
-                self.jt_job_name_combo.current(1)
+                self.jt_job_name_combo.current(0)
             else:
                 self.jt_job_name_combo.current(selected_job_index)
 
@@ -2387,7 +2388,7 @@ class JobTrackerBar(tk.Frame):
         except Exception as ex:
 
             # Most likely an incorrect file was chosen
-            logger.exception('Error has occurred in JobTracker init().\n\n' + str(ex))
+            logger.exception('Error has occurred in JobTracker save_job_to_excel().\n\n' + str(ex))
 
             tk.messagebox.showerror("ERROR", 'An unexpected error has occurred reading the excel Job Tracker.  Please contact the developer')
 
