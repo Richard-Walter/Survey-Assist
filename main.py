@@ -2069,6 +2069,8 @@ class JobTrackerBar(tk.Frame):
 
         self.job_tracker = JobTracker(self.job_tracker_filepath, logger)
 
+        self.create_new_job = True
+
         # Create widgets
         self.jt_lbl = tk.Label(self.frame, text='JOB TRACKER:')
         self.jt_lbl.configure(background='#d9f2d8')
@@ -2148,9 +2150,12 @@ class JobTrackerBar(tk.Frame):
     def cb_callback(self, event):
 
         # get job details and populate job tracker widget
-        survey_job = self.job_tracker.get_job(self.jt_job_name_combo.get())
+        survey_job = self.job_tracker.get_job(self.jt_job_name_combo.current())
 
         if survey_job:
+
+            self.create_new_job = False
+
             self.jt_date_btn.configure(text=survey_job.survey_date)
             # self.jt_user_entry.configure(text=survey_job.initials)
 
@@ -2186,6 +2191,9 @@ class JobTrackerBar(tk.Frame):
             self.jt_user_entry.insert(0, survey_job.initials)
 
         else:  # user has selected to create a new job
+
+            self.create_new_job = True
+
             self.jt_date_btn.configure(text=self.todays_date)
             self.jt_calcs_checkbox.deselect()
             self.jt_results_checkbox.deselect()
@@ -2265,7 +2273,7 @@ class JobTrackerBar(tk.Frame):
             job_name = self.jt_job_name_combo.get()
             job_date = self.jt_date_btn['text']
 
-            selected_job_index = self.jt_job_name_combo.current()
+            selected_job_index = -1  # Default value is create new job - required to set the combo box value after a refresh
 
             if job_name == "<<Enter New Job>>":
                 tk.messagebox.showerror("Survey Assist", "Please enter a job name")
@@ -2286,7 +2294,7 @@ class JobTrackerBar(tk.Frame):
             print('Cell Range ' + cell_range)
 
             # check to see if we are adding a new job or updating an old one.
-            if self.jt_job_name_combo.current() == -1:  # user is creating a new job
+            if self.create_new_job:  # user is creating a new job
 
                 # insert blank row at row 11 and populate
                 actions_sheet.insert_rows(idx=11)

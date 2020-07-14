@@ -4,6 +4,7 @@ import tkinter as tk
 import datetime
 import io
 
+
 class JobTracker:
 
     def __init__(self, excel_file_path, logger):
@@ -44,13 +45,14 @@ class JobTracker:
 
         for row in self.active_sheet.iter_rows(min_row=11, max_row=1000, min_col=1, max_col=9):
 
-                # create a survey job and add to list.
-                # survey_job = SurveyJob(row[0].value, survey_date('%d/%m/%Y'), row[2].value, row[3].value, row[4].value)
-                if row[0].value:
-                    survey_job = SurveyJob(row[0].value, row[1].value, row[2].value, row[3].value, row[4].value, row[5].value, row[6].value, row[7].value, row[8].value)
-                    self.survey_job_list.append(survey_job)
-                else:
-                    return
+            # create a survey job and add to list.
+            # survey_job = SurveyJob(row[0].value, survey_date('%d/%m/%Y'), row[2].value, row[3].value, row[4].value)
+            if row[0].value:
+                survey_job = SurveyJob(row[0].value, row[1].value, row[2].value, row[3].value, row[4].value, row[5].value, row[6].value, row[7].value,
+                                       row[8].value)
+                self.survey_job_list.append(survey_job)
+            else:
+                return
 
     def get_job_names(self):
 
@@ -61,16 +63,24 @@ class JobTracker:
 
         return jobs_names
 
-    def get_job(self, job_name):
+    # # unique job is defined by a name and a date
+    # def get_job(self, job_name):
+    #
+    #     for job in self.survey_job_list:
+    #         if job.job_name == job_name:
+    #             return job
 
-        for job in self.survey_job_list:
-            if job.job_name == job_name:
-                return job
+    # unique job is defined by a name and a date
+    def get_job(self, combo_index):
+
+        if combo_index != 0:  # user not trying to create a new job
+
+            return self.survey_job_list[combo_index-1]
 
 
 class SurveyJob:
 
-    def __init__(self, job_name, survey_date, initials='', calcs='', results='',  checked='',  sent='',  xml='',  notes=''):
+    def __init__(self, job_name, survey_date, initials='', calcs='', results='', checked='', sent='', xml='', notes=''):
         super().__init__()
 
         self.job_name = job_name
