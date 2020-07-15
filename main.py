@@ -88,6 +88,7 @@ class MenuBar(tk.Frame):
         self.file_sub_menu.add_command(label="Choose Compnet Job Directory...", command=self.choose_compnet_directory)
         self.file_sub_menu.add_command(label="Create Job Directory...", command=self.new_job_directoy)
         self.file_sub_menu.add_command(label="Import SD Data", command=self.import_sd_data)
+        self.file_sub_menu.add_command(label="Print GSI", command=self.print_gsi)
         self.file_sub_menu.add_separator()
         self.file_sub_menu.add_command(label="Monitoring - Create (beta)", command=self.monitoring_create)
         self.file_sub_menu.add_command(label="Monitoring - Update Coordinates", command=self.monitoring_update_coords, state="disabled")
@@ -488,8 +489,12 @@ class MenuBar(tk.Frame):
             # open up explorer
             os.startfile('c:')
 
-    def copy_over_sd_files(self):
-        pass
+    def print_gsi(self):
+
+        if not MenuBar.filename_path:
+            tk.messagebox.showinfo("Print GSI", "Please open up a GSI file first.")
+            return
+
 
     def copy_over_gsi_to_edited_directory(self, gsi_file, import_path, is_rail_survey):
 
