@@ -84,6 +84,7 @@ class SurveyJob:
         super().__init__()
 
         self.job_name = job_name
+        self.survey_date = ""
 
         # sometimes excel job date is stored as a string or a datetime object.
         if isinstance(survey_date, datetime.datetime):

@@ -2296,6 +2296,13 @@ class JobTrackerBar(tk.Frame):
             # check to see if we are adding a new job or updating an old one.
             if self.create_new_job:  # user is creating a new job
 
+                # First lets check that the job name with same date don't already exist
+                for job in self.job_tracker.survey_job_list:
+                    if job_name == job.job_name and job_date == job.survey_date:
+
+                        tk.messagebox.showerror("Survey Assist", "This job name already exists with this date.  Please enter a unique job name/date")
+                        return
+
                 # insert blank row at row 11 and populate
                 actions_sheet.insert_rows(idx=11)
                 actions_sheet["A11"].value = self.jt_job_name_combo.get()
