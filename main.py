@@ -491,9 +491,37 @@ class MenuBar(tk.Frame):
 
     def print_gsi(self):
 
+        print_gsi_excel_filepath = 'C:\SurveyAssist\Print GSI.xlsx'
+
         if not MenuBar.filename_path:
             tk.messagebox.showinfo("Print GSI", "Please open up a GSI file first.")
             return
+
+        try:
+            workbook = load_workbook(print_gsi_excel_filepath, read_only=False)
+            actions_sheet = workbook["Print GSI"]
+
+            workbook.save(filename=print_gsi_excel_filepath)
+            workbook.close()
+
+        except FileNotFoundError as ex:
+
+            logger.exception('Print GSI excel spreadsheet not found\n\n' + str(ex))
+            tk.messagebox.showerror("ERROR", "Unable to find the Print GSI Spreadsheet at the following location:\n\n" + print_gsi_excel_filepath)
+
+        except PermissionError as ex:
+
+            logger.exception('Print GSI excel spreadsheet is currently open\n\n' + str(ex))
+            tk.messagebox.showinfo("Survey Assist", "The Print GSI Spreadsheet is currently open.  Please close it "
+                                                    "down and try again.")
+
+        except Exception as ex:
+
+            logger.exception('Unknown error occurred in Print GSI\n\n' + str(ex))
+            tk.messagebox.showerror("ERROR", "Unknown error occurred printing the GSI.  Please contact the developer")
+
+        else:
+            os.startfile(print_gsi_excel_filepath)
 
 
     def copy_over_gsi_to_edited_directory(self, gsi_file, import_path, is_rail_survey):
