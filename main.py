@@ -83,12 +83,12 @@ class MenuBar(tk.Frame):
         # File Menu
         self.file_sub_menu = tk.Menu(self.menu_bar, tearoff=0)
         self.file_sub_menu.add_command(label="Open GSI...", command=self.choose_gsi_file)
+        self.file_sub_menu.add_command(label="Print GSI", command=self.print_gsi)
         self.file_sub_menu.add_command(label="Create Dated Directory...", command=lambda: self.new_dated_directory(False))
         self.file_sub_menu.add_command(label="Choose Dated Directory...", command=self.choose_dated_directory)
         self.file_sub_menu.add_command(label="Choose Compnet Job Directory...", command=self.choose_compnet_directory)
         self.file_sub_menu.add_command(label="Create Job Directory...", command=self.new_job_directoy)
         self.file_sub_menu.add_command(label="Import SD Data", command=self.import_sd_data)
-        self.file_sub_menu.add_command(label="Print GSI", command=self.print_gsi)
         self.file_sub_menu.add_separator()
         self.file_sub_menu.add_command(label="Monitoring - Create (beta)", command=self.monitoring_create)
         self.file_sub_menu.add_command(label="Monitoring - Update Coordinates", command=self.monitoring_update_coords, state="disabled")
@@ -214,7 +214,6 @@ class MenuBar(tk.Frame):
             logger.exception("An unexpected error has occurred\n\nnew_dated_directory()\n\n" + str(ex))
             tk.messagebox.showerror("Survey Assist", "An unexpected error has occurred\n\nnew_dated_directory()\n\n" + str(ex))
 
-
     def choose_date(self):
         # Let user choose the date, rather than the default todays date
         cal_root = tk.Toplevel()
@@ -305,12 +304,12 @@ class MenuBar(tk.Frame):
 
             user_answer = tk.messagebox.askyesnocancel("IMPORT SD DATA", "Couldn't find any survey files with todays date."
                                                                          "\n\nAre you trying to import a rail survey (" +
-                                                       survey_config.current_rail_monitoring_file_name +") ?\n\n"
-                                                                         "YES           -  IMPORT RAIL SURVEY\n"
-                                                                         "NO            - IMPORT FILES MANUALLY\n"
-                                                                         "CANCEL    - INSERT SD CARD AND TRY_AGAIN\n\n"
-                                                                         "Otherwise, please make sure you have inserted the SD Card into your"
-                                                                         " computer, and check your SD card path in user_settings.ini is correct.")
+                                                       survey_config.current_rail_monitoring_file_name + ") ?\n\n"
+                                                                                                         "YES           -  IMPORT RAIL SURVEY\n"
+                                                                                                         "NO            - IMPORT FILES MANUALLY\n"
+                                                                                                         "CANCEL    - INSERT SD CARD AND TRY_AGAIN\n\n"
+                                                                                                         "Otherwise, please make sure you have inserted the SD Card into your"
+                                                                                                         " computer, and check your SD card path in user_settings.ini is correct.")
 
             if user_answer is None:  # user selected cancel
 
@@ -491,7 +490,13 @@ class MenuBar(tk.Frame):
 
     def print_gsi(self):
 
-        print_gsi_excel_filepath = 'C:\SurveyAssist\Print GSI.xlsx'
+        users_print_gsi_excel_filepath = 'C:\SurveyAssist\Print GSI.xlsx'
+        template_print_gsi_excel_filepath = 'Config Files\Print GSI.xlsx'
+
+        # check is user has the print gsi spreadsheet on his local drive.  Copy across if not.
+
+        if not os.path.exists(users_print_gsi_excel_filepath):
+            shutil.copy(template_print_gsi_excel_filepath, users_print_gsi_excel_filepath)
 
         # highlight colors
         orange_highlight = PatternFill(start_color='FFD966', end_color='FFD966', fill_type='solid')
@@ -503,11 +508,11 @@ class MenuBar(tk.Frame):
             return
 
         try:
-            workbook = load_workbook(print_gsi_excel_filepath, read_only=False)
+            workbook = load_workbook(users_print_gsi_excel_filepath, read_only=False)
             excel_sheet = workbook["Print GSI"]
 
-            # Write out GSI filepath
-            excel_sheet['A1'] = 'JOB: ' + MenuBar.filename_path
+            # Write out job name
+            excel_sheet['A1'] = os.path.basename(MenuBar.filename_path)
 
             # # Clear any existing GSI contents
             # for row in excel_sheet['A4:J1000']:
@@ -515,7 +520,7 @@ class MenuBar(tk.Frame):
             #         cell.value = None
 
             # Delete existing data
-            excel_sheet.delete_rows(4,1000)
+            excel_sheet.delete_rows(4, 1000)
 
             # Write out GSI based on formatted lines
 
@@ -532,9 +537,13 @@ class MenuBar(tk.Frame):
                     excel_sheet['H' + str(excel_line_number)] = formatted_line['STN_Elevation']
                     excel_sheet['J' + str(excel_line_number)] = formatted_line['STN_Height']
 
-                    # Highlight row
+                    # Highlight and style row
                     for col in ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J']:
                         excel_sheet[col + str(excel_line_number)].fill = orange_highlight
+                        excel_sheet[col + str(excel_line_number)].alignment = Alignment(horizontal='center')
+                        excel_sheet[col + str(excel_line_number)].font = Font(bold=True)
+
+                    excel_sheet['A' + str(excel_line_number)].alignment = Alignment(horizontal='left')
 
                 elif gsi.is_orientation_shot(formatted_line):
                     excel_sheet['A' + str(excel_line_number)] = formatted_line['Point_ID']
@@ -543,9 +552,14 @@ class MenuBar(tk.Frame):
                     excel_sheet['E' + str(excel_line_number)] = formatted_line['Prism_Constant']
                     excel_sheet['I' + str(excel_line_number)] = formatted_line['Target_Height']
 
-                    # Highlight row
+                    # Highlight and style row
                     for col in ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J']:
                         excel_sheet[col + str(excel_line_number)].fill = green_highlight
+                        excel_sheet[col + str(excel_line_number)].alignment = Alignment(horizontal='center')
+                        excel_sheet[col + str(excel_line_number)].font = Font(italic=True)
+
+                    excel_sheet['A' + str(excel_line_number)].alignment = Alignment(horizontal='left')
+
 
                 else:
                     excel_sheet['A' + str(excel_line_number)] = formatted_line['Point_ID']
@@ -558,17 +572,24 @@ class MenuBar(tk.Frame):
                     excel_sheet['H' + str(excel_line_number)] = formatted_line['Elevation']
                     excel_sheet['I' + str(excel_line_number)] = formatted_line['Target_Height']
 
-                    # Highlight row
+                    # Highlight and style row
                     for col in ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J']:
-                        excel_sheet[col + str(excel_line_number)].fill = blue_highlight
+                        # highlight even rows for a banded effect
+                        if (excel_line_number % 2) == 0:
+                            excel_sheet[col + str(excel_line_number)].fill = blue_highlight
 
-            workbook.save(filename=print_gsi_excel_filepath)
+                        excel_sheet[col + str(excel_line_number)].alignment = Alignment(horizontal='center')
+
+                    excel_sheet['A' + str(excel_line_number)].alignment = Alignment(horizontal='left')
+
+            workbook.save(filename=users_print_gsi_excel_filepath)
             workbook.close()
 
         except FileNotFoundError as ex:
 
             logger.exception('Print GSI excel spreadsheet not found\n\n' + str(ex))
-            tk.messagebox.showerror("ERROR", "Unable to find the Print GSI Spreadsheet at the following location:\n\n" + print_gsi_excel_filepath)
+            tk.messagebox.showerror("ERROR",
+                                    "Unable to find the Print GSI Spreadsheet at the following location:\n\n" + users_print_gsi_excel_filepath)
 
         except PermissionError as ex:
 
@@ -582,8 +603,7 @@ class MenuBar(tk.Frame):
             tk.messagebox.showerror("ERROR", "Unknown error occurred printing the GSI.  Please contact the developer")
 
         else:
-            os.startfile(print_gsi_excel_filepath)
-
+            os.startfile(users_print_gsi_excel_filepath)
 
     def copy_over_gsi_to_edited_directory(self, gsi_file, import_path, is_rail_survey):
 
@@ -1848,12 +1868,13 @@ class ConfigDialogWindow:
         self.entry_height.insert(tkinter.END, survey_config.height_tolerance)
         self.entry_height.grid(row=3, column=1, padx=10, pady=5, sticky='w')
 
-        self.sorted_station_file_lbl = tk.Label(self.dialog_window, text="Sorted station file: ").grid(row=4, column=0,padx=10, pady=10, sticky='w')
-        self.sorted_station_file_btn = tk.Button(self.dialog_window, text=os.path.basename(self.sorted_stn_file_path), command=self.select_sorted_stn_file)
+        self.sorted_station_file_lbl = tk.Label(self.dialog_window, text="Sorted station file: ").grid(row=4, column=0, padx=10, pady=10, sticky='w')
+        self.sorted_station_file_btn = tk.Button(self.dialog_window, text=os.path.basename(self.sorted_stn_file_path),
+                                                 command=self.select_sorted_stn_file)
         self.sorted_station_file_btn.grid(row=4, column=1, padx=10, pady=10, sticky='w')
 
-        self.current_rail_monitoring_file_lbl = tk.Label(self.dialog_window, text="Rail Monitoring Name: ").grid(row=5, column=0,padx=10, pady=10,
-                                                                                                          sticky='w')
+        self.current_rail_monitoring_file_lbl = tk.Label(self.dialog_window, text="Rail Monitoring Name: ").grid(row=5, column=0, padx=10, pady=10,
+                                                                                                                 sticky='w')
         self.current_rail_monitoring_file_entry = tk.Entry(self.dialog_window)
         self.current_rail_monitoring_file_entry.grid(row=5, column=1, padx=10, pady=10, sticky='w')
         self.current_rail_monitoring_file_entry.insert(tk.END, self.current_rail_monitoring_name)
@@ -2393,7 +2414,6 @@ class JobTrackerBar(tk.Frame):
                 # First lets check that the job name with same date don't already exist
                 for job in self.job_tracker.survey_job_list:
                     if job_name == job.job_name and job_date == job.survey_date:
-
                         tk.messagebox.showerror("Survey Assist", "This job name already exists with this date.  Please enter a unique job name/date")
                         return
 
@@ -2454,7 +2474,7 @@ class JobTrackerBar(tk.Frame):
 
                     if job_name == row_job_name and job_date == row_job_date:
                         excel_row_to_update = str(index)
-                        selected_job_index = int(excel_row_to_update)-10  # required to set the combo box value after a refresh
+                        selected_job_index = int(excel_row_to_update) - 10  # required to set the combo box value after a refresh
                         break
 
                 # current_job_selected_line = self.jt_job_name_combo.current()
@@ -2575,6 +2595,7 @@ class JobTrackerBar(tk.Frame):
         except Exception as ex:
 
             logger.exception('Error has occurred in backup_job_tracker\n\n' + str(ex))
+
 
 class MainWindow(tk.Frame):
 
@@ -4548,7 +4569,7 @@ class GUIApplication(tk.Frame):
         # see fixed_map method for the reason for this style inclusion
         self.style = ttk.Style()
         self.style.map('Treeview', foreground=self.fixed_map('foreground'),
-                  background=self.fixed_map('background'))
+                       background=self.fixed_map('background'))
 
         self.menu_bar = MenuBar(master)
         self.status_bar = StatusBar(master)
@@ -4592,6 +4613,7 @@ class GUIApplication(tk.Frame):
         MenuBar.create_and_populate_database()
         MenuBar.update_gui()
 
+
 def main():
     global gui_app
     global gsi
@@ -4619,6 +4641,7 @@ def main():
 
     root.mainloop()
 
+
 def configure_logger():
     logger.setLevel(logging.INFO)
     formatter = logging.Formatter('%(asctime)s:%(name)s:%(message)s')
@@ -4635,6 +4658,7 @@ def configure_logger():
 
     logger.addHandler(file_handler)
     logger.addHandler(stream_handler)
+
 
 if __name__ == "__main__":
     main()
