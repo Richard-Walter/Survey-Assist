@@ -20,7 +20,7 @@ KNOWN BUGS
 from openpyxl.styles import Border, Side
 from openpyxl.formatting.rule import ColorScaleRule
 from openpyxl.formatting.rule import DataBarRule
-from openpyxl.styles import Font
+from openpyxl.styles import Font, PatternFill, Color
 from openpyxl.styles import Alignment
 import tkinter.messagebox
 import logging.config
@@ -493,13 +493,74 @@ class MenuBar(tk.Frame):
 
         print_gsi_excel_filepath = 'C:\SurveyAssist\Print GSI.xlsx'
 
+        # highlight colors
+        orange_highlight = PatternFill(start_color='FFD966', end_color='FFD966', fill_type='solid')
+        green_highlight = PatternFill(start_color='C6E0B4', end_color='C6E0B4', fill_type='solid')
+        blue_highlight = PatternFill(start_color='DDEBF7', end_color='DDEBF7', fill_type='solid')
+
         if not MenuBar.filename_path:
             tk.messagebox.showinfo("Print GSI", "Please open up a GSI file first.")
             return
 
         try:
             workbook = load_workbook(print_gsi_excel_filepath, read_only=False)
-            actions_sheet = workbook["Print GSI"]
+            excel_sheet = workbook["Print GSI"]
+
+            # Write out GSI filepath
+            excel_sheet['A1'] = 'JOB: ' + MenuBar.filename_path
+
+            # # Clear any existing GSI contents
+            # for row in excel_sheet['A4:J1000']:
+            #     for cell in row:
+            #         cell.value = None
+
+            # Delete existing data
+            excel_sheet.delete_rows(4,1000)
+
+            # Write out GSI based on formatted lines
+
+            for excel_line_number, formatted_line in enumerate(gsi.formatted_lines, start=4):
+
+                # Write out GSI to excel
+
+                if gsi.is_station_setup(formatted_line):
+
+                    excel_sheet['A' + str(excel_line_number)] = formatted_line['Point_ID']
+                    excel_sheet['E' + str(excel_line_number)] = formatted_line['Prism_Constant']
+                    excel_sheet['F' + str(excel_line_number)] = formatted_line['STN_Easting']
+                    excel_sheet['G' + str(excel_line_number)] = formatted_line['STN_Northing']
+                    excel_sheet['H' + str(excel_line_number)] = formatted_line['STN_Elevation']
+                    excel_sheet['J' + str(excel_line_number)] = formatted_line['STN_Height']
+
+                    # Highlight row
+                    for col in ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J']:
+                        excel_sheet[col + str(excel_line_number)].fill = orange_highlight
+
+                elif gsi.is_orientation_shot(formatted_line):
+                    excel_sheet['A' + str(excel_line_number)] = formatted_line['Point_ID']
+                    excel_sheet['B' + str(excel_line_number)] = formatted_line['Horizontal_Angle']
+                    excel_sheet['C' + str(excel_line_number)] = formatted_line['Vertical_Angle']
+                    excel_sheet['E' + str(excel_line_number)] = formatted_line['Prism_Constant']
+                    excel_sheet['I' + str(excel_line_number)] = formatted_line['Target_Height']
+
+                    # Highlight row
+                    for col in ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J']:
+                        excel_sheet[col + str(excel_line_number)].fill = green_highlight
+
+                else:
+                    excel_sheet['A' + str(excel_line_number)] = formatted_line['Point_ID']
+                    excel_sheet['B' + str(excel_line_number)] = formatted_line['Horizontal_Angle']
+                    excel_sheet['C' + str(excel_line_number)] = formatted_line['Vertical_Angle']
+                    excel_sheet['D' + str(excel_line_number)] = formatted_line['Slope_Distance']
+                    excel_sheet['E' + str(excel_line_number)] = formatted_line['Prism_Constant']
+                    excel_sheet['F' + str(excel_line_number)] = formatted_line['Easting']
+                    excel_sheet['G' + str(excel_line_number)] = formatted_line['Northing']
+                    excel_sheet['H' + str(excel_line_number)] = formatted_line['Elevation']
+                    excel_sheet['I' + str(excel_line_number)] = formatted_line['Target_Height']
+
+                    # Highlight row
+                    for col in ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J']:
+                        excel_sheet[col + str(excel_line_number)].fill = blue_highlight
 
             workbook.save(filename=print_gsi_excel_filepath)
             workbook.close()

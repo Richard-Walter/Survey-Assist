@@ -20,6 +20,9 @@ class GSI:
                                     ('85', 'STN_Northing'), ('86', 'STN_Elevation'), ('87', 'Target_Height'),
                                     ('88', 'STN_Height')])
 
+    # PRINT_GSI_HEADER_FORMAT = ['Point_ID', 'Hz_Angle', 'Vert_Angle', 'Slope_Dist', 'PC', 'Easting', 'Northing', 'Elevation',
+    #                             'Tgt_Height', 'STN_Height']
+
     EXPORT_GSI_HEADER_FORMAT = ['UID', 'Point_ID', 'Easting', 'Northing', 'Elevation', 'Timestamp', 'STN_Easting', 'STN_Northing',
                                 'STN_Height', 'STN_Elevation', 'Target_Height', 'Horizontal_Angle', 'Vertical_Angle', 'Slope_Distance',
                                 'Horizontal_Dist', 'Prism_Constant', 'Height_Diff']
