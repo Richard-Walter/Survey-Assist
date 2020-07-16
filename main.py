@@ -15,6 +15,7 @@ Compnet uses only observations:  slope distance, horizontal and vertical angle, 
 KNOWN BUGS
 -Sometimes a GSI is loaded yet the taskbar says please select a GSI.  You can't delete lines or export csv.
 -Importing SD card - sometimes it says files transferred, but nothing actually transferred.  I could put a check that files exists after copying?
+-sets of angles such as HCCL will tag all shots as changepoints when printing GSI
 """
 
 from openpyxl.styles import Border, Side
@@ -581,6 +582,10 @@ class MenuBar(tk.Frame):
                         excel_sheet[col + str(excel_line_number)].alignment = Alignment(horizontal='center')
 
                     excel_sheet['A' + str(excel_line_number)].alignment = Alignment(horizontal='left')
+
+                    # add an * to point ID if shot is a change point
+                    if gsi.is_changepoint(formatted_line):
+                        excel_sheet['A' + str(excel_line_number)] = '*' + formatted_line['Point_ID']
 
             workbook.save(filename=users_print_gsi_excel_filepath)
             workbook.close()

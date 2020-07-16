@@ -727,6 +727,13 @@ class GSI:
 
         return False
 
+    def is_changepoint(self, formatted_line):
+
+        if formatted_line['Point_ID'] in self.get_change_points():
+            return True
+
+        return False
+
     def get_change_points(self):
 
         change_points = []
