@@ -30,7 +30,7 @@ class GSI:
     # REGULAR EXPRESSION LOOKUP
     REGULAR_EXPRESSION_LOOKUP = OrderedDict([('11', r'\*11\d*\+\w+'), ('19', r''), ('21', r''),
                                              ('22', r''), ('31', r'31..\d\d\+\d*\.?\d?'), ('32', r'32..\d\d\+\d*\.?\d?'),
-                                             ('33', r'33..\d\d[\+-]\d*\.?\d?'), ('51', r'51.{4}\+\d*\+\d{3}'),
+                                             ('33', r'33..\d\d[\+-]\d*\.?\d?'), ('51', r'51.{4}[\+-]\d*\+\d{3}'),
                                              ('81', r'81..00\+\d*\.?\d?'), ('82', r'82..00\+\d*\.?\d?'), ('83', r'83..00\+\d*\.?\d?'),
                                              ('84', r'84..\d\d[\+-]\d*\.?\d?'), ('85', r'85..\d\d[\+-]\d*\.?\d?'), ('86', r'86..[\+-]\d*\.?\d?'),
                                              ('87', r'87\.{2}\d{2}\+\d+'), ('88', r'88..\d\d[\+-]\d*\.?\d?')])
@@ -206,12 +206,14 @@ class GSI:
 
         # Lets build the new field value.
         # First lets build the prefix e.g.51..1.+
-        re_pattern = re.compile(r'51.{4}\+')
+        re_pattern = re.compile(r'51.{4}[\+-]')
         prefix = re_pattern.search(old_pc_unformatted).group()
 
         # lets build the middle part    e.g. +000000000007+
-        re_pattern = re.compile(r'\+\d*\+')
-        middle = re_pattern.search(old_pc_unformatted).group().lstrip('+')  # strip off + as this is included in prefix
+        # re_pattern = re.compile(r'\+\d*\+')
+        # middle = re_pattern.search(old_pc_unformatted).group().lstrip('+')  # strip off + as this is included in prefix
+        re_pattern = re.compile(r'[\+-]\d*\+')
+        middle = re_pattern.search(old_pc_unformatted).group()[1:]   # strip off + or - at start as this is included in prefix
 
         # lets build the suffix.  There are 3 chars in the suffix so we need to fill the new value with leading zeros
         suffix = new_pc.zfill(3)
