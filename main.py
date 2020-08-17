@@ -76,7 +76,7 @@ class MenuBar(tk.Frame):
         self.monitoring_job_dir = os.path.join(survey_config.root_job_directory, survey_config.current_year, survey_config.default_survey_type)
         self.query_dialog_box = None
         self.filename_path = ""
-        self.compnet_working_dir = ""
+        # self.compnet_working_dir = ""
 
         self.menu_bar = tk.Menu(self.master)
         self.master.config(menu=self.menu_bar)
