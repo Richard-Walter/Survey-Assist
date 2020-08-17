@@ -197,8 +197,8 @@ class SDCard:
         rail_monitoring_files = set()
 
         for file in self.dbx_files:
-            if survey_config.current_rail_monitoring_file_name in file.basename:
-
+            # if survey_config.current_rail_monitoring_file_name in file.basename:
+            if "ARTC" in file.basename and "MON" in file.basename:
                 rail_monitoring_files.add(file)
 
                 # get corresponding GSI file

@@ -303,9 +303,17 @@ class MenuBar(tk.Frame):
 
             survey_config.current_rail_monitoring_file_name
 
+            # user_answer = tk.messagebox.askyesnocancel("IMPORT SD DATA", "Couldn't find any survey files with todays date."
+            #                                                              "\n\nAre you trying to import a rail survey (" +
+            #                                            survey_config.current_rail_monitoring_file_name + ") ?\n\n"
+            #                                                                                              "YES           -  IMPORT RAIL SURVEY\n"
+            #                                                                                              "NO            - IMPORT FILES MANUALLY\n"
+            #                                                                                              "CANCEL    - INSERT SD CARD AND TRY_AGAIN\n\n"
+            #                                                                                              "Otherwise, please make sure you have inserted the SD Card into your"
+            #                                                                                              " computer, and check your SD card path in user_settings.ini is correct.")
+
             user_answer = tk.messagebox.askyesnocancel("IMPORT SD DATA", "Couldn't find any survey files with todays date."
-                                                                         "\n\nAre you trying to import a rail survey (" +
-                                                       survey_config.current_rail_monitoring_file_name + ") ?\n\n"
+                                                                         "\n\nAre you trying to import a rail monitoring survey?\n\n"
                                                                                                          "YES           -  IMPORT RAIL SURVEY\n"
                                                                                                          "NO            - IMPORT FILES MANUALLY\n"
                                                                                                          "CANCEL    - INSERT SD CARD AND TRY_AGAIN\n\n"
