@@ -319,3 +319,182 @@ PermissionError: [Errno 13] Permission denied: 'C:\\Users\\rjwal_000\\PycharmPro
 2020-07-15 22:30:13,277:Survey Assist - v1.0 :************************* STARTED APPLICATION - User: RW *************************
 2020-07-15 22:32:43,251:Survey Assist - v1.0 :************************* STARTED APPLICATION - User: RW *************************
 2020-07-15 22:32:54,627:Survey Assist - v1.0 :OPENING UP A GSI FILE: C:/SD/TS60/Gsi/A9MR210120.GSI
+2020-07-15 22:33:48,003:Survey Assist - v1.0 :************************* STARTED APPLICATION - User: RW *************************
+2020-07-15 22:33:57,909:Survey Assist - v1.0 :OPENING UP A GSI FILE: C:/SD/TS60/Gsi/A9MR210120.GSI
+2020-07-16 08:18:53,941:Survey Assist - v1.0 :************************* STARTED APPLICATION - User: RW *************************
+2020-07-16 08:18:59,253:Survey Assist - v1.0 :************************* STARTED APPLICATION - User: RW *************************
+2020-07-16 08:19:08,908:Survey Assist - v1.0 :OPENING UP A GSI FILE: C:/SD/TS60/Gsi/A9MR210120.GSI
+2020-07-16 08:19:12,363:Survey Assist - v1.0 :Unknown error occurred in Print GSI
+
+'MenuBar' object has no attribute 'job_tracker_filepath'
+Traceback (most recent call last):
+  File "C:/Users/rjwal_000/PycharmProjects/Survey Assist/main.py", line 504, in print_gsi
+    workbook.save(filename=self.job_tracker_filepath)
+AttributeError: 'MenuBar' object has no attribute 'job_tracker_filepath'
+2020-07-16 08:19:42,447:Survey Assist - v1.0 :************************* STARTED APPLICATION - User: RW *************************
+2020-07-16 08:19:50,794:Survey Assist - v1.0 :************************* STARTED APPLICATION - User: RW *************************
+2020-07-16 08:28:52,464:Survey Assist - v1.0 :OPENING UP A GSI FILE: C:/SD/TS60/Gsi/A9MR210120.GSI
+2020-07-16 08:28:55,075:Survey Assist - v1.0 :Print GSI excel spreadsheet is currently open
+
+[Errno 13] Permission denied: 'C:\\SurveyAssist\\Print GSI.xlsx'
+Traceback (most recent call last):
+  File "C:/Users/rjwal_000/PycharmProjects/Survey Assist/main.py", line 504, in print_gsi
+    workbook.save(filename=print_gsi_excel_filepath)
+  File "C:\Python34\lib\site-packages\openpyxl\workbook\workbook.py", line 391, in save
+    save_workbook(self, filename)
+  File "C:\Python34\lib\site-packages\openpyxl\writer\excel.py", line 282, in save_workbook
+    archive = ZipFile(filename, 'w', ZIP_DEFLATED, allowZip64=True)
+  File "C:\Python34\lib\zipfile.py", line 923, in __init__
+    self.fp = io.open(file, modeDict[mode])
+PermissionError: [Errno 13] Permission denied: 'C:\\SurveyAssist\\Print GSI.xlsx'
+2020-07-16 08:33:07,963:Survey Assist - v1.0 :************************* STARTED APPLICATION - User: RW *************************
+2020-07-16 08:33:13,978:Survey Assist - v1.0 :OPENING UP A GSI FILE: C:/SD/TS60/Gsi/A9MR210120.GSI
+2020-07-16 08:33:22,206:Survey Assist - v1.0 :Print GSI excel spreadsheet is currently open
+
+[Errno 13] Permission denied: 'C:\\SurveyAssist\\Print GSI.xlsx'
+Traceback (most recent call last):
+  File "C:/Users/rjwal_000/PycharmProjects/Survey Assist/main.py", line 504, in print_gsi
+    workbook.save(filename=print_gsi_excel_filepath)
+  File "C:\Python34\lib\site-packages\openpyxl\workbook\workbook.py", line 391, in save
+    save_workbook(self, filename)
+  File "C:\Python34\lib\site-packages\openpyxl\writer\excel.py", line 282, in save_workbook
+    archive = ZipFile(filename, 'w', ZIP_DEFLATED, allowZip64=True)
+  File "C:\Python34\lib\zipfile.py", line 923, in __init__
+    self.fp = io.open(file, modeDict[mode])
+PermissionError: [Errno 13] Permission denied: 'C:\\SurveyAssist\\Print GSI.xlsx'
+2020-07-16 16:36:48,472:Survey Assist - v1.0 :************************* STARTED APPLICATION - User: RW *************************
+2020-07-16 16:37:02,145:Survey Assist - v1.0 :************************* STARTED APPLICATION - User: RW *************************
+2020-07-16 16:37:10,212:Survey Assist - v1.0 :OPENING UP A GSI FILE: C:/SD/TS60/Gsi/A9MR210120.GSI
+2020-07-16 16:40:22,116:Survey Assist - v1.0 :************************* STARTED APPLICATION - User: RW *************************
+2020-07-16 16:49:00,620:Survey Assist - v1.0 :************************* STARTED APPLICATION - User: RW *************************
+2020-07-16 16:49:05,774:Survey Assist - v1.0 :OPENING UP A GSI FILE: C:/SD/TS60/Gsi/A9MR210120.GSI
+2020-07-16 16:49:08,963:Survey Assist - v1.0 :Print GSI excel spreadsheet is currently open
+
+[Errno 13] Permission denied: 'C:\\SurveyAssist\\Print GSI.xlsx'
+Traceback (most recent call last):
+  File "C:/Users/rjwal_000/PycharmProjects/Survey Assist/main.py", line 507, in print_gsi
+    workbook.save(filename=print_gsi_excel_filepath)
+  File "C:\Python34\lib\site-packages\openpyxl\workbook\workbook.py", line 391, in save
+    save_workbook(self, filename)
+  File "C:\Python34\lib\site-packages\openpyxl\writer\excel.py", line 282, in save_workbook
+    archive = ZipFile(filename, 'w', ZIP_DEFLATED, allowZip64=True)
+  File "C:\Python34\lib\zipfile.py", line 923, in __init__
+    self.fp = io.open(file, modeDict[mode])
+PermissionError: [Errno 13] Permission denied: 'C:\\SurveyAssist\\Print GSI.xlsx'
+2020-07-16 16:51:10,683:Survey Assist - v1.0 :************************* STARTED APPLICATION - User: RW *************************
+2020-07-16 16:51:14,947:Survey Assist - v1.0 :OPENING UP A GSI FILE: C:/SD/TS60/Gsi/A9MR210120.GSI
+2020-07-16 16:59:11,603:Survey Assist - v1.0 :************************* STARTED APPLICATION - User: RW *************************
+2020-07-16 16:59:23,525:Survey Assist - v1.0 :OPENING UP A GSI FILE: C:/SD/TS60/Gsi/A9MR210120.GSI
+2020-07-16 17:03:42,089:Survey Assist - v1.0 :************************* STARTED APPLICATION - User: RW *************************
+2020-07-16 17:03:46,431:Survey Assist - v1.0 :OPENING UP A GSI FILE: C:/SD/TS60/Gsi/A9MR210120.GSI
+2020-07-16 17:05:34,618:Survey Assist - v1.0 :************************* STARTED APPLICATION - User: RW *************************
+2020-07-16 17:05:38,681:Survey Assist - v1.0 :OPENING UP A GSI FILE: C:/SD/TS60/Gsi/A9MR210120.GSI
+2020-07-16 17:08:08,889:Survey Assist - v1.0 :************************* STARTED APPLICATION - User: RW *************************
+2020-07-16 17:08:14,416:Survey Assist - v1.0 :OPENING UP A GSI FILE: C:/SD/TS60/Gsi/A9MR210120.GSI
+2020-07-16 17:14:50,901:Survey Assist - v1.0 :************************* STARTED APPLICATION - User: RW *************************
+2020-07-16 17:14:56,165:Survey Assist - v1.0 :OPENING UP A GSI FILE: C:/SD/TS60/Gsi/A9MR210120.GSI
+2020-07-16 22:34:01,548:Survey Assist - v1.0 :************************* STARTED APPLICATION - User: RW *************************
+2020-07-16 22:34:31,543:Survey Assist - v1.0 :OPENING UP A GSI FILE: C:/SD/TS60/Gsi/A9MR210120.GSI
+2020-07-16 22:37:35,650:Survey Assist - v1.0 :OPENING UP A GSI FILE: C:/Users/rjwal_000/PycharmProjects/Survey Assist/Test Files/Survey Data/2020/MONITORING/A9 ARTC/200529/TS/EDITING/ARTC_903_MON_V2_TS60_240620_EDITED.GSI
+2020-07-16 22:38:21,771:Survey Assist - v1.0 :************************* STARTED APPLICATION - User: RW *************************
+2020-07-16 22:38:25,853:Survey Assist - v1.0 :OPENING UP A GSI FILE: C:/Users/rjwal_000/PycharmProjects/Survey Assist/Test Files/Survey Data/2020/MONITORING/A9 ARTC/200529/TS/EDITING/ARTC_903_MON_V2_TS60_240620_EDITED.GSI
+2020-07-16 22:38:30,213:Survey Assist - v1.0 :OPENING UP A GSI FILE: C:/SD/TS60/Gsi/A9MR210120.GSI
+2020-07-16 22:49:31,848:Survey Assist - v1.0 :************************* STARTED APPLICATION - User: RW *************************
+2020-07-16 22:49:37,134:Survey Assist - v1.0 :OPENING UP A GSI FILE: C:/SD/TS60/Gsi/A9MR210120.GSI
+2020-07-16 22:49:39,384:Survey Assist - v1.0 :Print GSI excel spreadsheet is currently open
+
+[Errno 13] Permission denied: 'C:\\SurveyAssist\\Print GSI.xlsx'
+Traceback (most recent call last):
+  File "C:/Users/rjwal_000/PycharmProjects/Survey Assist/main.py", line 556, in print_gsi
+    workbook.save(filename=print_gsi_excel_filepath)
+  File "C:\Python34\lib\site-packages\openpyxl\workbook\workbook.py", line 391, in save
+    save_workbook(self, filename)
+  File "C:\Python34\lib\site-packages\openpyxl\writer\excel.py", line 282, in save_workbook
+    archive = ZipFile(filename, 'w', ZIP_DEFLATED, allowZip64=True)
+  File "C:\Python34\lib\zipfile.py", line 923, in __init__
+    self.fp = io.open(file, modeDict[mode])
+PermissionError: [Errno 13] Permission denied: 'C:\\SurveyAssist\\Print GSI.xlsx'
+2020-07-16 22:59:16,957:Survey Assist - v1.0 :************************* STARTED APPLICATION - User: RW *************************
+2020-07-16 22:59:21,150:Survey Assist - v1.0 :OPENING UP A GSI FILE: C:/SD/TS60/Gsi/A9MR210120.GSI
+2020-07-16 23:00:18,486:Survey Assist - v1.0 :************************* STARTED APPLICATION - User: RW *************************
+2020-07-16 23:00:23,618:Survey Assist - v1.0 :OPENING UP A GSI FILE: C:/SD/TS60/Gsi/A9MR210120.GSI
+2020-07-16 23:03:00,001:Survey Assist - v1.0 :************************* STARTED APPLICATION - User: RW *************************
+2020-07-16 23:03:04,244:Survey Assist - v1.0 :OPENING UP A GSI FILE: C:/Users/rjwal_000/PycharmProjects/Survey Assist/Test Files/Survey Data/2020/MONITORING/A9 ARTC/200529/TS/EDITING/ARTC_903_MON_V2_TS60_240620_EDITED.GSI
+2020-07-16 23:05:10,260:Survey Assist - v1.0 :OPENING UP A GSI FILE: C:/Users/rjwal_000/PycharmProjects/Survey Assist/Test Files/GSI Files/HCCL 030719_EDITED.gsi
+2020-07-16 23:08:41,038:Survey Assist - v1.0 :************************* STARTED APPLICATION - User: RW *************************
+2020-07-16 23:08:46,009:Survey Assist - v1.0 :OPENING UP A GSI FILE: C:/SD/TS60/Gsi/A9MR210120.GSI
+2020-07-17 07:44:07,102:Survey Assist - v1.0 :************************* STARTED APPLICATION - User: RW *************************
+2020-07-17 07:44:11,840:Survey Assist - v1.0 :OPENING UP A GSI FILE: C:/Users/rjwal_000/PycharmProjects/Survey Assist/Test Files/GSI Files/HCCL 030719_EDITED.gsi
+2020-07-17 07:47:08,270:Survey Assist - v1.0 :************************* STARTED APPLICATION - User: RW *************************
+2020-07-17 07:47:13,885:Survey Assist - v1.0 :OPENING UP A GSI FILE: C:/Users/rjwal_000/PycharmProjects/Survey Assist/Test Files/GSI Files/HCCL 030719_EDITED.gsi
+2020-07-17 07:47:40,930:Survey Assist - v1.0 :************************* STARTED APPLICATION - User: RW *************************
+2020-07-17 07:47:46,744:Survey Assist - v1.0 :OPENING UP A GSI FILE: C:/SD/TS60/Gsi/A9MR210120.GSI
+2020-07-17 07:55:55,030:Survey Assist - v1.0 :************************* STARTED APPLICATION - User: RW *************************
+2020-07-17 07:56:00,416:Survey Assist - v1.0 :OPENING UP A GSI FILE: C:/SD/TS60/Gsi/A9MR210120.GSI
+2020-07-17 07:56:58,467:Survey Assist - v1.0 :************************* STARTED APPLICATION - User: RW *************************
+2020-07-17 07:57:03,213:Survey Assist - v1.0 :OPENING UP A GSI FILE: C:/SD/TS60/Gsi/A9MR210120.GSI
+2020-07-17 07:57:47,181:Survey Assist - v1.0 :************************* STARTED APPLICATION - User: RW *************************
+2020-07-17 07:57:53,776:Survey Assist - v1.0 :OPENING UP A GSI FILE: C:/SD/TS60/Gsi/A9MR210120.GSI
+2020-07-17 08:03:09,690:Survey Assist - v1.0 :************************* STARTED APPLICATION - User: RW *************************
+2020-07-17 08:03:16,369:Survey Assist - v1.0 :OPENING UP A GSI FILE: C:/SD/TS60/Gsi/A9MR210120.GSI
+2020-07-17 08:05:01,063:Survey Assist - v1.0 :************************* STARTED APPLICATION - User: RW *************************
+2020-07-17 08:05:05,744:Survey Assist - v1.0 :OPENING UP A GSI FILE: C:/SD/TS60/Gsi/A9MR210120.GSI
+2020-07-17 08:08:05,322:Survey Assist - v1.0 :************************* STARTED APPLICATION - User: RW *************************
+2020-07-17 08:08:09,385:Survey Assist - v1.0 :OPENING UP A GSI FILE: C:/SD/TS60/Gsi/A9MR210120.GSI
+2020-07-17 08:10:42,197:Survey Assist - v1.0 :OPENING UP A GSI FILE: C:/Users/rjwal_000/PycharmProjects/Survey Assist/Test Files/GSI Files/HCCL 030719_EDITED.gsi
+2020-07-17 08:12:02,545:Survey Assist - v1.0 :************************* STARTED APPLICATION - User: RW *************************
+2020-07-17 08:12:06,821:Survey Assist - v1.0 :OPENING UP A GSI FILE: C:/SD/TS60/Gsi/A9MR210120.GSI
+2020-07-17 08:13:38,322:Survey Assist - v1.0 :OPENING UP A GSI FILE: C:/Users/rjwal_000/PycharmProjects/Survey Assist/Test Files/GSI Files/HCCL 030719_EDITED.gsi
+2020-07-17 08:13:50,228:Survey Assist - v1.0 :OPENING UP A GSI FILE: C:/SD/TS60/Gsi/A9MR210120.GSI
+2020-07-17 08:29:18,763:Survey Assist - v1.0 :************************* STARTED APPLICATION - User: RW *************************
+2020-07-17 08:29:27,275:Survey Assist - v1.0 :OPENING UP A GSI FILE: C:/SD/TS60/Gsi/A9MR210120.GSI
+2020-07-17 08:30:28,853:Survey Assist - v1.0 :OPENING UP A GSI FILE: C:/Users/rjwal_000/PycharmProjects/Survey Assist/Test Files/Survey Data/2020/MONITORING/DA3B Swamps/200529/TS/EDITING/WC12 290520_EDITED.GSI
+2020-07-17 08:30:51,009:Survey Assist - v1.0 :************************* STARTED APPLICATION - User: RW *************************
+2020-07-17 08:31:20,702:Survey Assist - v1.0 :************************* STARTED APPLICATION - User: RW *************************
+2020-07-17 08:31:27,838:Survey Assist - v1.0 :OPENING UP A GSI FILE: C:/SD/TS60/Gsi/A9MR210120.GSI
+2020-07-17 09:10:31,903:Survey Assist - v1.0 :************************* STARTED APPLICATION - User: RW *************************
+2020-07-17 09:10:43,716:Survey Assist - v1.0 :OPENING UP A GSI FILE: C:/SD/TS60/Gsi/A9MR210120.GSI
+2020-07-17 09:15:02,002:Survey Assist - v1.0 :************************* STARTED APPLICATION - User: RW *************************
+2020-07-17 09:15:05,853:Survey Assist - v1.0 :OPENING UP A GSI FILE: C:/SD/TS60/Gsi/A9MR210120.GSI
+2020-07-17 09:16:21,931:Survey Assist - v1.0 :OPENING UP A GSI FILE: C:/Users/rjwal_000/PycharmProjects/Survey Assist/Test Files/Survey Data/2020/MONITORING/A9 ARTC/200529/TS/EDITING/ARTC_903_MON_V2_TS60_240620_EDITED.GSI
+2020-07-17 09:19:19,504:Survey Assist - v1.0 :************************* STARTED APPLICATION - User: RW *************************
+2020-07-17 09:19:23,775:Survey Assist - v1.0 :OPENING UP A GSI FILE: C:/SD/TS60/Gsi/A9MR210120.GSI
+2020-07-17 09:21:15,494:Survey Assist - v1.0 :OPENING UP A GSI FILE: C:/Users/rjwal_000/PycharmProjects/Survey Assist/Test Files/GSI Files/HCCL 030719_EDITED.gsi
+2020-07-17 09:23:32,260:Survey Assist - v1.0 :OPENING UP A GSI FILE: C:/Users/rjwal_000/PycharmProjects/Survey Assist/Test Files/Survey Data/2020/MONITORING/DA3B Swamps/200529/TS/EDITING/WC12 290520_EDITED.GSI
+2020-07-17 09:24:03,125:Survey Assist - v1.0 :************************* STARTED APPLICATION - User: RW *************************
+2020-07-17 09:24:08,275:Survey Assist - v1.0 :OPENING UP A GSI FILE: C:/SD/TS60/Gsi/A9MR210120.GSI
+2020-07-17 09:24:20,041:Survey Assist - v1.0 :OPENING UP A GSI FILE: C:/Users/rjwal_000/PycharmProjects/Survey Assist/Test Files/Survey Data/2020/MONITORING/A9 ARTC/200529/TS/EDITING/ARTC_903_MON_V2_TS60_240620_EDITED.GSI
+2020-07-17 09:24:29,603:Survey Assist - v1.0 :OPENING UP A GSI FILE: C:/Users/rjwal_000/PycharmProjects/Survey Assist/Test Files/Survey Data/2020/MONITORING/DA3B Swamps/200529/TS/EDITING/WC12 290520_EDITED.GSI
+2020-07-17 09:25:20,275:Survey Assist - v1.0 :************************* STARTED APPLICATION - User: RW *************************
+2020-07-17 09:25:25,853:Survey Assist - v1.0 :OPENING UP A GSI FILE: C:/Users/rjwal_000/PycharmProjects/Survey Assist/Test Files/Survey Data/2020/MONITORING/DA3B Swamps/200529/TS/EDITING/WC12 290520_EDITED.GSI
+2020-07-26 22:10:12,184:Survey Assist - v1.0 :************************* STARTED APPLICATION - User: RW *************************
+2020-07-26 22:10:31,578:Survey Assist - v1.0 :OPENING UP A GSI FILE: C:/Users/rjwal_000/PycharmProjects/Survey Assist/Test Files/Survey Data/2020/MONITORING/DA3B Swamps/200529/TS/EDITING/WC12 290520_EDITED.GSI
+2020-07-26 22:10:38,609:Survey Assist - v1.0 :OPENING UP A GSI FILE: C:/SD/TS60/Gsi/A9MR210120.GSI
+2020-07-29 17:17:37,151:Survey Assist - v1.0 :************************* STARTED APPLICATION - User: RW *************************
+2020-07-29 17:31:53,960:Survey Assist - v1.0 :OPENING UP A GSI FILE: C:/Users/rjwal_000/Downloads/HCCL_300620_Sorted.gsi
+2020-07-29 17:34:55,006:Survey Assist - v1.0 :************************* STARTED APPLICATION - User: RW *************************
+2020-07-29 17:35:00,459:Survey Assist - v1.0 :OPENING UP A GSI FILE: C:/Users/rjwal_000/Downloads/HCCL_300620_Sorted.gsi
+2020-07-29 17:36:33,741:Survey Assist - v1.0 :OPENING UP A GSI FILE: C:/Users/rjwal_000/PycharmProjects/Survey Assist/Test Files/GSI Files/HCCL 030719_EDITED.gsi
+2020-08-08 08:52:13,172:Survey Assist - v1.0 :************************* STARTED APPLICATION - User: RW *************************
+2020-08-09 15:40:55,897:Survey Assist - v1.0 :************************* STARTED APPLICATION - User: RW *************************
+2020-08-09 15:41:08,703:Survey Assist - v1.0 :OPENING UP A GSI FILE: C:/Users/rjwal_000/PycharmProjects/Survey Assist/Test Files/GSI Files/HCCL 030719_EDITED.gsi
+2020-08-13 08:49:04,781:Survey Assist - v1.0 :************************* STARTED APPLICATION - User: RW *************************
+2020-08-13 08:49:15,953:Survey Assist - v1.0 :OPENING UP A GSI FILE: C:/Users/rjwal_000/PycharmProjects/Survey Assist/Test Files/Survey Data/2020/MONITORING/A9 ARTC/200529/TS/EDITING/ARTC_903_MON_V2_TS60_240620_EDITED.GSI
+2020-08-13 08:50:06,600:Survey Assist - v1.0 :************************* STARTED APPLICATION - User: RW *************************
+2020-08-24 15:27:41,604:Survey Assist - v1.0 :************************* STARTED APPLICATION - User: RW *************************
+2020-08-24 15:28:39,854:Survey Assist - v1.0 :************************* STARTED APPLICATION - User: RW *************************
+2020-08-24 15:29:26,611:Survey Assist - v1.0 :************************* STARTED APPLICATION - User: RW *************************
+2020-08-24 15:33:44,476:Survey Assist - v1.0 :OPENING UP A GSI FILE: C:/Users/rjwal_000/PycharmProjects/Survey Assist/Test Files/GSI Files/HCCL 030719_EDITED.gsi
+2020-08-24 15:40:25,340:Survey Assist - v1.0 :************************* STARTED APPLICATION - User: RW *************************
+2020-08-24 15:41:23,066:Survey Assist - v1.0 :************************* STARTED APPLICATION - User: RW *************************
+2020-08-24 15:42:50,482:Survey Assist - v1.0 :************************* STARTED APPLICATION - User: RW *************************
+2020-08-24 15:43:32,621:Survey Assist - v1.0 :************************* STARTED APPLICATION - User: RW *************************
+2020-08-24 15:44:23,693:Survey Assist - v1.0 :************************* STARTED APPLICATION - User: RW *************************
+2020-08-24 15:44:38,967:Survey Assist - v1.0 :************************* STARTED APPLICATION - User: RW *************************
+2020-08-24 15:45:43,057:Survey Assist - v1.0 :************************* STARTED APPLICATION - User: RW *************************
+2020-08-24 15:46:04,983:Survey Assist - v1.0 :************************* STARTED APPLICATION - User: RW *************************
+2020-08-24 15:46:45,443:Survey Assist - v1.0 :************************* STARTED APPLICATION - User: RW *************************
+2020-08-24 15:47:04,058:Survey Assist - v1.0 :************************* STARTED APPLICATION - User: RW *************************
+2020-08-24 15:52:22,783:Survey Assist - v1.0 :************************* STARTED APPLICATION - User: RW *************************
+2020-08-24 15:55:27,554:Survey Assist - v1.0 :OPENING UP A GSI FILE: C:/Users/rjwal_000/PycharmProjects/Survey Assist/Test Files/GSI Files/HCCL 030719_EDITED.gsi
+2020-08-24 15:56:48,631:Survey Assist - v1.0 :************************* STARTED APPLICATION - User: RW *************************

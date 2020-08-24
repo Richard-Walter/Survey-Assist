@@ -51,6 +51,7 @@ class MenuBar(tk.Frame):
 
         # for importing rali survey
         self.ts_used = ""
+        self.longwall_area = ""
         self.compnet_working_dir = ""
 
         # check is user settings directory and/or file exists on the users computer
@@ -332,7 +333,8 @@ class MenuBar(tk.Frame):
 
                 ImportRailMonitoringFileWindow(self.master)
                 ts_used = self.ts_used
-                rail_monitoring_files = sd_card.get_rail_survey_files()
+                longwall_area = self.longwall_area
+                rail_monitoring_files = sd_card.get_rail_survey_files(longwall_area)
 
                 if not rail_monitoring_files:
                     tk.messagebox.showinfo("IMPORT SD DATA", "Couldn't find any rail monitoring survey files.\n\nPlease check the settings.ini file "
@@ -2848,6 +2850,13 @@ class ImportRailMonitoringFileWindow:
         self.dialog_window = tk.Toplevel(master)
         self.dialog_window.title("Import Rail Survey")
 
+        self.area_lbl = tk.Label(self.dialog_window, text="Select the longwall area:")
+        self.area_column = tk.StringVar()
+        self.area_column_entry = ttk.Combobox(self.dialog_window, width=15, textvariable=self.area_column, state='readonly')
+        self.area_column_entry['values'] = ['ARTC_903', 'ARTC_708']
+        self.area_column_entry.current(0)
+
+
         self.sorting_lbl = tk.Label(self.dialog_window, text="Select the total station used:")
 
         self.ts_id = tk.StringVar()
@@ -2856,20 +2865,23 @@ class ImportRailMonitoringFileWindow:
         self.radio_no_sort = tk.Radiobutton(self.dialog_window, text="TS60", value="TS60", var=self.ts_id)
         self.radio_sort_auto = tk.Radiobutton(self.dialog_window, text="MS60", value="MS60", var=self.ts_id)
         self.radio_sort_config = tk.Radiobutton(self.dialog_window, text="TS15", value="TS15", var=self.ts_id)
-        self.import_btn = tk.Button(self.dialog_window, text="IMPORT RAIL SURVEY", command=self.set_ts_id)
+        self.import_btn = tk.Button(self.dialog_window, text="IMPORT RAIL SURVEY", command=self.set_values)
 
-        self.sorting_lbl.grid(row=0, column=1, sticky='w', columnspan=3, padx=50, pady=(20, 2))
-        self.radio_no_sort.grid(row=1, column=1, sticky='w', columnspan=3, padx=70, pady=2)
-        self.radio_sort_auto.grid(row=2, column=1, sticky='w', columnspan=3, padx=70, pady=2)
-        self.radio_sort_config.grid(row=3, column=1, sticky='w', columnspan=3, padx=70, pady=(2, 1))
-        self.import_btn.grid(row=4, column=1, sticky='w', columnspan=1, padx=50, pady=(20, 20))
+        self.area_lbl.grid(row=0, column=1, sticky='w', columnspan=3, padx=50, pady=(20, 2))
+        self.area_column_entry.grid(row=1, column=1, sticky='w', columnspan=1, padx=50, pady=2)
+        self.sorting_lbl.grid(row=2, column=1, sticky='w', columnspan=3, padx=50, pady=(20, 2))
+        self.radio_no_sort.grid(row=3, column=1, sticky='w', columnspan=3, padx=70, pady=2)
+        self.radio_sort_auto.grid(row=4, column=1, sticky='w', columnspan=3, padx=70, pady=2)
+        self.radio_sort_config.grid(row=5, column=1, sticky='w', columnspan=3, padx=70, pady=(2, 1))
+        self.import_btn.grid(row=6, column=1, sticky='w', columnspan=1, padx=50, pady=(20, 2))
 
-        self.dialog_window.geometry(MainWindow.position_popup(master, 260, 210))
+        self.dialog_window.geometry(MainWindow.position_popup(master, 240, 300))
         # self.dialog_window.attributes('-topmost', 'true')
         self.master.wait_window(self.dialog_window)
 
-    def set_ts_id(self):
+    def set_values(self):
         gui_app.menu_bar.ts_used = self.ts_id.get()
+        gui_app.menu_bar.longwall_area = self.area_column_entry.get()
 
         self.dialog_window.destroy()
 

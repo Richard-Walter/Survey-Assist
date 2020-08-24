@@ -1199,7 +1199,6 @@ class GSI:
 
         return uid_formatted_lines
 
-
 # def main():
 #
 #     # testing
@@ -1210,7 +1209,6 @@ class GSI:
 # if __name__ == "__main__":
 #
 #         main()
-
 
 class GSIDatabase:
 

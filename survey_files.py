@@ -192,13 +192,13 @@ class SDCard:
         else:
             return False
 
-    def get_rail_survey_files(self):
+    def get_rail_survey_files(self, longwall_area):
 
         rail_monitoring_files = set()
 
         for file in self.dbx_files:
             # if survey_config.current_rail_monitoring_file_name in file.basename:
-            if "ARTC" in file.basename and "MON" in file.basename:
+            if longwall_area in file.basename and "MON" in file.basename:
                 rail_monitoring_files.add(file)
 
                 # get corresponding GSI file
