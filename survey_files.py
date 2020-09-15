@@ -203,7 +203,7 @@ class SDCard:
 
                 # get corresponding GSI file
                 for file in self.gsi_files:
-                    if survey_config.current_rail_monitoring_file_name in file.basename:
+                    if ("MON" in file.basename) and (longwall_area in file.basename):
                         rail_monitoring_files.add(file)
 
         self.rail_monitoring_files = rail_monitoring_files

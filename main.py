@@ -2856,7 +2856,6 @@ class ImportRailMonitoringFileWindow:
         self.area_column_entry['values'] = ['ARTC_903', 'ARTC_708']
         self.area_column_entry.current(0)
 
-
         self.sorting_lbl = tk.Label(self.dialog_window, text="Select the total station used:")
 
         self.ts_id = tk.StringVar()
