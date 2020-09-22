@@ -175,9 +175,10 @@ class MenuBar(tk.Frame):
 
         try:
 
-            if survey_config.todays_dated_directory == "":
+            if self.compnet_working_dir != "":  # compnet job has been setup
+                intial_directory = survey_config.compnet_raw_dir
+            elif survey_config.todays_dated_directory == "":
                 intial_directory = self.monitoring_job_dir
-
             else:
                 intial_directory = os.path.join(survey_config.todays_dated_directory, "TS")
 
@@ -315,11 +316,11 @@ class MenuBar(tk.Frame):
 
             user_answer = tk.messagebox.askyesnocancel("IMPORT SD DATA", "Couldn't find any survey files with todays date."
                                                                          "\n\nAre you trying to import a rail monitoring survey?\n\n"
-                                                                                                         "YES           -  IMPORT RAIL SURVEY\n"
-                                                                                                         "NO            - IMPORT FILES MANUALLY\n"
-                                                                                                         "CANCEL    - INSERT SD CARD AND TRY_AGAIN\n\n"
-                                                                                                         "Otherwise, please make sure you have inserted the SD Card into your"
-                                                                                                         " computer, and check your SD card path in user_settings.ini is correct.")
+                                                                         "YES           -  IMPORT RAIL SURVEY\n"
+                                                                         "NO            - IMPORT FILES MANUALLY\n"
+                                                                         "CANCEL    - INSERT SD CARD AND TRY_AGAIN\n\n"
+                                                                         "Otherwise, please make sure you have inserted the SD Card into your"
+                                                                         " computer, and check your SD card path in user_settings.ini is correct.")
 
             if user_answer is None:  # user selected cancel
 
