@@ -4650,7 +4650,8 @@ def main():
     root = tk.Tk()
     # root.geometry("1600x1000")
     root.state('zoomed')
-    root.title("SURVEY ASSIST")
+    root.title("SURVEY ASSIST by Richard Walter                                                                                                     "
+               "*** Please consider donating if you find this program useful ***")
     root.wm_iconbitmap(r'icons\analyser.ico')
 
     survey_config = SurveyConfiguration()
