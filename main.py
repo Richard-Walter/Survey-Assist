@@ -306,7 +306,8 @@ class MenuBar(tk.Frame):
             survey_config.current_rail_monitoring_file_name
 
             # user_answer = tk.messagebox.askyesnocancel("IMPORT SD DATA", "Couldn't find any survey files with todays date."
-            #                                                              "\n\nAre you trying to import a rail survey (" +
+            #                                                              "\n\nAre you trying to import a rail/M31
+            #                                                              survey (" +
             #                                            survey_config.current_rail_monitoring_file_name + ") ?\n\n"
             #                                                                                              "YES           -  IMPORT RAIL SURVEY\n"
             #                                                                                              "NO            - IMPORT FILES MANUALLY\n"
@@ -315,7 +316,8 @@ class MenuBar(tk.Frame):
             #                                                                                              " computer, and check your SD card path in user_settings.ini is correct.")
 
             user_answer = tk.messagebox.askyesnocancel("IMPORT SD DATA", "Couldn't find any survey files with todays date."
-                                                                         "\n\nAre you trying to import a rail monitoring survey?\n\n"
+                                                                         "\n\nAre you trying to import a RAIL/M31 "
+                                                                         "monitoring survey?\n\n"
                                                                          "YES           -  IMPORT RAIL SURVEY\n"
                                                                          "NO            - IMPORT FILES MANUALLY\n"
                                                                          "CANCEL    - INSERT SD CARD AND TRY_AGAIN\n\n"
@@ -330,7 +332,7 @@ class MenuBar(tk.Frame):
                 os.startfile('c:')
                 return
 
-            else:  # user selected yes to importing rail survey
+            else:  # user selected yes to importing rail/M31 survey
 
                 ImportRailMonitoringFileWindow(self.master)
                 ts_used = self.ts_used
@@ -338,7 +340,8 @@ class MenuBar(tk.Frame):
                 rail_monitoring_files = sd_card.get_rail_survey_files(longwall_area)
 
                 if not rail_monitoring_files:
-                    tk.messagebox.showinfo("IMPORT SD DATA", "Couldn't find any rail monitoring survey files.\n\nPlease check the settings.ini file "
+                    tk.messagebox.showinfo("IMPORT SD DATA", "Couldn't find any Rail/M31 monitoring survey "
+                                                             "files.\n\nPlease check the settings.ini file "
                                                              "and make sure 'current_rail_monitoring_file_name' is correct.\n\n"
                                                              "Also, check user_settings.ini and make sure the root SD directory is configured "
                                                              "properly.\n\nRestart Survey Assist after making any changes.")
@@ -2849,12 +2852,12 @@ class ImportRailMonitoringFileWindow:
 
         #  Lets build the dialog box
         self.dialog_window = tk.Toplevel(master)
-        self.dialog_window.title("Import Rail Survey")
+        self.dialog_window.title("Import Rail/M31 Survey")
 
-        self.area_lbl = tk.Label(self.dialog_window, text="Select the longwall area:")
+        self.area_lbl = tk.Label(self.dialog_window, text="Select the Monitoring Survey:")
         self.area_column = tk.StringVar()
         self.area_column_entry = ttk.Combobox(self.dialog_window, width=15, textvariable=self.area_column, state='readonly')
-        self.area_column_entry['values'] = ['ARTC_903', 'ARTC_708']
+        self.area_column_entry['values'] = ['ARTC_903', 'ARTC_708', 'M31-EALL', 'M31-WALL' ]
         self.area_column_entry.current(0)
 
         self.sorting_lbl = tk.Label(self.dialog_window, text="Select the total station used:")
