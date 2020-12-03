@@ -149,6 +149,7 @@ class MenuBar(tk.Frame):
         self.utility_sub_menu.add_command(label="Create popup CSV from .CRD file", command=self.create_CSV_from_CRD)
         self.utility_sub_menu.add_command(label="Copy todays GPS to GNSS temp directory", command=self.copy_gps_to_gnss_temp)
         self.utility_sub_menu.add_command(label="Create printable list of change points", command=self.create_list_of_change_points)
+        self.utility_sub_menu.add_command(label="Combine/Re-order GSI Files", command=self.combine_gsi_files)
 
         self.menu_bar.add_cascade(label="Utilities", menu=self.utility_sub_menu)
 
@@ -2857,7 +2858,7 @@ class ImportRailMonitoringFileWindow:
         self.area_lbl = tk.Label(self.dialog_window, text="Select the Monitoring Survey:")
         self.area_column = tk.StringVar()
         self.area_column_entry = ttk.Combobox(self.dialog_window, width=15, textvariable=self.area_column, state='readonly')
-        self.area_column_entry['values'] = ['ARTC_903', 'ARTC_708', 'M31-EALL', 'M31-WALL' ]
+        self.area_column_entry['values'] = ['ARTC_903', 'ARTC_708', 'M31_E', 'M31_W' ]
         self.area_column_entry.current(0)
 
         self.sorting_lbl = tk.Label(self.dialog_window, text="Select the total station used:")
