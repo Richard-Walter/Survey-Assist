@@ -497,14 +497,17 @@ class GSI:
                                 # self.survey_config.update(SurveyConfiguration.section_instrument, 'instrument_precision', '3dp')
                                 self.survey_config.precision_value = '3dp'
 
+                        original_field_value = field
+
                         # Strip off unnecessary digits and spaces to make the number readable
                         field_value = field[7:].rstrip().lstrip('0')
                         # special format for angles
                         angle_field_value = field[7:-1].rstrip()    # remove blank spaces and last element which is always a zero for some reason
 
+
                         # apply special formatting rules to particular fields
                         if two_digit_id == '19':
-                            field_value = self.format_timestamp(field_value)
+                            field_value = self.format_timestamp(original_field_value)
 
                         elif two_digit_id in ('21', '22'):  # horizontal or vertical angles
                             field_value = self.format_angles(angle_field_value, self.survey_config.precision_value)
@@ -568,13 +571,16 @@ class GSI:
 
             minute = timestamp[-2:]
             hour = timestamp[-4:-2]
+            day = timestamp[-6:-4]
+            month = timestamp[-8:-6]
 
         except ValueError:
 
             self.logger.exception('Incorrect timestamp {}- cannot be formatted properly'.format(timestamp))
 
         else:
-            timestamp = '{}:{}'.format(hour, minute)
+            # timestamp = '{}:{}'.format(hour, minute)
+            timestamp = '{}/{} - {}:{}'.format(month, day, hour, minute)
 
         return timestamp
 
@@ -1255,6 +1261,9 @@ class GSI:
 
             for index, formatted_line_dict in enumerate(obs_from_station_list):
 
+                display_timestamp = formatted_line_dict['Timestamp']
+                export_timestamp = display_timestamp[-5:]
+                formatted_line_dict['Timestamp'] = export_timestamp
                 point_id = formatted_line_dict['Point_ID']
                 stn_point = station_name + '_' + point_id
                 uid = ''
