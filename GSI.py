@@ -882,6 +882,92 @@ class GSI:
 
         return dialog_text, line_number_errors
 
+
+    # Check each setup to see if coordinates for duplicate Point names are within 30mm
+    def check_target_naming(self):
+
+        survey_check_tolerance = 0.030
+
+        error_text = "WARNING!  The following Point ID's have duplicate shots with different coordinates outside 30mm tolerance:\n\n"
+        dialog_text = 'For each setup, shots with the same Point ID are all within 30mm.  No naming issues detected!'
+
+        line_number_errors = set()
+        error_messages = set()
+        error_labels = set()
+
+        station_setups = self.get_list_of_station_setups(self.formatted_lines)
+
+        for station_line_number, station_name in station_setups.items():
+
+            station_label = '@' + station_name + '-->'
+
+            error_point_ids = []
+
+            # create a list of eastings, northings and height and check min max value of each
+            eastings = []
+            northings = []
+            elevation = []
+
+            station_shots = self.get_all_shots_from_a_station_including_setup(station_name, station_line_number)
+            station_shots_compare = self.get_all_shots_from_a_station_including_setup(station_name, station_line_number)
+
+            for shot_line_number, shot in station_shots.items():
+                if self.is_station_setup(self.get_formatted_line(shot_line_number+1)):
+                    continue
+                else:
+                    shot_point_id = shot['Point_ID']
+                    shot_easting = shot['Easting']
+                    shot_northing = shot['Northing']
+                    shot_elevation = shot['Elevation']
+
+                    # lets compare with all other shots
+                    for compare_line_number, shot_compare in station_shots_compare.items():
+                        shot_compare_point_id = shot_compare['Point_ID']
+
+                        if (shot_point_id == shot_compare_point_id) and (compare_line_number not in line_number_errors):
+                            try:
+
+                                # Check for differences
+                                point_tolerances_errors_dict = {}  # Easting, Northing, Elevation
+                                east_diff = float(shot_easting) - float(shot_compare['Easting'])
+                                north_diff = float(shot_northing) - float(shot_compare['Northing'])
+                                height_diff = float(shot_elevation) - float(shot_compare['Elevation'])
+
+                                if abs(east_diff) > float(survey_check_tolerance):
+                                    point_tolerances_errors_dict['Easting'] = 'E=' + "{:.3f}".format(round(east_diff, 3)) + 'm  '
+
+                                if abs(north_diff) > float(survey_check_tolerance):
+                                    point_tolerances_errors_dict['Northing'] = 'N=' + "{:.3f}".format(round(north_diff, 3)) + 'm  '
+
+                                if abs(height_diff) > float(survey_check_tolerance):
+                                    point_tolerances_errors_dict['Height'] = 'H=' + "{:.3f}".format(round(height_diff, 3)) + 'm'
+
+                                # add to error dictionary if errors found:
+                                if point_tolerances_errors_dict:
+                                    line_number_errors.add(shot_line_number+1)
+                                    line_number_errors.add(compare_line_number+1)
+
+                                    # don't duplicate error messages
+                                    if ((station_label + shot_point_id) not in error_labels):
+                                        point_text = (station_label + shot_point_id + ':  ').ljust(10)
+                                        error_text += '\n ' + point_text
+                                        error_text += point_tolerances_errors_dict.get('Easting', '')
+                                        error_text += point_tolerances_errors_dict.get('Northing', '')
+                                        error_text += point_tolerances_errors_dict.get('Height', '')
+                                        error_messages.add(error_text)
+                                        error_labels.add(station_label + shot_point_id)
+                                        error_point_ids.append(shot_point_id)
+
+
+                            except ValueError:
+                                print('Value error at point : ' + shot_point_id)
+
+        if not line_number_errors:
+            error_text = dialog_text
+
+        return error_text, line_number_errors
+
+
     def check_control_naming(self):
 
         unique_station_setups = self.get_set_of_station_setups()
