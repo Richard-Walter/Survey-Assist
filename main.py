@@ -14,6 +14,7 @@ Compnet uses only observations:  slope distance, horizontal and vertical angle, 
 
 TODOS
 - add date column for display only
+-add reflectorless to primsm changer types
 
 KNOWN BUGS
 - LS wieghted directory cant find
