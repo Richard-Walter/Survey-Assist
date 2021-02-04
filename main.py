@@ -13,8 +13,7 @@ NOTES
 Compnet uses only observations:  slope distance, horizontal and vertical angle, target height, station height.  GSI Coordinates are not used
 
 TODOS
-- add date column for display only
--add reflectorless to primsm changer types
+-add reflectorless to prism changer types
 
 KNOWN BUGS
 - LS wieghted directory cant find

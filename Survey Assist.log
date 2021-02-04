@@ -498,3 +498,298 @@ PermissionError: [Errno 13] Permission denied: 'C:\\SurveyAssist\\Print GSI.xlsx
 2020-08-24 15:52:22,783:Survey Assist - v1.0 :************************* STARTED APPLICATION - User: RW *************************
 2020-08-24 15:55:27,554:Survey Assist - v1.0 :OPENING UP A GSI FILE: C:/Users/rjwal_000/PycharmProjects/Survey Assist/Test Files/GSI Files/HCCL 030719_EDITED.gsi
 2020-08-24 15:56:48,631:Survey Assist - v1.0 :************************* STARTED APPLICATION - User: RW *************************
+2020-12-09 16:37:47,746:Survey Assist - v1.0 :************************* STARTED APPLICATION - User: RW *************************
+2020-12-09 16:37:57,384:Survey Assist - v1.0 :OPENING UP A GSI FILE: C:/Users/rjwal_000/PycharmProjects/Survey Assist/Test Files/Survey Data/2020/MONITORING/A9 ARTC/200824/TS/EDITING/ARTC_903_MON_V2_MS60_240820_EDITED.GSI
+2020-12-17 16:15:54,187:Survey Assist - v1.0 :************************* STARTED APPLICATION - User: RW *************************
+2020-12-17 16:16:03,515:Survey Assist - v1.0 :OPENING UP A GSI FILE: C:/Users/rjwal_000/Downloads/52CR 101220.GSI
+2020-12-22 15:24:04,108:Survey Assist - v1.0 :************************* STARTED APPLICATION - User: RW *************************
+2020-12-22 15:26:33,768:Survey Assist - v1.0 :OPENING UP A GSI FILE: C:/Users/rjwal_000/PycharmProjects/Survey Assist/Test Files/Survey Data/2020/MONITORING/A9 ARTC/200824/TS/EDITING/ARTC_903_MON_V2_MS60_240820_EDITED.GSI
+2020-12-22 15:26:48,688:Survey Assist - v1.0 :************************* STARTED APPLICATION - User: RW *************************
+2020-12-22 15:27:11,530:Survey Assist - v1.0 :OPENING UP A GSI FILE: C:/Users/rjwal_000/PycharmProjects/Survey Assist/Test Files/Survey Data/2020/MONITORING/A9 ARTC/200824/TS/EDITING/ARTC_903_MON_V2_MS60_240820_EDITED.GSI
+2020-12-22 15:30:06,298:Survey Assist - v1.0 :************************* STARTED APPLICATION - User: RW *************************
+2020-12-22 15:30:42,904:Survey Assist - v1.0 :OPENING UP A GSI FILE: C:/Users/rjwal_000/PycharmProjects/Survey Assist/Test Files/Survey Data/2020/MONITORING/A9 ARTC/200824/TS/EDITING/ARTC_903_MON_V2_MS60_240820_EDITED.GSI
+2020-12-22 15:31:01,309:Survey Assist - v1.0 :************************* STARTED APPLICATION - User: RW *************************
+2020-12-22 15:31:14,183:Survey Assist - v1.0 :OPENING UP A GSI FILE: C:/Users/rjwal_000/PycharmProjects/Survey Assist/Test Files/Survey Data/2020/MONITORING/A9 ARTC/200824/TS/EDITING/ARTC_903_MON_V2_MS60_240820_EDITED.GSI
+2020-12-22 15:31:28,291:Survey Assist - v1.0 :************************* STARTED APPLICATION - User: RW *************************
+2020-12-22 15:31:35,417:Survey Assist - v1.0 :************************* STARTED APPLICATION - User: RW *************************
+2020-12-22 15:31:39,651:Survey Assist - v1.0 :OPENING UP A GSI FILE: C:/Users/rjwal_000/PycharmProjects/Survey Assist/Test Files/Survey Data/2020/MONITORING/A9 ARTC/200824/TS/EDITING/ARTC_903_MON_V2_MS60_240820_EDITED.GSI
+2020-12-22 15:32:08,055:Survey Assist - v1.0 :OPENING UP A GSI FILE: C:/Users/rjwal_000/PycharmProjects/Survey Assist/Test Files/Survey Data/2020/MONITORING/A9 ARTC/200824/TS/EDITING/ARTC_903_MON_V2_MS60_240820_EDITED.GSI
+2020-12-22 15:46:44,620:Survey Assist - v1.0 :************************* STARTED APPLICATION - User: RW *************************
+2020-12-22 15:46:49,247:Survey Assist - v1.0 :OPENING UP A GSI FILE: C:/Users/rjwal_000/PycharmProjects/Survey Assist/Test Files/Survey Data/2020/MONITORING/A9 ARTC/200824/TS/EDITING/ARTC_903_MON_V2_MS60_240820_EDITED.GSI
+2020-12-22 15:49:24,963:Survey Assist - v1.0 :************************* STARTED APPLICATION - User: RW *************************
+2020-12-22 15:49:35,731:Survey Assist - v1.0 :OPENING UP A GSI FILE: C:/Users/rjwal_000/PycharmProjects/Survey Assist/Test Files/Survey Data/2020/MONITORING/A9 ARTC/200824/TS/EDITING/ARTC_903_MON_V2_MS60_240820_EDITED.GSI
+2020-12-22 16:31:58,190:Survey Assist - v1.0 :************************* STARTED APPLICATION - User: RW *************************
+2020-12-22 16:32:03,199:Survey Assist - v1.0 :OPENING UP A GSI FILE: C:/Users/rjwal_000/PycharmProjects/Survey Assist/Test Files/Survey Data/2020/MONITORING/A9 ARTC/200824/TS/EDITING/ARTC_903_MON_V2_MS60_240820_EDITED.GSI
+2020-12-22 16:32:44,423:Survey Assist - v1.0 :************************* STARTED APPLICATION - User: RW *************************
+2020-12-22 16:32:48,841:Survey Assist - v1.0 :OPENING UP A GSI FILE: C:/Users/rjwal_000/PycharmProjects/Survey Assist/Test Files/Survey Data/2020/MONITORING/A9 ARTC/200824/TS/EDITING/ARTC_903_MON_V2_MS60_240820_EDITED.GSI
+2020-12-22 16:32:51,576:Survey Assist - v1.0 :Error checking target naming
+
+get_list_of_station_setups() missing 1 required positional argument: 'formatted_lines'
+Traceback (most recent call last):
+  File "C:/Users/rjwal_000/PycharmProjects/Survey Assist/main.py", line 826, in check_target_namings
+    error_text, error_line_numbers = gsi.check_target_namings()
+  File "C:\Users\rjwal_000\PycharmProjects\Survey Assist\GSI.py", line 896, in check_target_namings
+    station_setups = self.get_list_of_station_setups()
+TypeError: get_list_of_station_setups() missing 1 required positional argument: 'formatted_lines'
+2020-12-22 16:33:50,839:Survey Assist - v1.0 :************************* STARTED APPLICATION - User: RW *************************
+2020-12-22 16:33:54,372:Survey Assist - v1.0 :OPENING UP A GSI FILE: C:/Users/rjwal_000/PycharmProjects/Survey Assist/Test Files/Survey Data/2020/MONITORING/A9 ARTC/200824/TS/EDITING/ARTC_903_MON_V2_MS60_240820_EDITED.GSI
+2020-12-22 16:33:56,958:Survey Assist - v1.0 :Error checking target naming
+
+get_list_of_station_setups() missing 1 required positional argument: 'formatted_lines'
+Traceback (most recent call last):
+  File "C:/Users/rjwal_000/PycharmProjects/Survey Assist/main.py", line 826, in check_target_namings
+    error_text, error_line_numbers = gsi.check_target_namings()
+  File "C:\Users\rjwal_000\PycharmProjects\Survey Assist\GSI.py", line 896, in check_target_namings
+    station_setups = self.get_list_of_station_setups()
+TypeError: get_list_of_station_setups() missing 1 required positional argument: 'formatted_lines'
+2020-12-22 16:34:26,316:Survey Assist - v1.0 :************************* STARTED APPLICATION - User: RW *************************
+2020-12-22 16:34:30,247:Survey Assist - v1.0 :OPENING UP A GSI FILE: C:/Users/rjwal_000/PycharmProjects/Survey Assist/Test Files/Survey Data/2020/MONITORING/A9 ARTC/200824/TS/EDITING/ARTC_903_MON_V2_MS60_240820_EDITED.GSI
+2020-12-22 16:48:44,213:Survey Assist - v1.0 :************************* STARTED APPLICATION - User: RW *************************
+2020-12-22 16:48:48,465:Survey Assist - v1.0 :OPENING UP A GSI FILE: C:/Users/rjwal_000/PycharmProjects/Survey Assist/Test Files/Survey Data/2020/MONITORING/A9 ARTC/200824/TS/EDITING/ARTC_903_MON_V2_MS60_240820_EDITED.GSI
+2020-12-22 16:50:47,586:Survey Assist - v1.0 :************************* STARTED APPLICATION - User: RW *************************
+2020-12-22 16:50:53,515:Survey Assist - v1.0 :************************* STARTED APPLICATION - User: RW *************************
+2020-12-22 16:50:56,762:Survey Assist - v1.0 :OPENING UP A GSI FILE: C:/Users/rjwal_000/PycharmProjects/Survey Assist/Test Files/Survey Data/2020/MONITORING/A9 ARTC/200824/TS/EDITING/ARTC_903_MON_V2_MS60_240820_EDITED.GSI
+2020-12-22 16:55:00,488:Survey Assist - v1.0 :************************* STARTED APPLICATION - User: RW *************************
+2020-12-22 16:55:04,762:Survey Assist - v1.0 :OPENING UP A GSI FILE: C:/Users/rjwal_000/PycharmProjects/Survey Assist/Test Files/Survey Data/2020/MONITORING/A9 ARTC/200824/TS/EDITING/ARTC_903_MON_V2_MS60_240820_EDITED.GSI
+2020-12-22 16:55:36,417:Survey Assist - v1.0 :Error checking target naming
+
+'int' object is not subscriptable
+Traceback (most recent call last):
+  File "C:/Users/rjwal_000/PycharmProjects/Survey Assist/main.py", line 828, in check_target_namings
+    error_text, error_details = gsi.check_target_namings()
+  File "C:\Users\rjwal_000\PycharmProjects\Survey Assist\GSI.py", line 901, in check_target_namings
+    station_name = station[0]
+TypeError: 'int' object is not subscriptable
+2020-12-22 17:00:04,157:Survey Assist - v1.0 :************************* STARTED APPLICATION - User: RW *************************
+2020-12-22 17:00:07,762:Survey Assist - v1.0 :OPENING UP A GSI FILE: C:/Users/rjwal_000/PycharmProjects/Survey Assist/Test Files/Survey Data/2020/MONITORING/A9 ARTC/200824/TS/EDITING/ARTC_903_MON_V2_MS60_240820_EDITED.GSI
+2020-12-22 17:02:38,634:Survey Assist - v1.0 :************************* STARTED APPLICATION - User: RW *************************
+2020-12-22 17:02:42,669:Survey Assist - v1.0 :OPENING UP A GSI FILE: C:/Users/rjwal_000/PycharmProjects/Survey Assist/Test Files/Survey Data/2020/MONITORING/A9 ARTC/200824/TS/EDITING/ARTC_903_MON_V2_MS60_240820_EDITED.GSI
+2020-12-22 17:03:53,461:Survey Assist - v1.0 :************************* STARTED APPLICATION - User: RW *************************
+2020-12-22 17:03:59,700:Survey Assist - v1.0 :OPENING UP A GSI FILE: C:/Users/rjwal_000/PycharmProjects/Survey Assist/Test Files/Survey Data/2020/MONITORING/A9 ARTC/200824/TS/EDITING/ARTC_903_MON_V2_MS60_240820_EDITED.GSI
+2020-12-22 17:04:25,086:Survey Assist - v1.0 :Error checking target naming
+
+'int' object is not subscriptable
+Traceback (most recent call last):
+  File "C:/Users/rjwal_000/PycharmProjects/Survey Assist/main.py", line 828, in check_target_namings
+    error_text, error_details = gsi.check_target_namings()
+  File "C:\Users\rjwal_000\PycharmProjects\Survey Assist\GSI.py", line 911, in check_target_namings
+    if self.is_station_setup(shot):
+  File "C:\Users\rjwal_000\PycharmProjects\Survey Assist\GSI.py", line 719, in is_station_setup
+    if formatted_line['STN_Easting']:
+TypeError: 'int' object is not subscriptable
+2020-12-22 17:06:30,754:Survey Assist - v1.0 :Error checking target naming
+
+'int' object is not subscriptable
+Traceback (most recent call last):
+  File "C:/Users/rjwal_000/PycharmProjects/Survey Assist/main.py", line 828, in check_target_namings
+    error_text, error_details = gsi.check_target_namings()
+  File "C:\Users\rjwal_000\PycharmProjects\Survey Assist\GSI.py", line 911, in check_target_namings
+    if self.is_station_setup(shot):
+  File "C:\Users\rjwal_000\PycharmProjects\Survey Assist\GSI.py", line 719, in is_station_setup
+    if formatted_line['STN_Easting']:
+TypeError: 'int' object is not subscriptable
+2020-12-22 17:12:40,752:Survey Assist - v1.0 :************************* STARTED APPLICATION - User: RW *************************
+2020-12-22 17:12:45,606:Survey Assist - v1.0 :OPENING UP A GSI FILE: C:/Users/rjwal_000/PycharmProjects/Survey Assist/Test Files/Survey Data/2020/MONITORING/A9 ARTC/200824/TS/EDITING/ARTC_903_MON_V2_MS60_240820_EDITED.GSI
+2020-12-22 17:15:22,063:Survey Assist - v1.0 :************************* STARTED APPLICATION - User: RW *************************
+2020-12-22 17:15:25,434:Survey Assist - v1.0 :OPENING UP A GSI FILE: C:/Users/rjwal_000/PycharmProjects/Survey Assist/Test Files/Survey Data/2020/MONITORING/A9 ARTC/200824/TS/EDITING/ARTC_903_MON_V2_MS60_240820_EDITED.GSI
+2020-12-22 17:34:09,153:Survey Assist - v1.0 :************************* STARTED APPLICATION - User: RW *************************
+2020-12-22 17:38:42,210:Survey Assist - v1.0 :************************* STARTED APPLICATION - User: RW *************************
+2020-12-22 17:38:45,840:Survey Assist - v1.0 :OPENING UP A GSI FILE: C:/Users/rjwal_000/PycharmProjects/Survey Assist/Test Files/Survey Data/2020/MONITORING/A9 ARTC/200824/TS/EDITING/ARTC_903_MON_V2_MS60_240820_EDITED.GSI
+2020-12-22 17:42:48,449:Survey Assist - v1.0 :************************* STARTED APPLICATION - User: RW *************************
+2020-12-22 17:42:51,997:Survey Assist - v1.0 :OPENING UP A GSI FILE: C:/Users/rjwal_000/PycharmProjects/Survey Assist/Test Files/Survey Data/2020/MONITORING/A9 ARTC/200824/TS/EDITING/ARTC_903_MON_V2_MS60_240820_EDITED.GSI
+2020-12-22 17:44:01,166:Survey Assist - v1.0 :************************* STARTED APPLICATION - User: RW *************************
+2020-12-22 17:44:09,434:Survey Assist - v1.0 :OPENING UP A GSI FILE: C:/Users/rjwal_000/PycharmProjects/Survey Assist/Test Files/Survey Data/2020/MONITORING/A9 ARTC/200824/TS/EDITING/ARTC_903_MON_V2_MS60_240820_EDITED.GSI
+2020-12-22 17:44:12,653:Survey Assist - v1.0 :OPENING UP A GSI FILE: C:/Users/rjwal_000/PycharmProjects/Survey Assist/Test Files/Survey Data/2020/MONITORING/A9 ARTC/200824/TS/EDITING/ARTC_903_MON_V2_MS60_240820_EDITED.GSI
+2020-12-22 17:44:25,875:Survey Assist - v1.0 :************************* STARTED APPLICATION - User: RW *************************
+2020-12-22 17:44:29,997:Survey Assist - v1.0 :OPENING UP A GSI FILE: C:/Users/rjwal_000/PycharmProjects/Survey Assist/Test Files/Survey Data/2020/MONITORING/A9 ARTC/200824/TS/EDITING/ARTC_903_MON_V2_MS60_240820_EDITED.GSI
+2020-12-22 17:53:30,799:Survey Assist - v1.0 :************************* STARTED APPLICATION - User: RW *************************
+2020-12-22 17:53:36,528:Survey Assist - v1.0 :OPENING UP A GSI FILE: C:/Users/rjwal_000/PycharmProjects/Survey Assist/Test Files/Survey Data/2020/MONITORING/A9 ARTC/200824/TS/EDITING/ARTC_903_MON_V2_MS60_240820_EDITED.GSI
+2020-12-22 17:55:05,032:Survey Assist - v1.0 :************************* STARTED APPLICATION - User: RW *************************
+2020-12-22 17:55:08,528:Survey Assist - v1.0 :OPENING UP A GSI FILE: C:/Users/rjwal_000/PycharmProjects/Survey Assist/Test Files/Survey Data/2020/MONITORING/A9 ARTC/200824/TS/EDITING/ARTC_903_MON_V2_MS60_240820_EDITED.GSI
+2020-12-22 17:56:30,153:Survey Assist - v1.0 :OPENING UP A GSI FILE: C:/Users/rjwal_000/Downloads/MR_100320 edit.GSI
+2020-12-22 17:56:40,434:Survey Assist - v1.0 :OPENING UP A GSI FILE: C:/Users/rjwal_000/Downloads/WC12 290520_EDITED.GSI
+2020-12-22 17:57:51,296:Survey Assist - v1.0 :************************* STARTED APPLICATION - User: RW *************************
+2020-12-22 17:57:55,497:Survey Assist - v1.0 :OPENING UP A GSI FILE: C:/Users/rjwal_000/Downloads/WC12 290520_EDITED.GSI
+2020-12-22 17:57:58,888:Survey Assist - v1.0 :OPENING UP A GSI FILE: C:/Users/rjwal_000/Downloads/MR_100320 edit.GSI
+2020-12-22 17:58:16,090:Survey Assist - v1.0 :OPENING UP A GSI FILE: C:/Users/rjwal_000/Downloads/WC12 290520_EDITED.GSI
+2020-12-22 17:58:52,730:Survey Assist - v1.0 :************************* STARTED APPLICATION - User: RW *************************
+2020-12-22 17:59:07,028:Survey Assist - v1.0 :OPENING UP A GSI FILE: C:/Users/rjwal_000/Downloads/WC12 290520_EDITED.GSI
+2020-12-22 18:05:07,653:Survey Assist - v1.0 :************************* STARTED APPLICATION - User: RW *************************
+2020-12-22 18:05:10,762:Survey Assist - v1.0 :OPENING UP A GSI FILE: C:/Users/rjwal_000/Downloads/WC12 290520_EDITED.GSI
+2020-12-22 18:06:14,349:Survey Assist - v1.0 :************************* STARTED APPLICATION - User: RW *************************
+2020-12-22 18:06:17,497:Survey Assist - v1.0 :OPENING UP A GSI FILE: C:/Users/rjwal_000/Downloads/WC12 290520_EDITED.GSI
+2020-12-22 18:06:47,963:Survey Assist - v1.0 :************************* STARTED APPLICATION - User: RW *************************
+2020-12-22 18:06:51,981:Survey Assist - v1.0 :OPENING UP A GSI FILE: C:/Users/rjwal_000/Downloads/WC12 290520_EDITED.GSI
+2020-12-22 18:11:18,149:Survey Assist - v1.0 :************************* STARTED APPLICATION - User: RW *************************
+2020-12-22 18:11:21,278:Survey Assist - v1.0 :OPENING UP A GSI FILE: C:/Users/rjwal_000/Downloads/WC12 290520_EDITED.GSI
+2020-12-22 18:11:41,746:Survey Assist - v1.0 :OPENING UP A GSI FILE: C:/Users/rjwal_000/Downloads/WC12 290520_EDITED.GSI
+2020-12-22 18:11:50,543:Survey Assist - v1.0 :OPENING UP A GSI FILE: C:/Users/rjwal_000/Downloads/MR_100320 edit.GSI
+2020-12-22 18:12:04,278:Survey Assist - v1.0 :OPENING UP A GSI FILE: C:/Users/rjwal_000/Downloads/WC12 290520_EDITED.GSI
+2020-12-22 18:13:54,902:Survey Assist - v1.0 :************************* STARTED APPLICATION - User: RW *************************
+2020-12-22 18:14:02,794:Survey Assist - v1.0 :OPENING UP A GSI FILE: C:/Users/rjwal_000/Downloads/WC12 290520_EDITED.GSI
+2020-12-22 18:14:26,044:Survey Assist - v1.0 :OPENING UP A GSI FILE: C:/Users/rjwal_000/Downloads/MR_100320 edit.GSI
+2020-12-22 18:19:11,247:Survey Assist - v1.0 :************************* STARTED APPLICATION - User: RW *************************
+2020-12-22 18:19:19,419:Survey Assist - v1.0 :OPENING UP A GSI FILE: C:/Users/rjwal_000/Downloads/MR_100320 edit_EDITED.gsi
+2020-12-22 18:25:32,875:Survey Assist - v1.0 :************************* STARTED APPLICATION - User: RW *************************
+2020-12-22 18:25:37,200:Survey Assist - v1.0 :OPENING UP A GSI FILE: C:/Users/rjwal_000/Downloads/MR_100320 edit_EDITED.gsi
+2020-12-22 18:26:58,945:Survey Assist - v1.0 :************************* STARTED APPLICATION - User: RW *************************
+2020-12-22 18:27:04,043:Survey Assist - v1.0 :OPENING UP A GSI FILE: C:/Users/rjwal_000/Downloads/MR_100320 edit_EDITED.gsi
+2020-12-22 18:28:02,458:Survey Assist - v1.0 :************************* STARTED APPLICATION - User: RW *************************
+2020-12-22 18:28:05,372:Survey Assist - v1.0 :OPENING UP A GSI FILE: C:/Users/rjwal_000/Downloads/MR_100320 edit_EDITED.gsi
+2020-12-22 18:30:24,498:Survey Assist - v1.0 :************************* STARTED APPLICATION - User: RW *************************
+2020-12-22 18:30:27,981:Survey Assist - v1.0 :OPENING UP A GSI FILE: C:/Users/rjwal_000/Downloads/MR_100320 edit_EDITED.gsi
+2020-12-22 18:31:03,024:Survey Assist - v1.0 :************************* STARTED APPLICATION - User: RW *************************
+2020-12-22 18:31:15,528:Survey Assist - v1.0 :OPENING UP A GSI FILE: C:/Users/rjwal_000/Downloads/MR_100320 edit_EDITED.gsi
+2020-12-22 18:31:42,897:Survey Assist - v1.0 :************************* STARTED APPLICATION - User: RW *************************
+2020-12-22 18:31:46,293:Survey Assist - v1.0 :OPENING UP A GSI FILE: C:/Users/rjwal_000/Downloads/MR_100320 edit_EDITED.gsi
+2020-12-22 18:32:58,547:Survey Assist - v1.0 :************************* STARTED APPLICATION - User: RW *************************
+2020-12-22 18:33:07,819:Survey Assist - v1.0 :************************* STARTED APPLICATION - User: RW *************************
+2020-12-22 18:33:13,763:Survey Assist - v1.0 :OPENING UP A GSI FILE: C:/Users/rjwal_000/Downloads/MR_100320 edit_EDITED.gsi
+2020-12-22 18:34:53,757:Survey Assist - v1.0 :************************* STARTED APPLICATION - User: RW *************************
+2020-12-22 18:35:06,419:Survey Assist - v1.0 :OPENING UP A GSI FILE: C:/Users/rjwal_000/Downloads/MR_100320 edit_EDITED.gsi
+2020-12-22 18:37:34,649:Survey Assist - v1.0 :************************* STARTED APPLICATION - User: RW *************************
+2020-12-22 18:37:42,654:Survey Assist - v1.0 :OPENING UP A GSI FILE: C:/Users/rjwal_000/Downloads/MR_100320 edit_EDITED.gsi
+2020-12-22 18:43:12,873:Survey Assist - v1.0 :************************* STARTED APPLICATION - User: RW *************************
+2020-12-22 18:43:16,075:Survey Assist - v1.0 :OPENING UP A GSI FILE: C:/Users/rjwal_000/Downloads/MR_100320 edit_EDITED.gsi
+2020-12-22 18:45:07,211:Survey Assist - v1.0 :************************* STARTED APPLICATION - User: RW *************************
+2020-12-22 18:45:10,044:Survey Assist - v1.0 :OPENING UP A GSI FILE: C:/Users/rjwal_000/Downloads/MR_100320 edit_EDITED.gsi
+2020-12-22 18:46:05,715:Survey Assist - v1.0 :OPENING UP A GSI FILE: C:/Users/rjwal_000/Downloads/WC12 290520_EDITED.GSI
+2020-12-22 18:48:26,914:Survey Assist - v1.0 :************************* STARTED APPLICATION - User: RW *************************
+2020-12-22 18:48:30,544:Survey Assist - v1.0 :OPENING UP A GSI FILE: C:/Users/rjwal_000/Downloads/MR_100320 edit_EDITED.gsi
+2020-12-22 18:50:17,808:Survey Assist - v1.0 :************************* STARTED APPLICATION - User: RW *************************
+2020-12-22 18:50:21,481:Survey Assist - v1.0 :OPENING UP A GSI FILE: C:/Users/rjwal_000/Downloads/MR_100320 edit_EDITED.gsi
+2020-12-22 18:50:30,325:Survey Assist - v1.0 :OPENING UP A GSI FILE: C:/Users/rjwal_000/Downloads/WC12 290520_EDITED.GSI
+2020-12-22 18:51:52,675:Survey Assist - v1.0 :************************* STARTED APPLICATION - User: RW *************************
+2020-12-22 22:06:05,361:Survey Assist - v1.0 :************************* STARTED APPLICATION - User: RW *************************
+2020-12-22 22:09:15,710:Survey Assist - v1.0 :OPENING UP A GSI FILE: C:/Users/rjwal_000/Downloads/WC12 290520_EDITED.GSI
+2020-12-22 22:10:40,226:Survey Assist - v1.0 :************************* STARTED APPLICATION - User: RW *************************
+2020-12-22 22:10:44,007:Survey Assist - v1.0 :OPENING UP A GSI FILE: C:/Users/rjwal_000/Downloads/MR_100320 edit_EDITED.gsi
+2020-12-22 22:11:39,107:Survey Assist - v1.0 :An unexpected error has occurred
+
+check_FLFR()
+
+could not convert string to float: 'FOCSTN01_FOC01_1'
+Traceback (most recent call last):
+  File "C:/Users/rjwal_000/PycharmProjects/Survey Assist/main.py", line 877, in check_FLFR
+    points_no_2nd_face, analysed_lines = self.anaylseFLFR(copy.deepcopy(obs_from_station_dict))
+  File "C:/Users/rjwal_000/PycharmProjects/Survey Assist/main.py", line 1004, in anaylseFLFR
+    obs_line_1_field_value = get_numerical_value_from_string(obs_line_1_field_value_str, field_type, precision)
+  File "C:\Users\rjwal_000\PycharmProjects\Survey Assist\utilities.py", line 94, in get_numerical_value_from_string
+    return decimalize_value(float(str_value), precision) if str_value != "" else ""
+ValueError: could not convert string to float: 'FOCSTN01_FOC01_1'
+2020-12-22 22:12:08,879:Survey Assist - v1.0 :An unexpected error has occurred
+
+check_FLFR()
+
+could not convert string to float: 'FOCSTN01_FOC01_1'
+Traceback (most recent call last):
+  File "C:/Users/rjwal_000/PycharmProjects/Survey Assist/main.py", line 877, in check_FLFR
+    points_no_2nd_face, analysed_lines = self.anaylseFLFR(copy.deepcopy(obs_from_station_dict))
+  File "C:/Users/rjwal_000/PycharmProjects/Survey Assist/main.py", line 1004, in anaylseFLFR
+    obs_line_1_field_value = get_numerical_value_from_string(obs_line_1_field_value_str, field_type, precision)
+  File "C:\Users\rjwal_000\PycharmProjects\Survey Assist\utilities.py", line 94, in get_numerical_value_from_string
+    return decimalize_value(float(str_value), precision) if str_value != "" else ""
+ValueError: could not convert string to float: 'FOCSTN01_FOC01_1'
+2020-12-22 22:16:13,278:Survey Assist - v1.0 :************************* STARTED APPLICATION - User: RW *************************
+2020-12-22 22:16:16,217:Survey Assist - v1.0 :OPENING UP A GSI FILE: C:/Users/rjwal_000/Downloads/WC12 290520_EDITED.GSI
+2020-12-22 22:17:51,897:Survey Assist - v1.0 :OPENING UP A GSI FILE: C:/Users/rjwal_000/Downloads/WC12 290520_EDITED.GSI
+2020-12-22 22:20:31,950:Survey Assist - v1.0 :************************* STARTED APPLICATION - User: RW *************************
+2020-12-22 22:20:37,916:Survey Assist - v1.0 :OPENING UP A GSI FILE: C:/Users/rjwal_000/Downloads/MR_100320 edit.GSI
+2020-12-22 22:20:59,950:Survey Assist - v1.0 :OPENING UP A GSI FILE: C:/Users/rjwal_000/Downloads/MR_100320 edit_EDITED_PCUpdated.gsi
+2020-12-22 22:22:33,712:Survey Assist - v1.0 :************************* STARTED APPLICATION - User: RW *************************
+2020-12-22 22:22:37,191:Survey Assist - v1.0 :OPENING UP A GSI FILE: C:/Users/rjwal_000/Downloads/MR_100320 edit_EDITED.gsi
+2020-12-22 22:30:06,482:Survey Assist - v1.0 :************************* STARTED APPLICATION - User: RW *************************
+2020-12-22 22:30:10,935:Survey Assist - v1.0 :OPENING UP A GSI FILE: C:/Users/rjwal_000/Downloads/MR_100320 edit.GSI
+2020-12-22 22:32:20,058:Survey Assist - v1.0 :************************* STARTED APPLICATION - User: RW *************************
+2020-12-22 22:32:24,840:Survey Assist - v1.0 :OPENING UP A GSI FILE: C:/Users/rjwal_000/Downloads/MR_100320 edit.GSI
+2020-12-22 22:32:58,723:Survey Assist - v1.0 :************************* STARTED APPLICATION - User: RW *************************
+2020-12-22 22:33:02,138:Survey Assist - v1.0 :OPENING UP A GSI FILE: C:/Users/rjwal_000/Downloads/MR_100320 edit_EDITED_Sorted.gsi
+2020-12-22 22:33:54,781:Survey Assist - v1.0 :An unexpected error has occurred
+
+check_FLFR()
+
+could not convert string to float: 'FOCSTN01_FOC01_1'
+Traceback (most recent call last):
+  File "C:/Users/rjwal_000/PycharmProjects/Survey Assist/main.py", line 877, in check_FLFR
+    points_no_2nd_face, analysed_lines = self.anaylseFLFR(copy.deepcopy(obs_from_station_dict))
+  File "C:/Users/rjwal_000/PycharmProjects/Survey Assist/main.py", line 1004, in anaylseFLFR
+    obs_line_1_field_value = get_numerical_value_from_string(obs_line_1_field_value_str, field_type, precision)
+  File "C:\Users\rjwal_000\PycharmProjects\Survey Assist\utilities.py", line 94, in get_numerical_value_from_string
+    return decimalize_value(float(str_value), precision) if str_value != "" else ""
+ValueError: could not convert string to float: 'FOCSTN01_FOC01_1'
+2020-12-22 22:34:07,004:Survey Assist - v1.0 :An unexpected error has occurred
+
+check_FLFR()
+
+could not convert string to float: 'FOCSTN01_FOC01_1'
+Traceback (most recent call last):
+  File "C:/Users/rjwal_000/PycharmProjects/Survey Assist/main.py", line 877, in check_FLFR
+    points_no_2nd_face, analysed_lines = self.anaylseFLFR(copy.deepcopy(obs_from_station_dict))
+  File "C:/Users/rjwal_000/PycharmProjects/Survey Assist/main.py", line 1004, in anaylseFLFR
+    obs_line_1_field_value = get_numerical_value_from_string(obs_line_1_field_value_str, field_type, precision)
+  File "C:\Users\rjwal_000\PycharmProjects\Survey Assist\utilities.py", line 94, in get_numerical_value_from_string
+    return decimalize_value(float(str_value), precision) if str_value != "" else ""
+ValueError: could not convert string to float: 'FOCSTN01_FOC01_1'
+2020-12-22 22:37:45,923:Survey Assist - v1.0 :************************* STARTED APPLICATION - User: RW *************************
+2020-12-22 22:40:55,437:Survey Assist - v1.0 :************************* STARTED APPLICATION - User: RW *************************
+2020-12-22 22:41:03,965:Survey Assist - v1.0 :OPENING UP A GSI FILE: C:/Users/rjwal_000/Downloads/MR_100320 edit_EDITED.gsi
+2020-12-22 22:42:08,434:Survey Assist - v1.0 :************************* STARTED APPLICATION - User: RW *************************
+2020-12-22 22:42:15,434:Survey Assist - v1.0 :OPENING UP A GSI FILE: C:/Users/rjwal_000/Downloads/MR_100320 edit_EDITED.gsi
+2020-12-22 22:42:41,957:Survey Assist - v1.0 :An unexpected error has occurred
+
+check_FLFR()
+
+could not convert string to float: 'FOCSTN01_FOC01_1'
+Traceback (most recent call last):
+  File "C:/Users/rjwal_000/PycharmProjects/Survey Assist/main.py", line 877, in check_FLFR
+    points_no_2nd_face, analysed_lines = self.anaylseFLFR(copy.deepcopy(obs_from_station_dict))
+  File "C:/Users/rjwal_000/PycharmProjects/Survey Assist/main.py", line 1004, in anaylseFLFR
+    obs_line_1_field_value = get_numerical_value_from_string(obs_line_1_field_value_str, field_type, precision)
+  File "C:\Users\rjwal_000\PycharmProjects\Survey Assist\utilities.py", line 94, in get_numerical_value_from_string
+    return decimalize_value(float(str_value), precision) if str_value != "" else ""
+ValueError: could not convert string to float: 'FOCSTN01_FOC01_1'
+2020-12-22 22:44:20,037:Survey Assist - v1.0 :************************* STARTED APPLICATION - User: RW *************************
+2020-12-22 22:44:28,965:Survey Assist - v1.0 :OPENING UP A GSI FILE: C:/Users/rjwal_000/Downloads/MR_100320 edit_EDITED.gsi
+2020-12-22 22:47:15,106:Survey Assist - v1.0 :OPENING UP A GSI FILE: C:/Users/rjwal_000/Downloads/WC12 290520_EDITED.GSI
+2020-12-22 22:47:28,856:Survey Assist - v1.0 :OPENING UP A GSI FILE: C:/Users/rjwal_000/Downloads/MR_100320 edit_EDITED_Sorted.gsi
+2020-12-22 22:47:52,059:Survey Assist - v1.0 :OPENING UP A GSI FILE: C:/Users/rjwal_000/PycharmProjects/Survey Assist/Test Files/Survey Data/2020/MONITORING/A9 ARTC/200824/TS/EDITING/ARTC_903_MON_V2_MS60_240820_EDITED.GSI
+2020-12-22 22:48:04,513:Survey Assist - v1.0 :OPENING UP A GSI FILE: C:/Users/rjwal_000/Downloads/WC12 290520_EDITED.GSI
+2020-12-22 22:48:22,906:Survey Assist - v1.0 :************************* STARTED APPLICATION - User: RW *************************
+2020-12-22 22:48:33,325:Survey Assist - v1.0 :OPENING UP A GSI FILE: C:/Users/rjwal_000/Downloads/MR_100320 edit.GSI
+2020-12-23 12:38:10,723:Survey Assist - v1.0 :************************* STARTED APPLICATION - User: RW *************************
+2020-12-23 12:38:42,423:Survey Assist - v1.0 :OPENING UP A GSI FILE: C:/Users/rjwal_000/Downloads/3.GSI
+2020-12-23 12:39:22,013:Survey Assist - v1.0 :OPENING UP A GSI FILE: C:/Users/rjwal_000/Downloads/4.GSI
+2020-12-23 12:50:33,153:Survey Assist - v1.0 :OPENING UP A GSI FILE: C:/Users/rjwal_000/Downloads/3.GSI
+2020-12-23 12:52:49,342:Survey Assist - v1.0 :************************* STARTED APPLICATION - User: RW *************************
+2020-12-23 12:53:15,793:Survey Assist - v1.0 :OPENING UP A GSI FILE: C:/Users/rjwal_000/Downloads/3.GSI
+2020-12-23 12:55:29,606:Survey Assist - v1.0 :OPENING UP A GSI FILE: C:/Users/rjwal_000/Downloads/4.GSI
+2020-12-23 12:56:05,606:Survey Assist - v1.0 :OPENING UP A GSI FILE: C:/Users/rjwal_000/Downloads/4.GSI
+2020-12-23 12:57:09,481:Survey Assist - v1.0 :OPENING UP A GSI FILE: C:/Users/rjwal_000/Downloads/3.GSI
+2020-12-23 12:57:51,184:Survey Assist - v1.0 :OPENING UP A GSI FILE: C:/Users/rjwal_000/Downloads/4.GSI
+2020-12-23 13:01:34,684:Survey Assist - v1.0 :OPENING UP A GSI FILE: C:/Users/rjwal_000/Downloads/3.GSI
+2020-12-23 13:07:51,726:Survey Assist - v1.0 :************************* STARTED APPLICATION - User: RW *************************
+2020-12-23 13:07:57,466:Survey Assist - v1.0 :OPENING UP A GSI FILE: C:/Users/rjwal_000/Downloads/3.GSI
+2020-12-23 13:08:14,575:Survey Assist - v1.0 :OPENING UP A GSI FILE: C:/Users/rjwal_000/Downloads/4.GSI
+2020-12-23 13:16:17,262:Survey Assist - v1.0 :OPENING UP A GSI FILE: C:/Users/rjwal_000/Downloads/3.GSI
+2020-12-23 13:17:34,590:Survey Assist - v1.0 :OPENING UP A GSI FILE: C:/Users/rjwal_000/Downloads/4.GSI
+2020-12-30 16:02:24,289:Survey Assist - v1.0 :************************* STARTED APPLICATION - User: RW *************************
+2020-12-30 16:02:32,883:Survey Assist - v1.0 :OPENING UP A GSI FILE: C:/Users/rjwal_000/Downloads/DPB 181220_Sorted_PCUpdate.gsi
+2020-12-30 16:03:15,062:Survey Assist - v1.0 :OPENING UP A GSI FILE: C:/Users/rjwal_000/Downloads/DPB.GSI
+2020-12-30 16:04:40,532:Survey Assist - v1.0 :************************* STARTED APPLICATION - User: RW *************************
+2020-12-30 16:04:53,922:Survey Assist - v1.0 :OPENING UP A GSI FILE: C:/Users/rjwal_000/Downloads/DPB.GSI
+2020-12-30 16:05:43,563:Survey Assist - v1.0 :OPENING UP A GSI FILE: C:/Users/rjwal_000/Downloads/DPB 181220_Sorted_PCUpdate.gsi
+2020-12-30 16:06:41,078:Survey Assist - v1.0 :OPENING UP A GSI FILE: C:/Users/rjwal_000/Downloads/DPB.GSI
+2020-12-30 16:07:01,453:Survey Assist - v1.0 :OPENING UP A GSI FILE: C:/Users/rjwal_000/Downloads/DPB 181220_Sorted_PCUpdate.gsi
+2020-12-30 16:11:15,015:Survey Assist - v1.0 :OPENING UP A GSI FILE: C:/Users/rjwal_000/Downloads/DPB.GSI
+2020-12-30 16:11:54,965:Survey Assist - v1.0 :OPENING UP A GSI FILE: C:/Users/rjwal_000/Downloads/DPB_Sorted.gsi
+2020-12-30 16:12:12,979:Survey Assist - v1.0 :OPENING UP A GSI FILE: C:/Users/rjwal_000/Downloads/DPB 181220_Sorted_PCUpdate.gsi
+2020-12-30 16:22:49,081:Survey Assist - v1.0 :OPENING UP A GSI FILE: C:/Users/rjwal_000/Downloads/DPB_Sorted.gsi
+2020-12-30 16:24:26,230:Survey Assist - v1.0 :OPENING UP A GSI FILE: C:/Users/rjwal_000/Downloads/DPB 181220_Sorted_PCUpdate.gsi
+2020-12-30 16:38:53,863:Survey Assist - v1.0 :OPENING UP A GSI FILE: C:/Users/rjwal_000/Downloads/DPB.GSI
+2020-12-30 16:40:22,137:Survey Assist - v1.0 :OPENING UP A GSI FILE: C:/Users/rjwal_000/Downloads/DPB_Sorted_PCUpdated.gsi
+2020-12-30 16:40:44,057:Survey Assist - v1.0 :OPENING UP A GSI FILE: C:/Users/rjwal_000/Downloads/DPB 181220_Sorted_PCUpdate.gsi
+2021-01-13 21:37:01,863:Survey Assist - v1.0 :************************* STARTED APPLICATION - User: RW *************************
+2021-01-13 21:37:18,299:Survey Assist - v1.0 :OPENING UP A GSI FILE: C:/Users/rjwal_000/Downloads/DPB.GSI
+2021-02-05 09:50:15,669:Survey Assist - v1.0 :************************* STARTED APPLICATION - User: RW *************************
+2021-02-05 09:52:37,698:Survey Assist - v1.0 :************************* STARTED APPLICATION - User: RW *************************
+2021-02-05 09:54:34,502:Survey Assist - v1.0 :OPENING UP A GSI FILE: C:/Survey Data/2020/MONITORING/A9 ARTC/200414/TS/EDITING/SW11_210120_EDITED.GSI
