@@ -793,3 +793,22 @@ ValueError: could not convert string to float: 'FOCSTN01_FOC01_1'
 2021-02-05 09:50:15,669:Survey Assist - v1.0 :************************* STARTED APPLICATION - User: RW *************************
 2021-02-05 09:52:37,698:Survey Assist - v1.0 :************************* STARTED APPLICATION - User: RW *************************
 2021-02-05 09:54:34,502:Survey Assist - v1.0 :OPENING UP A GSI FILE: C:/Survey Data/2020/MONITORING/A9 ARTC/200414/TS/EDITING/SW11_210120_EDITED.GSI
+2021-02-05 10:06:45,417:Survey Assist - v1.0 :************************* STARTED APPLICATION - User: RW *************************
+2021-06-02 08:41:12,264:Survey Assist - v1.0 :************************* STARTED APPLICATION - User: RW *************************
+2021-06-02 08:41:33,315:Survey Assist - v1.0 :OPENING UP A GSI FILE: C:/Users/rjwal/Downloads/MPR 270521.GSI
+2021-06-02 08:41:51,893:Survey Assist - v1.0 :OPENING UP A GSI FILE: C:/Users/rjwal/Downloads/MPR 190321_EDITED_TgtUpdated_Sorted.gsi
+2021-06-02 08:43:16,237:Survey Assist - v1.0 :OPENING UP A GSI FILE: C:/Users/rjwal/Downloads/MPR 270521.GSI
+2021-06-02 08:47:21,681:Survey Assist - v1.0 :************************* STARTED APPLICATION - User: RW *************************
+2021-06-02 08:47:42,596:Survey Assist - v1.0 :OPENING UP A GSI FILE: C:/Users/rjwal/Google Drive/Surveying/SurveyAssist/Survey Data/2020/MONITORING/A9 Menangle Road/MR_100320 edit.GSI
+2021-06-02 08:51:43,549:Survey Assist - v1.0 :OPENING UP A GSI FILE: C:/Users/rjwal/Downloads/MPR 270521.GSI
+2021-06-02 08:54:08,918:Survey Assist - v1.0 :************************* STARTED APPLICATION - User: RW *************************
+2021-06-02 08:54:14,939:Survey Assist - v1.0 :OPENING UP A GSI FILE: C:/Users/rjwal/Downloads/MPR 270521_Sorted.gsi
+2021-06-02 08:59:56,860:Survey Assist - v1.0 :************************* STARTED APPLICATION - User: RW *************************
+2021-06-02 09:00:07,596:Survey Assist - v1.0 :OPENING UP A GSI FILE: C:/Users/rjwal/Downloads/MPR 270521.GSI
+2021-06-02 09:05:59,464:Survey Assist - v1.0 :************************* STARTED APPLICATION - User: RW *************************
+2021-06-02 09:06:04,002:Survey Assist - v1.0 :OPENING UP A GSI FILE: C:/Users/rjwal/Downloads/MPR 270521.GSI
+2021-06-02 09:09:55,529:Survey Assist - v1.0 :************************* STARTED APPLICATION - User: RW *************************
+2021-06-02 09:09:58,736:Survey Assist - v1.0 :OPENING UP A GSI FILE: C:/Users/rjwal/Downloads/MPR 270521.GSI
+2021-06-02 09:10:29,689:Survey Assist - v1.0 :OPENING UP A GSI FILE: C:/Users/rjwal/Downloads/MPR 190321_EDITED_TgtUpdated_Sorted.gsi
+2021-06-02 09:11:01,424:Survey Assist - v1.0 :OPENING UP A GSI FILE: C:/Users/rjwal/Downloads/MPR 270521.GSI
+2021-06-02 09:12:56,252:Survey Assist - v1.0 :OPENING UP A GSI FILE: C:/Users/rjwal/Google Drive/Surveying/SurveyAssist/Survey Data/2020/MONITORING/A9 Menangle Road/MR_100320 edit.GSI

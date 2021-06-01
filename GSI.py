@@ -608,9 +608,11 @@ class GSI:
         return '{}° {}\' {}"'.format(degrees.zfill(3), minutes, seconds)
 
     @staticmethod
-    def format_prism_constant(constant):
+    def format_prism_constant(field_value):
 
-        constant = constant[3:].lstrip("0")
+        # constant = constant[3:].lstrip("0")
+        # grab last three chars and strip of any heading zeros
+        constant = field_value[-3:].lstrip("0")
 
         if constant == "":
             return "0"

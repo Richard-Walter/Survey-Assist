@@ -17,6 +17,7 @@ TODOS
 
 KNOWN BUGS
 - LS wieghted directory cant find
+- 4dp surveys compnet requires a different format to leica 4dp
 """
 
 from openpyxl.styles import Border, Side
