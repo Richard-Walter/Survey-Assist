@@ -44,6 +44,7 @@ class SurveyConfiguration:
         self.ts60_id_list = self.config_parser.get(SurveyConfiguration.section_instrument, 'ts60_id_list')
         self.ms60_id_list = self.config_parser.get(SurveyConfiguration.section_instrument, 'ms60_id_list')
         self.ts15_id_list = self.config_parser.get(SurveyConfiguration.section_instrument, 'ts15_id_list')
+        self.ts16_id_list = self.config_parser.get(SurveyConfiguration.section_instrument, 'ts16_id_list')
 
         # SURVEY TOLERANCES
         self.easting_tolerance = self.config_parser.get(SurveyConfiguration.section_survey_tolerances, 'eastings')

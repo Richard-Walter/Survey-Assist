@@ -3236,10 +3236,11 @@ class ImportRailMonitoringFileWindow:
         self.dialog_window.title("Import Rail/M31 Survey")
 
         self.area_lbl = tk.Label(
-            self.dialog_window, text="Select the Monitoring Survey:")
+            self.dialog_window, text="Select the Monitoring Survey Search Key:")
         self.area_column = tk.StringVar()
         self.area_column_entry = ttk.Combobox(
             self.dialog_window, width=15, textvariable=self.area_column, state='readonly')
+        #TODO - read these values from file
         self.area_column_entry['values'] = [
             'ARTC_903', 'ARTC_708', 'M31_E', 'M31_W']
         self.area_column_entry.current(0)
@@ -3256,6 +3257,8 @@ class ImportRailMonitoringFileWindow:
             self.dialog_window, text="MS60", value="MS60", var=self.ts_id)
         self.radio_sort_config = tk.Radiobutton(
             self.dialog_window, text="TS15", value="TS15", var=self.ts_id)
+        self.ts16_rb = tk.Radiobutton(
+            self.dialog_window, text="TS16", value="TS16", var=self.ts_id)
         self.import_btn = tk.Button(
             self.dialog_window, text="IMPORT RAIL SURVEY", command=self.set_values)
 
@@ -3270,12 +3273,14 @@ class ImportRailMonitoringFileWindow:
         self.radio_sort_auto.grid(
             row=4, column=1, sticky='w', columnspan=3, padx=70, pady=2)
         self.radio_sort_config.grid(
-            row=5, column=1, sticky='w', columnspan=3, padx=70, pady=(2, 1))
-        self.import_btn.grid(row=6, column=1, sticky='w',
+            row=5, column=1, sticky='w', columnspan=3, padx=70, pady=2)
+        self.ts16_rb.grid(
+            row=6, column=1, sticky='w', columnspan=3, padx=70, pady=(2, 1))
+        self.import_btn.grid(row=7, column=1, sticky='w',
                              columnspan=1, padx=50, pady=(20, 2))
 
         self.dialog_window.geometry(
-            MainWindow.position_popup(master, 240, 300))
+            MainWindow.position_popup(master, 290, 320))
         # self.dialog_window.attributes('-topmost', 'true')
         self.master.wait_window(self.dialog_window)
 
