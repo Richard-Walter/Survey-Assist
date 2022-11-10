@@ -8,11 +8,13 @@ survey_config = SurveyConfiguration()
 ts60_id_list = survey_config.ts60_id_list.split()
 ts15_id_list = survey_config.ts15_id_list.split()
 ms60_id_list = survey_config.ms60_id_list.split()
+ts16_id_list = survey_config.ms60_id_list.split()
 
 # Total station instruments
 TS60 = 'TS60'
 MS60 = 'MS60'
 TS15 = 'TS15'
+TS16 = 'TS16'
 
 
 class SDCard:
@@ -34,6 +36,7 @@ class SDCard:
         self.todays_ts_60_files = self.get_todays_ts_60_files()
         self.todays_ms_60_files = self.get_todays_ms_60_files()
         self.todays_ts_15_files = self.get_todays_ts_15_files()
+        self.todays_ts_16_files = self.get_todays_ts_16_files()
 
         self.rail_monitoring_files = []
 
@@ -180,6 +183,24 @@ class SDCard:
 
         return ts_15_files
 
+    def get_todays_ts_16_files(self):
+
+        ts_16_files = set()
+
+        if self.dbx_files:
+
+            for file in self.dbx_files:
+                if file.file_type == File.TS_FILE and Today.todays_date_reversed in file.basename:
+                    if file.ts_instrument == TS16:
+                        ts_16_files.add((file))
+
+                        # get corresponding GSI file
+                        for file in self.gsi_files:
+                            if Today.todays_date_reversed in file.basename:
+                                ts_16_files.add(file)
+
+        return ts_16_files
+
     def get_list_all_todays_files(self):
 
         return list(self.todays_gps_files) + list(self.todays_ts_60_files) + list(self.todays_ms_60_files) + list(
@@ -283,6 +304,8 @@ class SurveyFolder(Folder):
             return SurveyFolder.TS_FOLDER
         elif any(x in basename for x in ms60_id_list):
             return SurveyFolder.TS_FOLDER
+        elif any(x in basename for x in ts16_id_list):
+            return SurveyFolder.TS_FOLDER
         else:
             return ""
 
@@ -312,6 +335,8 @@ class TSFolder(SurveyFolder):
             self.ts_instrument = TS15
         elif any(x in self.basename for x in ms60_id_list):
             self.ts_instrument = MS60
+        elif any(x in self.basename for x in ts16_id_list):
+            self.ts_instrument = TS16
         else:
             self.ts_instrument = ""
 

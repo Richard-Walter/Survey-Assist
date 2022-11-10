@@ -3204,6 +3204,8 @@ class CreateDatedDirectoryWindow:
             os.makedirs(os.path.join(os.path.join(
                 self.selected_directory, active_date), 'TS', 'TS15'))
             os.makedirs(os.path.join(os.path.join(
+                self.selected_directory, active_date), 'TS', 'TS16'))
+            os.makedirs(os.path.join(os.path.join(
                 self.selected_directory, active_date), 'TS', 'EDITING'))
 
             create_dated_folder = os.path.join(self.selected_directory)
