@@ -2144,12 +2144,10 @@ class ConfigDialogWindow:
         # self.precision_entry.bind("<<ComboboxSelected>>")
         # self.precision_entry.grid(row=0, column=1, padx=5, pady=(15, 5), sticky='w')
 
-        tk.Label(self.dialog_window, text="Easting Tolerance: ").grid(
-            row=1, column=0, padx=5, pady=(20, 5), sticky='w')
+        tk.Label(self.dialog_window, text="Easting Tolerance: ").grid(row=1, column=0, padx=5, pady=(20, 5), sticky='w')
         self.entry_easting = tk.Entry(self.dialog_window)
         self.entry_easting.insert(tkinter.END, survey_config.easting_tolerance)
-        self.entry_easting.grid(row=1, column=1, padx=10,
-                                pady=(20, 5), sticky='w', )
+        self.entry_easting.grid(row=1, column=1, padx=10,pady=(20, 5), sticky='w', )
 
         tk.Label(self.dialog_window, text="Northing Tolerance: ").grid(
             row=2, column=0, padx=5, pady=5, sticky='w')
@@ -2165,30 +2163,36 @@ class ConfigDialogWindow:
         self.entry_height.grid(row=3, column=1, padx=10, pady=5, sticky='w')
 
         self.sorted_station_file_lbl = tk.Label(self.dialog_window, text="Sorted station file: ").grid(
-            row=4, column=0, padx=10, pady=10, sticky='w')
+            row=4, column=0, padx=5, pady=5, sticky='w')
         self.sorted_station_file_btn = tk.Button(self.dialog_window, text=os.path.basename(self.sorted_stn_file_path),
                                                  command=self.select_sorted_stn_file)
         self.sorted_station_file_btn.grid(
-            row=4, column=1, padx=10, pady=10, sticky='w')
+            row=4, column=1, padx=5, pady=5, sticky='w')
 
-        self.current_rail_monitoring_file_lbl = tk.Label(self.dialog_window, text="Rail Monitoring Name: ").grid(row=5, column=0, padx=10, pady=10,
+        self.current_rail_monitoring_file_lbl = tk.Label(self.dialog_window, text="Rail Monitoring Name: ").grid(row=5, column=0, padx=5, pady=5,
                                                                                                                  sticky='w')
         self.current_rail_monitoring_file_entry = tk.Entry(self.dialog_window)
         self.current_rail_monitoring_file_entry.grid(
-            row=5, column=1, padx=10, pady=10, sticky='w')
+            row=5, column=1, padx=5, pady=5, sticky='w')
         self.current_rail_monitoring_file_entry.insert(
             tk.END, self.current_rail_monitoring_name)
 
+        # current year
+        tk.Label(self.dialog_window, text="Current Year: ").grid(row=6, column=0, padx=5, pady=(20, 5), sticky='w')
+        self.entry_current_year = tk.Entry(self.dialog_window)
+        self.entry_current_year.insert(tkinter.END, survey_config.current_year)
+        self.entry_current_year.grid(row=6, column=1, padx=10, pady=(20, 5), sticky='w', )
+
         save_b = tk.Button(self.dialog_window, text="Save",
                            width=10, command=self.save)
-        save_b.grid(row=6, column=0, padx=10, pady=20, sticky='nesw')
+        save_b.grid(row=7, column=0, padx=10, pady=20, sticky='nesw')
 
         cancel_b = tk.Button(self.dialog_window, text="Cancel",
                              width=10, command=self.cancel)
-        cancel_b.grid(row=6, column=1, padx=20, pady=20, sticky='nesw')
+        cancel_b.grid(row=7, column=1, padx=20, pady=20, sticky='nesw')
 
         self.dialog_window.geometry(
-            MainWindow.position_popup(master, 330, 270))
+            MainWindow.position_popup(master, 330, 310))
 
     def select_sorted_stn_file(self):
 
@@ -2209,6 +2213,7 @@ class ConfigDialogWindow:
         file_directory_dictionary = {}
 
         # precision_dictionary['instrument_precision'] = self.precision_entry.get()
+        file_directory_dictionary['current_year'] = self.entry_current_year.get()
         survey_tolerance_dictionary['eastings'] = self.entry_easting.get()
         survey_tolerance_dictionary['northings'] = self.entry_northing.get()
         survey_tolerance_dictionary['height'] = self.entry_height.get()
