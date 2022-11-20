@@ -3246,8 +3246,7 @@ class ImportRailMonitoringFileWindow:
         self.area_column_entry = ttk.Combobox(
             self.dialog_window, width=15, textvariable=self.area_column, state='readonly')
         #TODO - read these values from file
-        self.area_column_entry['values'] = [
-            'ARTC_903', 'ARTC_708', 'M31_E', 'M31_W']
+        self.area_column_entry['values'] = ['ARTC_903', 'ARTC_708', 'M31_E', 'M31_W']
         self.area_column_entry.current(0)
 
         self.sorting_lbl = tk.Label(
@@ -5039,7 +5038,7 @@ class JobDiaryWindow:
                                                 ('Job Type', self.job_type.get()),
                                                 ('Static', self.static.get()
                                                  ), ('RTK', self.RTK.get()),
-                                                # todo - check why TS15 has this key.  
+                                                # TODO - check why TS15 has this key.  
                                                 ('TCRA A', self.TS15.get()),
                                                 ('TCRA B', self.TS60.get()),
                                                 ('TCRA JH', self.MS60.get()),

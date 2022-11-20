@@ -8,7 +8,7 @@ survey_config = SurveyConfiguration()
 ts60_id_list = survey_config.ts60_id_list.split()
 ts15_id_list = survey_config.ts15_id_list.split()
 ms60_id_list = survey_config.ms60_id_list.split()
-ts16_id_list = survey_config.ms60_id_list.split()
+ts16_id_list = survey_config.ts16_id_list.split()
 
 # Total station instruments
 TS60 = 'TS60'
