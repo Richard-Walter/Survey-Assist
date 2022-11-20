@@ -4915,7 +4915,8 @@ class JobDiaryWindow:
         cal_root = tk.Toplevel()
         Cal = CalendarWindow(cal_root, self.active_date, format='%d/%m/%Y')
         self.master.wait_window(cal_root)
-        self.job_date.set(self.active_date[0])
+        selectedDate = Cal.get_selected_date()
+        self.job_date.set(selectedDate)
 
     def activate_record(self, event):
         selected_record = self.diary_entries.item(
@@ -5098,8 +5099,15 @@ class JobDiaryWindow:
                 writer = csv.DictWriter(
                     csvfile, fieldnames=Header, delimiter=",", lineterminator="\n")
                 writer.writeheader()
-                for Item in self.diary_data:
+
+                # lets sort the list by date
+                sortedJobs = sorted(self.diary_data, key=lambda d: datetime.datetime.strptime(d['Date'], '%d/%m/%Y'))
+                # print(sortedJobs)
+                for Item in sortedJobs:
                     writer.writerow(Item)
+                # for Item in self.diary_data:
+                #     writer.writerow(Item)
+
         except Exception as e:
 
             print(e)
@@ -5280,7 +5288,7 @@ def main():
     root = tk.Tk()
     # root.geometry("1600x1000")
     root.state('zoomed')
-    root.title("SURVEY ASSIST v2.0 by Richard Walter                                                                                                     "
+    root.title("SURVEY ASSIST v2.0 by Richard Walter (rjwalter75@gmail.com)                                                                                                    "
                "*** Please consider donating if you find this program useful ***")
     root.wm_iconbitmap(r'icons\analyser.ico')
 
