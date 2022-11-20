@@ -913,3 +913,23 @@ ValueError: could not convert string to float: 'FOCSTN01_FOC01_1'
 2022-11-21 09:55:27,592:Survey Assist - v1.0 :************************* STARTED APPLICATION - User: RW *************************
 2022-11-21 09:57:36,652:Survey Assist - v1.0 :************************* STARTED APPLICATION - User: RW *************************
 2022-11-21 09:58:26,923:Survey Assist - v1.0 :************************* STARTED APPLICATION - User: RW *************************
+2022-11-21 10:01:45,743:Survey Assist - v1.0 :************************* STARTED APPLICATION - User: RW *************************
+2022-11-21 10:02:06,839:Survey Assist - v1.0 :OPENING UP A GSI FILE: C:/Survey Data/2022/MONITORING/A9 Menangle Road/MR_100320 edit.GSI
+2022-11-21 10:47:24,192:Survey Assist - v1.0 :************************* STARTED APPLICATION - User: RW *************************
+2022-11-21 10:47:32,170:Survey Assist - v1.0 :An unexpected error has occurred
+
+swriting Job diary CSV()
+
+time data '2/01/2019' does not match format '%d%m/%Y'
+Traceback (most recent call last):
+  File "main.py", line 5110, in write_csv
+    sortedJobs = sorted(self.diary_data, key=lambda d: datetime.datetime.strptime(
+  File "main.py", line 5110, in <lambda>
+    sortedJobs = sorted(self.diary_data, key=lambda d: datetime.datetime.strptime(
+  File "C:\Program Files\Python39\lib\_strptime.py", line 568, in _strptime_datetime
+    tt, fraction, gmtoff_fraction = _strptime(data_string, format)
+  File "C:\Program Files\Python39\lib\_strptime.py", line 349, in _strptime
+    raise ValueError("time data %r does not match format %r" %
+ValueError: time data '2/01/2019' does not match format '%d%m/%Y'
+2022-11-21 10:48:11,512:Survey Assist - v1.0 :************************* STARTED APPLICATION - User: RW *************************
+2022-11-21 10:48:44,916:Survey Assist - v1.0 :************************* STARTED APPLICATION - User: RW *************************

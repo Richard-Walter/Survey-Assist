@@ -2144,10 +2144,12 @@ class ConfigDialogWindow:
         # self.precision_entry.bind("<<ComboboxSelected>>")
         # self.precision_entry.grid(row=0, column=1, padx=5, pady=(15, 5), sticky='w')
 
-        tk.Label(self.dialog_window, text="Easting Tolerance: ").grid(row=1, column=0, padx=5, pady=(20, 5), sticky='w')
+        tk.Label(self.dialog_window, text="Easting Tolerance: ").grid(
+            row=1, column=0, padx=5, pady=(20, 5), sticky='w')
         self.entry_easting = tk.Entry(self.dialog_window)
         self.entry_easting.insert(tkinter.END, survey_config.easting_tolerance)
-        self.entry_easting.grid(row=1, column=1, padx=10,pady=(20, 5), sticky='w', )
+        self.entry_easting.grid(row=1, column=1, padx=10,
+                                pady=(20, 5), sticky='w', )
 
         tk.Label(self.dialog_window, text="Northing Tolerance: ").grid(
             row=2, column=0, padx=5, pady=5, sticky='w')
@@ -2178,10 +2180,12 @@ class ConfigDialogWindow:
             tk.END, self.current_rail_monitoring_name)
 
         # current year
-        tk.Label(self.dialog_window, text="Current Year: ").grid(row=6, column=0, padx=5, pady=(20, 5), sticky='w')
+        tk.Label(self.dialog_window, text="Current Year: ").grid(
+            row=6, column=0, padx=5, pady=(20, 5), sticky='w')
         self.entry_current_year = tk.Entry(self.dialog_window)
         self.entry_current_year.insert(tkinter.END, survey_config.current_year)
-        self.entry_current_year.grid(row=6, column=1, padx=10, pady=(20, 5), sticky='w', )
+        self.entry_current_year.grid(
+            row=6, column=1, padx=10, pady=(20, 5), sticky='w', )
 
         save_b = tk.Button(self.dialog_window, text="Save",
                            width=10, command=self.save)
@@ -2213,7 +2217,8 @@ class ConfigDialogWindow:
         file_directory_dictionary = {}
 
         # precision_dictionary['instrument_precision'] = self.precision_entry.get()
-        file_directory_dictionary['current_year'] = self.entry_current_year.get()
+        file_directory_dictionary['current_year'] = self.entry_current_year.get(
+        )
         survey_tolerance_dictionary['eastings'] = self.entry_easting.get()
         survey_tolerance_dictionary['northings'] = self.entry_northing.get()
         survey_tolerance_dictionary['height'] = self.entry_height.get()
@@ -3245,8 +3250,9 @@ class ImportRailMonitoringFileWindow:
         self.area_column = tk.StringVar()
         self.area_column_entry = ttk.Combobox(
             self.dialog_window, width=15, textvariable=self.area_column, state='readonly')
-        #TODO - read these values from file
-        self.area_column_entry['values'] = ['ARTC_903', 'ARTC_708', 'M31_E', 'M31_W']
+        # TODO - read these values from file
+        self.area_column_entry['values'] = [
+            'ARTC_903', 'ARTC_708', 'M31_E', 'M31_W']
         self.area_column_entry.current(0)
 
         self.sorting_lbl = tk.Label(
@@ -5039,7 +5045,7 @@ class JobDiaryWindow:
                                                 ('Job Type', self.job_type.get()),
                                                 ('Static', self.static.get()
                                                  ), ('RTK', self.RTK.get()),
-                                                # TODO - check why TS15 has this key.  
+
                                                 ('TCRA A', self.TS15.get()),
                                                 ('TCRA B', self.TS60.get()),
                                                 ('TCRA JH', self.MS60.get()),
@@ -5101,7 +5107,8 @@ class JobDiaryWindow:
                 writer.writeheader()
 
                 # lets sort the list by date
-                sortedJobs = sorted(self.diary_data, key=lambda d: datetime.datetime.strptime(d['Date'], '%d/%m/%Y'))
+                sortedJobs = sorted(self.diary_data, key=lambda d: datetime.datetime.strptime(
+                    d['Date'], '%d/%m/%Y'))
                 # print(sortedJobs)
                 for Item in sortedJobs:
                     writer.writerow(Item)
@@ -5111,6 +5118,8 @@ class JobDiaryWindow:
         except Exception as e:
 
             print(e)
+            logger.exception(
+                "An unexpected error has occurred\n\nWriting Job diary CSV()\n\n" + str(e))
             today = datetime.datetime.today()
             dt = today.strftime('%d%m%Y')
             tk.messagebox.showwarning("ERROR WRITING CSV FILE",
