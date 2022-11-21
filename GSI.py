@@ -49,10 +49,36 @@ class GSI:
         self.survey_config = survey_config
 
         # PRISM CONSTANTS
-        self.PC_DICT_REAL_VALUES = {'Big Joe': 0.0390, 'Big Joe 2': 0.0340, 'GLASS': 0.0240, 'Leica 360 Prism': 0.0231, 'Leica Circular Prism': 0.0000,
-                                    'Monitoring': 0.0089}
-        self.PC_DICT_GSI_VALUES = {'Big Joe': 39, 'Big Joe 2': 34, 'GLASS': 24,
-                                   'Leica 360 Prism': 23, 'Leica Circular Prism': 0, 'Monitoring': 8}
+        # self.PC_DICT_REAL_VALUES = {'Big Joe': 0.0390, 'Big Joe 2': 0.0340, 'GLASS': 0.0240, 'Leica 360 Prism': 0.0231, 'Leica Circular Prism': 0.0000,
+        #                             'Monitoring': 0.0089}
+        # self.PC_DICT_GSI_VALUES = {'Big Joe': 39, 'Big Joe 2': 34, 'GLASS': 24,
+        self.PC_DICT_REAL_VALUES = {}
+        self.PC_DICT_GSI_VALUES = {}
+
+        # GEt PC config e.g. Big Joe:0.0390:39, Big Joe 2:0.0340:34, GLASS:0.0240:24, Leica 360 Prism:0.0231:23, Leica Circular Prism:0.0000:0 ,Monitoring:0.0089:8
+        self.prism_constants_config_list = survey_config.prism_constants_names.split(',')
+
+        for prism_constant_config in self.prism_constants_config_list:
+
+            try:
+                #e.g.  GLASS:0.0240:24
+                pc_data = prism_constant_config.split(':')
+
+                key = pc_data[0].strip()
+                real_value = float(pc_data[1].strip())
+                gsi_value = int(pc_data[2].strip())
+
+                self.PC_DICT_REAL_VALUES[key] = real_value
+                self.PC_DICT_GSI_VALUES[key] = gsi_value
+
+            except Exception as ex:
+                print(ex)
+                self.logger.exception(
+                    "Error parsing prism constants from settings.ini.  Most likely user has added new prism constant in wrong format\n\n" + str(ex))
+   
+        print(self.PC_DICT_REAL_VALUES)
+        print(self.PC_DICT_GSI_VALUES)
+
 
     def update_target_height(self, line_number, corrections):
 
