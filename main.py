@@ -5322,7 +5322,7 @@ def main():
     survey_config = SurveyConfiguration()
 
     # Setup logger
-    logger = logging.getLogger('Survey Assist - v1.0 ')
+    logger = logging.getLogger('Survey Assist - v2.0 ')
     configure_logger()
     gsi = GSI(logger, survey_config)
     gui_app = GUIApplication(root)
