@@ -35,10 +35,7 @@ class GSI:
                                              ('84', r'84..\d\d[\+-]\d*\.?\d?'), ('85', r'85..\d\d[\+-]\d*\.?\d?'), ('86', r'86..[\+-]\d*\.?\d?'),
                                              ('87', r'87\.{2}\d{2}\+\d+'), ('88', r'88..\d\d[\+-]\d*\.?\d?')])
 
-    # PRISM CONSTANTS
-    PC_DICT_REAL_VALUES = {'Big Joe': 0.0390, 'Big Joe 2': 0.0340, 'GLASS': 0.0240, 'Leica 360 Prism': 0.0231, 'Leica Circular Prism': 0.0000,
-                           'Monitoring': 0.0089}
-    PC_DICT_GSI_VALUES = {'Big Joe': 39, 'Big Joe 2': 34, 'GLASS': 24, 'Leica 360 Prism': 23, 'Leica Circular Prism': 0, 'Monitoring': 8}
+
 
     def __init__(self, logger, survey_config):
 
@@ -50,6 +47,12 @@ class GSI:
         self.formatted_lines = []
         self.unformatted_lines = []
         self.survey_config = survey_config
+
+        # PRISM CONSTANTS
+        self.PC_DICT_REAL_VALUES = {'Big Joe': 0.0390, 'Big Joe 2': 0.0340, 'GLASS': 0.0240, 'Leica 360 Prism': 0.0231, 'Leica Circular Prism': 0.0000,
+                                    'Monitoring': 0.0089}
+        self.PC_DICT_GSI_VALUES = {'Big Joe': 39, 'Big Joe 2': 34, 'GLASS': 24,
+                                   'Leica 360 Prism': 23, 'Leica Circular Prism': 0, 'Monitoring': 8}
 
     def update_target_height(self, line_number, corrections):
 
