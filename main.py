@@ -387,9 +387,9 @@ class MenuBar(tk.Frame):
             #                                                                                              " computer, and check your SD card path in user_settings.ini is correct.")
 
             user_answer = tk.messagebox.askyesnocancel("IMPORT SD DATA", "Couldn't find any survey files with todays date."
-                                                                         "\n\nAre you trying to import a RAIL/M31 "
+                                                                         "\n\nAre you trying to import a "
                                                                          "monitoring survey?\n\n"
-                                                                         "YES           -  IMPORT RAIL SURVEY\n"
+                                                                         "YES           -  IMPORT MONITORING SURVEY\n"
                                                                          "NO            - IMPORT FILES MANUALLY\n"
                                                                          "CANCEL    - INSERT SD CARD AND TRY_AGAIN\n\n"
                                                                          "Otherwise, please make sure you have inserted the SD Card into your"
@@ -403,7 +403,7 @@ class MenuBar(tk.Frame):
                 os.startfile('c:')
                 return
 
-            else:  # user selected yes to importing rail/M31 survey
+            else:  # user selected yes to importing Monitoring survey
 
                 ImportRailMonitoringFileWindow(self.master)
                 ts_used = self.ts_used
@@ -412,9 +412,9 @@ class MenuBar(tk.Frame):
                     longwall_area)
 
                 if not rail_monitoring_files:
-                    tk.messagebox.showinfo("IMPORT SD DATA", "Couldn't find any Rail/M31 monitoring survey "
+                    tk.messagebox.showinfo("IMPORT SD DATA", "Couldn't find any monitoring surveys "
                                                              "files.\n\nPlease check the settings.ini file "
-                                                             "and make sure 'current_rail_monitoring_file_name' is correct.\n\n"
+                                                             "and make sure that one of the 'monitoring_file_search_keys' is in the file name of the monitoring survey as well as the word MON.\n\n"
                                                              "Also, check user_settings.ini and make sure the root SD directory is configured "
                                                              "properly.\n\nRestart Survey Assist after making any changes.")
 
@@ -3238,21 +3238,25 @@ class CreateDatedDirectoryWindow:
 
 class ImportRailMonitoringFileWindow:
 
+    
+
     def __init__(self, master):
         self.master = master
 
+        self.monitoring_key_word_search_list = survey_config.monitoring_file_search_keys.split()
+
         #  Lets build the dialog box
         self.dialog_window = tk.Toplevel(master)
-        self.dialog_window.title("Import Rail/M31 Survey")
+        self.dialog_window.title("Import Monitoring Survey")
 
         self.area_lbl = tk.Label(
             self.dialog_window, text="Select the Monitoring Survey Search Key:")
         self.area_column = tk.StringVar()
         self.area_column_entry = ttk.Combobox(
             self.dialog_window, width=15, textvariable=self.area_column, state='readonly')
-        # TODO - read these values from file
-        self.area_column_entry['values'] = [
-            'ARTC_903', 'ARTC_708', 'M31_E', 'M31_W']
+      
+        # self.area_column_entry['values'] = ['ARTC_903', 'ARTC_708', 'M31_E', 'M31_W']
+        self.area_column_entry['values'] = self.monitoring_key_word_search_list
         self.area_column_entry.current(0)
 
         self.sorting_lbl = tk.Label(

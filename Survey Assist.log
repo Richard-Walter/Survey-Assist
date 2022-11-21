@@ -933,3 +933,8 @@ Traceback (most recent call last):
 ValueError: time data '2/01/2019' does not match format '%d%m/%Y'
 2022-11-21 10:48:11,512:Survey Assist - v1.0 :************************* STARTED APPLICATION - User: RW *************************
 2022-11-21 10:48:44,916:Survey Assist - v1.0 :************************* STARTED APPLICATION - User: RW *************************
+2022-11-21 11:02:16,841:Survey Assist - v1.0 :************************* STARTED APPLICATION - User: RW *************************
+2022-11-21 11:11:08,328:Survey Assist - v1.0 :************************* STARTED APPLICATION - User: RW *************************
+2022-11-21 11:13:38,458:Survey Assist - v1.0 :************************* STARTED APPLICATION - User: RW *************************
+2022-11-21 11:14:35,584:Survey Assist - v1.0 :************************* STARTED APPLICATION - User: RW *************************
+2022-11-21 11:15:19,595:Survey Assist - v1.0 :************************* STARTED APPLICATION - User: RW *************************

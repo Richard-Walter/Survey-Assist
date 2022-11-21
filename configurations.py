@@ -55,6 +55,7 @@ class SurveyConfiguration:
         self.flfr_height_tolerance = self.config_parser.get(SurveyConfiguration.section_survey_tolerances, 'flfr_height')
 
         self.sorted_station_config = self.config_parser.get(SurveyConfiguration.section_config_files, 'sorted_station_config')
+        self.monitoring_file_search_keys = self.config_parser.get(SurveyConfiguration.section_config_files, 'monitoring_file_search_keys')
 
         # FILE DIRECTORIES
         self.last_used_file_dir = ""
