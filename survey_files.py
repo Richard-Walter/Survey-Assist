@@ -203,7 +203,7 @@ class SDCard:
 
     def get_list_all_todays_files(self):
 
-        return list(self.todays_gps_files) + list(self.todays_ts_60_files) + list(self.todays_ms_60_files) + list(
+        return list(self.todays_gps_files) + list(self.todays_ts_60_files) + list(self.todays_ms_60_files) + list(self.todays_ts_16_files) + list(
             self.todays_ts_15_files) + list(self.rail_monitoring_files)
 
     @staticmethod

@@ -511,6 +511,20 @@ class MenuBar(tk.Frame):
                             self.copy_over_gsi_to_edited_directory(
                                 file, import_path, is_rail_survey)
 
+                elif sd_card.get_todays_ts_16_files():
+                    for file in sd_card.get_todays_ts_16_files():
+                        import_path = os.path.join(
+                            import_root_directory, 'TS', 'TS16', file.basename)
+                        if os.path.isdir(file.filepath):
+                            shutil.copytree(file.filepath, import_path)
+                        else:
+                            shutil.copy(file.filepath, import_path)
+
+                        if file.file_suffix.upper() == File.GSI_FILE_SUFFIX:
+                            # Check and copy over gsi to edited directory if it exists
+                            self.copy_over_gsi_to_edited_directory(
+                                file, import_path, is_rail_survey)
+
                 elif sd_card.get_todays_ms_60_files():
                     for file in sd_card.get_todays_ms_60_files():
                         import_path = os.path.join(

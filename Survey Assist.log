@@ -938,3 +938,17 @@ ValueError: time data '2/01/2019' does not match format '%d%m/%Y'
 2022-11-21 11:13:38,458:Survey Assist - v1.0 :************************* STARTED APPLICATION - User: RW *************************
 2022-11-21 11:14:35,584:Survey Assist - v1.0 :************************* STARTED APPLICATION - User: RW *************************
 2022-11-21 11:15:19,595:Survey Assist - v1.0 :************************* STARTED APPLICATION - User: RW *************************
+2022-11-21 11:26:44,827:Survey Assist - v1.0 :************************* STARTED APPLICATION - User: RW *************************
+2022-11-21 11:29:22,622:Survey Assist - v1.0 :OPENING UP A GSI FILE: C:/Survey Data/2022/MONITORING/TEST/221121/TS/TS60/SS_904_MON_V2.gsi
+2022-11-21 11:29:43,122:Survey Assist - v1.0 :************************* STARTED APPLICATION - User: RW *************************
+2022-11-21 11:33:00,332:Survey Assist - v1.0 :************************* STARTED APPLICATION - User: RW *************************
+2022-11-21 11:34:35,168:Survey Assist - v1.0 :************************* STARTED APPLICATION - User: RW *************************
+2022-11-21 11:36:19,337:Survey Assist - v1.0 :************************* STARTED APPLICATION - User: RW *************************
+2022-11-21 11:41:25,098:Survey Assist - v1.0 :************************* STARTED APPLICATION - User: RW *************************
+2022-11-21 11:42:07,951:Survey Assist - v1.0 :************************* STARTED APPLICATION - User: RW *************************
+2022-11-21 11:42:25,254:Survey Assist - v1.0 :Importing SD Data
+
+This should not be reachable.  Investigate
+
+NoneType: None
+2022-11-21 11:46:12,373:Survey Assist - v1.0 :************************* STARTED APPLICATION - User: RW *************************
