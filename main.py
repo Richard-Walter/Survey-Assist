@@ -3288,7 +3288,7 @@ class ImportRailMonitoringFileWindow:
         self.ts16_rb = tk.Radiobutton(
             self.dialog_window, text="TS16", value="TS16", var=self.ts_id)
         self.import_btn = tk.Button(
-            self.dialog_window, text="IMPORT RAIL SURVEY", command=self.set_values)
+            self.dialog_window, text="IMPORT MONITORING SURVEY", command=self.set_values)
 
         self.area_lbl.grid(row=0, column=1, sticky='w',
                            columnspan=3, padx=50, pady=(20, 2))
